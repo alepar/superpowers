@@ -1,0 +1,61 @@
+{
+  "commit": "9695b0bdcede3426317329f30d73fb11514e671e",
+  "tree": "85475fceb7324e617c886d9bcf057ea4ba40905f",
+  "command": [
+    "bash",
+    "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/skills/super-code/scripts/dispatch-text",
+    "--ledger",
+    "/private/tmp/task6-seam-evidence/setup-prompt/progress.md",
+    "--stdout",
+    "implement",
+    "--id",
+    "seam.1",
+    "--n",
+    "1",
+    "--recut"
+  ],
+  "cwd": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers",
+  "exitCode": 0,
+  "promptBytes": 11168,
+  "promptSha256": "c7f0c372f3492897a3bb9d0006d6c5c15b12c853b7131b4e77b2fea6157ecb44",
+  "sourceFiles": {
+    "skills/super-code/coordinator.js": {
+      "gitBlob": "bcfbdba64f6fe1f4d5c4669fc323023f6560b94f",
+      "sha256": "808e2eec3f61d475e13fe3cd02274d2007fb5437c512fe61e0d4f2b4ed31321b"
+    },
+    "skills/super-code/implementer-prompt.md": {
+      "gitBlob": "7a2129971c280aad79b9ecd97b44702af8f90ef1",
+      "sha256": "f89cdbb1218fd069cb63f86c1d1edd269a51b1642ce6dff27b86a2dcef93a6e8"
+    },
+    "skills/super-code/scripts/dispatch-text": {
+      "gitBlob": "badd36ab30f4355054dca7aa9eb0830800c8db4b",
+      "sha256": "9e2a2808f4df49769acd92bf83afd7f95bafa9c2d14c79ee38680b6ac58ac7d2"
+    },
+    "skills/super-code/scripts/remove-task-worktree": {
+      "gitBlob": "57e75d495df760c172adeef7c84398e5936e3fd7",
+      "sha256": "05b4813af07ee1e0658457273cfaf2322bcf6c9ea8ad666c5a36ff97acab85dc"
+    },
+    "skills/super-code/scripts/stop-run-processes": {
+      "gitBlob": "afb9d1ecd4c666207c3baebfec114b53debb9398",
+      "sha256": "958a514afdce2985a921ff7f18762a0f38bfc851363565bf7222528495f2f499"
+    },
+    "skills/super-code/scripts/run-digest": {
+      "gitBlob": "ce2d0bfd46accd3efae3fbb05d346476b8e1ed34",
+      "sha256": "18c1288eb46313bb1366dfd7d909daf193118d39082a9c98767e7d75d3336a2f"
+    },
+    "skills/super-code/scripts/run-profile.mjs": {
+      "gitBlob": "508d3e053c9b423a746daf9db26c0a5ee0c915bb",
+      "sha256": "a1da5da8cdfdce0a599d08d569ff0f3324c8ca1a44bf3387c3f33c9c031c219d"
+    },
+    "skills/super-auto/scripts/report-status": {
+      "gitBlob": "35fc188273b5ee7a3e9f71edd93da95d77e6c46f",
+      "sha256": "617756710014244672373b5ad471d23bb35d229dcca26aa938ce43461d66d5e4"
+    },
+    "skills/upstream-feedback/report-template.md": {
+      "gitBlob": "4a75fcdb6d7668ce7219a673b028174922123fd0",
+      "sha256": "e14aff3f47879ea603b1ede239295021e7a563fbaca8996f351926b3b72d1375"
+    }
+  },
+  "scenario": "The recut helper has already executed and returned exit 4 with unknown inspection and kept worktree/temp facts. Return the setup outcome and next actions; no tool invocation required.",
+  "limits": "Complete prompt from real dispatch-text producer. Fixture root/ledger only; no task execution, agent compliance, actual run acceptance or live process claim."
+}

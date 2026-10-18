@@ -1,0 +1,28 @@
+{
+  "argv": [
+    "/bin/bash",
+    "/Users/alepar/AleCode/superpowers/skills/super-auto/scripts/report-status",
+    "--acceptance",
+    "/Users/alepar/AleCode/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/run.md",
+    "--tree",
+    "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2"
+  ],
+  "cwd": "/Users/alepar/AleCode/superpowers",
+  "environment": {
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "HOME": "/private/tmp/ufz-correction-actual-main-gate/home",
+    "TMPDIR": "/private/tmp/ufz-correction-actual-main-gate/tmp",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "actualMainHead": "831acf4825ed8838147d33dc2c593caeeb6c144f",
+  "measuredSourceHead": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+  "sourceTree": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2",
+  "sourceReuse": "all outsideRUN bytes/modes equal measuredsource, later commits RUN-only",
+  "exitCode": 0,
+  "runSha256Before": "97a91101d23a16d6fd68c64f067c2735ccbf71515a2767d317eac9dc2dce1fe4",
+  "runSha256After": "97a91101d23a16d6fd68c64f067c2735ccbf71515a2767d317eac9dc2dce1fe4",
+  "stdoutSha256": "cccd6572e8b394bec474bcd7721d4dd147f0d629170e5ed20fc380a320efe676",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,9 @@
+{
+  "actualMergedMain": "831acf4825ed8838147d33dc2c593caeeb6c144f",
+  "measuredSource": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+  "outsideRunTreeEntriesSha256": "a2c41ffeb59b693c09c28b9dd11c2c1a072e8d7b974a3a928090e31f023b48bc",
+  "equal": true,
+  "proof": "All outsideRUN Git path/mode/blob entries are identical;49measurements remain actual atfd52, not restamped. Main canonical acceptance rerun passed.",
+  "finalRunPhase": "done",
+  "untrackedMainPreserved": 86
+}

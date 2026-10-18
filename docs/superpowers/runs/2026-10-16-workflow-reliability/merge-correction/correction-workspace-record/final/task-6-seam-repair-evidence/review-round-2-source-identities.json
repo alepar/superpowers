@@ -1,0 +1,15 @@
+{
+  "base": "2091eb4910e73273f06586bb653eddc750639e23",
+  "commit": "9e4e057136d449348135bfc18d1f084cb6e4c303",
+  "tree": "6e110b20c90d547016321ccc217d68720a0548bc",
+  "files": {
+    "skills/super-code/scripts/run-profile.mjs": {
+      "gitBlob": "0346d918e6773c03d68353f2d9429ab778b0f913",
+      "sha256": "c22baf9e9256d038fe8cfe8115555dc7acbd0e3febd31ad046b3e6a57d34561f"
+    },
+    "tests/super-code/test-verification-completion-metrics.sh": {
+      "gitBlob": "48bfe67928c146516760520037a34662d219cb45",
+      "sha256": "3158d8b1cb8ee0e4baa69d35fc040deeca215458c09590eb56dec626d23855e5"
+    }
+  }
+}

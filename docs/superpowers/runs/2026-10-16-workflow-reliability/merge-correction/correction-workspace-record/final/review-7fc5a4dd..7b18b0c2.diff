@@ -1,0 +1,1001 @@
+# Review package: 7fc5a4ddb2d0913b769484935f79e6daccff966b..7b18b0c26b9f19d531c558e112d490743901a13b
+
+## Commits
+7b18b0c2 fix: distinguish Workflow verification closure in run profiles
+9695b0bd fix: preserve cleanup, verification and acceptance seam outcomes
+
+## Files changed
+ skills/super-auto/scripts/report-status            |   8 +-
+ skills/super-code/coordinator.js                   |   4 +-
+ skills/super-code/scripts/remove-task-worktree     |  34 +++++-
+ skills/super-code/scripts/run-digest               |  10 +-
+ skills/super-code/scripts/run-profile.mjs          |  43 +++++--
+ skills/super-code/scripts/stop-run-processes       |  28 ++++-
+ skills/upstream-feedback/report-template.md        |  10 +-
+ tests/super-auto/projection-output-r1.sh           |  49 ++++++++
+ tests/super-code/replay-harness.mjs                |   5 +-
+ tests/super-code/test-setup-cleanup.sh             | 132 +++++++++++++++++++++
+ .../test-stop-run-processes-inventory.sh           |  89 ++++++++++++++
+ .../test-verification-completion-metrics.sh        |  92 ++++++++++++++
+ 12 files changed, 472 insertions(+), 32 deletions(-)
+
+## Diff
+diff --git a/skills/super-auto/scripts/report-status b/skills/super-auto/scripts/report-status
+index e1bc3a31..35fc1882 100755
+--- a/skills/super-auto/scripts/report-status
++++ b/skills/super-auto/scripts/report-status
+@@ -334,21 +334,27 @@ try{
+    if(!text(judgment.requirement)||!requirements.has(judgment.requirement))gap('finding acceptance requirement unavailable: '+JSON.stringify(refs));
+    wait('finding '+JSON.stringify(refs)+' remains required for '+(judgment.requirement||'unknown acceptance'));
+   }else nonblockingFindings.push(...refs); // still outstanding in the shared punch-list projection
+  }
+ }catch{gap('finding projection unavailable')}
+ // Reuse ordinary status collection validation without recursively running this gate.
+ const status=cp.spawnSync('bash',[path.join(scripts,'report-status'),run],{encoding:'utf8',env:{...process.env,RS_SKIP_ACCEPTANCE:'1'}});
+ if(status.status!==0)gap('run status unavailable');
+ else for(const line of status.stdout.split('\n'))if(/^qualifier: (review collection|review collections|finding evidence|finding projection)/.test(line))gap(line.slice(11));
+ const result={owner:'super-auto',sourceTree:current?.sourceTree||null,eligible:pending.length===0&&gaps.length===0,pending:[...new Set(pending)],gaps:[...new Set(gaps)],nonblockingFindings};
+-console.log(JSON.stringify(result));process.exit(result.eligible?0:3);
++// Keep the event loop alive until stdout drains; failed output is not acceptance.
++process.exitCode=result.eligible?0:3;
++process.stdout.on('error',error=>{
++ console.error('acceptance output failed: '+error.message);
++ process.exitCode=1;
++});
++console.log(JSON.stringify(result));
+ ACCEPTANCE
+   exit $?
+ fi
+ 
+ # Collection writes only after the caller has confirmed this invocation settled. Launch
+ # intent records (settled:false) remain visible until that confirmation; file presence alone
+ # cannot establish settlement. Ordinary status mode below remains read-only.
+ if [ "${1:-}" = --collect ]; then
+   command -v node >/dev/null 2>&1 || { echo 'NODE_UNAVAILABLE: retain source bundles; collection is unverified' >&2; exit 4; }
+   script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+diff --git a/skills/super-code/coordinator.js b/skills/super-code/coordinator.js
+index 9fc99c03..bcfbdba6 100644
+--- a/skills/super-code/coordinator.js
++++ b/skills/super-code/coordinator.js
+@@ -2582,24 +2582,24 @@ function closeSplitPrompt(kids, id) {
+ }
+ 
+ function workspaceSetup(planPath, n, id, worktree, branchName, integrationBranch, briefFile, { parents = [], reentry = false, recut = false } = {}) {
+   // The implementer's workspace setup, run before it implements: create or reuse exactly this worktree
+   // and branch (idempotent). `base` is the pre-implementer commit on a fresh cut; on a re-entry, the
+   // newest first-parent `stack: ` merge or the merge-base with the integration branch. Never HEAD~1.
+   // `parents`: stack parents whose branches a fresh cut merges in. `reentry`: the implementation is
+   // already on the branch. `recut`: remove a cancelled attempt's worktree first. task-brief gets an
+   // explicit OUTFILE in the integration workspace.
+   const stackStep = parents.length
+-    ? ` Then, still in ${worktree}, merge each stack parent's branch in this order, one commit per parent: ${parents.map(p => `\`git merge --no-ff -m "stack: ${p}" ${taskBranch(p)}\``).join(', then ')}. These tasks are implemented but not merged yet; their code is what this task builds on. If any of these merges conflicts, run \`git merge --abort\`, leave ${worktree} (cd to the repository root), stop its processes (\`bash ${codeSkill}/scripts/stop-run-processes ${worktree} ${taskTmp(id)}\`), remove what you made (\`git worktree remove --force ${worktree}\` and \`git branch -D ${branchName}\`), and return status STACK_CONFLICT with \`finding\` naming the parent and the conflicting files — nothing else. Otherwise \`git rev-parse HEAD\` after the last merge is base; report stacked true.`
++    ? ` Then, still in ${worktree}, merge each stack parent's branch in this order, one commit per parent: ${parents.map(p => `\`git merge --no-ff -m "stack: ${p}" ${taskBranch(p)}\``).join(', then ')}. These tasks are implemented but not merged yet; their code is what this task builds on. If any of these merges conflicts, run \`git merge --abort\`, leave ${worktree} (cd to the repository root), run \`bash ${codeSkill}/scripts/remove-task-worktree --discard --tmp ${taskTmp(id)} ${worktree} ${branchName}\` and capture its exit code and output. Exit 0 permits returning status STACK_CONFLICT with \`finding\` naming the parent and conflicting files plus cleanup output. On any nonzero exit, retain every remaining resource, stop setup and return SETUP_FAILED with the parent, conflicting files, helper exit code and all output in \`finding\`; do not recut or force removal. Otherwise \`git rev-parse HEAD\` after the last merge is base; report stacked true.`
+     : ` Then \`git rev-parse HEAD\` in ${worktree} is base.`
+   const recutStep = recut
+-    ? ` An earlier attempt of this task was cancelled and its worktree may not have been removed: if ${worktree} or the branch \`${branchName}\` exists, stop its processes and remove both first (\`bash ${codeSkill}/scripts/stop-run-processes ${worktree} ${taskTmp(id)}\`, \`git worktree remove --force ${worktree}\`, \`git branch -D ${branchName}\`), then treat this as the NEITHER case.`
++    ? ` An earlier attempt of this task was cancelled and its worktree may not have been removed: if ${worktree} or the branch \`${branchName}\` exists, run \`bash ${codeSkill}/scripts/remove-task-worktree --discard --tmp ${taskTmp(id)} ${worktree} ${branchName}\` and capture its exit code and output. Only exit 0 permits treating this as the NEITHER case. On any nonzero exit, retain every remaining resource, stop setup and return SETUP_FAILED with the helper exit code and all output in \`finding\`; do not recut or force removal.`
+     : ''
+   const neither = reentry
+     ? `If NEITHER exists, run the ALREADY-MERGED CHECK below first (the branch may have been deleted after it landed); if it prints true, return ALREADY_MERGED and reopen or create nothing. Otherwise this task's implementation is gone: run \`bd reopen ${id} --reason "review re-entry found no task branch"\`, then \`git worktree add ${worktree} -b ${branchName} ${integrationBranch}\`; \`git rev-parse HEAD\` in ${worktree} is base; report reopened true, and implement the task as usual.`
+     : `If NEITHER exists: run the ALREADY-MERGED CHECK below first (the branch may have been deleted after it landed); if it prints true, return ALREADY_MERGED and create nothing. Otherwise \`git worktree add ${worktree} -b ${branchName} ${integrationBranch}\`.${stackStep}`
+   const both = reentry
+     ? `If BOTH exist (the expected case for this review re-entry): reuse them as they are; find the base (\`git log --first-parent --grep='^stack: ' -n 1 --format=%H ${branchName}\` — if it prints a commit, that is base and report stacked true; otherwise base is \`git merge-base ${integrationBranch} ${branchName}\`, run in ${worktree}) and report head as \`git rev-parse ${branchName}\`. Do NOT implement anything: the implementation is already on the branch. If base came from the merge-base and equals head, the branch has no commits of its own past ${integrationBranch} — it either landed (by a merge or a hand fast-forward) or its implementation was lost (the branch reset or recreated): never return IMPLEMENTED with an empty range. Run the already-merged check below; if it prints true, return ALREADY_MERGED. If it prints false, return status SETUP_FAILED with base and \`finding\` "review re-entry: ${branchName} has no commits past ${integrationBranch} and is not merged into it — landed by a fast-forward, or the implementation is gone; nothing was closed". Otherwise run the already-merged check below, then return status IMPLEMENTED with base and head (or ALREADY_MERGED).`
+     : `If BOTH exist (a restart re-dispatching this task): reuse them as they are (do not delete, recreate, or re-run \`git worktree add\`), and read \`git status\` and \`git log\` there: an earlier attempt's committed or uncommitted work is where you continue from, not something to redo; find the base: \`git log --first-parent --grep='^stack: ' -n 1 --format=%H ${branchName}\` — if it prints a commit, that is base and report stacked true; otherwise base is \`git merge-base ${integrationBranch} ${branchName}\` (run in ${worktree}).`
+   const reentryNote = reentry ? ` This is a review re-entry: the task was implemented in an earlier attempt and its review bead is open, so the worktree and branch are expected to exist.` : ''
+   return `The task worktree is ${worktree} and the task branch is \`${branchName}\` — use both verbatim; ${worktree} is an absolute path when the integration worktree is one, otherwise relative to the REPOSITORY ROOT, never to your own working directory.${reentryNote}${recutStep} Check whether ${worktree} and the branch \`${branchName}\` already exist (\`git worktree list\`, \`git branch --list ${branchName}\`). ${neither} ${both} ALREADY-MERGED CHECK, on a reused branch and before a fresh cut: run \`bash ${codeSkill}/scripts/already-merged ${integrationBranch} ${branchName}\`; if it prints true, return status ALREADY_MERGED with base and nothing else. BRIEF: run \`bash ${sddScripts}/task-brief ${planPath} ${n} ${briefFile}\` in ${worktree} (the third argument is the output file; keep it); if it reports "task not found", return status SETUP_FAILED with that as \`finding\`. TOOLCHAIN PROVENANCE, after cutting a FRESH worktree: run the project's setup step in it if it has one (the same install/sync the integration worktree was set up with), then check that the test runner and the package under test both resolve INSIDE ${worktree} (e.g. \`which <runner>\` and the interpreter's import path for the package); if either resolves elsewhere, rebuild the local environment; if it still resolves elsewhere, return status SETUP_FAILED with \`finding\` naming what resolved where. Report base on every return.`
+ }
+diff --git a/skills/super-code/scripts/remove-task-worktree b/skills/super-code/scripts/remove-task-worktree
+index 0d9db133..57e75d49 100644
+--- a/skills/super-code/scripts/remove-task-worktree
++++ b/skills/super-code/scripts/remove-task-worktree
+@@ -40,31 +40,48 @@ sweep_verified=
+ exclude_tmp() {  # task temp state lives in <worktree>/.tmp/; it must never read as uncommitted work
+   local ex; ex="$(git -C "$1" rev-parse --git-common-dir)/info/exclude"
+   mkdir -p "$(dirname "$ex")"
+   grep -qx '/.tmp/' "$ex" 2>/dev/null || echo '/.tmp/' >> "$ex"
+ }
+ 
+ integ_dir() {  # the worktree that has $1 checked out, so `git branch -d` judges merged-ness against it
+   git worktree list --porcelain | awk -v b="branch refs/heads/$1" '/^worktree /{w=substr($0,10)} $0==b{print w; exit}'
+ }
+ 
++discard_branch() {
++  local branch=$1 listed
++  if ! listed=$(git branch --list "$branch" 2>/dev/null); then
++    echo "unknown: $branch — git branch inspection failed"
++    echo "kept: $branch — branch cleanup unverified"
++    return 4
++  fi
++  [ -n "$listed" ] || return 0  # Successful inspection proved it already absent.
++  if git branch -D "$branch" >/dev/null 2>&1; then echo "deleted: $branch"; return 0; fi
++  echo "kept: $branch — git branch -D refused"
++  return 3
++}
++
+ remove_one() {  # $1 mode (default|keep-branch|discard) $2 worktree $3 branch $4 integration
+   local mode=$1 wt=$2 br=$3 integ=${4:-}
+   if [ ! -d "$wt" ]; then
+     if [ "$mode" = discard ]; then
+       local status=0
+       if [ -n "$tmp" ]; then stop_processes "$wt" "$tmp" || status=$?
+       else stop_processes "$wt" || status=$?; fi
+       [ "$status" = 0 ] || return "$status"
+-      git worktree prune
+-      git branch -D "$br" >/dev/null 2>&1 && echo "deleted: $br" || true
+-      return 0
++      if ! git worktree prune; then
++        echo "unknown: $wt — git worktree prune failed"
++        echo "kept: $br — worktree cleanup unverified"
++        return 4
++      fi
++      discard_branch "$br"
++      return $?
+     fi
+     echo "kept: $wt — not a directory (already removed?)"; return 3
+   fi
+   wt=$(cd "$wt" && pwd -P)
+   case "$(pwd -P)/" in "$wt"/*) cd "$(git -C "$wt" rev-parse --git-common-dir)/.." ;; esac
+   exclude_tmp "$wt"
+   if [ "$mode" != discard ]; then
+     if [ -n "$(git -C "$wt" status --porcelain 2>/dev/null)" ]; then
+       echo "kept: $wt — uncommitted or untracked changes"; return 3
+     fi
+@@ -72,23 +89,28 @@ remove_one() {  # $1 mode (default|keep-branch|discard) $2 worktree $3 branch $4
+       echo "kept: $wt — $br is not merged into $integ"; return 3
+     fi
+   fi
+   if [ -z "$sweep_verified" ]; then
+     local status=0
+     if [ -n "$tmp" ]; then stop_processes "$wt" "$tmp" || status=$?
+     else stop_processes "$wt" || status=$?; fi
+     [ "$status" = 0 ] || return "$status"
+   fi
+   if [ "$mode" = discard ]; then
+-    git worktree remove --force "$wt" && echo "removed: $wt"
+-    git branch -D "$br" >/dev/null 2>&1 && echo "deleted: $br" || true
+-    return 0
++    if ! git worktree remove --force "$wt"; then
++      echo "kept: $wt — git worktree remove refused"
++      echo "kept: $br — worktree removal incomplete"
++      return 3
++    fi
++    echo "removed: $wt"
++    discard_branch "$br"
++    return $?
+   fi
+   if ! git worktree remove "$wt" 2>/dev/null; then
+     echo "kept: $wt — git worktree remove refused"; return 3
+   fi
+   echo "removed: $wt"
+   [ "$mode" = keep-branch ] && return 0
+   local idir; idir=$(integ_dir "$integ")
+   if [ -n "$idir" ] && git -C "$idir" branch -d "$br" >/dev/null 2>&1; then echo "deleted: $br"; else echo "kept: $br — git branch -d refused"; return 3; fi
+ }
+ 
+diff --git a/skills/super-code/scripts/run-digest b/skills/super-code/scripts/run-digest
+index ce8ab8c9..ce2d0bfd 100755
+--- a/skills/super-code/scripts/run-digest
++++ b/skills/super-code/scripts/run-digest
+@@ -96,29 +96,33 @@ build_state() {
+     ' "$T/ledger"; then ledger_unavailable="invalid transport"; fi
+     if [ -n "$ledger_unavailable" ]; then ok_ledger=0; fi
+   fi
+ 
+   # Ledger: counts and the tail.
+   local ledger_counts tail_lines=() ntail=0 line
+   if [ -z "$ledger" ]; then
+     ledger_counts="ledger: none yet"
+   elif [ "$ok_ledger" = 1 ]; then
+     ledger_counts=$({ grep -v '^# ledger-digest:' "$T/ledger" || true; } | awk '
++      /^Merge: [^ ]+ — / && $0 !~ / → / { merged[$2] = 1 }
+       match($0, /^Task [^ ]+ \([^)]+\): /) {
+         id = $0; sub(/^Task [^ ]+ \(/, "", id); sub(/\).*$/, "", id)
+         st = $0; sub(/^Task [^ ]+ \([^)]+\): /, "", st)
+-        if (st ~ /^(complete|landed)/) s = "L"; else if (st ~ /^BLOCKED/) s = "B"
++        if (st ~ /^complete/ && st ~ /verification-only/) s = "V"
++        else if (st ~ /^(complete|landed)/) { s = "L"; merged[id] = 1 }
++        else if (st ~ /^BLOCKED/) s = "B"
+         else if (st ~ /^pending retry/) s = "P"; else if (st ~ /^cancelled/) s = "C"; else next
+         state[id] = s
+       }
+-      END { for (i in state) c[state[i]]++
+-        printf "ledger: landed %d · failed/BLOCKED %d · pending retry %d · cancelled %d", c["L"], c["B"], c["P"], c["C"] }')
++      END { for (i in state) { c[state[i]]++; if (state[i] == "V" && merged[i]) c["L"]++ }
++        printf "ledger: landed %d · failed/BLOCKED %d · pending retry %d · cancelled %d", c["L"], c["B"], c["P"], c["C"]
++        if (c["V"]) printf " · verification-only %d", c["V"] }')
+     while IFS= read -r line; do tail_lines[${#tail_lines[@]}]=$line; done < <({ grep -v '^# ledger-digest:' "$T/ledger" || true; } | tail -n 15)
+     ntail=${#tail_lines[@]}
+   elif [ -n "$ledger_unavailable" ]; then
+     ledger_counts="ledger: unknown — $ledger_unavailable"
+   else
+     ledger_counts="ledger: unknown"
+   fi
+ 
+   # Open beads.
+   local beads_line_kind beads_total=0 ids=() nids=0
+diff --git a/skills/super-code/scripts/run-profile.mjs b/skills/super-code/scripts/run-profile.mjs
+index 3ed891e9..f4779727 100644
+--- a/skills/super-code/scripts/run-profile.mjs
++++ b/skills/super-code/scripts/run-profile.mjs
+@@ -705,35 +705,40 @@ function discoverOrdinary(projects, epic) {
+   const idx = codexIndex()
+   const parents = new Set(idx.map(e => e.parent).filter(Boolean))
+   const codex = [...new Set(idx.filter(e => !e.sub && parents.has(e.id)).filter(e => { try { return readFileSync(e.file, 'utf8').includes(marker) } catch { return false } }).map(e => e.id))]
+   return { subagents, codex }
+ }
+ // The ledger's outcomes: a bead landed on a success `Merge:` line (no ` → blocker|auth-refused|held`)
+ // or a `Task … complete` line, and is blocked on `Task … BLOCKED`.
+ function readLedger(file) {
+   let text
+   try { text = readFileSync(file, 'utf8') } catch { return null }
+-  const landed = new Set(), blocked = new Set(), ids = new Set()
++  const landed = new Set(), verified = new Set(), blocked = new Set(), ids = new Set(), latestStatus = new Map()
+   let epic = null, concurrency = null, earlyUnblock = false
+   for (const line of text.split('\n')) {
+     let m
+     if ((m = /^Launch: mechanism \S+ · epic (\S+)/.exec(line))) {
+       epic = m[1]
+       concurrency = Number(/ · concurrency (\d+)/.exec(line)?.[1]) || concurrency
+       earlyUnblock = / · earlyUnblock on\b/.test(line)
+     }
+     else if ((m = /^# SDD ledger — plan: \S*?([^/\s]+)-plan\.md/.exec(line))) epic ??= m[1]
+     else if ((m = /^Merge: (\S+) — (.*)$/.exec(line))) { ids.add(m[1]); if (!/\s→\s/.test(m[2])) landed.add(m[1]) }
+-    else if ((m = /^Task \d+ \(([^)]+)\): (complete|BLOCKED)\b/.exec(line))) { ids.add(m[1]); (m[2] === 'complete' ? landed : blocked).add(m[1]) }
++    else if ((m = /^Task \d+ \(([^)]+)\): (complete|BLOCKED)\b/.exec(line))) {
++      ids.add(m[1])
++      const status = m[2] === 'BLOCKED' ? 'BLOCKED' : /\bverification-only\b/.test(line) ? 'VERIFIED' : 'IMPLEMENTED'
++      ;(status === 'BLOCKED' ? blocked : status === 'VERIFIED' ? verified : landed).add(m[1])
++      latestStatus.set(m[1], status)
++    }
+     else if ((m = /^Task \d+ \(([^)]+)\):/.exec(line))) ids.add(m[1])
+   }
+-  return { file, epic, concurrency, earlyUnblock, landed, blocked, ids }
++  return { file, epic, concurrency, earlyUnblock, landed, verified, blocked, ids, latestStatus }
+ }
+ function bdDump(cwd) {
+   if (!cwd || !isDir(cwd)) return null
+   try { return JSON.parse(execFileSync('bd', ['list', '--all', '--json', '--limit', '0'], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 60000, maxBuffer: 1 << 28 })) } catch { return null }
+ }
+ // The epic's leaves and their in-tree blockers, as tree-deps defines them but over every status (the
+ // run is over, so most are closed): in-tree by parent links, not epics, not blocker or review beads.
+ function bdLeaves(dump, epic) {
+   const byId = new Map(dump.filter(b => b?.id).map(b => [b.id, b]))
+   const parents = b => [...(b.dependencies ?? []).filter(d => d.type === 'parent-child').map(d => d.depends_on_id), ...(b.parent ? [b.parent] : [])]
+@@ -985,22 +990,22 @@ if (ordinary.length) {
+         while (i < opens.length && opens[i].start < stop) i++
+       }
+     }
+   }
+   if (ledger) {
+     const all = ordinary.flatMap(r => [...r.agents.values()]).filter(a => a.bead && a.start !== undefined).sort((x, y) => x.start - y.start)
+     for (const id of new Set(all.map(a => a.bead))) {
+       const as = all.filter(a => a.bead === id), merges = as.filter(a => a.kind === 'merge'), impls = as.filter(a => a.kind === 'impl')
+       const ok = ledger.landed.has(id)
+       merges.forEach((a, i) => { a.result = { merged: ok && i === merges.length - 1 } })
+-      if (impls.length) impls.at(-1).result = { status: ok ? 'IMPLEMENTED' : ledger.blocked.has(id) ? 'BLOCKED' : null }
+-      if (ok && !merges.length) {
++      if (impls.length) impls.at(-1).result = { status: ledger.latestStatus.get(id) ?? (ok ? 'IMPLEMENTED' : null) }
++      if (ok && !merges.length && ledger.latestStatus.get(id) !== 'VERIFIED') {
+         // Landed, but no merge in the coordinator's log: a zero-length landing where its chain ended.
+         const last = latest(as), r = ordinary.find(x => x.runId === last.run)
+         const m = { id: `${r.runId}:merge:${id}:end`, run: r.runId, label: `merge:${id}`, synthetic: true, mapped: true, start: last.end, end: last.end, dur: 0, toolMs: 0, byCat: {}, calls: [], result: { merged: true } }
+         Object.assign(m, parseLabel(m.label)); m.stage = 'merge'
+         r.agents.set(m.id, m)
+         noLaneTiming++
+       }
+     }
+   }
+ }
+@@ -1154,42 +1159,53 @@ for (const b of beads.values()) {
+     a.attempt = cur
+   }
+   for (const at of b.attempts) {
+     const by = st => at.agents.filter(a => a.stage === st)
+     const head = at.agents[0]
+     at.start = head.start
+     at.run = head.run
+     const implHead = at.agents.find(a => a.kind === 'impl')
+     at.status = implHead ? (implHead.result?.status ?? (implHead.failed ? 'FAILED' : null)) : null
+     at.impl = by('implement'); at.review = by('review'); at.fix = by('fix'); at.lane = at.agents.filter(a => LANE.has(a.stage))
++    // Workflow verification uses the existing close-only label. Its CLOSED result
++    // settles tracker bookkeeping, not a previously merged branch.
++    at.verificationOnly = implHead?.result?.completionKind === 'verification-only'
++      || at.agents.some(a => a.result?.completionKind === 'verification-only')
++    at.verificationCompleted = at.status === 'VERIFIED' || (at.verificationOnly
++      && at.review.some(a => a.result?.status === 'CLEAN' && a.result?.completionKind === 'verification-only')
++      && at.agents.some(a => a.kind === 'close-only' && a.result?.status === 'CLOSED'))
++    if (at.verificationOnly && at.status === 'IMPLEMENTED') at.status = at.verificationCompleted ? 'VERIFIED' : 'VERIFICATION_PENDING'
+     at.split = by('split')[0] ?? null
+     at.blocker = by('blocker')
+     // The slot is held to the chain's end before integration; a failed merge's blocker path takes one
+     // again after the lane turn.
+     const laneStart = at.lane.length ? at.lane[0].start : Infinity
+     const inSlot = at.agents.filter(a => IN_SLOT.has(a.stage))
+     at.chainEndAgent = latest(inSlot.filter(a => a.end <= laneStart + EPS))
+     at.afterLane = inSlot.filter(a => a.start >= laneStart)
+     // Usable by dependents (early unblock): the end of an implementation that committed.
+     at.implEndAgent = at.status === 'IMPLEMENTED' || (!hasJournal(head.run) && at.impl.length) ? latest(at.impl) : null
+     // The landing: the last merge that reported merged (no journal: the last merge), or a close-only
+     // step that confirmed the branch had already merged.
+     const merges = at.agents.filter(a => a.kind === 'merge')
+     at.landing = merges.filter(a => a.result?.merged === true).at(-1)
+       ?? (merges.length && !hasJournal(merges.at(-1).run) ? merges.at(-1) : null)
+-      ?? at.agents.filter(a => a.kind === 'close-only' && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null
++      ?? at.agents.filter(a => !at.verificationOnly && a.kind === 'close-only' && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null
+   }
+   // The landing is the real merge. A later close-only of an already-merged branch (its bead close was
+   // lost) is bookkeeping, counted apart as a re-entry close.
+   b.final = b.attempts.filter(at => at.landing?.kind === 'merge').at(-1) ?? b.attempts.filter(at => at.landing).at(-1) ?? b.attempts.at(-1)
+   b.reentryCloses = b.attempts.filter(at => at.start > b.final.start && at.landing && at.landing.kind !== 'merge')
+-  b.landed = !!b.final.landing
++  // A prior ledger landing remains a fact even when this invocation only verifies it.
++  // Without a timed merge, do not place that old landing at the verification chain end.
++  b.landed = !!b.final.landing || !!ledger?.landed.has(b.id)
++  b.verificationOnlyCompleted = !!ledger?.verified.has(b.id) || b.attempts.some(at => at.verificationCompleted)
+ }
+ const landingOf = id => beads.get(id)?.final?.landing ?? null
+ const landedBy = (d, t) => beads.get(d)?.attempts.map(at => at.landing).filter(x => x && x.end <= t + EPS).at(-1) ?? null
+ const implementedBy = (d, t) => beads.get(d)?.attempts.map(at => at.implEndAgent).filter(x => x && x.end <= t + EPS).at(-1) ?? null
+ // The earliest event that let dependents use bead d, as of time t: its implementation under early
+ // unblock, else its merge.
+ const usableBy = (d, t) => (earlyUnblock && implementedBy(d, t)) || landedBy(d, t)
+ 
+ // ---- slots and ready queries, for explaining waits ----
+ const hotFileCap = Math.max(1, Number(cfg.hotFileCap) || 3)
+@@ -1275,21 +1291,23 @@ for (const b of beads.values()) {
+   const laneStart = at.lane.length ? at.lane[0].start : null
+   b.laneStart = laneStart
+   b.stackWaitMs = laneStart !== null ? Math.max(0, b.enqueueAt - chainEnd) : 0
+   b.queueWaitMs = laneStart !== null ? Math.max(0, laneStart - b.enqueueAt) : 0
+   b.landedAt = at.landing ? at.landing.end : null
+   b.laneMs = laneStart !== null && b.landedAt !== null ? b.landedAt - laneStart : dur(at.lane)
+   b.seamMs = dur(at.lane.filter(a => a.stage === 'seam'))
+   const first = at.lane[0]?.result
+   b.firstTryMerged = first && typeof first.merged === 'boolean' ? first.merged : null
+ }
+-const landed = [...beads.values()].filter(b => b.landed)
++const verificationCompleted = new Set([...(ledger?.verified ?? []), ...[...beads.values()].filter(b => b.verificationOnlyCompleted).map(b => b.id)])
++const knownLandings = [...beads.values()].filter(b => b.landed)
++const landed = knownLandings.filter(b => b.final.landing) // Only timed landings enter the model.
+ const lastLanding = latest(landed.map(b => b.final.landing))
+ const runEnd = Math.max(...timed.map(a => a.end))
+ // With nothing landed, the task graph ends at its last task step.
+ const lastTaskStep = lastLanding ?? latest(timed.filter(a => a.bead && a.stage !== 'ledger')) ?? latest(timed)
+ const graphEnd = lastTaskStep.end
+ const actualGraphMs = graphEnd - windowStart
+ const modelWindow = lastLanding ? 'first dispatch to last landing' : 'first dispatch to last task step'
+ 
+ // ---- merge lane, runtime slots, conflict files ----
+ const laneAgents = timed.filter(a => LANE.has(a.stage))
+@@ -1625,21 +1643,21 @@ else if (simInput.size) {
+   sim = s
+ }
+ 
+ // ---- report ----
+ const lines = []
+ let testTotals = null, slowTests = []
+ const afterMs = Math.max(0, runEnd - graphEnd)
+ const diagnosis = { planningMs: byCat.planning ?? 0, windowMs: actualGraphMs,
+   dominant: (byCat.planning ?? 0) > actualGraphMs / 2 ? 'planning' : 'task graph' }
+ const catText = (obj, order = CAT_ORDER) => [...order, ...Object.keys(obj).filter(k => !order.includes(k)).sort()].filter(k => obj[k] >= 1000).map(k => `${k} ${fmtDur(obj[k])}`).join(' · ')
+-lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched ${beads.size}, landed ${landed.length}, planned ${rows.size}`)
++lines.push(`Profile: ${epic ?? '(epic unknown)'} · ${invocations.length} invocation${invocations.length === 1 ? '' : 's'} · ${fmtTime(windowStart)} → ${fmtTime(runEnd)} · wall ${fmtDur(runEnd - windowStart)} (task graph ${fmtDur(actualGraphMs)}${afterMs ? `, after the last landing ${fmtDur(afterMs)}` : ''}) · agents ${realAgents.length} (timed ${realAgents.filter(a => a.start !== undefined).length}) · beads dispatched ${beads.size}, landed ${knownLandings.length}, planned ${rows.size}${verificationCompleted.size ? ` · verification-only ${verificationCompleted.size}` : ''}`)
+ const fan = shape.fanOut[0]
+ lines.push('Profile: graph scope — observed invocation/residual graph; historical topology is unknown')
+ lines.push(`Profile: shape — ${shape.beads} beads · ${shape.edges} edges · depth ${shape.depth} · width ${shape.width} · beads per level ${shape.levels.join('/') || '-'}${fan ? ` · widest fan-out ${fan.id} (${fan.direct} direct, ${fan.transitive} transitive dependents)` : ''}${cuts.length ? ` · ${cuts.length} edge cut(s) applied mid-run` : ''}`)
+ if (sim?.failed) lines.push(`Profile: bound — model failed: the planner rows hold a dependency cycle or an edge nothing satisfies${shape.cycles.length ? ` (${shape.cycles.slice(0, 3).join(', ')})` : ''}`)
+ else if (!sim) lines.push(`Profile: bound — no model: ${!rows.size ? (ordinary.length ? 'no dependency graph' : 'no planner rows, so the graph is unknown') : 'nothing landed'}`)
+ else {
+   const above = sim.asRunMs - sim.lowerBoundMs
+   const lanesGain = sim.asRunMs - sim.unlimitedLanesMs, slotsGain = sim.asRunMs - sim.unlimitedSlotsMs
+   const ch = sim.graphChain
+   sim.verdict = diagnosis.dominant === 'planning' ? 'planning-bound' : above <= Math.max(60000, 0.1 * sim.asRunMs) ? (ch.length <= 1 ? 'bead-bound' : 'graph-bound') : lanesGain >= slotsGain ? 'merge-lane-bound' : 'slot-bound'
+@@ -1697,21 +1715,21 @@ if (bottleneck) {
+     const withDeps = landed.filter(b => b.deps.length)
+     const stacked = withDeps.filter(b => b.stackParents.length).length
+     const bounced = withDeps.filter(b => b.waitCause === 'stack-conflict').length
+     const waited = withDeps.filter(b => b.waitCause === 'waited-for-merge').length
+     lines.push(`Profile: early unblock — ${withDeps.length} landed beads had in-run blockers · stacked on an implementation ${stacked} · bounced on a stack conflict then waited for the merge ${bounced} (${fmtDur(sum(withDeps.filter(b => b.waitCause === 'stack-conflict').map(b => b.waitMs)))}) · waited for a merge without one ${waited}`)
+   }
+ }
+ {
+   // Time in attempts that did not land: earlier attempts of landed beads, and beads that never landed.
+   const lost = [...beads.values()].map(b => {
+-    const atts = b.attempts.filter(x => (x !== b.final || !b.landed) && !b.reentryCloses.includes(x))
++    const atts = b.attempts.filter(x => (x !== b.final || !b.landed) && !b.reentryCloses.includes(x) && x.status !== 'VERIFIED')
+     return { id: b.id, ms: sum(atts.map(x => sum(x.agents.filter(a => a.stage !== 'ledger').map(a => a.dur)))), how: atts.map(x => x.status ?? '?').join(', '), landed: b.landed }
+   }).filter(x => x.ms >= 1000).sort((x, y) => y.ms - x.ms)
+   const closes = [...beads.values()].filter(b => b.reentryCloses.length)
+   const closeText = closes.length ? ` · ${closes.length} merged bead(s) re-dispatched only to close (a lost bead close), ${fmtDur(sum(closes.map(b => b.reentryCloses[0].start - b.final.landing.end)))} after their merge` : ''
+   if (lost.length || closes.length) lines.push(`Profile: rework — ${fmtDur(sum(lost.map(x => x.ms)))} of dispatch time in attempts that did not land${lost.length ? ' — ' + lost.slice(0, 3).map(x => `${x.id} ${fmtDur(x.ms)} (${x.how}${x.landed ? '; landed later' : '; never landed'})`).join(' · ') : ''}${lost.length > 3 ? ` · ${lost.length - 3} more` : ''}${closeText}`)
+ }
+ {
+   // Test time across every implementer and fixer (summed: they run at the same time).
+   const coders = timed.filter(a => a.kind === 'impl' || a.kind === 'commit-nudge' || a.kind === 'fix')
+   const busy = sum(coders.map(a => a.dur))
+@@ -1741,20 +1759,21 @@ lines.push(`Profile: runtime — peak ${runtime.peak} agents at once${runtimeSlo
+ lines.push(`Profile: concurrency scope — all-agent concurrency peak ${runtime.peak} · task-slot concurrency peak ${taskSlots.peak}, cap ${Number.isFinite(cap) ? cap : 'unknown'} (ordinary chains retain a slot through merge)`)
+ for (const w of sim?.whatIfs.slice(0, 6) ?? []) lines.push(`Profile: what-if estimate — ${w.target} → ${fmtDur(w.ms)} (−${fmtDur(w.savingMs)}, ${pct(w.savingMs, sim.asRunMs)}%) — ${w.note}; ${modelWindow}, planning retained`)
+ if (sim && !sim.failed && !sim.whatIfs.length) lines.push(`Profile: what-if estimate — none saves more than 1% of the modelled ${fmtDur(sim.asRunMs)}; ${modelWindow}, planning retained`)
+ const unmeasured = []
+ const unknownReady = [...beads.values()].filter(b => b.readyAt === null)
+ if (unknownReady.length) unmeasured.push(`availability/readiness timing unknown for ${unknownReady.length} bead(s): waits unmeasured; schedule estimates retain dispatch as the release boundary`)
+ if (untimed.length) unmeasured.push(`${untimed.length} agent(s) without a transcript (cached on resume, or cleaned up)`)
+ const noJournal = invocations.filter(v => !v.journal && v.source === 'workflow')
+ if (noJournal.length) unmeasured.push(`${noJournal.length} invocation(s) without journal.jsonl: no planner graph or merge results there`)
+ if (ordinary.length && !ledger) unmeasured.push('no ledger (--ledger): outcomes not read, so every merge the coordinator ran counts as landed')
++if (knownLandings.length > landed.length) unmeasured.push(`${knownLandings.length - landed.length} ledger-recorded landing(s) without timing; retained as facts, excluded from the schedule model`)
+ if (noLaneTiming) unmeasured.push(`${noLaneTiming} landed bead(s) with no merge in the coordinator's log: lane time 0`)
+ if (runLevel?.unmapped) unmeasured.push(`${runLevel.unmapped} dispatch(es) not named for a bead of ${epic}, in the run-level lines only (${RULE})`)
+ if (!rows.size) unmeasured.push(ordinary.length ? 'no dependency graph (bd gave none; pass --beads): dependency waits and what-ifs are missing' : 'no planner rows: the graph is unknown, so dependency waits and what-ifs are missing')
+ if (skippedDry.length) unmeasured.push(`${skippedDry.length} dryRun invocation(s) skipped`)
+ if (!launch) unmeasured.push(`no Launch: line: cap ${Number.isFinite(cap) ? cap : 'unknown'}, early unblock assumed on`)
+ if (shape.cycles.length) unmeasured.push(`dependency cycle(s) in the planner rows, skipped for the shape: ${shape.cycles.slice(0, 3).join(', ')}`)
+ if (sim?.fit && (sim.fit < 0.75 || sim.fit > 1.25)) unmeasured.push(`the schedule model is ${Math.round(100 * sim.fit)}% of actual, so the what-ifs are rough`)
+ const notLanded = [...beads.values()].filter(b => !b.landed)
+ if (notLanded.length) unmeasured.push(`${notLanded.length} dispatched bead(s) did not land (not in the model): ${notLanded.slice(0, 5).map(b => b.id).join(', ')}${notLanded.length > 5 ? ', …' : ''}`)
+ const ctxRes = contextResult(runs); lines.push(...ctxRes.lines); unmeasured.push(...ctxRes.reasons)
+@@ -1764,38 +1783,38 @@ console.log(lines.join('\n'))
+ if (opt.out) {
+   const T = t => (t === null || t === undefined || !Number.isFinite(t)) ? null : new Date(t).toISOString()
+   const off = t => (t === null || t === undefined) ? '' : `+${fmtDur(t - windowStart)}`
+   const beadRows = [...beads.values()].sort((a, b) => a.dispatchedAt - b.dispatchedAt)
+   const json = {
+     version: 1, epic, cap: Number.isFinite(cap) ? cap : null, earlyUnblock, runtimeSlots,
+     invocations: invocations.map(v => ({ runId: v.runId, dir: v.dir, source: v.source, start: T(v.start), end: T(v.end), agents: v.agents, timed: v.timed, journal: v.journal })),
+     window: { start: T(windowStart), lastLanding: T(lastLanding?.end), end: T(runEnd), graphMs: actualGraphMs, wallMs: runEnd - windowStart },
+     graphScope: 'observed invocation/residual graph', diagnosis,
+     shape, cuts: cuts.map(c => ({ dependent: c.dependent, blocker: c.blocker, kind: c.kind, at: T(c.at) })),
+-    beads: beadRows.map(b => ({ id: b.id, n: b.n ?? null, deps: b.deps, dependents: [...(dependentsOf.get(b.id) ?? [])], attempts: b.attempts.map(x => x.status), landed: b.landed,
++    beads: beadRows.map(b => ({ id: b.id, n: b.n ?? null, deps: b.deps, dependents: [...(dependentsOf.get(b.id) ?? [])], attempts: b.attempts.map(x => x.status), landed: b.landed, verificationOnlyCompleted: b.verificationOnlyCompleted,
+       createdAt: T(b.createdAt), mappingReadyAt: T(b.mappingReadyAt), dependencyReadyAt: T(b.dependencyReadyAt),
+       readyAt: T(b.readyAt), dispatchedAt: T(b.dispatchedAt), landedAt: T(b.landedAt), waitMs: b.waitMs, waitCause: b.waitCause, carriedMs: b.carriedMs,
+       implMs: b.implMs, implByTool: b.implByCat, implToolMs: b.implToolMs, reviewMs: b.reviewMs, fixMs: b.fixMs, stackWaitMs: b.stackWaitMs,
+       queueWaitMs: b.queueWaitMs, laneMs: b.laneMs, seamMs: b.seamMs, blockerMs: b.blockerMs, reworkMs: b.reworkMs, criticalMs: b.criticalMs,
+       stackParents: b.stackParents, lateEdges: [...b.lateEdges] })),
+     criticalPath: { ms: pathMs, byCategory: byCat, laneContentionMs, redo, segments: segments.map(s => ({ kind: s.kind, bead: s.bead, label: s.label, via: s.why ?? null, start: T(s.start), ms: s.ms })) },
+     bottleneck: bottleneck ? { bead: bottleneck[0], ms: bottleneck[1].total, share: pathMs ? bottleneck[1].total / pathMs : 0, byCategory: bottleneck[1].byCat,
+       implByTool: beads.get(bottleneck[0]).implByCat, calls: beads.get(bottleneck[0]).final.impl.flatMap(a => a.calls ?? []).sort((x, y) => y.ms - x.ms).slice(0, 10) } : null,
+     lane, runtime, taskSlots, concurrency: runLevel?.json ?? null, tests: testTotals, slowTests, conflicts: hotConflicts.slice(0, 20), simulation: sim, unmeasured, context: contextJson(ctxRes.summary), summary: lines,
+   }
+   writeFileSync(`${opt.out}.json`, JSON.stringify(json, null, 2) + '\n')
+   const md = [`# Run profile — ${epic ?? 'unknown epic'}`, '', '```', ...lines, '```', '']
+   md.push('## Per bead', '', 'Offsets are from the run\'s first dispatch. `wait` starts at evidenced creation/mapping/dependency availability, bounded by invocation start; unknown readiness means unknown wait. Creation, mapping and dependency timestamps stay distinct in JSON. `stack` waits for parents to merge; `queue` waits for the single merge lane; `lane` is its lane turn (merge plus seam work).', '')
+   md.push('| bead | deps | dependents | attempts | wait (cause) | implement | of it: tools | review | fix | stack | queue | lane (seam) | landed | critical |', '|---|---|---|---|---|---|---|---|---|---|---|---|---|---|')
+   for (const b of beadRows) {
+     const tools = catText(b.implByCat, TOOL_ORDER)
+-    md.push(`| ${b.id} | ${b.deps.length} | ${dependentsOf.get(b.id)?.size ?? 0} | ${b.attempts.map(x => x.status ?? '?').join(', ')} | ${b.waitMs === null ? 'unknown' : b.waitCause === 'none' ? '-' : `${fmtDur(b.waitMs)} (${b.waitCause})`} | ${fmtDur(b.implMs)} | ${tools || '-'} | ${fmtDur(b.reviewMs)} | ${b.fixMs ? fmtDur(b.fixMs) : '-'} | ${b.stackWaitMs ? fmtDur(b.stackWaitMs) : '-'} | ${b.queueWaitMs ? fmtDur(b.queueWaitMs) : '-'} | ${b.laneMs ? `${fmtDur(b.laneMs)}${b.seamMs ? ` (${fmtDur(b.seamMs)})` : ''}` : '-'} | ${b.landed ? off(b.landedAt) : 'not landed'} | ${b.criticalMs ? fmtDur(b.criticalMs) : ''} |`)
++    md.push(`| ${b.id} | ${b.deps.length} | ${dependentsOf.get(b.id)?.size ?? 0} | ${b.attempts.map(x => x.status ?? '?').join(', ')} | ${b.waitMs === null ? 'unknown' : b.waitCause === 'none' ? '-' : `${fmtDur(b.waitMs)} (${b.waitCause})`} | ${fmtDur(b.implMs)} | ${tools || '-'} | ${fmtDur(b.reviewMs)} | ${b.fixMs ? fmtDur(b.fixMs) : '-'} | ${b.stackWaitMs ? fmtDur(b.stackWaitMs) : '-'} | ${b.queueWaitMs ? fmtDur(b.queueWaitMs) : '-'} | ${b.laneMs ? `${fmtDur(b.laneMs)}${b.seamMs ? ` (${fmtDur(b.seamMs)})` : ''}` : '-'} | ${b.landed ? (b.landedAt === null ? 'recorded; timing unknown' : off(b.landedAt)) : 'not landed'} | ${b.criticalMs ? fmtDur(b.criticalMs) : ''} |`)
+   }
+   md.push('', '## Critical path, step by step', '', '| at | step | kind | via | duration |', '|---|---|---|---|---|')
+   for (const s of segments) md.push(`| ${off(s.start)} | ${s.label} | ${s.kind} | ${s.why ?? ''} | ${fmtDur(s.ms)} |`)
+   if (json.bottleneck?.calls.length) {
+     md.push('', `## Longest tool calls in the bottleneck's implement (${json.bottleneck.bead})`, '', '| tool | category | what | duration |', '|---|---|---|---|')
+     for (const x of json.bottleneck.calls) md.push(`| ${x.name} | ${x.cat} | ${(x.what || '').replace(/\|/g, '\\|')} | ${fmtDur(x.ms)} |`)
+   }
+   if (hotConflicts.length) {
+     md.push('', '## Conflict files', '', 'Files named in stack-conflict findings and in merges\' seam overlaps, with how many planned beads declared them.', '', '| file | stack conflicts | seam overlaps | declared by |', '|---|---|---|---|')
+     for (const c of hotConflicts.slice(0, 15)) md.push(`| ${c.file} | ${c.stackConflicts} | ${c.seamOverlaps} | ${c.declaredBy} |`)
+diff --git a/skills/super-code/scripts/stop-run-processes b/skills/super-code/scripts/stop-run-processes
+index 57e6ffc1..afb9d1ec 100644
+--- a/skills/super-code/scripts/stop-run-processes
++++ b/skills/super-code/scripts/stop-run-processes
+@@ -38,22 +38,46 @@ for r in "$@"; do
+   roots+=("$r")
+   if [ -d "$r" ]; then p=$(cd "$r" && pwd -P); [ "$p" = "$r" ] || roots+=("$p"); fi
+ done
+ 
+ contains() {  # $1 root, $2 path: true when path is the root or inside it
+   case "$2" in "$1"|"$1"/*) return 0 ;; esac; return 1
+ }
+ # Refuse a root holding a parent worktree (one with other worktrees nested under it).
+ for r in "${roots[@]}"; do
+   [ -d "$r" ] || continue
+-  wts=$(git -C "$r" worktree list --porcelain 2>/dev/null | sed -n 's/^worktree //p' || true)
+-  [ -n "$wts" ] || continue
++  if inventory=$(git -C "$r" worktree list --porcelain 2>/dev/null); then
++    wts=$(sed -n 's/^worktree //p' <<<"$inventory")
++  else
++    # Git's normal nonrepository diagnostic is the only failed lookup that permits a
++    # temp root. Corrupt metadata can produce that same diagnostic, so exclude it.
++    discovery=0
++    detail=$(LC_ALL=C git -C "$r" rev-parse --git-dir 2>&1) || discovery=$?
++    metadata=0
++    parent=$(cd "$r" && pwd -P)
++    while :; do
++      if [ ! -r "$parent" ] || [ ! -x "$parent" ] || [ -e "$parent/.git" ] || [ -L "$parent/.git" ] || { [ -d "$parent/objects" ] && { [ -e "$parent/HEAD" ] || [ -d "$parent/refs" ]; }; }; then metadata=1; break; fi
++      [ "$parent" != / ] || break
++      parent=$(dirname "$parent")
++    done
++    nonrepository=0
++    case "$detail" in
++      'fatal: not a git repository (or any of the parent directories): .git') nonrepository=1 ;;
++      'fatal: not a git repository (or any parent up to mount point '*)
++        first=${detail%%$'\n'*}
++        if [ "$detail" = "$first"$'\n''Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).' ]; then nonrepository=1; fi ;;
++    esac
++    if [ "$discovery" = 128 ] && [ "$metadata" = 0 ] && [ "$nonrepository" = 1 ]; then continue; fi
++    echo "unknown: $r — git worktree inventory failed"
++    exit 4
++  fi
++  [ -n "$wts" ] || { echo "unknown: $r — git worktree inventory empty"; exit 4; }
+   while IFS= read -r w; do
+     [ -n "$w" ] || continue
+     contains "$r" "$w" || continue
+     nested=$(grep -c "^$w/" <<<"$wts" || true)
+     if [ "$nested" -gt 0 ]; then
+       echo "refusing root $r: it holds worktree $w, which has worktrees nested under it (an epic/integration or main checkout); pass task worktrees, the task-worktree directory or run temp dirs instead" >&2
+       exit 2
+     fi
+   done <<<"$wts"
+ done
+diff --git a/skills/upstream-feedback/report-template.md b/skills/upstream-feedback/report-template.md
+index 7dad720e..4a75fcdb 100644
+--- a/skills/upstream-feedback/report-template.md
++++ b/skills/upstream-feedback/report-template.md
+@@ -21,23 +21,27 @@ Plugin: <version>. Run: <scale — bead count / rounds / duration if known>, <da
+      named in `## Not established`. A missing source never blocks filing. A standalone
+      super-design run (no ledger) renders Fix loop and Merge-back as `none`. -->
+ ### Judge panel
+ <!-- one line per roast report: mode, iteration, independence, seat-agreement line -->
+ ### Fix loop
+ <!-- the `Metrics: completions` line (review clean / after fix pass / parked / re-entry closes)
+      and the `Metrics: fix-pass` line (entered / FIXED / BLOCKED) -->
+ ### Merge-back
+ <!-- the `Metrics: merges` line (including check-fails and how many were fixed) and the
+      `ledger-check` line; count of `Merge:` lines with conflict / seam-review fired /
+-     check fail→fixed / check fail / → blocker; `ledger incomplete: <N> merge commits vs <M>
+-     Merge: lines` when the branch's first-parent merge commits outnumber the success-path
+-     `Merge:` lines -->
++     check fail→fixed / check fail / → blocker. Reconcile distinct task IDs from
++     `already-merged --landed <branch>`, success-path `Merge:`/re-entry records, and
++     reconciled completed IDs. List ledger-only, Git-only and completed-only IDs before
++     proposing a cause. `baseAbsorbed` merges contribute zero task landings; duplicate
++     appearances of one task add no landing. Report verification-only completions separately
++     from task landings. Name unavailable sources separately in `Not established`; a raw
++     first-parent merge count does not establish a ledger gap. -->
+ ### Coverage
+ <!-- the `requirements:` line per coverage round and the `scope-filter:` line per fix round -->
+ ### Timing
+ <!-- per coordinator invocation, the ledger's `Profile:` header, `bound`, `critical path`,
+      `bottleneck`, `waits`, `merge lane` and `what-if` lines (an ordinary-subagent run adds
+      `concurrency`), and its `Profile: context` line and every `Profile: context agent` line
+      (`Profile: context — unavailable — …` when that is what it printed); `Profile: unavailable — …`
+      when that is what the ledger has. What-if lines are a schedule model's estimates, not
+      measurements: quote them with the `bound` line's model-vs-actual figure. Compaction causes
+      (cap, early, idle, manual, unknown) are classified from sizes and gaps, not logged by the
+diff --git a/tests/super-auto/projection-output-r1.sh b/tests/super-auto/projection-output-r1.sh
+index 700d9c3f..1a5eda16 100644
+--- a/tests/super-auto/projection-output-r1.sh
++++ b/tests/super-auto/projection-output-r1.sh
+@@ -106,20 +106,69 @@ class ProjectionOutput(unittest.TestCase):
+         self.assertEqual(result.stderr, b'')
+         self.assertEqual(acceptance['eligible'], not gap)
+         self.assertEqual(acceptance['pending'], [])
+         self.assertEqual(acceptance['nonblockingFindings'], [] if empty else self.refs[2:])
+         if gap:
+             self.assertTrue(any('finding evidence:' in g for g in acceptance['gaps']), acceptance)
+         else:
+             self.assertEqual(acceptance['gaps'], [])
+         print(f'acceptance empty={empty} gap={gap}: {len(acceptance["nonblockingFindings"])} retained refs, exit {result.returncode}')
+ 
++    def large_acceptance(self):
++        # Long source identities exercise the acceptance sink, not only projection output.
++        source = 'independent/' + ('source-identity-' * 45)
++        self.source['source'] = source
++        for ref in self.refs:
++            ref['source'] = source
++
++    def check_acceptance_transport(self, empty=False, gap=False):
++        self.large_acceptance()
++        self.write_run(empty=empty, gap=gap)
++        command = ['bash', str(SCRIPTS / 'report-status'), '--acceptance', str(self.run)]
++        with (self.directory / 'acceptance.json').open('wb') as output:
++            direct = subprocess.run(command, stdout=output, stderr=subprocess.PIPE)
++        piped = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
++        expected = 3 if gap else 0
++        self.assertEqual(direct.returncode, expected, direct.stderr)
++        self.assertEqual(piped.returncode, expected, piped.stderr)
++        self.assertEqual(piped.stderr, b'')
++        regular = (self.directory / 'acceptance.json').read_bytes()
++        if not empty:
++            self.assertGreater(len(regular), 65536)
++        self.assertEqual(piped.stdout, regular, 'acceptance must flush every output byte')
++        result = json.loads(piped.stdout)
++        self.assertEqual(result['eligible'], not gap)
++        self.assertEqual(result['nonblockingFindings'], [] if empty else self.refs[2:])
++        print(f'acceptance transport empty={empty} gap={gap}: {len(regular)} bytes, exit {piped.returncode}')
++
++    def test_large_acceptance_transport(self):
++        self.check_acceptance_transport()
++
++    def test_large_gap_acceptance_transport(self):
++        self.check_acceptance_transport(gap=True)
++
++    def test_small_acceptance_transport(self):
++        self.check_acceptance_transport(empty=True)
++
++    def test_acceptance_closed_pipe(self):
++        self.large_acceptance()
++        self.write_run()
++        before = self.run.read_bytes()
++        command = ['bash', str(SCRIPTS / 'report-status'), '--acceptance', str(self.run)]
++        with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as producer:
++            producer.stdout.close()
++            error = producer.stderr.read()
++            code = producer.wait()
++        self.assertNotEqual(code, 0, 'acceptance output failure cannot report success')
++        self.assertTrue(error, 'acceptance output failure must be observable')
++        self.assertEqual(self.run.read_bytes(), before)
++
+     def test_large_projection_pipe(self):
+         self.check_projection()
+ 
+     def test_large_projection_acceptance_consumer(self):
+         self.check_acceptance()
+ 
+     def test_gap_projection_pipe(self):
+         self.check_projection(gap=True)
+ 
+     def test_gap_projection_acceptance_consumer(self):
+diff --git a/tests/super-code/replay-harness.mjs b/tests/super-code/replay-harness.mjs
+index afd4b924..ccdbacae 100644
+--- a/tests/super-code/replay-harness.mjs
++++ b/tests/super-code/replay-harness.mjs
+@@ -4956,23 +4956,22 @@ esac
+         check(r.code === 0 && !existsSync(wt('t4')) && g(d, 'branch', '--list', 't4').trim() !== '', '--keep-branch removes the worktree and keeps the branch', JSON.stringify(r))
+         check(!existsSync(`${tmpRoot}/t4`) && /^removed: \/tmp\/sp-\S+\/t4$/m.test(r.out), '--tmp: the temp root goes with its worktree', JSON.stringify(r))
+         check(rtw('--tmp', '/etc', wt('t4'), 't4', 'integ').code === 2 && rtw('--tmp', `${tmpRoot}/../x`, wt('t4'), 't4', 'integ').code === 2, '--tmp outside /tmp/sp-<hex> exits 2')
+         r = rtw('--sweep', '--tmp', tmpRoot, path.join(integ, '.worktrees'), 'integ', 't4')
+         check(r.code === 3 && /^deleted: t4$/m.test(r.out) && /kept: .*t2/.test(r.out) && /kept: .*t3/.test(r.out) && existsSync(wt('t2')) && existsSync(wt('t3')), 'the sweep deletes the kept merged branch and keeps the unmerged and the dirty worktrees', JSON.stringify(r))
+         check(existsSync(tmpRoot) && /kept: \/tmp\/sp-\S+ — a worktree or branch above was kept/.test(r.out), '--sweep --tmp keeps the run temp root while anything was kept', JSON.stringify(r))
+         rmSync(path.join(wt('t3'), 'stray.txt')); g(wt('t2'), 'checkout', '-q', '--detach'); rmSync(wt('t2'), { recursive: true, force: true }); g(d, 'worktree', 'prune')
+         r = rtw('--sweep', '--tmp', tmpRoot, path.join(integ, '.worktrees'), 'integ')
+         check(r.code === 0 && !existsSync(tmpRoot) && /^removed: \/tmp\/sp-\S+$/m.test(r.out), '--sweep --tmp removes the run temp root once nothing was kept', JSON.stringify(r))
+         g(d, 'worktree', 'add', '-q', '.worktrees/integ/.worktrees/t2', 't2')
+-        const src = readFileSync(path.join(scriptsDir, 'remove-task-worktree'), 'utf8')
+-        const forced = src.split('\n').filter(l => /--force|branch -D/.test(l) && !/^\s*#/.test(l))
+-        check(forced.length > 0 && forced.every(l => /discard/.test(l) || /git worktree remove --force "\$wt" && echo|git branch -D "\$br"/.test(l)), 'force flags appear only on the --discard path', forced.join(' | '))
++        // Default/discard force boundaries are exercised against real Git in
++        // test-setup-cleanup.sh, including rejected force commands and failed removals.
+         r = rtw('--discard', wt('t2'), 't2')
+         check(r.code === 0 && !existsSync(wt('t2')) && g(d, 'branch', '--list', 't2').trim() === '', '--discard removes an abandoned worktree and branch', JSON.stringify(r))
+         check(rtw(wt('t3'), 't3').code === 2, 'missing argument exits 2')
+         }) } finally { rmSync(tmpRoot, { recursive: true, force: true }); rmSync(d, { recursive: true, force: true }) }
+       }
+ 
+       scenario('scripts: stop-run-processes — matches cwd, executable, HOME/TMPDIR, and arguments only for orphans; no kinship expansion; refuses roots holding a parent worktree or a caller cwd; --check lists without killing')
+       {
+         const d = execFileSync('bash', ['-c', 'cd "$1" && pwd -P', '_', mkdtempSync(path.join(os.tmpdir(), 'srp-'))], { encoding: 'utf8' }).trim()
+         try { await withFixtureProcesses(async own => {
+diff --git a/tests/super-code/test-setup-cleanup.sh b/tests/super-code/test-setup-cleanup.sh
+new file mode 100644
+index 00000000..88aac844
+--- /dev/null
++++ b/tests/super-code/test-setup-cleanup.sh
+@@ -0,0 +1,132 @@
++#!/usr/bin/env bash
++# Exercise the generated setup cleanup command and its real removal helper. Process
++# inspection is isolated to a deterministic stop outcome; Git mutates only this fixture.
++set -euo pipefail
++ROOT=$(cd "$(dirname "$0")/../.." && pwd)
++python3 - "$ROOT" <<'TEST'
++import json, os, pathlib, re, shutil, subprocess, sys, tempfile, unittest
++ROOT=pathlib.Path(sys.argv.pop())
++GIT=shutil.which('git')
++
++class Cleanup(unittest.TestCase):
++    def setUp(self):
++        self.tmp=tempfile.TemporaryDirectory()
++        self.addCleanup(self.tmp.cleanup)
++        self.d=pathlib.Path(self.tmp.name)
++        self.repo=self.d/'repo'; self.repo.mkdir()
++        self.git('init','-q')
++        self.git('config','gc.auto','0')
++        self.git('config','maintenance.auto','false')
++        self.git('-c','user.name=Fixture','-c','user.email=fixture@example.invalid','commit','--allow-empty','-qm','fixture')
++        self.git('branch','-M','integration')
++        self.wt=self.repo/'.worktrees/integration--task-ep.1'
++        self.git('worktree','add','-qb','task-ep.1',str(self.wt))
++        self.scripts=self.d/'scripts'; self.scripts.mkdir()
++        shutil.copy(ROOT/'skills/super-code/scripts/remove-task-worktree',self.scripts)
++        (self.scripts/'stop-run-processes').write_text('echo "stop outcome: ${STOP_CODE:-0}"; exit "${STOP_CODE:-0}"\n')
++        self.bin=self.d/'bin'; self.bin.mkdir()
++        mock=self.bin/'git'
++        mock.write_text('''#!/bin/bash
++case "$*" in
++ 'worktree remove --force '*) if [[ "${DENY_GIT:-}" = remove || "${DENY_GIT:-}" = force ]]; then echo 'fixture worktree remove denied' >&2; exit 1; fi;;
++ 'branch -D '*) if [[ "${DENY_GIT:-}" = branch || "${DENY_GIT:-}" = force ]]; then echo 'fixture branch delete denied' >&2; exit 1; fi;;
++ 'show-ref '*|'branch --list '*) if [ "${DENY_GIT:-}" = discovery ]; then echo 'fixture branch inspection denied' >&2; exit 128; fi;;
++esac
++exec "$REAL_GIT" "$@"
++''')
++        mock.chmod(0o755)
++        self.env=dict(os.environ,PATH=str(self.bin)+os.pathsep+os.environ['PATH'],REAL_GIT=GIT)
++        # Generated task temp paths are stable /tmp/sp-<hash>/<id>; the helpers also
++        # accept an absent temp root. Tests never create/remove another run's temp.
++        self.ledger=self.d/'progress.md'
++        self.ledger.write_text(f'Launch: mechanism ordinary-subagents · epic ep · invocationId fixture · branch integration · integrationWorktree {self.repo} · concurrency 1 · earlyUnblock on · sweep deferred\n')
++
++    def git(self,*args):
++        return subprocess.run([GIT,'-C',str(self.repo),*args],check=True,capture_output=True,text=True)
++
++    def branch_exists(self):
++        return bool(self.git('branch','--list','task-ep.1').stdout.strip())
++
++    def helper(self,expected,deny='',stop=0,command=None):
++        p=subprocess.run(command or ['bash',str(self.scripts/'remove-task-worktree'),'--discard',str(self.wt),'task-ep.1'],
++                         cwd=self.repo,env=dict(self.env,DENY_GIT=deny,STOP_CODE=str(stop)),capture_output=True,text=True)
++        self.assertEqual(p.returncode,expected,p.stdout+p.stderr)
++        return p
++
++    def test_worktree_remove_failure_retains_branch(self):
++        p=self.helper(3,deny='remove')
++        self.assertTrue(self.wt.exists()); self.assertTrue(self.branch_exists())
++        self.assertIn('kept:',p.stdout)
++
++    def test_branch_delete_failure_is_not_success(self):
++        p=self.helper(3,deny='branch')
++        self.assertFalse(self.wt.exists()); self.assertTrue(self.branch_exists())
++        self.assertIn('kept:',p.stdout)
++
++    def test_absent_worktree_branch_delete_failure(self):
++        self.git('worktree','remove',str(self.wt))
++        self.helper(3,deny='branch')
++        self.assertTrue(self.branch_exists())
++
++    def test_absent_branch_discovery_failure_is_unknown(self):
++        self.git('worktree','remove',str(self.wt))
++        p=self.helper(4,deny='discovery')
++        self.assertTrue(self.branch_exists()); self.assertIn('kept:',p.stdout)
++
++    def test_already_absent_resources_succeed(self):
++        self.git('worktree','remove',str(self.wt)); self.git('branch','-D','task-ep.1')
++        self.helper(0)
++
++    def test_normal_discard(self):
++        self.helper(0)
++        self.assertFalse(self.wt.exists()); self.assertFalse(self.branch_exists())
++
++    def default_command(self):
++        return ['bash',str(self.scripts/'remove-task-worktree'),str(self.wt),'task-ep.1','integration']
++
++    def test_default_cleanup_uses_no_force_commands(self):
++        self.helper(0,deny='force',command=self.default_command())
++        self.assertFalse(self.wt.exists()); self.assertFalse(self.branch_exists())
++
++    def test_default_cleanup_retains_dirty_worktree(self):
++        (self.wt/'retained').write_text('uncommitted work')
++        self.helper(3,command=self.default_command())
++        self.assertEqual((self.wt/'retained').read_text(),'uncommitted work')
++        self.assertTrue(self.branch_exists())
++
++    def test_default_cleanup_retains_unmerged_branch(self):
++        subprocess.run([GIT,'-C',str(self.wt),'-c','user.name=Fixture','-c','user.email=fixture@example.invalid',
++                        'commit','--allow-empty','-qm','unmerged work'],check=True,capture_output=True)
++        self.helper(3,command=self.default_command())
++        self.assertTrue(self.wt.exists()); self.assertTrue(self.branch_exists())
++
++    def test_stop_unknown_or_survivor_retains_resources(self):
++        for status in (3,4):
++            with self.subTest(status=status):
++                self.helper(status,stop=status)
++                self.assertTrue(self.wt.exists()); self.assertTrue(self.branch_exists())
++
++    def test_generated_setup_uses_guarded_cleanup(self):
++        for mode in (['--recut'],['--parents','ep.0']):
++            with self.subTest(mode=mode):
++                p=subprocess.run(['bash',str(ROOT/'skills/super-code/scripts/dispatch-text'),'--ledger',str(self.ledger),
++                                  '--stdout','implement','--id','ep.1','--n','1',*mode],capture_output=True,text=True,check=True)
++                setup=re.search(r'<workspace-setup>(.*?)</workspace-setup>',p.stdout,re.S).group(1)
++                commands=re.findall(r'`(bash [^`]*remove-task-worktree --discard[^`]*)`',setup)
++                self.assertEqual(len(commands),1,setup)
++                self.assertNotIn('git worktree remove --force',setup)
++                self.assertNotIn('git branch -D',setup)
++                self.assertIn('nonzero',setup)
++                self.assertIn('SETUP_FAILED',setup)
++                # Execute the actual emitted command with only the helper location and
++                # absent task temp root changed to this fixture's private namespace.
++                import shlex
++                command=shlex.split(commands[0]); command[1]=str(self.scripts/'remove-task-worktree')
++                ti=command.index('--tmp'); command[ti+1]='/tmp/sp-'+self.d.name.encode().hex()+'/absent-fixture'
++                self.assertEqual(command[-2:],[str(self.wt),'task-ep.1'])
++                for status in (3,4):
++                    self.helper(status,stop=status,command=command)
++                    self.assertTrue(self.wt.exists()); self.assertTrue(self.branch_exists())
++
++unittest.main(verbosity=2)
++TEST
+diff --git a/tests/super-code/test-stop-run-processes-inventory.sh b/tests/super-code/test-stop-run-processes-inventory.sh
+new file mode 100644
+index 00000000..eeeae4e4
+--- /dev/null
++++ b/tests/super-code/test-stop-run-processes-inventory.sh
+@@ -0,0 +1,89 @@
++#!/usr/bin/env bash
++# Git inventory failure must precede process matching/signalling. The process view is
++# deterministic; Git owns real disposable repositories and nested-worktree inventory.
++set -euo pipefail
++ROOT=$(cd "$(dirname "$0")/../.." && pwd)
++python3 - "$ROOT" <<'TEST'
++import os, pathlib, shutil, subprocess, sys, tempfile, unittest
++ROOT = pathlib.Path(sys.argv.pop())
++GIT = shutil.which('git')
++
++class Inventory(unittest.TestCase):
++    def setUp(self):
++        self.tmp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.tmp.cleanup)
++        self.path = pathlib.Path(self.tmp.name)
++        self.repo = self.path / 'repo'
++        self.repo.mkdir()
++        self.bin = self.path / 'bin'
++        self.bin.mkdir()
++        self.signal = self.path / 'signals'
++        self.env = dict(os.environ, PATH=str(self.bin)+os.pathsep+os.environ['PATH'],
++                        REAL_GIT=GIT, PROBE_ROOT=str(self.repo), SIGNAL_LOG=str(self.signal))
++        self.write('git', '#!/bin/bash\nif [[ "$*" == *"worktree list"* && "${DENY_INVENTORY:-}" == 1 ]]; then echo denied >&2; exit 128; fi\nexec "$REAL_GIT" "$@"\n')
++        self.write('ps', '#!/bin/bash\ncase "$*" in\n "-A -o pid=,ppid="|"-A -o pid=,ppid=,tty=") echo "$PPID 1 ??";;\n "-o ppid= -p "*) echo 1;;\n "-Eww -U "*) :;;\n *) exit 9;;\nesac\n')
++        self.write('lsof', '#!/bin/bash\ncase "$*" in *"-u "*) :;; *) echo n/fixture-outside;; esac\n')
++        bash_env = self.path / 'bash-env'
++        bash_env.write_text('function [ { if [[ "$*" == "-d /proc/self" ]]; then return 1; fi; builtin [ "$@"; }\nkill() { echo "$*" >> "$SIGNAL_LOG"; return 99; }\n')
++        self.env['BASH_ENV'] = str(bash_env)
++
++    def write(self, name, value):
++        f=self.bin/name; f.write_text(value); f.chmod(0o755)
++
++    def git(self, *args):
++        return subprocess.run([GIT, '-C', str(self.repo), *args], check=True, capture_output=True)
++
++    def init(self):
++        self.git('init', '-q')
++        self.git('config', 'gc.auto', '0')
++        self.git('config', 'maintenance.auto', 'false')
++        self.git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid',
++                 'commit', '--allow-empty', '-qm', 'fixture')
++
++    def run_helper(self, expected, deny=False, check=False):
++        env=dict(self.env, DENY_INVENTORY='1' if deny else '0')
++        p=subprocess.run(['bash', str(ROOT/'skills/super-code/scripts/stop-run-processes'),
++                          *(['--check'] if check else []), str(self.repo)], env=env, capture_output=True, text=True)
++        self.assertEqual(p.returncode, expected, p.stdout+p.stderr)
++        self.assertFalse(self.signal.exists(), 'invalid/empty inventory must not signal processes')
++        if expected == 4: self.assertIn('unknown:', p.stdout)
++        return p
++
++    def test_denied_repository_inventory(self):
++        self.init()
++        self.run_helper(4, deny=True)
++        self.run_helper(4, deny=True, check=True)
++
++    def test_verified_nonrepository_temp(self):
++        self.run_helper(0)
++
++    def test_valid_leaf_repository(self):
++        self.init()
++        self.run_helper(0)
++
++    def test_nested_worktree_refused(self):
++        self.init()
++        self.git('worktree', 'add', '-qb', 'child', str(self.repo/'.worktrees/child'))
++        self.run_helper(2)
++
++    def test_corrupt_git_metadata_is_unknown(self):
++        self.init()
++        (self.repo/'.git/HEAD').unlink()
++        self.run_helper(4)
++
++    def test_nonrepository_at_filesystem_boundary(self):
++        # Git uses this diagnostic for an ordinary temp root on a separate mount.
++        self.write('git', '#!/bin/bash\nif [[ "$*" == *"rev-parse --git-dir" ]]; then printf "%s\\n" "fatal: not a git repository (or any parent up to mount point /tmp)" "Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set)." >&2; fi\nexit 128\n')
++        self.run_helper(0)
++
++    def test_corrupt_bare_repository_is_unknown(self):
++        self.git('init', '--bare', '-q')
++        (self.repo/'HEAD').unlink()
++        self.run_helper(4)
++
++    def test_git_unavailable_is_unknown(self):
++        self.write('git', '#!/bin/bash\nexit 127\n')
++        self.run_helper(4)
++
++unittest.main(verbosity=2)
++TEST
+diff --git a/tests/super-code/test-verification-completion-metrics.sh b/tests/super-code/test-verification-completion-metrics.sh
+new file mode 100644
+index 00000000..b6019685
+--- /dev/null
++++ b/tests/super-code/test-verification-completion-metrics.sh
+@@ -0,0 +1,92 @@
++#!/usr/bin/env bash
++# Real ordinary-transcript producer and metric CLIs; verification adds no Git landing.
++set -euo pipefail
++ROOT=$(cd "$(dirname "$0")/../.." && pwd)
++python3 - "$ROOT" <<'TEST'
++import json, pathlib, subprocess, sys, tempfile, unittest
++ROOT=pathlib.Path(sys.argv.pop())
++
++class Metrics(unittest.TestCase):
++    def check_case(self, kind):
++        with tempfile.TemporaryDirectory() as tmp:
++            d=pathlib.Path(tmp)
++            verification=kind!='implementation'
++            history=kind in ('earlier-merge','earlier-complete','untimed-earlier-merge')
++            timed_history=history and kind!='untimed-earlier-merge'
++            ledger=['Launch: mechanism ordinary-subagents · epic verify']
++            if history: ledger.append('Merge: verify.1 — merged' if kind!='earlier-complete' else 'Task 1 (verify.1): complete, review clean')
++            ledger.append('Task 1 (verify.1): complete, '+('verification-only, ' if verification else '')+'review clean')
++            agents=[dict(codex='impl_verify_1',label='impl:verify.1',start=10,end=20),
++                    dict(codex='review_verify_1',label='review:verify.1',start=21,end=25)]
++            if history:
++                agents += [dict(codex='impl_verify_1_recheck',label='impl:verify.1',start=60,end=70),
++                           dict(codex='review_verify_1_recheck',label='review:verify.1',start=71,end=80)]
++            sc=dict(t0='2026-10-01T00:00:00Z',epic='verify',cwd=str(d),end=90,ledger=ledger,
++                    beads=[dict(id='verify',issue_type='epic'),dict(id='verify.1',parent='verify',created_at=0)],
++                    agents=agents,caller=[dict(cmd='git merge --no-ff task-verify.1',start=30,end=35)] if timed_history else [])
++            scenario=d/'scenario.json'; scenario.write_text(json.dumps(sc))
++            made=subprocess.run(['node',str(ROOT/'tests/super-code/run-profile-ordinary-fixture.mjs'),str(scenario),'codex',str(d)],capture_output=True,text=True,check=True)
++            profile=subprocess.run(['node',str(ROOT/'skills/super-code/scripts/run-profile.mjs'),'--codex',made.stdout.strip(),
++                 '--codex-home',str(d/'codex'),'--ledger',str(d/'progress.md'),'--beads',str(d/'beads.json'),'--out',str(d/'profile')],capture_output=True,text=True,check=True)
++            data=json.loads((d/'profile.json').read_text())
++            digest=subprocess.run(['bash',str(ROOT/'skills/super-code/scripts/run-digest'),'--part','state','--budget','9000'],
++                 input=f'skill: super-code\nledger: {d}/progress.md\n',capture_output=True,text=True,check=True)
++            landed=history or not verification
++            self.assertIn('ledger: landed '+str(int(landed)),digest.stdout)
++            if verification: self.assertIn('verification-only 1',digest.stdout)
++            bead=data['beads'][0]
++            self.assertEqual(bead['landed'],landed)
++            self.assertEqual(bead['verificationOnlyCompleted'],verification)
++            self.assertEqual(data['lane']['merges'],int(landed and kind!='untimed-earlier-merge'))
++            if verification: self.assertIn('verification-only 1',profile.stdout)
++            if timed_history: self.assertEqual(bead['landedAt'],'2026-10-01T00:00:35.000Z')
++            if kind=='untimed-earlier-merge':
++                self.assertIsNone(bead['landedAt'])
++                self.assertIsNone(data['simulation'])
++            if not landed:
++                self.assertIsNone(bead['landedAt'])
++                self.assertIsNone(data['simulation'])
++                self.assertFalse(any('landed bead(s) with no merge' in line for line in data['unmeasured']))
++                self.assertEqual(bead['attempts'],['VERIFIED'])
++                self.assertFalse(any('rework' in line for line in data['summary']))
++            print(kind+': landing='+str(bead['landed'])+', merges='+str(data['lane']['merges']))
++
++    def test_verification_only(self): self.check_case('verification')
++    def test_prior_landing_without_timing_is_not_synthesized_at_verification(self): self.check_case('untimed-earlier-merge')
++    def test_normal_implementation(self): self.check_case('implementation')
++    def test_earlier_real_merge_survives_verification(self): self.check_case('earlier-merge')
++    def test_earlier_complete_survives_verification(self): self.check_case('earlier-complete')
++
++class WorkflowMetrics(unittest.TestCase):
++    def check_case(self, kind):
++        with tempfile.TemporaryDirectory() as tmp:
++            d=pathlib.Path(tmp)
++            agents=[dict(label='ledger-append:launch',start=0,end=1),
++                    dict(label='plan',start=1,end=2,result=dict(mapping=[dict(id='verify.1',n=1,deps=[])]))]
++            prior=kind=='prior-merge'
++            if prior:
++                agents += [dict(label='impl:verify.1',start=3,end=8,result=dict(status='IMPLEMENTED')),
++                           dict(label='merge:verify.1',start=8,end=10,result=dict(merged=True))]
++            agents += [dict(label='impl:verify.1',start=20,end=30,result=dict(status='IMPLEMENTED',completionKind='verification-only')),
++                       dict(label='review:verify.1',start=31,end=40,result=dict(status='CLEAN',completionKind='verification-only')),
++                       dict(label='close-only:verify.1',start=41,end=42,result=dict(status='BLOCKED' if kind=='pending' else 'CLOSED'))]
++            sc=dict(t0='2026-10-01T00:00:00Z',launch=dict(epicId='verify',config=dict(concurrency=1)),agents=agents)
++            scenario=d/'scenario.json'; scenario.write_text(json.dumps(sc))
++            subprocess.run(['node',str(ROOT/'tests/super-code/run-profile-fixture.mjs'),str(scenario),str(d/'workflow')],check=True,capture_output=True)
++            p=subprocess.run(['node',str(ROOT/'skills/super-code/scripts/run-profile.mjs'),'--workflow',str(d/'workflow'),'--out',str(d/'profile')],check=True,capture_output=True,text=True)
++            data=json.loads((d/'profile.json').read_text()); bead=data['beads'][0]
++            self.assertEqual(bead['landed'],prior,'verification close-only is tracker completion, not a Git landing')
++            self.assertEqual(bead['verificationOnlyCompleted'],kind!='pending')
++            self.assertEqual(data['lane']['merges'],int(prior))
++            self.assertEqual(bead['landedAt'],'2026-10-01T00:00:10.000Z' if prior else None)
++            if kind!='pending': self.assertIn('verification-only 1',p.stdout)
++            else: self.assertNotIn('verification-only 1',p.stdout)
++            if not prior: self.assertIsNone(data['simulation'])
++            print('Workflow '+kind+': landing='+str(bead['landed'])+', verified='+str(bead['verificationOnlyCompleted']))
++
++    def test_workflow_verified_close(self): self.check_case('verified')
++    def test_workflow_pending_close_is_not_completed(self): self.check_case('pending')
++    def test_workflow_prior_merge_survives_verification(self): self.check_case('prior-merge')
++
++unittest.main(verbosity=2)
++TEST

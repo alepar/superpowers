@@ -1,4 +1,6 @@
-Workflow-reliability correction: technical acceptance complete; approved local merge is next.
+Workflow-reliability correction complete and merged locally into main.
+
+Actual local fast-forward:832b051c→831acf48. Main acceptance consumer rerun passed eligible:true/pending[]/gaps[]. Subsequent completion records are RUN-only. All86pre-existing untrackedmainfiles were preserved; root super-plan-ufz is closed; run phase is done.
 
 The actual canonical root gate is eligible:true, pending[], gaps[] after the direct human approval. Root super-plan-ufz is closed and read back from the tracker. Full final verification at fd52ffc7:47 distinct command groups plus2TMPDIR configurations passed,0failed/errors/skipped; offline replay2404/0 and documented48/19/23. Full source/evidence review and the bounded actual-root projection repair review passed.
 

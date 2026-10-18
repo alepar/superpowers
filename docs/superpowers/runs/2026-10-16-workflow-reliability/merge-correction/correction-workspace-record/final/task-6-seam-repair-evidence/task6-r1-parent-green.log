@@ -1,0 +1,90 @@
+
+## verification parent settlement: failed parent and verification child at cap 1
+  [PASS] run completes without throwing
+  [PASS] child reached review before the parent merge returned
+  [PASS] failed parent reopens and reaches triage
+  [PASS] cancelled child is discarded once without closing or merging
+  [PASS] failed parent cannot produce a verification completion
+  [PASS] child cancellation remains in the task ledger
+  [PASS] settlement does not hide a rejected task chain
+
+## verification parent settlement: failed parent and ordinary child at cap 1
+  [PASS] run completes without throwing
+  [PASS] child reached review before the parent merge returned
+  [PASS] failed parent reopens and reaches triage
+  [PASS] cancelled child is discarded once without closing or merging
+  [PASS] failed parent cannot produce a verification completion
+  [PASS] child cancellation remains in the task ledger
+  [PASS] settlement does not hide a rejected task chain
+
+## verification parent settlement: successful parent and verification child at cap 1
+  [PASS] run completes without throwing
+  [PASS] child reached review before the parent merge returned
+  [PASS] both tasks complete after successful parent settlement
+  [PASS] verification closes only after parent success without merge or discard
+  [PASS] successful completion retains reviewed source-bound evidence
+  [PASS] settlement does not hide a rejected task chain
+
+## verification parent settlement: failed parent and verification child at cap 2
+  [PASS] run completes without throwing
+  [PASS] child reached review before the parent merge returned
+  [PASS] failed parent reopens and reaches triage
+  [PASS] cancelled child is discarded once without closing or merging
+  [PASS] failed parent cannot produce a verification completion
+  [PASS] child cancellation remains in the task ledger
+  [PASS] settlement does not hide a rejected task chain
+
+## verification parent settlement: reacquisition respects another active task
+  [PASS] run completes without throwing
+  [PASS] other task uses the released slot and settles while verification waits
+  [PASS] verification reacquires capacity before closing without overlapping the active task
+  [PASS] capacity handoff does not hide a rejected chain
+
+## verification parent settlement: reacquisition observes a new merge hold
+  [PASS] run completes without throwing
+  [PASS] other task uses the released slot and settles while verification waits
+  [PASS] new merge hold prevents verification closure after reacquisition
+  [PASS] held verification remains recoverable without a completion claim
+  [PASS] fresh admission explains the withheld closure
+  [PASS] capacity handoff does not hide a rejected chain
+
+## verification parent settlement: reacquisition refreshes tracker open
+  [PASS] run completes without throwing
+  [PASS] other task uses the released slot and settles while verification waits
+  [PASS] changed or unavailable tracker facts withhold verification closure
+  [PASS] fresh admission retains the specific tracker hold reason
+  [PASS] bounded lookup refreshes once or preserves exhausted-budget hold
+  [PASS] capacity handoff does not hide a rejected chain
+
+## verification parent settlement: reacquisition refreshes tracker unavailable
+  [PASS] run completes without throwing
+  [PASS] other task uses the released slot and settles while verification waits
+  [PASS] changed or unavailable tracker facts withhold verification closure
+  [PASS] fresh admission retains the specific tracker hold reason
+  [PASS] bounded lookup refreshes once or preserves exhausted-budget hold
+  [PASS] capacity handoff does not hide a rejected chain
+
+## verification parent settlement: reacquisition refreshes tracker exhausted
+  [PASS] run completes without throwing
+  [PASS] other task uses the released slot and settles while verification waits
+  [PASS] changed or unavailable tracker facts withhold verification closure
+  [PASS] fresh admission retains the specific tracker hold reason
+  [PASS] bounded lookup refreshes once or preserves exhausted-budget hold
+  [PASS] capacity handoff does not hide a rejected chain
+
+## verification parent settlement: reacquisition refreshes tracker opaque
+  [PASS] run completes without throwing
+  [PASS] other task uses the released slot and settles while verification waits
+  [PASS] changed or unavailable tracker facts withhold verification closure
+  [PASS] fresh admission retains the specific tracker hold reason
+  [PASS] bounded lookup refreshes once or preserves exhausted-budget hold
+  [PASS] capacity handoff does not hide a rejected chain
+
+## verification parent settlement: reacquisition refreshes tracker closed
+  [PASS] run completes without throwing
+  [PASS] other task uses the released slot and settles while verification waits
+  [PASS] verification reacquires capacity before closing without overlapping the active task
+  [PASS] fresh closed tracker control still permits completion
+  [PASS] capacity handoff does not hide a rejected chain
+
+66 passed, 0 failed

@@ -1,0 +1,27 @@
+{
+  "base": "c2c05d28480902f4426c4d6adfc680508415d4b2",
+  "head": "7fc5a4ddb2d0913b769484935f79e6daccff966b",
+  "files": [
+    {
+      "path": "skills/super-auto/resume.md",
+      "sha256": "4497ce1d0d47a0307ea6bb96eb008687595797e5ea1068ea7dd89b10bf546baf",
+      "bytes": 17270
+    },
+    {
+      "path": "skills/super-design/SKILL.md",
+      "sha256": "e23a402ce0fde5dbb4245c4bf4c0de6361aec144cfec71c0e2dfc787c38ecf95",
+      "bytes": 105517
+    },
+    {
+      "path": "tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt",
+      "sha256": "5cae2ad527fab6c3adac312f9f25c5509fb586c865efe131248e3424590dd2c4",
+      "bytes": 209
+    },
+    {
+      "path": "tests/super-auto/resume-sync-contract.mjs",
+      "sha256": "acdf27fed2346f2793b19abd2e9ed27c9ca87007494a508ad90a0a0915cab051",
+      "bytes": 4468
+    }
+  ],
+  "diffSha256": "cad78b6231ad5a626b82b41cd4c0e716240492a4803ac3792495785f9e64f1cc"
+}

@@ -1,0 +1,885 @@
+{
+  "completedUtc": "2026-10-18T00:34:39.737420+00:00",
+  "argv": [
+    "git",
+    "-C",
+    "/Users/alepar/AleCode/superpowers",
+    "merge",
+    "--ff-only",
+    "--quiet",
+    "super-auto/workflow-reliability"
+  ],
+  "exitCode": 0,
+  "previousMain": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+  "mergedMain": "831acf4825ed8838147d33dc2c593caeeb6c144f",
+  "measuredSource": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+  "outsideRunDiffToMeasured": "",
+  "untrackedBefore": {
+    ".beads.gate.lock": {
+      "kind": "file",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "PROPOSAL-MISSING-WORKFLOW-FALLBACK.md": {
+      "kind": "file",
+      "sha256": "15f2c5dba35daa415286a21879c74e2f65db92d3445d231ac4323d1d924db338",
+      "bytes": 16904
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/build_package.py": {
+      "kind": "file",
+      "sha256": "5e8b9f80ad6a2723bc5c47d3862388115cc9adf424ea8f7f98bb9394f131ebe6",
+      "bytes": 17757
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/candidates/case-study.md": {
+      "kind": "file",
+      "sha256": "2851d7ef709461ac2a78aa8977b73c3b4085d09a6e869b7c1b2e595792b50b9b",
+      "bytes": 16764
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/candidates/cost-sources.json": {
+      "kind": "file",
+      "sha256": "b0b58469b063569009c0ccb20794d357fc903a45fd67d2e359669451e4a3c03c",
+      "bytes": 22734
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/candidates/integration.md": {
+      "kind": "file",
+      "sha256": "606e8cbac9a899ab20a5429cee12eae6cd3e45e8a4f5ef43f6c01c7e77ddad8a",
+      "bytes": 38712
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/candidates/lead-sources.json": {
+      "kind": "file",
+      "sha256": "b46d3dfb9c51d4d7a7b7aadd675bbd811b585930f5ef0bbbb12fe12a90d2ead6",
+      "bytes": 5706
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/candidates/reliability-sources.json": {
+      "kind": "file",
+      "sha256": "ec6df4b725e330367c4c8f281b3a2b0884376f929df94e9cd8ba31fd56552c06",
+      "bytes": 20862
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/case-study.md": {
+      "kind": "file",
+      "sha256": "42def180ef622ea7a81dd66d3fc21e6f0792ae7a0583b0dc475258d119daa54a",
+      "bytes": 6174
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/checkpoint-progress.json": {
+      "kind": "file",
+      "sha256": "d500147271bd3e2464b7f79a22d05afbe39da21c277d05c7a0aed070b583fc3e",
+      "bytes": 1578
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/citation-review.json": {
+      "kind": "file",
+      "sha256": "cc0962d61208de62db4202c26dc670a735ef5710c4074a3cfe5d85bcfd8bcbf9",
+      "bytes": 1276
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/claims.jsonl": {
+      "kind": "file",
+      "sha256": "5ab345b8aec5b562d354170a295f65643120afe497a6c74b2ee1927c954d9f0d",
+      "bytes": 27193
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/continuation_state.json": {
+      "kind": "file",
+      "sha256": "91df7b155e125d2d97af7c4e8e57cc9a4bc8b6a42db01d91aa353b029fa5cdcb",
+      "bytes": 7135
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/coverage.json": {
+      "kind": "file",
+      "sha256": "d705827af72ca0a3704383c1e34a6889b0433a1122e0ea295637d10bcabc4d63",
+      "bytes": 17577
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/drafts/case-study.md": {
+      "kind": "file",
+      "sha256": "56e2c517eed3ddcdc192a73ffef6c5266af0d916a76f234e9bdad2f9986dd674",
+      "bytes": 5438
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/drafts/evaluation.md": {
+      "kind": "file",
+      "sha256": "c8ed291af499716449f324654bca79ee00642fe6c641b05e58c9b9cdfa26cefc",
+      "bytes": 10583
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/drafts/integration.md": {
+      "kind": "file",
+      "sha256": "58280b4c4f3d5a525a6919cb8be534e8ec4435ee6a105489456cd87321a631ff",
+      "bytes": 16832
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/drafts/mechanisms.md": {
+      "kind": "file",
+      "sha256": "a25013d119164f59ea9e1fa2bd61d534e843d1bf380e6ebdb343b1474183e55c",
+      "bytes": 12033
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/drafts/report.md": {
+      "kind": "file",
+      "sha256": "b34e3b671ed5bda869289060bc7e6554948b6f6b1c15c7a6a9547a5e021e472a",
+      "bytes": 13890
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/drafts/scout-contracts.md": {
+      "kind": "file",
+      "sha256": "3de0c9b371da546c13a77463e8d8b6db0602ff27ec000fa5eb2706e0d9f6a1cc",
+      "bytes": 11613
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/evaluation.md": {
+      "kind": "file",
+      "sha256": "28f9e9302ac483b70f9e35a853b9af194e4b14fd1e9ea0c228c4f4f74c692229",
+      "bytes": 11679
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/evidence.jsonl": {
+      "kind": "file",
+      "sha256": "d87962e6aec6f64b541ac8174d4368ddf24950dd37a1714a8313c05b0a44ccda",
+      "bytes": 883966
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/integration.md": {
+      "kind": "file",
+      "sha256": "879dbc8f1a45ad8e090424a7931a676d61e3c8b2b9e2388522ec4b3f652c2849",
+      "bytes": 18975
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/key-map.json": {
+      "kind": "file",
+      "sha256": "6ee816e7badb5beb6b74adae3ef1f7c219ed3e6b8224c26b460ac6037c50aa51",
+      "bytes": 12700
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/mechanisms.md": {
+      "kind": "file",
+      "sha256": "d58bbcad4f5b1b0937be4d4fe53e4b249ae5b81d0c46fc24529170af6f5fa3b9",
+      "bytes": 15750
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/plan.md": {
+      "kind": "file",
+      "sha256": "c9f54c0af2da13891d9187cec11f74c4cccd679ad4beb5796bfc8c88788b04a9",
+      "bytes": 2113
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/queries.jsonl": {
+      "kind": "file",
+      "sha256": "7a680b205d95da70c7cb64126c4db3a90848a6eddf070ff46d11b3c7adf0ef85",
+      "bytes": 12820
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/report.md": {
+      "kind": "file",
+      "sha256": "b84754f2ed96005cfd04c5d23b89dff049b24814a6179acbe8ca721d925e4bb5",
+      "bytes": 15339
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/retrievals.jsonl": {
+      "kind": "file",
+      "sha256": "2c4eea9bad0cdf76c3df5a011046bc1f852429022a6bd20570f5e2ab58349079",
+      "bytes": 20463
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/run_manifest.json": {
+      "kind": "file",
+      "sha256": "c50a5d0b2e039c88e66c2fb176f3a9193e6121335461e437f08824cc716d4aa3",
+      "bytes": 8270
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/scout-contracts.md": {
+      "kind": "file",
+      "sha256": "429d7dc7913f70765516982ece641d1bf1cd4555b3369d2e43b7a456fa4c10da",
+      "bytes": 12224
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/semantic-review.json": {
+      "kind": "file",
+      "sha256": "76e43011a7049c99eb5f70994ba02f32dd39f98278807d30d17c9b48577fcea1",
+      "bytes": 701
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/case-async.md": {
+      "kind": "file",
+      "sha256": "baaea6f2b7c6d42f9862679a2dd25177653bb9bf3896ed333afa5fbeaea753d6",
+      "bytes": 10554
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/case-core.md": {
+      "kind": "file",
+      "sha256": "4f055c040df8815ce88cdfe0d383acb56dc1ec159c8e6331cbe823ee2fcf7c9b",
+      "bytes": 11968
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/case-report.md": {
+      "kind": "file",
+      "sha256": "a407ca17e1ff02ee98ee9c35a761fb9ed1f906d3804ab674d1dd24c4f73752e8",
+      "bytes": 15270
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/case-repro.md": {
+      "kind": "file",
+      "sha256": "e42bd1fd89360b64344310c946994e446be534a36572b24161413585df52035a",
+      "bytes": 7570
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/case-validation.md": {
+      "kind": "file",
+      "sha256": "5daae70c1d06efb2f8f030fa6aa5874928e80390b61c8121332bc65ed8a789fc",
+      "bytes": 5230
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/docs-superpowers-specs-2026-07-29-super-roast-design.md.md": {
+      "kind": "file",
+      "sha256": "235e9f0e72adabf9a7bccde7f21d61eab813aa41104f2b818cce9431218b6a43",
+      "bytes": 14973
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-auto-SKILL.md.md": {
+      "kind": "file",
+      "sha256": "39d68f8ec80ca60639403b9a13a3684cdfaf3ddeb33165ae02967a24faa65d29",
+      "bytes": 59033
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-auto-report-prompt.md.md": {
+      "kind": "file",
+      "sha256": "432d34128d4f0a75624d55037df6509fb3b7e84be0867e2bfa99cda97ec5b4d7",
+      "bytes": 9443
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-auto-run-state.md.md": {
+      "kind": "file",
+      "sha256": "016c200e2e154b0de11f9ea5c42f0053e41fe45211e2d57c31d5e47b169b647e",
+      "bytes": 25793
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-auto-scope-filter-prompt.md.md": {
+      "kind": "file",
+      "sha256": "946ca6e9b5ca42cc30a00f4247f1f3d0cbc86ea33287da7f03c873868cc44307",
+      "bytes": 3880
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-auto-scripts-scope-dispositions.md": {
+      "kind": "file",
+      "sha256": "04339d97e71665881dd672a3fdc9caf72c6f1973ba35c7c6066ec3d27490626d",
+      "bytes": 5457
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-coordinator-subagents.md.md": {
+      "kind": "file",
+      "sha256": "a8d79a5b3391f425d3a46419377335f1d7813b2cf58e765e2ad0b75fe9048ae9",
+      "bytes": 8799
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-coordinator-workflow.md.md": {
+      "kind": "file",
+      "sha256": "61c515df7d90b624bb7987ab625dbe05ede2b409819e325e6ec2462adb9aa8e4",
+      "bytes": 201412
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-coordinator.js.md": {
+      "kind": "file",
+      "sha256": "67269a69110057968b77eccccb59fa06cfbc50bab185f8c2cb28fa3cc44dbb1d",
+      "bytes": 235936
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-implementer-prompt.md.md": {
+      "kind": "file",
+      "sha256": "31e9a74bf1335f4dae135d944c5ffe17f1569197d76547faf39144e4377060a7",
+      "bytes": 12743
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-scripts-dispatch-text.mjs.md": {
+      "kind": "file",
+      "sha256": "0c5b79f9b44a33268b36be97406a2d8e2fdca0a3db7d76d64c451c9de2bce5c6",
+      "bytes": 13529
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-scripts-report-verdict.md": {
+      "kind": "file",
+      "sha256": "f73e6bf208173da423a5dbd318911e13011ec8fbd90a79aea02898c9be324275",
+      "bytes": 9953
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-task-reviewer-prompt.md.md": {
+      "kind": "file",
+      "sha256": "9092e73bf788188d8490773595ac5a4e7f4cd67746f76787f6cdc24aa3cc911e",
+      "bytes": 6745
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-triage-prompt.md.md": {
+      "kind": "file",
+      "sha256": "a8868e4c6fb76cd0149861bb60ba19aa6c9bd413df875b98d55f9cbc1e5db32d",
+      "bytes": 4744
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-SKILL.md.md": {
+      "kind": "file",
+      "sha256": "795650c73dfe6f9d59099f188507e3ae91878b1d4fd8b30ff04412d72b0f185d",
+      "bytes": 23202
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-dedupe-prompt.md.md": {
+      "kind": "file",
+      "sha256": "450a4ea2ba617bd64ccaee76473c28666b07e383da0ae884d60480857c00c8f2",
+      "bytes": 3731
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-judge-seat-prompts.md.md": {
+      "kind": "file",
+      "sha256": "ec9518aac8298cc1bed1383b4cf23e64bbd96ba0f3a26302afdc66f9f998c267",
+      "bytes": 9755
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-reporter-prompt.md.md": {
+      "kind": "file",
+      "sha256": "9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1",
+      "bytes": 20873
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-scout-prompts-pr.md.md": {
+      "kind": "file",
+      "sha256": "0aa9df47330e88dae20c08f41d6a84e0b0d28cbba5a05deb780e29e6ea44b5ec",
+      "bytes": 32545
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-scripts-assemble-args.mjs.md": {
+      "kind": "file",
+      "sha256": "be0434d3411197dc2136cac0c4152f2afb29e6a4f5ae17640242f990c2e4d7a1",
+      "bytes": 18058
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-super-roast-workflow.md.md": {
+      "kind": "file",
+      "sha256": "1fef682008fd3dd57b47a5b5e116d056140962b12bf2006f0370e0e0e7fa99fb",
+      "bytes": 77457
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-triage-prompt.md.md": {
+      "kind": "file",
+      "sha256": "7912ae2933151d26f74b052f8dbac3600d9553b8184164eaec71b55fce9566a6",
+      "bytes": 3297
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/sources.jsonl": {
+      "kind": "file",
+      "sha256": "858db810345a6ad701e7d154eac0ba74dfa68b9b75db8fd581b89a3ee3c6520c",
+      "bytes": 24518
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/validation-results.json": {
+      "kind": "file",
+      "sha256": "ebbdd0ddec94badba36feb72196223d1b9762fea68d330249030513337eeeaa3",
+      "bytes": 3477
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/validation-surfaces.json": {
+      "kind": "file",
+      "sha256": "d2b3f2dcca5903af9a1f41b76f073fb26fcdb566bab5d8a00733777e8bbccbba",
+      "bytes": 1122
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/README.md": {
+      "kind": "file",
+      "sha256": "f88f2e82b776ec9a3ef3f201f6480b22e91e012bb1fcfc30d6aa67bc91ecdb38",
+      "bytes": 23498
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/RESUME.md": {
+      "kind": "file",
+      "sha256": "7cfed702000b5fbe2c47802d07d015e21dd109b29b8ccc53b70f8dba5b16cdb8",
+      "bytes": 4669
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/compaction.md": {
+      "kind": "file",
+      "sha256": "0aafcc0d0eaa9cbd65498f68fb663df496dbe8726b3dca20647735a999298b0d",
+      "bytes": 21430
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/completion-audit.md": {
+      "kind": "file",
+      "sha256": "5b9de3d26ea496b34cf964eb27bca19e2075f496e9323c6c75ce996b7c32e3e7",
+      "bytes": 4309
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/context-pass.md": {
+      "kind": "file",
+      "sha256": "ada186cb4ce05237dc0e8a40a72a464942777ec0a579ce96ff3d82a5a1cbfce7",
+      "bytes": 7447
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/cross-node.md": {
+      "kind": "file",
+      "sha256": "a55fd975ca18f1bcb782bd4dbd3412e620f92bdf27ea5a32329d9f493fadb86e",
+      "bytes": 15589
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/artifact-validation.txt": {
+      "kind": "file",
+      "sha256": "74ab6b8b4a561195b11f243960fe5632974dd344ab84d90f0646e2dd656b3c48",
+      "bytes": 350
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/assembler-size-observation.json": {
+      "kind": "file",
+      "sha256": "c738c8f705dcaa31982ee2cc707f36b066e817a1dca981719a9c0d7376694eae",
+      "bytes": 201
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/cleanup-denied-fixture.sh": {
+      "kind": "file",
+      "sha256": "790d94af672efb95da32d762cc64fec7020457d671875f8eafcc85777cdebdb6",
+      "bytes": 741
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/cleanup-denied-output.txt": {
+      "kind": "file",
+      "sha256": "77dad3fce5fafd8bc5fef700368c9ebb698d79450f67c294aff50a88c5bede8d",
+      "bytes": 185
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/coordinator-replay-unsandboxed.log": {
+      "kind": "file",
+      "sha256": "5e4e1804e6c9d089c049f639d77292340575627e56f7a98ababffb4e024910cd",
+      "bytes": 117551
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/coordinator-replay.log": {
+      "kind": "file",
+      "sha256": "dc743e1e4da81463e61f33f4621496330c05cf03539c8a340460ea7463b7ec1d",
+      "bytes": 114022
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/coordinator-repro.log": {
+      "kind": "file",
+      "sha256": "81dc0b964a7ceac77301bc449e96be824739b2042a2669d52f6710c9eb1a1666",
+      "bytes": 1922
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/coordinator-repro.mjs": {
+      "kind": "file",
+      "sha256": "789dca5a2bc22607a615a0971005da272d248eec6ab320b6f38b641ea3f4e4ab",
+      "bytes": 16839
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/local-source-inventory.json": {
+      "kind": "file",
+      "sha256": "77f13e4620b850a0480b6563a75b61b3d8840baa72e726dbfd0729ba7a075f9a",
+      "bytes": 37451
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/planning-fixture.json": {
+      "kind": "file",
+      "sha256": "7cd2b43c4615ff3263d5d402b67f9488dd24a133b3e0e6bc05ca228dea4efe1e",
+      "bytes": 765
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/planning-profile.json": {
+      "kind": "file",
+      "sha256": "c89d45de8dbfb532cf927d61e6893360b31e62cf90612c5a76885344d7afbac9",
+      "bytes": 8643
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/planning-profile.md": {
+      "kind": "file",
+      "sha256": "ed882fa717a6d3183be4606cf4a0e3ebaf38e54e433a042331d4bf58878e98d9",
+      "bytes": 4340
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/run-profile-tests.log": {
+      "kind": "file",
+      "sha256": "76270328206e6c0b0aead75de1dc9a124d6fb07994b40e7efb481db2c056df9b",
+      "bytes": 19221
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/source-hash-revalidation.json": {
+      "kind": "file",
+      "sha256": "c912074c9790d5ec66b1f792127b7c02cb6018a0a5aa2d61526a81b6e5f3f529",
+      "bytes": 4496
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/inbox-and-seat.md": {
+      "kind": "file",
+      "sha256": "29d0417f8caf7aa2185bcc443679943a320383176b2968b7f52099becc3f0456",
+      "bytes": 15426
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/legacy-history.md": {
+      "kind": "file",
+      "sha256": "9270f39282fc3c884445a1f39cb2fd742ed7d8cf51def166891e14e3b829e369",
+      "bytes": 19557
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/legacy-workflow.md": {
+      "kind": "file",
+      "sha256": "37265a155e4f4df779ac008b1fca49324de2d4e6ec5a0e5a89fd2f27d5fcecff",
+      "bytes": 25083
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/older-local.md": {
+      "kind": "file",
+      "sha256": "b3f2c2c2014f47c0dbddde6d8af00434aad430b4148094194c42acb7c94e9d03",
+      "bytes": 31363
+    }
+  },
+  "untrackedAfter": {
+    ".beads.gate.lock": {
+      "kind": "file",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "PROPOSAL-MISSING-WORKFLOW-FALLBACK.md": {
+      "kind": "file",
+      "sha256": "15f2c5dba35daa415286a21879c74e2f65db92d3445d231ac4323d1d924db338",
+      "bytes": 16904
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/build_package.py": {
+      "kind": "file",
+      "sha256": "5e8b9f80ad6a2723bc5c47d3862388115cc9adf424ea8f7f98bb9394f131ebe6",
+      "bytes": 17757
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/candidates/case-study.md": {
+      "kind": "file",
+      "sha256": "2851d7ef709461ac2a78aa8977b73c3b4085d09a6e869b7c1b2e595792b50b9b",
+      "bytes": 16764
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/candidates/cost-sources.json": {
+      "kind": "file",
+      "sha256": "b0b58469b063569009c0ccb20794d357fc903a45fd67d2e359669451e4a3c03c",
+      "bytes": 22734
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/candidates/integration.md": {
+      "kind": "file",
+      "sha256": "606e8cbac9a899ab20a5429cee12eae6cd3e45e8a4f5ef43f6c01c7e77ddad8a",
+      "bytes": 38712
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/candidates/lead-sources.json": {
+      "kind": "file",
+      "sha256": "b46d3dfb9c51d4d7a7b7aadd675bbd811b585930f5ef0bbbb12fe12a90d2ead6",
+      "bytes": 5706
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/candidates/reliability-sources.json": {
+      "kind": "file",
+      "sha256": "ec6df4b725e330367c4c8f281b3a2b0884376f929df94e9cd8ba31fd56552c06",
+      "bytes": 20862
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/case-study.md": {
+      "kind": "file",
+      "sha256": "42def180ef622ea7a81dd66d3fc21e6f0792ae7a0583b0dc475258d119daa54a",
+      "bytes": 6174
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/checkpoint-progress.json": {
+      "kind": "file",
+      "sha256": "d500147271bd3e2464b7f79a22d05afbe39da21c277d05c7a0aed070b583fc3e",
+      "bytes": 1578
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/citation-review.json": {
+      "kind": "file",
+      "sha256": "cc0962d61208de62db4202c26dc670a735ef5710c4074a3cfe5d85bcfd8bcbf9",
+      "bytes": 1276
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/claims.jsonl": {
+      "kind": "file",
+      "sha256": "5ab345b8aec5b562d354170a295f65643120afe497a6c74b2ee1927c954d9f0d",
+      "bytes": 27193
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/continuation_state.json": {
+      "kind": "file",
+      "sha256": "91df7b155e125d2d97af7c4e8e57cc9a4bc8b6a42db01d91aa353b029fa5cdcb",
+      "bytes": 7135
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/coverage.json": {
+      "kind": "file",
+      "sha256": "d705827af72ca0a3704383c1e34a6889b0433a1122e0ea295637d10bcabc4d63",
+      "bytes": 17577
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/drafts/case-study.md": {
+      "kind": "file",
+      "sha256": "56e2c517eed3ddcdc192a73ffef6c5266af0d916a76f234e9bdad2f9986dd674",
+      "bytes": 5438
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/drafts/evaluation.md": {
+      "kind": "file",
+      "sha256": "c8ed291af499716449f324654bca79ee00642fe6c641b05e58c9b9cdfa26cefc",
+      "bytes": 10583
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/drafts/integration.md": {
+      "kind": "file",
+      "sha256": "58280b4c4f3d5a525a6919cb8be534e8ec4435ee6a105489456cd87321a631ff",
+      "bytes": 16832
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/drafts/mechanisms.md": {
+      "kind": "file",
+      "sha256": "a25013d119164f59ea9e1fa2bd61d534e843d1bf380e6ebdb343b1474183e55c",
+      "bytes": 12033
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/drafts/report.md": {
+      "kind": "file",
+      "sha256": "b34e3b671ed5bda869289060bc7e6554948b6f6b1c15c7a6a9547a5e021e472a",
+      "bytes": 13890
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/drafts/scout-contracts.md": {
+      "kind": "file",
+      "sha256": "3de0c9b371da546c13a77463e8d8b6db0602ff27ec000fa5eb2706e0d9f6a1cc",
+      "bytes": 11613
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/evaluation.md": {
+      "kind": "file",
+      "sha256": "28f9e9302ac483b70f9e35a853b9af194e4b14fd1e9ea0c228c4f4f74c692229",
+      "bytes": 11679
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/evidence.jsonl": {
+      "kind": "file",
+      "sha256": "d87962e6aec6f64b541ac8174d4368ddf24950dd37a1714a8313c05b0a44ccda",
+      "bytes": 883966
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/integration.md": {
+      "kind": "file",
+      "sha256": "879dbc8f1a45ad8e090424a7931a676d61e3c8b2b9e2388522ec4b3f652c2849",
+      "bytes": 18975
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/key-map.json": {
+      "kind": "file",
+      "sha256": "6ee816e7badb5beb6b74adae3ef1f7c219ed3e6b8224c26b460ac6037c50aa51",
+      "bytes": 12700
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/mechanisms.md": {
+      "kind": "file",
+      "sha256": "d58bbcad4f5b1b0937be4d4fe53e4b249ae5b81d0c46fc24529170af6f5fa3b9",
+      "bytes": 15750
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/plan.md": {
+      "kind": "file",
+      "sha256": "c9f54c0af2da13891d9187cec11f74c4cccd679ad4beb5796bfc8c88788b04a9",
+      "bytes": 2113
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/queries.jsonl": {
+      "kind": "file",
+      "sha256": "7a680b205d95da70c7cb64126c4db3a90848a6eddf070ff46d11b3c7adf0ef85",
+      "bytes": 12820
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/report.md": {
+      "kind": "file",
+      "sha256": "b84754f2ed96005cfd04c5d23b89dff049b24814a6179acbe8ca721d925e4bb5",
+      "bytes": 15339
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/retrievals.jsonl": {
+      "kind": "file",
+      "sha256": "2c4eea9bad0cdf76c3df5a011046bc1f852429022a6bd20570f5e2ab58349079",
+      "bytes": 20463
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/run_manifest.json": {
+      "kind": "file",
+      "sha256": "c50a5d0b2e039c88e66c2fb176f3a9193e6121335461e437f08824cc716d4aa3",
+      "bytes": 8270
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/scout-contracts.md": {
+      "kind": "file",
+      "sha256": "429d7dc7913f70765516982ece641d1bf1cd4555b3369d2e43b7a456fa4c10da",
+      "bytes": 12224
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/semantic-review.json": {
+      "kind": "file",
+      "sha256": "76e43011a7049c99eb5f70994ba02f32dd39f98278807d30d17c9b48577fcea1",
+      "bytes": 701
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/case-async.md": {
+      "kind": "file",
+      "sha256": "baaea6f2b7c6d42f9862679a2dd25177653bb9bf3896ed333afa5fbeaea753d6",
+      "bytes": 10554
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/case-core.md": {
+      "kind": "file",
+      "sha256": "4f055c040df8815ce88cdfe0d383acb56dc1ec159c8e6331cbe823ee2fcf7c9b",
+      "bytes": 11968
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/case-report.md": {
+      "kind": "file",
+      "sha256": "a407ca17e1ff02ee98ee9c35a761fb9ed1f906d3804ab674d1dd24c4f73752e8",
+      "bytes": 15270
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/case-repro.md": {
+      "kind": "file",
+      "sha256": "e42bd1fd89360b64344310c946994e446be534a36572b24161413585df52035a",
+      "bytes": 7570
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/case-validation.md": {
+      "kind": "file",
+      "sha256": "5daae70c1d06efb2f8f030fa6aa5874928e80390b61c8121332bc65ed8a789fc",
+      "bytes": 5230
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/docs-superpowers-specs-2026-07-29-super-roast-design.md.md": {
+      "kind": "file",
+      "sha256": "235e9f0e72adabf9a7bccde7f21d61eab813aa41104f2b818cce9431218b6a43",
+      "bytes": 14973
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-auto-SKILL.md.md": {
+      "kind": "file",
+      "sha256": "39d68f8ec80ca60639403b9a13a3684cdfaf3ddeb33165ae02967a24faa65d29",
+      "bytes": 59033
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-auto-report-prompt.md.md": {
+      "kind": "file",
+      "sha256": "432d34128d4f0a75624d55037df6509fb3b7e84be0867e2bfa99cda97ec5b4d7",
+      "bytes": 9443
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-auto-run-state.md.md": {
+      "kind": "file",
+      "sha256": "016c200e2e154b0de11f9ea5c42f0053e41fe45211e2d57c31d5e47b169b647e",
+      "bytes": 25793
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-auto-scope-filter-prompt.md.md": {
+      "kind": "file",
+      "sha256": "946ca6e9b5ca42cc30a00f4247f1f3d0cbc86ea33287da7f03c873868cc44307",
+      "bytes": 3880
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-auto-scripts-scope-dispositions.md": {
+      "kind": "file",
+      "sha256": "04339d97e71665881dd672a3fdc9caf72c6f1973ba35c7c6066ec3d27490626d",
+      "bytes": 5457
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-coordinator-subagents.md.md": {
+      "kind": "file",
+      "sha256": "a8d79a5b3391f425d3a46419377335f1d7813b2cf58e765e2ad0b75fe9048ae9",
+      "bytes": 8799
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-coordinator-workflow.md.md": {
+      "kind": "file",
+      "sha256": "61c515df7d90b624bb7987ab625dbe05ede2b409819e325e6ec2462adb9aa8e4",
+      "bytes": 201412
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-coordinator.js.md": {
+      "kind": "file",
+      "sha256": "67269a69110057968b77eccccb59fa06cfbc50bab185f8c2cb28fa3cc44dbb1d",
+      "bytes": 235936
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-implementer-prompt.md.md": {
+      "kind": "file",
+      "sha256": "31e9a74bf1335f4dae135d944c5ffe17f1569197d76547faf39144e4377060a7",
+      "bytes": 12743
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-scripts-dispatch-text.mjs.md": {
+      "kind": "file",
+      "sha256": "0c5b79f9b44a33268b36be97406a2d8e2fdca0a3db7d76d64c451c9de2bce5c6",
+      "bytes": 13529
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-scripts-report-verdict.md": {
+      "kind": "file",
+      "sha256": "f73e6bf208173da423a5dbd318911e13011ec8fbd90a79aea02898c9be324275",
+      "bytes": 9953
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-task-reviewer-prompt.md.md": {
+      "kind": "file",
+      "sha256": "9092e73bf788188d8490773595ac5a4e7f4cd67746f76787f6cdc24aa3cc911e",
+      "bytes": 6745
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-code-triage-prompt.md.md": {
+      "kind": "file",
+      "sha256": "a8868e4c6fb76cd0149861bb60ba19aa6c9bd413df875b98d55f9cbc1e5db32d",
+      "bytes": 4744
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-SKILL.md.md": {
+      "kind": "file",
+      "sha256": "795650c73dfe6f9d59099f188507e3ae91878b1d4fd8b30ff04412d72b0f185d",
+      "bytes": 23202
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-dedupe-prompt.md.md": {
+      "kind": "file",
+      "sha256": "450a4ea2ba617bd64ccaee76473c28666b07e383da0ae884d60480857c00c8f2",
+      "bytes": 3731
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-judge-seat-prompts.md.md": {
+      "kind": "file",
+      "sha256": "ec9518aac8298cc1bed1383b4cf23e64bbd96ba0f3a26302afdc66f9f998c267",
+      "bytes": 9755
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-reporter-prompt.md.md": {
+      "kind": "file",
+      "sha256": "9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1",
+      "bytes": 20873
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-scout-prompts-pr.md.md": {
+      "kind": "file",
+      "sha256": "0aa9df47330e88dae20c08f41d6a84e0b0d28cbba5a05deb780e29e6ea44b5ec",
+      "bytes": 32545
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-scripts-assemble-args.mjs.md": {
+      "kind": "file",
+      "sha256": "be0434d3411197dc2136cac0c4152f2afb29e6a4f5ae17640242f990c2e4d7a1",
+      "bytes": 18058
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-super-roast-workflow.md.md": {
+      "kind": "file",
+      "sha256": "1fef682008fd3dd57b47a5b5e116d056140962b12bf2006f0370e0e0e7fa99fb",
+      "bytes": 77457
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/snapshots/skills-super-roast-triage-prompt.md.md": {
+      "kind": "file",
+      "sha256": "7912ae2933151d26f74b052f8dbac3600d9553b8184164eaec71b55fce9566a6",
+      "bytes": 3297
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/sources.jsonl": {
+      "kind": "file",
+      "sha256": "858db810345a6ad701e7d154eac0ba74dfa68b9b75db8fd581b89a3ee3c6520c",
+      "bytes": 24518
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/validation-results.json": {
+      "kind": "file",
+      "sha256": "ebbdd0ddec94badba36feb72196223d1b9762fea68d330249030513337eeeaa3",
+      "bytes": 3477
+    },
+    "docs/research/2026-10-16-test-reliability-scouts/validation-surfaces.json": {
+      "kind": "file",
+      "sha256": "d2b3f2dcca5903af9a1f41b76f073fb26fcdb566bab5d8a00733777e8bbccbba",
+      "bytes": 1122
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/README.md": {
+      "kind": "file",
+      "sha256": "f88f2e82b776ec9a3ef3f201f6480b22e91e012bb1fcfc30d6aa67bc91ecdb38",
+      "bytes": 23498
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/RESUME.md": {
+      "kind": "file",
+      "sha256": "7cfed702000b5fbe2c47802d07d015e21dd109b29b8ccc53b70f8dba5b16cdb8",
+      "bytes": 4669
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/compaction.md": {
+      "kind": "file",
+      "sha256": "0aafcc0d0eaa9cbd65498f68fb663df496dbe8726b3dca20647735a999298b0d",
+      "bytes": 21430
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/completion-audit.md": {
+      "kind": "file",
+      "sha256": "5b9de3d26ea496b34cf964eb27bca19e2075f496e9323c6c75ce996b7c32e3e7",
+      "bytes": 4309
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/context-pass.md": {
+      "kind": "file",
+      "sha256": "ada186cb4ce05237dc0e8a40a72a464942777ec0a579ce96ff3d82a5a1cbfce7",
+      "bytes": 7447
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/cross-node.md": {
+      "kind": "file",
+      "sha256": "a55fd975ca18f1bcb782bd4dbd3412e620f92bdf27ea5a32329d9f493fadb86e",
+      "bytes": 15589
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/artifact-validation.txt": {
+      "kind": "file",
+      "sha256": "74ab6b8b4a561195b11f243960fe5632974dd344ab84d90f0646e2dd656b3c48",
+      "bytes": 350
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/assembler-size-observation.json": {
+      "kind": "file",
+      "sha256": "c738c8f705dcaa31982ee2cc707f36b066e817a1dca981719a9c0d7376694eae",
+      "bytes": 201
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/cleanup-denied-fixture.sh": {
+      "kind": "file",
+      "sha256": "790d94af672efb95da32d762cc64fec7020457d671875f8eafcc85777cdebdb6",
+      "bytes": 741
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/cleanup-denied-output.txt": {
+      "kind": "file",
+      "sha256": "77dad3fce5fafd8bc5fef700368c9ebb698d79450f67c294aff50a88c5bede8d",
+      "bytes": 185
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/coordinator-replay-unsandboxed.log": {
+      "kind": "file",
+      "sha256": "5e4e1804e6c9d089c049f639d77292340575627e56f7a98ababffb4e024910cd",
+      "bytes": 117551
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/coordinator-replay.log": {
+      "kind": "file",
+      "sha256": "dc743e1e4da81463e61f33f4621496330c05cf03539c8a340460ea7463b7ec1d",
+      "bytes": 114022
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/coordinator-repro.log": {
+      "kind": "file",
+      "sha256": "81dc0b964a7ceac77301bc449e96be824739b2042a2669d52f6710c9eb1a1666",
+      "bytes": 1922
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/coordinator-repro.mjs": {
+      "kind": "file",
+      "sha256": "789dca5a2bc22607a615a0971005da272d248eec6ab320b6f38b641ea3f4e4ab",
+      "bytes": 16839
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/local-source-inventory.json": {
+      "kind": "file",
+      "sha256": "77f13e4620b850a0480b6563a75b61b3d8840baa72e726dbfd0729ba7a075f9a",
+      "bytes": 37451
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/planning-fixture.json": {
+      "kind": "file",
+      "sha256": "7cd2b43c4615ff3263d5d402b67f9488dd24a133b3e0e6bc05ca228dea4efe1e",
+      "bytes": 765
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/planning-profile.json": {
+      "kind": "file",
+      "sha256": "c89d45de8dbfb532cf927d61e6893360b31e62cf90612c5a76885344d7afbac9",
+      "bytes": 8643
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/planning-profile.md": {
+      "kind": "file",
+      "sha256": "ed882fa717a6d3183be4606cf4a0e3ebaf38e54e433a042331d4bf58878e98d9",
+      "bytes": 4340
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/run-profile-tests.log": {
+      "kind": "file",
+      "sha256": "76270328206e6c0b0aead75de1dc9a124d6fb07994b40e7efb481db2c056df9b",
+      "bytes": 19221
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/evidence/source-hash-revalidation.json": {
+      "kind": "file",
+      "sha256": "c912074c9790d5ec66b1f792127b7c02cb6018a0a5aa2d61526a81b6e5f3f529",
+      "bytes": 4496
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/inbox-and-seat.md": {
+      "kind": "file",
+      "sha256": "29d0417f8caf7aa2185bcc443679943a320383176b2968b7f52099becc3f0456",
+      "bytes": 15426
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/legacy-history.md": {
+      "kind": "file",
+      "sha256": "9270f39282fc3c884445a1f39cb2fd742ed7d8cf51def166891e14e3b829e369",
+      "bytes": 19557
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/legacy-workflow.md": {
+      "kind": "file",
+      "sha256": "37265a155e4f4df779ac008b1fca49324de2d4e6ec5a0e5a89fd2f27d5fcecff",
+      "bytes": 25083
+    },
+    "docs/superpowers/feedback/2026-10-16-accumulated-triage/older-local.md": {
+      "kind": "file",
+      "sha256": "b3f2c2c2014f47c0dbddde6d8af00434aad430b4148094194c42acb7c94e9d03",
+      "bytes": 31363
+    }
+  },
+  "allUntrackedPreserved": true,
+  "mode": "local fast-forward; no pull/push/release",
+  "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderrSha256": "cbce73da1bb9d4529aeea3edcf4499e6164540984c23ab9d0a8b07da965f83d1"
+}

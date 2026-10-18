@@ -1,0 +1,21 @@
+test_earlier_complete_survives_verification (__main__.Metrics.test_earlier_complete_survives_verification) ... ok
+test_earlier_real_merge_survives_verification (__main__.Metrics.test_earlier_real_merge_survives_verification) ... ok
+test_normal_implementation (__main__.Metrics.test_normal_implementation) ... ok
+test_prior_landing_without_timing_is_not_synthesized_at_verification (__main__.Metrics.test_prior_landing_without_timing_is_not_synthesized_at_verification) ... ok
+test_verification_only (__main__.Metrics.test_verification_only) ... ok
+test_workflow_pending_close_is_not_completed (__main__.WorkflowMetrics.test_workflow_pending_close_is_not_completed) ... ok
+test_workflow_prior_merge_survives_verification (__main__.WorkflowMetrics.test_workflow_prior_merge_survives_verification) ... ok
+test_workflow_verified_close (__main__.WorkflowMetrics.test_workflow_verified_close) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 1.972s
+
+OK
+earlier-complete: landing=True, merges=1
+earlier-merge: landing=True, merges=1
+implementation: landing=True, merges=1
+untimed-earlier-merge: landing=True, merges=0
+verification: landing=False, merges=0
+Workflow pending: landing=False, verified=False
+Workflow prior-merge: landing=True, verified=True
+Workflow verified: landing=False, verified=True
