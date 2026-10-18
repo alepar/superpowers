@@ -272,6 +272,59 @@ const associated=new Map();
 for(const association of correspondences){
  try{
   const a=association;
+  if(object(a)&&a.version===2){
+   if(!text(a.artifact)||!(/^[a-f0-9]{64}$/).test(a.sha256)||a.judgment!=='supported'||!text(a.basis)||
+      !Array.isArray(a.evidence)||!a.evidence.length||!a.evidence.every(text)||!Array.isArray(a.sources)||!a.sources.length||
+      !object(a.population)||!text(a.population.artifact)||!(/^[a-f0-9]{64}$/).test(a.population.sha256)||!Array.isArray(a.lines)||['source','retainedArtifact','retainedSha256','interpretation'].some(k=>k in a))throw Error('unsupported or malformed multi-source association');
+   const original=artifactPath(a.artifact);
+   if(declared.get(original)!=='keys')throw Error('multi-source association requires declared keys input');
+   if(sha(original)!==a.sha256)throw Error('original hash mismatch');
+   const selected=new Map(),ids=new Set(),bindings=[];
+   for(const s of a.sources){
+    if(!object(s)||!text(s.source)||ids.has(s.source)||!text(s.retainedArtifact)||!(/^[a-f0-9]{64}$/).test(s.retainedSha256))throw Error('invalid or duplicate multi-source entry');
+    ids.add(s.source);
+    const retained=artifactPath(s.retainedArtifact);
+    if(sha(retained)!==s.retainedSha256)throw Error('retained hash mismatch');
+    const matches=sources.filter(r=>r.source===s.source&&artifactPath(r.artifact)===retained),result=extract(retained,s.source);
+    if(!matches.length||result.status!==0)throw Error('retained source extraction unavailable');
+    const actual=JSON.parse(result.stdout);
+    if(actual.kind!=='final-review'||matches.some(r=>content(r)!==content(actual)))throw Error('retained source differs from complete final-review extraction');
+    const known=new Set(actual.occurrences.map(o=>refId({source:s.source,...o})));
+    bindings.push([s.source,s.retainedSha256]);
+    selected.set(s.source,known);
+   }
+   const population=artifactPath(a.population.artifact);
+   if(sha(population)!==a.population.sha256)throw Error('selected population hash mismatch');
+   const producer=JSON.parse(fs.readFileSync(population,'utf8')),expected=new Map();
+   const keyLines=keysInput(original),lineKeys=new Map(keyLines.map(k=>[k.line,k.key]));
+   if(!Array.isArray(producer))throw Error('invalid selected producer population');
+   for(const item of producer){
+    const r=item?.ref;
+    if(!object(r)||Object.keys(r).sort().join(',')!=='position,section,source'||
+       !['Must fix before landing','Untested scope'].includes(r.section)||!Number.isSafeInteger(r.position)||r.position<1||
+       !selected.get(r.source)?.has(refId(r))||expected.has(refId(r)))throw Error('invalid, foreign or duplicate selected producer ref');
+    const hasKey=Object.hasOwn(item,'key'),hasLine=Object.hasOwn(item,'line');
+    if((!hasKey&&!hasLine)||(hasKey&&!text(item.key))||(hasLine&&(!Number.isSafeInteger(item.line)||!lineKeys.has(item.line))))throw Error('missing or invalid producer key/line binding');
+    const candidates=hasLine?[item.line]:keyLines.filter(k=>k.key===item.key).map(k=>k.line);
+    if(candidates.length!==1||(hasKey&&lineKeys.get(candidates[0])!==item.key))throw Error('ambiguous or contradictory producer key/line binding');
+    expected.set(refId(r),candidates[0]);
+   }
+   const seen=new Set(),mapped=new Set();
+   for(const mapping of a.lines){
+    if(!object(mapping)||!Number.isSafeInteger(mapping.line)||!lineKeys.has(mapping.line)||seen.has(mapping.line)||!Array.isArray(mapping.refs)||!mapping.refs.length)throw Error('invalid or duplicate keys line mapping');
+    seen.add(mapping.line);
+    for(const r of mapping.refs){
+     const id=refId(r);
+     if(!object(r)||Object.keys(r).sort().join(',')!=='position,section,source'||expected.get(id)!==mapping.line||mapped.has(id))throw Error('unknown, unselected, reassigned or duplicate mapped occurrence ref');
+     mapped.add(id);
+    }
+   }
+   if(seen.size!==keyLines.length||mapped.size!==expected.size)throw Error('incomplete keys line or occurrence correspondence');
+   const binding=JSON.stringify([2,a.sha256,a.population.sha256,bindings.sort((x,y)=>x[0].localeCompare(y[0])),a.lines.map(m=>[m.line,m.refs.map(refId).sort()]).sort((x,y)=>x[0]-y[0])]);
+   if(associated.has(original)&&associated.get(original)!==binding)throw Error('conflicting immutable source correspondence');
+   associated.set(original,binding);
+   continue;
+  }
   if(!object(a)||a.version!==1||!text(a.artifact)||!text(a.source)||!text(a.retainedArtifact)||!(/^[a-f0-9]{64}$/).test(a.sha256)||!(/^[a-f0-9]{64}$/).test(a.retainedSha256)||
      a.judgment!=='supported'||!text(a.basis)||!Array.isArray(a.evidence)||!a.evidence.length||!a.evidence.every(text))throw Error('unsupported or malformed association');
   const original=artifactPath(a.artifact),retained=artifactPath(a.retainedArtifact),kind=declared.get(original);

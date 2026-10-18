@@ -368,11 +368,51 @@ Malformed, unsupported or conflicting associations remain gaps even beside a val
 For keys-only input, `lines` maps each actual nonempty key line exactly once, using its original
 1-based physical line number and nonempty exact occurrence refs from this one retained source.
 A first `review: ready|not ready|none` header and blank lines are excluded. Missing, duplicate,
-header, unknown, cross-source or uncovered mappings fail. A single keys file spanning multiple
-source identities remains a gap; matching display keys alone supply no correspondence.
+header, unknown, cross-source or uncovered mappings fail. Version 1 remains a single-source contract; matching display keys alone supply no correspondence.
+Use version 2 below for a keys file spanning source identities.
 For same-byte archived reports, omit `lines`; original and retained full extraction must match.
 Repeated exact associations and identical archived copies are allowed, conflicting source,
 content or line mappings are not.
+
+For aggregate keys, version 2 binds the exact original producer-selected occurrence population:
+
+```json
+{"version":2,"artifact":"<original declared keys file>","sha256":"<keys bytes SHA-256>","sources":[{"source":"<existing immutable source ID>","retainedArtifact":"<registered retained final review>","retainedSha256":"<retained bytes SHA-256>"}],"population":{"artifact":"<original immutable producer refmap JSON>","sha256":"<original refmap bytes SHA-256>"},"judgment":"supported","basis":"<evidence-backed original selection and physical line correspondence>","evidence":["<producer/raw inspection evidence>"],"lines":[{"line":2,"refs":[{"source":"<contributing source>","section":"Must fix before landing","position":1}]}]}
+```
+
+Retain the producer's exact selected-ref input when generating the keys, before physical-key
+deduplication: the population artifact is a JSON array of objects each carrying an exact
+`ref: {source,section,position}` plus `key` and/or `line` for its original transport binding.
+`key` must match the normalized original physical key; `line` is its 1-based physical line.
+When both are present they must agree. A key-only row must select exactly one physical line;
+equal display keys on different lines require explicit `line`. Missing, malformed, contradictory
+or ambiguous bindings fail. These fields validate transport only; occurrence identity remains
+the exact ref. Other fields such as `artifact` or `groupRef` confer no identity. Do not reconstruct this historical input from current keys or a later
+outstanding projection. Keep the original bytes and hash even when later supported dispositions
+change the outstanding population. A different actual selection needs a new explicit supported
+owner judgment and retained producer snapshot; preserve earlier correspondence and history.
+
+Every listed source must already be registered at its retained artifact, match its hash and
+fresh complete final-review extraction. Each selected ref must resolve there in `Must fix before
+landing` or `Untested scope`. The gate authenticates the population bytes, rejects duplicate or
+foreign refs, and requires an exact partition: each nonempty physical keys line is mapped once,
+each selected ref is mapped once, and each line carries all its contributing refs. Several refs
+may share one physical line; equal display keys on different physical lines remain separately
+representable. A typed `review: ready|not ready|none` header and blank lines are excluded.
+A typed empty keys input needs an explicitly hash-bound empty producer array and registered
+retained source extraction; missing, untyped or unsupported population remains a gap. Version 2
+accepts no version-1 `source`, `retainedArtifact`, `retainedSha256` or `interpretation` fields.
+Repeated identical partitions are idempotent; conflicting or malformed associations remain gaps.
+
+This is the caller's actual selected producer snapshot, not all raw occurrences or an invented
+current outstanding population. The supported selection judgment must use the full validated
+projection and actual source/disposition evidence. Partition equality authenticates transport;
+it does not prove producer completeness or the truth of that judgment. Missing original
+producer input or unsupported selection stays a coverage gap. Correspondence creates no finding
+source, link, routing, relevance, disposition, canonical authority, source readiness or root
+acceptance. Keep the separate source projection and all raw occurrences/dispositions, including
+unselected outstanding items; independently satisfy relevance, readiness, native evidence and
+other root gates. Version 1 archival/legacy behavior and canonical reconstruction are unchanged.
 
 For a malformed historical report requiring a judged retained interpretation, add:
 

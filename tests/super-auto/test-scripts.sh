@@ -9,6 +9,8 @@ T=$(mktemp -d)
 trap 'rm -rf "$T"' EXIT
 FAILURES=0
 
+node "$SCRIPT_DIR/multi-source-correspondence.mjs"
+
 pass() { echo "  [PASS] $1"; }
 fail() { echo "  [FAIL] $1"; FAILURES=$((FAILURES + 1)); }
 assert_eq() { if [ "$1" = "$2" ]; then pass "$3"; else fail "$3"; echo "    expected: $2"; echo "    got:      $1"; fi; }
