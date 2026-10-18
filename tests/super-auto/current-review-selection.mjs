@@ -59,10 +59,11 @@ check('documented ordinary text Launch binds the committed intent for assembly',
 });
 check('documented unsettled resume preserves invocation and run context',()=>{
  documentedLaunch('current');
+ try {
  const original=fs.readFileSync(ledger,'utf8');fs.appendFileSync(ledger,original);
  const p=cli('assemble','--consumer','final-review','--instance','resumed','--base',base,'--head',head,'--stdout');assert.equal(p.status,0,p.stderr);
  const s=runCommand(commandFrom(p.stdout));assert.equal(s.status,0,s.stdout+s.stderr);
- launch('current');
+ } finally { launch('current'); }
 });
 check('ordinary assembler supplies authenticated current context to selector',()=>{const p=cli('assemble','--consumer','final-review','--instance','ordinary','--base',base,'--head',head,'--stdout');assert.equal(p.status,0,p.stderr);const s=runCommand(commandFrom(p.stdout));assert.equal(s.status,0,s.stdout+s.stderr)});
 // Execute the real Workflow builder with only its external runtime entry stubbed, as dispatch-text does.
