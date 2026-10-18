@@ -1,0 +1,185 @@
+{
+  "proposalOnly": true,
+  "revision": 1,
+  "basis": "Independent R11assessment and actual historical C8source binding; no generic A–N/no-case exemption",
+  "preservedRevision0": "/private/tmp/ufz-correction-final-criterion-proposals-r0",
+  "revision0Manifest": "/private/tmp/ufz-correction-final-criterion-proposals-r0-manifest.json",
+  "exactChangedProposalIds": [
+    "new-169",
+    "new-171",
+    "new-174"
+  ],
+  "changedCriterionIds": [
+    "R11"
+  ],
+  "changedFieldsForTargetRefs": [
+    "sourceSpecificJudgment",
+    "proposedFindingAcceptance.basis",
+    "proposedFindingAcceptance.evidence",
+    "currentCriterionMapping.R11",
+    "remainingDependencies"
+  ],
+  "changedExistingFiles": [
+    {
+      "path": "criterion-judgments.json",
+      "revision0Sha256": "b12ce01b54cd3fc61e81dc34e948d01e3f23173564cff79f0d7b8af948b71fd9",
+      "revision1Sha256": "accae8c3e73cbf8a493953a20a577784b1db8479846c5d387e04b534728ec197"
+    },
+    {
+      "path": "REPORT.md",
+      "revision0Sha256": "3a16556963a8854626c555bab00c08d19cdf8299ac00ce04866887b502033e18",
+      "revision1Sha256": "ed664f9d0614dc467e1d8bcc183b2a53dddc3b42a6ae191b2d5e87847ee658b4"
+    },
+    {
+      "path": "exact-ref-proposals.json",
+      "revision0Sha256": "3ed410c7cd5f88329a26b6bddb50c79f46710afb2081f635657c5ac166b5c7e3",
+      "revision1Sha256": "fb1958db897c15a591eacb60648e944ea35080b2e7daf3367df7a0412a61a4bb"
+    },
+    {
+      "path": "evidence-catalog.json",
+      "revision0Sha256": "3f3cc1672774d1a4c307c8229bd2a210611c70b22d00409fa016f53ebcfd64fc",
+      "revision1Sha256": "9914ca8a47704e3102327e4fed5e05507156e335ce6179e9495c1cfb54243d98"
+    },
+    {
+      "path": "integrity-check.json",
+      "revision0Sha256": "307b53cfa5464f40d66b83eafb2f9114afd684e03b7a8af7ce365953dceebcb1",
+      "revision1Sha256": "69fad941273926bc9590b588ed2f377c4cbe614d5c307e95e8fc2582d5fbd3c3"
+    },
+    {
+      "path": "candidate-findingAcceptance-updates.json",
+      "revision0Sha256": "17e376317e90e0bd9c86bd4d863af115cffa80670b7a48653faccd065851ba11",
+      "revision1Sha256": "1974d486a3ceb127eee2a0e177a8ff9b902601040cbef78d7e38488fe8797af8"
+    },
+    {
+      "path": "remaining-dependencies.json",
+      "revision0Sha256": "d971d77e97993633c7ea6edaae5bf521256658cab1f33d0bacbd8f399567a4ad",
+      "revision1Sha256": "cd6312298c08681902d3ff508437498e0699fc1515313fdf7eea4df9d7ca792a"
+    }
+  ],
+  "newSupportingFiles": [
+    {
+      "path": "r11-c8-source-binding.json",
+      "sha256": "9d159975b279b5bea29338611950b0fd1204c6fc9af286930f976c00dcf045ca"
+    },
+    {
+      "path": "amend-r11-proposal.py",
+      "sha256": "1740161b23456adeb50419190b973ce04161bed453943c604a02cae7b267d8a8"
+    },
+    {
+      "path": "retained-evidence/r11-c8/independent-assessment.md",
+      "sha256": "8787ec2e8d0a5b04d7345635febf3a1ba36644a0ee8d7d2a8368c030a6651782"
+    },
+    {
+      "path": "retained-evidence/r11-c8/source-manifest.json",
+      "sha256": "9679ac9bad123c54d776423b0d03a5b638279444578ccb92d655573fcd965eda"
+    },
+    {
+      "path": "retained-evidence/r11-c8/guidance-C.txt",
+      "sha256": "083328f6ac268e9aabddee389e119d647379946e59bbbaf128658c6ab1165d54"
+    },
+    {
+      "path": "retained-evidence/r11-c8/scenario-C.txt",
+      "sha256": "f6d138d7994fd7ee8a8e702f096c70770e2ade61c0c71e381e572e3ba4e54a04"
+    },
+    {
+      "path": "retained-evidence/r11-c8/C-after-3-prompt.txt",
+      "sha256": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d"
+    },
+    {
+      "path": "retained-evidence/r11-c8/scores.json",
+      "sha256": "136ca9f658167040177ee67d77e361bb6b792282e12d2f6812ac60b5d9dfdf5b"
+    },
+    {
+      "path": "retained-evidence/r11-c8/trials.json",
+      "sha256": "772be5f68f141724352885bf9587ccb6537c2f7a70230f7b4de0f87a540996e8"
+    },
+    {
+      "path": "retained-evidence/r11-c8/report.md",
+      "sha256": "1cd4d953f3a00af6e1c54d28fc578c91ec48c8d5ca2ab84b3618cb6b92548941"
+    },
+    {
+      "path": "retained-evidence/r11-c8/C-after-1-prompt.txt",
+      "sha256": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d"
+    },
+    {
+      "path": "retained-evidence/r11-c8/C-after-4-prompt.txt",
+      "sha256": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d"
+    },
+    {
+      "path": "retained-evidence/r11-c8/C-after-1-response.txt",
+      "sha256": "852fab7e5011968d93d6594d010a7c40034f095c617f1b5ec3ac27369c15cd88"
+    },
+    {
+      "path": "retained-evidence/r11-c8/claim-summary.json",
+      "sha256": "d0c59ddaf465d2c233a573461e0c602711401b9872ce27536c7575f9accf9708"
+    },
+    {
+      "path": "retained-evidence/r11-c8/C-after-4-response.txt",
+      "sha256": "def702d154e4dda58b1847ef38aeb1d4e8fde6248652ea14445adb1538216cd7"
+    },
+    {
+      "path": "retained-evidence/r11-c8/C-after-3-response.txt",
+      "sha256": "bb5789032e63cf0301001cfc584a421680dc339521eee77741aa6f9c2b366036"
+    },
+    {
+      "path": "retained-evidence/r11-c8/source-recheck.json",
+      "sha256": "9f07eb40826991af0ce77e97357ccb1a501003aaad38bd835ef59440f2dc6490"
+    },
+    {
+      "path": "retained-evidence/r11-c8/report-context.diff",
+      "sha256": "cd02a31e2d642b93af3a8686c2cfda0c049da6bc40a6d72a82535adc96a5f55b"
+    },
+    {
+      "path": "retained-evidence/r11-c8/C-after-2-response.txt",
+      "sha256": "fbb0b92431ebf2dcbc6b99613d86e5245c0d1790741bb4508fb1661c32686336"
+    },
+    {
+      "path": "retained-evidence/r11-c8/C-after-5-response.txt",
+      "sha256": "623321f3371d4ef6714339e929a09b1c3cc467c458f56e2789b45830833fb22d"
+    },
+    {
+      "path": "retained-evidence/r11-c8/C-after-2-prompt.txt",
+      "sha256": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d"
+    },
+    {
+      "path": "retained-evidence/r11-c8/C-after-5-prompt.txt",
+      "sha256": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d"
+    },
+    {
+      "path": "retained-evidence/r11-c8/historical-source/skills/super-code/task-reviewer-prompt.md",
+      "sha256": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8"
+    },
+    {
+      "path": "retained-evidence/r11-c8/historical-source/skills/super-auto/report-prompt.md",
+      "sha256": "d6aeca28475787b7facb65b63260db804f62c5603020bff6138c8a569d699e91"
+    },
+    {
+      "path": "retained-evidence/r11-c8/historical-source/skills/upstream-feedback/SKILL.md",
+      "sha256": "2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30"
+    },
+    {
+      "path": "retained-evidence/r11-c8/historical-source/skills/super-roast/reporter-prompt.md",
+      "sha256": "9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1"
+    }
+  ],
+  "unchangedCriticalFiles": [
+    "candidate-supported-dispositions.json",
+    "historical-qualification-map.json",
+    "adoption-audit.json",
+    "native-review-assessments.json",
+    "exact-ref-index.tsv",
+    "supported-disposition-index.md"
+  ],
+  "counts": {
+    "exactRefs": 239,
+    "repairCandidates": 55,
+    "nonblockingQualifications": 184,
+    "existingNonblockingHistoricalGroups": 220,
+    "supplements": 29,
+    "sourceQualifications": 35,
+    "unknownOutcomes": 5
+  },
+  "allOriginalRawRefsAndOutcomesUnchanged": true,
+  "readScope": "Full independent R11assessment, old study report/scenarioC/all5actual responses/C8score quotes, original Task7acceptance, exact source manifest/recheck and current C8operative/context binding only. No fresh broad historical reread, new test/evaluation or source/canonical mutation.",
+  "currentAdoption": "Parent-owned; no final READY/root eligible claim."
+}

@@ -1,0 +1,39 @@
+import hashlib,json,pathlib,subprocess
+root='docs/superpowers/runs/2026-10-16-workflow-reliability/live-review-isolation/'
+base='e3749b014f6939cb82f5e79a33dc020f5b3961f0'
+source='f062b7c7ec1b967aa64952fad937ff6982cdb084'
+def blob(rev,name):
+ p=subprocess.run(['git','show',rev+':'+root+name],capture_output=True)
+ return p.stdout if p.returncode==0 else None
+manifestBytes=blob(base,'artifact-manifest.json');manifest=json.loads(manifestBytes)
+assert blob(source,'artifact-manifest.json')==manifestBytes
+missing=[];unchanged=0;restored=[]
+for name,expected in manifest.items():
+ old=blob(base,name);data=blob(source,name)
+ assert data is not None,('missing',name)
+ assert hashlib.sha256(data).hexdigest()==expected,('hash mismatch',name)
+ assert (pathlib.Path(root)/name).read_bytes()==data,('worktree mismatch',name)
+ if old is None:
+  missing.append(name)
+  restored.append({'identity':name,'sha256':expected,'gitBlob':subprocess.check_output(['git','rev-parse',source+':'+root+name],text=True).strip(),'bytes':len(data)})
+ else:
+  assert old==data,('original changed',name)
+  unchanged+=1
+expectedMissing=['caller/build/caller-output.txt','caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md','caller/.superpowers/sdd/ufz-live-review-plan/progress.md','caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff','caller/.superpowers/sdd/ufz-live-review-plan/ufz-live-review-plan.md']
+assert missing==expectedMissing
+assert len(manifest)==81 and unchanged==76 and len(restored)==5
+p=json.loads(blob(source,'retained-equivalents/provenance.json'))
+assert {x['originalIdentity']:x['expectedSha256'] for x in p['restored']}=={x:manifest[x] for x in missing}
+assert len(p['audit'])==81 and p['after']['hashMatches']==81
+for entry in p['restored']:
+ data=pathlib.Path(entry['sourceLocation']).read_bytes()
+ assert hashlib.sha256(data).hexdigest()==entry['sourceSha256']==entry['expectedSha256']
+ assert data==blob(source,entry['originalIdentity'])
+assert blob(source,'report.md')==blob(base,'report.md')
+changes=subprocess.check_output(['git','diff','--name-status','69c3a0d001b0533aa4a8f682f51ca4e4bd8a5551',source],text=True).splitlines()
+assert set(changes)=={'A\t'+root+n for n in missing+['retained-equivalents/provenance.json']},changes
+for name in expectedMissing[1:]:
+ assert blob(source,name) is not None
+print(json.dumps({'stage':'baseline-red-integrity','sourceTree':subprocess.check_output(['git','rev-parse',base+'^{tree}'],text=True).strip(),'outcome':'fail','entries':81,'hashMatches':76,'missing':missing,'hashMismatches':[]},indent=2))
+print(json.dumps({'stage':'restored-git-tree-integrity','sourceTree':source,'outcome':'pass','entries':81,'hashMatches':81,'missing':[],'hashMismatches':[],'original76ByteIdentical':unchanged,'manifestAndReportUnchanged':True,'restoredGitBlobs':restored,'onlySixDeclaredAdditions':True,'retentionMapResolved':True},indent=2))
+print('PASS: all 81 original manifest identities hash-match captured Git blobs; exact five restored; original 76 unchanged; no historical observations rewritten.')

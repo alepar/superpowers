@@ -1,0 +1,27 @@
+{
+  "purpose": "PRIVATE adoption preview after independently supported18review/50measurementbindings; not actualcanonicaladoption/eligibility",
+  "sourceHead": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+  "sourceTree": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2",
+  "argv": [
+    "/bin/bash",
+    "/private/tmp/ufz-correction-final-source-fd52ffc7/skills/super-auto/scripts/report-status",
+    "--acceptance",
+    "/private/tmp/ufz-correction-adoption-preview-fd52ffc7/run-evidence/run.md",
+    "--tree",
+    "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2"
+  ],
+  "environment": {
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "HOME": "/private/tmp/ufz-correction-adoption-preview-fd52ffc7/gate/home",
+    "TMPDIR": "/private/tmp/ufz-correction-adoption-preview-fd52ffc7/gate/tmp",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "TZ": "UTC"
+  },
+  "exitCode": 3,
+  "runSha256Before": "9e874b306736ab983e633af2604d6cf8705116a1edfa438e55ed73d1d9ec9b58",
+  "runSha256After": "9e874b306736ab983e633af2604d6cf8705116a1edfa438e55ed73d1d9ec9b58",
+  "stdoutSha256": "73debe1656c988fd79e25dc9e1c7d17a59ab6f23a222f0f64eb4d7931e93bae2",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "independentTechnicalReview": "/private/tmp/ufz-correction-projection-global-addendum.md"
+}

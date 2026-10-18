@@ -1,0 +1,107 @@
+{
+  "createdUtc": "2026-10-17T22:57:44.955504+00:00",
+  "head": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+  "scope": "Bounded source/path/provenance inventory delta; no global readiness or omission authority",
+  "files": [
+    {
+      "path": "GLOBAL-COMPOSITION-HANDOFF.md",
+      "bytes": 1593,
+      "sha256": "d355251bf58ac32e6a1977ed4d0e2fc802ebef38d61d567d8843b816bf637894"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 10972,
+      "sha256": "36f4a84c8ca07fe33b4ef1106b7ad60bb67ea71d173649fc24b933a6b141dd7f"
+    },
+    {
+      "path": "canonical-run-structured-role.json",
+      "bytes": 68918,
+      "sha256": "cd7894e6afaba0c06d4a495828dfe3720903158172391b175ed5756975ea0afe"
+    },
+    {
+      "path": "complete-final-path-inventory.json",
+      "bytes": 14322171,
+      "sha256": "ff36e99764e506b78e1b8d298ab244016b221882aeaa9c4af284b3d4474dafc8"
+    },
+    {
+      "path": "delta-path-inventory.json",
+      "bytes": 6712883,
+      "sha256": "62a53fc89caadfd701cf4584e5137caf3e2e1c3d060df9e62073188a9c90a0e5"
+    },
+    {
+      "path": "exact-byte-duplicate-groups.json",
+      "bytes": 2011143,
+      "sha256": "b52f6b682d64cae4425f1d075bb9f49f0958cb4cc10f156f5cbdbe08488fd063"
+    },
+    {
+      "path": "explicit-private-path-byte-bindings.json",
+      "bytes": 6745005,
+      "sha256": "f380ab113ea9a709766f48ba7c8e2a3020b67632d2a9f3b43ae7ed29c6c8cd93"
+    },
+    {
+      "path": "final-source-partition.json",
+      "bytes": 38397,
+      "sha256": "df908b37049d68ceb6fa45a7c4e869f19c12f4e11dc55c7298ba6e83707f0979"
+    },
+    {
+      "path": "finalize_delta.py",
+      "bytes": 21872,
+      "sha256": "47e7ab0ef61574e22a61d7959b05f3bbf82346824a8c505973d9ff279b4962b5"
+    },
+    {
+      "path": "historical-review-and-role-reuse-proof.json",
+      "bytes": 550875,
+      "sha256": "7f86bc0326801db2a63d345163d87d49f9f82baa51020bc343c1528b08c267fd"
+    },
+    {
+      "path": "inventory-consistency-check.json",
+      "bytes": 777,
+      "sha256": "cfcf5ddf0a4a70fd6beb08206b70c26d23825bd38c13db9a6600bdd82f640d39"
+    },
+    {
+      "path": "inventory_delta.py",
+      "bytes": 21840,
+      "sha256": "19f6b9007cb1c33d813a208442ea24e13da135217bf14657403faa31d93bffa6"
+    },
+    {
+      "path": "outside-run-tree-identity.json",
+      "bytes": 216613,
+      "sha256": "383465b72e5a2898227070dfe4c9a8039ae6213ca7b25859e22e78fd759ba401"
+    },
+    {
+      "path": "previous-private-artifact-facts.json",
+      "bytes": 7743,
+      "sha256": "2afbd014a9b458990888cab9f528079dec759e3b72334d8aab547430ca118ad3"
+    },
+    {
+      "path": "primary-document-read-assessment.json",
+      "bytes": 2865,
+      "sha256": "6074c1ba2de6caee4914e72ca895027187aa23b3274b182f69e84e46315ccdb5"
+    },
+    {
+      "path": "product-delta-for-role-attribution.diff",
+      "bytes": 97473,
+      "sha256": "7338874e9337fa7667fffd29c7b465c7362be9624abb99f7aa82b7a842bbefe1"
+    },
+    {
+      "path": "selector-retention-binding.json",
+      "bytes": 2630,
+      "sha256": "763a75a95b8915e355ac600e6bae20ae9c71816941537fce29ecfcbe48b2a01a"
+    },
+    {
+      "path": "semantic-claim-queue.json",
+      "bytes": 4254296,
+      "sha256": "0e98d652f97c477b8146132508fe8838e6dfdd8918f48ab4007642428e96ddd1"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 3099,
+      "sha256": "362f45e8e852020f635973f9ab881ddffc1cd10f834e5c2ae440b69754bcb21e"
+    },
+    {
+      "path": "unchanged-inheritance-proof.json",
+      "bytes": 3727237,
+      "sha256": "97d5e39110c1abb53d3c46ccff08b440e21c3fba2de5db3e60dc6e0df57e3289"
+    }
+  ]
+}

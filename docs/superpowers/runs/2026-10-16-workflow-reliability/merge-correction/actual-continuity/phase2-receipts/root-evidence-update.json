@@ -1,0 +1,107 @@
+{
+  "reason": "prospective same criterion against committed fixed product tree; old failure retained; no review or human acceptance established",
+  "previous": {
+    "version": 1,
+    "owner": "super-auto",
+    "sourceTree": "7bbc73a84e449537a879f97da684a079df85e674",
+    "requirements": [
+      {
+        "id": "criterion",
+        "kind": "measurement",
+        "owner": "controlled-caller",
+        "command": "node check.mjs",
+        "configuration": "controlled-fixture",
+        "requiredLive": true
+      },
+      {
+        "id": "independent-final-review",
+        "kind": "review",
+        "owner": "independent-reviewer"
+      },
+      {
+        "id": "reserved-fixture-human-choice",
+        "kind": "human",
+        "owner": "fixture-human"
+      }
+    ],
+    "evidence": [
+      {
+        "sourceTree": "7bbc73a84e449537a879f97da684a079df85e674",
+        "command": "node check.mjs",
+        "configuration": "controlled-fixture",
+        "kind": "live",
+        "outcome": "fail",
+        "location": "/private/tmp/ufz-correction-actual-continuity-4911223a/preparation-receipts/criterion-RED.json"
+      }
+    ],
+    "reviews": [],
+    "decisions": [],
+    "recovery": {
+      "obligations": [],
+      "gaps": []
+    },
+    "checkEvidence": {
+      "records": [],
+      "requiredLiveChecks": [],
+      "gaps": []
+    },
+    "runFailures": [],
+    "findingAcceptance": []
+  },
+  "current": {
+    "version": 1,
+    "owner": "super-auto",
+    "sourceTree": "636e4a1220850b829660d7c36e35afd12fd16521",
+    "requirements": [
+      {
+        "id": "criterion",
+        "kind": "measurement",
+        "owner": "controlled-caller",
+        "command": "node check.mjs",
+        "configuration": "controlled-fixture",
+        "requiredLive": true
+      },
+      {
+        "id": "independent-final-review",
+        "kind": "review",
+        "owner": "independent-reviewer"
+      },
+      {
+        "id": "reserved-fixture-human-choice",
+        "kind": "human",
+        "owner": "fixture-human"
+      }
+    ],
+    "evidence": [
+      {
+        "sourceTree": "7bbc73a84e449537a879f97da684a079df85e674",
+        "command": "node check.mjs",
+        "configuration": "controlled-fixture",
+        "kind": "live",
+        "outcome": "fail",
+        "location": "/private/tmp/ufz-correction-actual-continuity-4911223a/preparation-receipts/criterion-RED.json"
+      },
+      {
+        "sourceTree": "636e4a1220850b829660d7c36e35afd12fd16521",
+        "command": "node check.mjs",
+        "configuration": "controlled-fixture",
+        "kind": "live",
+        "outcome": "pass",
+        "location": "/private/tmp/ufz-correction-actual-continuity-4911223a/phase2-receipts/criterion-GREEN-committed.json"
+      }
+    ],
+    "reviews": [],
+    "decisions": [],
+    "recovery": {
+      "obligations": [],
+      "gaps": []
+    },
+    "checkEvidence": {
+      "records": [],
+      "requiredLiveChecks": [],
+      "gaps": []
+    },
+    "runFailures": [],
+    "findingAcceptance": []
+  }
+}

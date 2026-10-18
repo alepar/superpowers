@@ -1,0 +1,242 @@
+ff5b1304 fix(super-code): release verification slot during parent settlement
+
+ skills/super-code/coordinator.js    |  11 +++-
+ tests/super-code/replay-harness.mjs | 114 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 124 insertions(+), 1 deletion(-)
+
+diff --git a/skills/super-code/coordinator.js b/skills/super-code/coordinator.js
+index 92a654c8..0698a0ad 100644
+--- a/skills/super-code/coordinator.js
++++ b/skills/super-code/coordinator.js
+@@ -1805,51 +1805,60 @@ while (true) {
+               log(`${id}: implementer reported IMPLEMENTED but head == base (${short(im.base)}) — nothing committed on the task branch; one commit nudge`)
+               const base = im.base
+               const nudged = await dispatch(() => commitNudgePrompt(id, ordinalFor(id), taskWorktree(id), taskBranch(id), base, artifacts(id).report), `commit-nudge:${id}`, { label: `commit-nudge:${id}`, phase: 'Implement', ...tier('implementer'), schema: RESULT })
+               if (!nudged) return null  // null nudge: unsettled this round, re-enters via the next ready batch
+               im = { ...im, ...nudged, id, base }
+               if (!im.head || im.head === base) {
+                 im = { ...im, status: 'BLOCKED', finding: `no commit on the task branch after the implementer reported IMPLEMENTED twice — the branch ${taskBranch(id)} is still at base ${short(base)}; the work is uncommitted in ${taskWorktree(id)} or was never made. The task was NOT reviewed.` }
+               }
+             }
+             done = { ...im, n: ordinalFor(id), branch: taskWorktree(id) }
+             // Implementation done: its dependents may start now (early unblock).
+             if (done.status === 'IMPLEMENTED' && done.completionKind !== 'verification-only') markImplemented(att)
+           }
+           r = (done.status === 'BLOCKED' || done.status === 'BLOCKED_AUTH') ? done : await reviewAndFix(done, planned.planPath, artifacts(id), () => !!att.cancelledBy)
+           if (att.cancelledBy || r?.status === 'CANCELLED') return await abandon(att, true)
+           if (r) r = { ...r, att, stacked }
+         }
+         // The chain's outcome. Blocker, permission-refusal and already-merged outcomes are handled here in
+         // the task's slot (triage counts against the cap); only a merge candidate leaves for the queue. A
+         // null does nothing this round. The attempt ends before the blocker path, so a RESOLVE retry starts
+         // clean.
+         if (r?.status === 'BLOCKED') { await failAttempt(att, { failure: 'blocked', reopen: true }); await handleBlocker(r, planned.planPath, onResolve) }
+         else if (r?.status === 'BLOCKED_AUTH') { await failAttempt(att, { failure: 'blocked', reopen: true }); await handleAuthRefusal(r, r.finding) }
+         else if (r?.status === 'ALREADY_MERGED') await closeAlreadyMerged(r)
+         else if (r?.status === 'CLEAN' && r.completionKind === 'verification-only') {
+-          if (!(await parentsMerged(att)) || att.cancelledBy) return await abandon(att, true)
++          if (att.parentAttempts.length) {
++            // Parent failure settlement needs a task slot too. Wait outside the window,
++            // then reacquire before recording evidence or closing the verification task.
++            sched.release(id); slotHeld = false
++            if (!(await parentsMerged(att)) || att.cancelledBy) return await abandon(att, false)
++            await sched.acquire(id); slotHeld = true
++            if (att.cancelledBy) return await abandon(att, true)
++            const held = admissionReason(id)
++            if (held) { holdAdmission(id, held); return null }
++          }
+           const basis = { completionKind: 'verification-only', status: 'CLEAN', files: [], base: r.base, head: r.head, sourceTree: r.sourceTree, evidence: r.evidence, requiredLiveChecks: r.requiredLiveChecks, reportPath: artifacts(id).report, reviewPath: artifacts(id).review, reviewStatus: 'CLEAN', ...(reviewBeadOf.has(id) ? { reviewBead: reviewBeadOf.get(id) } : {}), ...(blockerBeadOf.has(id) ? { blockerBead: blockerBeadOf.get(id) } : {}) }
+           for (const mn of r.minors || []) {
+             noteLedger(id, ledgerLine(r.n, id, 'minor (deferred): ' + mn), ledgerLine(r.n, id, 'minor (deferred): ' + (rawClassTag(mn) ? '[' + rawClassTag(mn) + '] ' : '') + 'text elided — see ' + basis.reviewPath + ' [recurrence-id: ' + recurrenceId(mn) + ']'))
+             noteRecurrence('minor', id, mn, 'Integrate')
+             deferredMinors.push({ id, text: String(mn).replace(/\s+/g, ' ').trim() })
+           }
+           verificationCompletions.set(id, basis)
+           const persisted = await noteRecovery(id, 'pending-closure', 'record', 'reviewed verification-only task awaits tracker closure', [basis.reportPath, basis.reviewPath], { verification: basis }, null, 'Implement')
+           if (persisted?.appended !== true) {
+             verificationCompletions.delete(id)
+             recoveryObligations.delete('pending-closure:' + id)
+             log('verification basis persistence unavailable for ' + id + ' — tracker closure withheld')
+             return null
+           }
+           await completeVerification(r)
+         }
+         else if (r) integrate = true
+       } finally {
+         if (slotHeld) sched.release(id)  // free the slot before integration: merges ride their own queue
+       }
+       if (integrate) {
+         // A split task's merge closes its review bead, so the split lands first; a stacked task
+         // merges only after every stack parent merged, waiting here, never at the head of the queue.
+         if (att.split) await att.split
+         if (!(await parentsMerged(att)) || att.cancelledBy) return await abandon(att, false)
+diff --git a/tests/super-code/replay-harness.mjs b/tests/super-code/replay-harness.mjs
+index 2b6c92cd..294cce0d 100644
+--- a/tests/super-code/replay-harness.mjs
++++ b/tests/super-code/replay-harness.mjs
+@@ -379,51 +379,165 @@ function scanTemplateSpans(src) {
+         const r = src[i]
+         if (r === '\\') { i++; continue }
+         if (r === '[') cls = true
+         else if (r === ']') cls = false
+         else if (r === '/' && !cls) break
+       }
+       prevSig = '/'
+       continue
+     }
+     if (c === "'") { state = 'str1'; continue }
+     if (c === '"') { state = 'str2'; continue }
+     if (c === '`') { if (tplDepth.length === 0) start = i; state = 'tpl'; continue }
+     if (tplDepth.length > 0) {
+       if (c === '{') tplDepth[tplDepth.length - 1]++
+       else if (c === '}') {
+         if (tplDepth[tplDepth.length - 1] === 0) { tplDepth.pop(); state = 'tpl'; continue }
+         tplDepth[tplDepth.length - 1]--
+       }
+     }
+     if (!/\s/.test(c)) prevSig = c
+   }
+   return { spans, clean: state === 'code' && tplDepth.length === 0 }
+ }
+ // ---------- scenarios ----------
+ 
++// Regression: holding a verification child's slot while awaiting its parent prevents a
++// failed parent from acquiring the same slot to settle and cancel its descendants.
++async function verificationParentSettlement() {
++  const identity = { sourceTree: SHA('d'), command: 'node smoke.mjs', configuration: 'local' }
++  const evidence = [{ ...identity, kind: 'live', outcome: 'pass', location: 'evidence/live.log' }]
++  const verification = { completionKind: 'verification-only', base: SHA('a'), head: SHA('a'), sourceTree: SHA('d'), files: [], evidence, requiredLiveChecks: [identity] }
++  for (const { name, ordinary = false, success = false, cap = 1 } of [
++    { name: 'failed parent and verification child at cap 1' },
++    { name: 'failed parent and ordinary child at cap 1', ordinary: true },
++    { name: 'successful parent and verification child at cap 1', success: true },
++    { name: 'failed parent and verification child at cap 2', cap: 2 },
++  ]) {
++    scenario('verification parent settlement: ' + name)
++    let parentReturned = false
++    let closedBeforeParent = false
++    const canned = oneTaskCanned({
++      'plan': { planPath: PLANPATH, mapping: [
++        { n: 1, id: 'bd-101', files: ['parent'], deps: [] },
++        { n: 2, id: 'bd-102', files: ['child'], deps: ['bd-101'] },
++      ] },
++      'review-bead:bd-101': { reviewBead: 'bd-101-rv', implClosed: true, created: true },
++      'impl:bd-102': ordinary ? { status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c'), files: [] } : { ...verification, status: 'IMPLEMENTED' },
++      'review:bd-102': ordinary ? { status: 'CLEAN' } : { ...verification, status: 'CLEAN' },
++      'merge:bd-101': async ctx => {
++        await ctx.waitFor('review:bd-102')
++        // A full event-loop turn lets the child consume its CLEAN review and reach
++        // the parent wait before the parent's merge outcome becomes available.
++        await new Promise(resolve => setImmediate(resolve))
++        parentReturned = true
++        return success
++          ? { merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') }
++          : { merged: false, blockerBead: 'bd-108', rebaseConflictFiles: 1 }
++      },
++      'reopen:bd-101': { reopened: ['bd-101'] },
++      'discard:bd-102': { discarded: true, reopened: [] },
++      'triage:bd-101': { decision: 'ESCALATE', detail: 'parent merge conflict' },
++      'notify:bd-101': { sent: true },
++      'close-only:bd-102': () => { closedBeforeParent = !parentReturned; return { status: 'CLOSED' } },
++    })
++    const out = await run({ args: liveArgs({ config: cfg({ concurrency: cap, runtimeSlots: 4 }) }), canned, timeoutMs: 1000 })
++    assertNoThrow(out)
++    check(out.counts['review:bd-102'] === 1 && parentReturned, 'child reached review before the parent merge returned', JSON.stringify(out.counts))
++    if (success) {
++      check(JSON.stringify(out.result?.completed) === '["bd-101","bd-102"]', 'both tasks complete after successful parent settlement', JSON.stringify(out.result?.completed))
++      check(out.counts['close-only:bd-102'] === 1 && !closedBeforeParent && !out.counts['merge:bd-102'] && !out.counts['discard:bd-102'], 'verification closes only after parent success without merge or discard')
++      check(out.result?.verificationCompletions?.[0]?.evidence?.[0]?.location === 'evidence/live.log', 'successful completion retains reviewed source-bound evidence')
++    } else {
++      check(out.counts['reopen:bd-101'] === 1 && out.counts['triage:bd-101'] === 1 && out.result?.escalated?.includes('bd-101'), 'failed parent reopens and reaches triage', JSON.stringify(out.counts))
++      check(out.counts['discard:bd-102'] === 1 && !out.counts['close-only:bd-102'] && !out.counts['merge:bd-102'], 'cancelled child is discarded once without closing or merging')
++      check(out.result?.completed?.length === 0 && out.result?.verificationCompletions?.length === 0, 'failed parent cannot produce a verification completion')
++      check(taskLedgerLines(out.trace, 'bd-102').some(line => line.includes('cancelled (parent bd-101')), 'child cancellation remains in the task ledger')
++    }
++    check(!out.logs.some(line => line.includes('REJECTED')), 'settlement does not hide a rejected task chain')
++  }
++  for (const held of [false, true]) {
++    scenario('verification parent settlement: reacquisition ' + (held ? 'observes a new merge hold' : 'respects another active task'))
++    let holderRunning = false
++    let holderFinished = false
++    let closedDuringOtherWork = false
++    const canned = oneTaskCanned({
++      'plan': { planPath: PLANPATH, mapping: [
++        { n: 1, id: 'bd-101', files: ['parent'], deps: [] },
++        { n: 2, id: 'bd-102', files: ['child'], deps: ['bd-101'] },
++        { n: 3, id: 'bd-103', files: ['sibling'], deps: ['bd-101'] },
++        { n: 4, id: 'bd-104', files: ['holder'], deps: ['bd-101'] },
++      ] },
++      'review-bead:bd-101': { reviewBead: 'bd-101-rv', implClosed: true, created: true },
++      'impl:bd-102': { ...verification, status: 'IMPLEMENTED' },
++      'review:bd-102': { ...verification, status: 'CLEAN' },
++      'merge:bd-101': async ctx => {
++        await ctx.waitFor('impl:bd-103')
++        return { merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') }
++      },
++      'impl:bd-103': async ctx => {
++        await ctx.waitFor('close-check:bd-101')
++        await new Promise(resolve => setImmediate(resolve))
++        return { status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c'), files: [] }
++      },
++      'review:bd-103': { status: 'CLEAN' },
++      'merge:bd-103': held ? { merged: false, dirty: ['M caller-file'] }
++        : { merged: true, mergeExit: 0, mergeHead: true, head: SHA('b'), mergeBase: SHA('a') },
++      'impl:bd-104': async ctx => {
++        holderRunning = true
++        await ctx.waitFor('merge:bd-103')
++        // Keep the slot occupied until the merge result (and any lane hold) is consumed.
++        await new Promise(resolve => setImmediate(resolve))
++        holderRunning = false
++        holderFinished = true
++        return null
++      },
++      'close-only:bd-102': () => {
++        closedDuringOtherWork = holderRunning || !holderFinished
++        return { status: 'CLOSED' }
++      },
++    })
++    const out = await run({ args: liveArgs({ config: cfg({ concurrency: 1, runtimeSlots: 4 }) }), canned, timeoutMs: 1000 })
++    assertNoThrow(out)
++    check(holderFinished && out.counts['review:bd-102'] === 1 && out.counts['merge:bd-103'] === 1, 'other task uses the released slot and settles while verification waits', JSON.stringify(out.counts))
++    if (held) {
++      check(out.result?.stopReason === 'integration-blocked' && !out.counts['close-only:bd-102'], 'new merge hold prevents verification closure after reacquisition')
++      check(!out.result?.completed?.includes('bd-102') && out.result?.verificationCompletions?.length === 0, 'held verification remains recoverable without a completion claim')
++      check(out.logs.some(line => line.includes('bd-102: admission held') && line.includes('merge lane held')), 'fresh admission explains the withheld closure')
++    } else {
++      check(out.result?.completed?.includes('bd-102') && out.counts['close-only:bd-102'] === 1 && !closedDuringOtherWork, 'verification reacquires capacity before closing without overlapping the active task')
++    }
++    check(!out.logs.some(line => line.includes('REJECTED')), 'capacity handoff does not hide a rejected chain')
++  }
++}
++
+ async function main() {
++  await verificationParentSettlement()
++  if (process.argv.includes('--verification-parent-settlement')) {
++    console.log(`\n${passes} passed, ${failures} failed`)
++    process.exit(failures ? 1 : 0)
++  }
+   scenario('source-bound check evidence is independent of implementation and review status')
+   {
+     const identity = { sourceTree: SHA('d'), command: 'node smoke.mjs', configuration: 'target=staging' }
+     const record = (kind, outcome, location) => ({ ...identity, kind, outcome, location })
+     const evidence = [record('live', 'pass', 'evidence/live.log'), record('simulated', 'pass', 'evidence/sim.log'), record('fallback', 'pass', 'evidence/fallback.log'), record('live', 'fail', 'evidence/fail.log'), record('live', 'unavailable', 'evidence/unavailable.log')]
+     const out = await run({ args: liveArgs(), canned: oneTaskCanned({
+       'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c'), files: ['src/a.js'], evidence },
+       'review:bd-101': { id: 'bd-101', status: 'CLEAN', evidence: [record('simulated', 'pass', 'review/sim.log')], requiredLiveChecks: [identity] },
+     }) })
+     assertNoThrow(out)
+     const measured = out.result?.checkEvidence
+     const fields = ['sourceTree', 'command', 'configuration', 'kind', 'outcome', 'location']
+     check(JSON.stringify(measured?.records?.map(r => fields.map(k => r[k]))) === JSON.stringify([...evidence, record('simulated', 'pass', 'review/sim.log')].map(r => fields.map(k => r[k]))), 'complete evidence survives both RESULT producers without changing provenance', JSON.stringify(measured))
+     check(measured?.records?.[0]?.dispatch === 'impl:bd-101' && measured?.records?.[5]?.dispatch === 'review:bd-101', 'measurement retains its producer separately from task outcome')
+     check(measured?.requiredLiveChecks?.[0]?.outcome === 'pass', 'matching live/pass discharges the explicitly required check')
+     check(out.result?.completed?.includes('bd-101'), 'additive records preserve existing completion routing')
+     const schema = out.trace.find(t => t.label === 'impl:bd-101')?.opts.schema
+     check(schema?.properties?.evidence?.items?.properties?.outcome?.enum?.join('|') === 'pass|fail|unavailable' && schema?.properties?.evidence?.items?.properties?.kind?.enum?.join('|') === 'live|simulated|fallback', 'RESULT validates the separate kind and outcome vocabularies')
+     for (const kind of ['simulated', 'fallback']) {
+       const gap = await run({ args: liveArgs(), canned: oneTaskCanned({
+         'impl:bd-101': { id: 'bd-101', status: 'IMPLEMENTED', base: SHA('a'), head: SHA('c'), files: [], evidence: [record(kind, 'pass', `evidence/${kind}.log`)] },
+         'review:bd-101': { id: 'bd-101', status: 'CLEAN', requiredLiveChecks: [identity] },
+       }) })
+       assertNoThrow(gap)
+       check(gap.result?.checkEvidence?.requiredLiveChecks?.[0]?.outcome === 'unavailable', `${kind}/pass leaves the required live check outstanding`)

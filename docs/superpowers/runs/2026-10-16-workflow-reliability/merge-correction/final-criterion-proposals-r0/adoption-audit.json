@@ -1,0 +1,28 @@
+{
+  "proposalOnly": true,
+  "newExactRefs": 213,
+  "oldGroupRefs": 26,
+  "total": 239,
+  "uniqueExactRefs": 239,
+  "candidateSupportedDispositions": 55,
+  "preDispositionRequiredCount": 55,
+  "nonblockingQualificationCount": 184,
+  "remainingExistingNonblockingHistoricalGroups": 220,
+  "oldCanonicalGroups": 469,
+  "registeredAppearances": 486,
+  "currentlyOutstandingGroupsIncludingOtherSections": 459,
+  "alreadySupportedRepairedGroups": 10,
+  "actionableOutstandingMetric": 448,
+  "otherSectionGroups": 11,
+  "newLegacySourcesOrLinksCreated": 0,
+  "nativeFinalWaveObservationsAssessedSeparately": 8,
+  "finalSuitePassClaimed": false,
+  "actualRootEligibilityClaimed": false,
+  "canonicalMutation": false,
+  "allSourceEqualityChecks": true,
+  "historicalQualificationCounts": {
+    "supplements": 29,
+    "sourceGaps": 35,
+    "unknownOutcomesAmongThose35": 5
+  }
+}

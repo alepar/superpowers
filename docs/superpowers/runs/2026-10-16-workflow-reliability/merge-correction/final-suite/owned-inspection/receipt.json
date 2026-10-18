@@ -1,0 +1,50 @@
+{
+  "argv": [
+    "/bin/bash",
+    "/private/tmp/ufz-correction-final-source-c2168120/skills/super-code/scripts/stop-run-processes",
+    "--check",
+    "/private/tmp/ufz-correction-final-suite-c2168120",
+    "/private/tmp/ufz-correction-final-suite-outer-c2168120",
+    "/private/tmp/ufz-correction-final-tmpdir-variants-c2168120",
+    "/private/tmp/ufz-correction-actual-continuity-4911223a",
+    "/private/tmp/ufz-correction-final-source-c2168120",
+    "/private/tmp/ufz-correction-helper-source-4911223a"
+  ],
+  "cwd": "/Users/alepar/AleCode/superpowers",
+  "environment": {
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_CONFIG_GLOBAL": "/dev/null",
+    "GIT_CONFIG_SYSTEM": "/dev/null"
+  },
+  "helperSourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+  "helperSha256": "958a514afdce2985a921ff7f18762a0f38bfc851363565bf7222528495f2f499",
+  "mode": "read-only --check; no signals or deletion",
+  "startUtc": "2026-10-17T23:11:17Z",
+  "ownedRoots": [
+    "/private/tmp/ufz-correction-final-suite-c2168120",
+    "/private/tmp/ufz-correction-final-suite-outer-c2168120",
+    "/private/tmp/ufz-correction-final-tmpdir-variants-c2168120",
+    "/private/tmp/ufz-correction-actual-continuity-4911223a",
+    "/private/tmp/ufz-correction-final-source-c2168120",
+    "/private/tmp/ufz-correction-helper-source-4911223a"
+  ],
+  "callerRetention": "Main pane and isolated corrective caller worktree remain active and retained. They are not cleanup targets; this check is only the listed test/fixture/standalone roots.",
+  "limits": "No global process absence or certification of unrelated historical/tmp roots. Unknown/matches retain all roots.",
+  "exitCode": 0,
+  "endUtc": "2026-10-17T23:11:18Z",
+  "stdout": {
+    "path": "/private/tmp/ufz-correction-final-owned-inspection-c2168120/stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "/private/tmp/ufz-correction-final-owned-inspection-c2168120/stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "interpretation": "Verified discovery found no matching owned processes for these roots at this observation"
+}

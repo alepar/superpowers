@@ -1,0 +1,153 @@
+diff --git a/skills/super-auto/resume.md b/skills/super-auto/resume.md
+index 3e06639a..04328efc 100644
+--- a/skills/super-auto/resume.md
++++ b/skills/super-auto/resume.md
+@@ -73,8 +73,8 @@ A resume at `phase: design` re-enters `super-design` at step 1: the recorded sta
+ A `redesign-<loop>-<K>` record (run-state.md item 7 (Design decisions)) whose `state` is not final means a redesign cycle was interrupted. Dispatch it only from `state`: a durable output (an amend file, a spec diff, a bead, a report) is checked within a state to decide how to carry it out, and is never used to infer which state the cycle is in. Counters (`redesignCycles-code`, `redesignCycles-design`) are never reset, and a replay never starts a cycle of its own: the cycle that was started is the one that finishes.
+ 
+ - `started`: with an `amend-<loop>-<K>.md` file and a spec diff, run `amend-check` on them (`bash <skills-root>/super-design/scripts/amend-check --loop <loop> --amend <record> --ledger <ledger> --specs <paths>`); exit 0 (`ok`) continues at the commit; exit 3 (`reject:`) restores the `--specs` files to HEAD (`git checkout HEAD -- <paths>`) and re-runs super-design's Amend Mode section from its dispatch; exit 2 is a bad invocation or a git failure: fix it and run `amend-check` again, never restoring (as Amend Mode step 2). With no amend file, restore and re-run the same way.
+-- `amend-checked`: first check whether Amend Mode step 3's commit already landed: `git diff --quiet <lastGood> HEAD -- <spec paths>` exits 1 when the specs at HEAD differ from the record's `lastGood`, the pre-amendment HEAD both loops record. Landed: do not re-run `amend-check` (against HEAD it sees an empty diff and rejects, and nothing aborts after the commit); finish step 3 from after its commit (the Key Abstractions sync when a `## Key abstractions` section changed), rewrite the state to `specs-committed` and continue at that bullet. Not landed: re-run `amend-check` before committing anything. exit 0 goes on to the commit; exit 3 restores the specs and rewrites the state to `aborted — amend rejected on resume`, then finishes the abort as the `aborted — <reason>` bullet does: remove from the loop's overrides file the `dissolved@r<N>` lines Step 1 wrote for this round's record, rebuild the ledger with the loop's `findings-ledger` invocation, and park the `degraded-verdict` (`redesign aborted — amend rejected on resume`) (the round then runs `local`); exit 2: fix and re-run, no restore.
+-- `specs-committed`: file only the `work:` items whose titles are missing from the beads labelled `sp:redesign-<loop>-<K>`; that label is the dedupe key, so a resume never files a bead twice.
++- `amend-checked`: first check whether Amend Mode step 3's commit already landed: `git diff --quiet <lastGood> HEAD -- <spec paths>` exits 1 when the specs at HEAD differ from the record's `lastGood`, the pre-amendment HEAD both loops record. Landed: do not re-run `amend-check` (against HEAD it sees an empty diff and rejects, and nothing aborts after the commit); rewrite the state to `specs-committed` and continue at that bullet, including step 3's sync. Not landed: re-run `amend-check` before committing anything. exit 0 goes on to the commit; exit 3 restores the specs and rewrites the state to `aborted — amend rejected on resume`, then finishes the abort as the `aborted — <reason>` bullet does: remove from the loop's overrides file the `dissolved@r<N>` lines Step 1 wrote for this round's record, rebuild the ledger with the loop's `findings-ledger` invocation, and park the `degraded-verdict` (`redesign aborted — amend rejected on resume`) (the round then runs `local`); exit 2: fix and re-run, no restore.
++- `specs-committed`: first replay Amend Mode step 3's Key Abstractions sync, then file only the `work:` items whose titles are missing from the beads labelled `sp:redesign-<loop>-<K>`; that label is the dedupe key, so a resume never files a bead twice.
+ - `beads-filed`: write any dispute line missing from the overrides file, run the coverage-amend round unless the `coverage-amend-<loop>-<K>` approvals line exists, then the calling loop's remaining steps. In the code loop they depend on `designRoast`:
+   - `-`: run the amend-roast step, with its design-cap gate;
+   - `r<M>` and no round-M design roast report: run roast round M without incrementing `roastDesignRound` again;
+diff --git a/skills/super-design/SKILL.md b/skills/super-design/SKILL.md
+index caa3d23e..33cfc962 100644
+--- a/skills/super-design/SKILL.md
++++ b/skills/super-design/SKILL.md
+@@ -119,8 +119,8 @@ is done-vs-not: check for the artifact a step would produce before producing it.
+ 
+ - A round with a `redesign-design-<K>` record (not `aborted — …`) resumes only through that record: the fix list's items 1–2 are not re-run for it, and its findings are not re-filed as per-finding tasks. A `stepBackDesign-round-<N>: redesign — applied: …` line with no record replays in place (the recorded redesign is applied from that line if its spec change is not yet committed) only when the run-state file (standalone, the round summaries) holds no `redesign-design-<K>` record anywhere, meaning the run predates the records. Otherwise the line is not replayed as a patch: re-run the round's Step 1 from item 5 on its saved step-back file (re-check, never re-dispatch).
+ - `started`: with an amend file and a spec diff present, re-run `amend-check` on them; exit 0 continues from §Amend Mode's commit step; exit 3 restores the spec files to HEAD (`git checkout HEAD -- <spec paths>`) and re-runs §Amend Mode from its first step; exit 2 is a bad invocation or a git failure: fix it and re-run `amend-check`, never restoring. With no amend file, restore and re-run from the first step.
+-- `amend-checked`: first check whether §Amend Mode step 3's commit already landed: `git diff --quiet <lastGood> HEAD -- <spec paths>` exits 1 when the specs at HEAD differ from the record's `lastGood` (the pre-amendment HEAD). Landed: do not re-run `amend-check` (against HEAD it sees an empty diff and rejects, and nothing aborts after the commit); finish step 3 from after its commit (the Key Abstractions sync when a `## Key abstractions` section changed), rewrite the state to `specs-committed` and continue at that bullet. Not landed: re-run `amend-check` before committing anything; exit 0 → commit, exit 3 → restore the specs and rewrite the state to `aborted — amend rejected on resume`, then finish the abort as the `aborted — …` bullet does: remove this round's `dissolved@r<N>` lines from `findings-overrides-design.md`, rebuild the ledger and park the `degraded-verdict` `redesign aborted — amend rejected on resume`; exit 2 → fix and re-run, no restore.
+-- `specs-committed`: file the amend record's `work:` items missing from the beads labelled `sp:redesign-design-<K>`.
++- `amend-checked`: first check whether §Amend Mode step 3's commit already landed: `git diff --quiet <lastGood> HEAD -- <spec paths>` exits 1 when the specs at HEAD differ from the record's `lastGood` (the pre-amendment HEAD). Landed: do not re-run `amend-check` (against HEAD it sees an empty diff and rejects, and nothing aborts after the commit); rewrite the state to `specs-committed` and continue at that bullet, including step 3's sync. Not landed: re-run `amend-check` before committing anything; exit 0 → commit, exit 3 → restore the specs and rewrite the state to `aborted — amend rejected on resume`, then finish the abort as the `aborted — …` bullet does: remove this round's `dissolved@r<N>` lines from `findings-overrides-design.md`, rebuild the ledger and park the `degraded-verdict` `redesign aborted — amend rejected on resume`; exit 2 → fix and re-run, no restore.
++- `specs-committed`: first replay §Amend Mode step 3's Key Abstractions sync, then file the amend record's `work:` items missing from the beads labelled `sp:redesign-design-<K>`.
+ - `beads-filed`: write any missing dispute lines, run the coverage-amend round unless its approvals line exists, rewrite the state to `applied`, then run the post-amendment design roast (§Adversarial Review Loop, Redesign cycle).
+ - `aborted — …`: the round runs `local`; before it does, finish the abort (the live abort writes this state first and then runs these same steps, so a crash anywhere in them replays here): park the `degraded-verdict` `redesign aborted — <reason>` unless the run-state file's `parked:` list (standalone, the round summaries) already holds it, and remove any `dissolved@r<N>` line for this round's record still in `findings-overrides-design.md` and rebuild the ledger. Both writes are idempotent: with the park present and no such line, nothing is written.
+ - `applied`, `thrash — …`: nothing to replay; the loop continues from its other records.
+@@ -904,7 +904,11 @@ caller's bead context.
+    reject restores again and returns `aborted — amend rejected`.
+ 3. **Commit** the specs; state `specs-committed`. An abort is possible only before this commit
+    lands, and every abort restores the specs first. Then run the Key Abstractions sync
+-   (§Decomposition, "Key abstractions sync") when a `## Key abstractions` section changed.
++   (§Decomposition, "Key abstractions sync") when a `## Key abstractions` section changed
++   from `lastGood` to HEAD. On `specs-committed` replay, re-run this sync from the committed sections
++   even if a previous attempt already completed it: replace the digest block and owner entry text,
++   and adopt existing owners under §Decomposition's rules. If sync fails, retain `specs-committed`
++   and the failure evidence; retry on resume before filing or advancing.
+ 4. **File the `work:` items** with the filing sequence below. It does for a redesign round what
+    super-auto §Step 3 does for a local round: reopen the epic (and the owning subepic) first, since
+    a closed parent stays closed when a child is filed and super-code then stops at `root-closed`;
+@@ -995,7 +999,7 @@ caller's bead context.
+    coverage prompt.
+ 7. **Return** `applied` with the amend record path, the filed bead ids and `amended:`. Amend Mode does not write state `applied`: the calling loop writes it once its own remaining steps are done (the design loop as soon as Amend Mode returns, §Adversarial Review Loop, Redesign cycle; the code loop at super-auto §Redesign cycle step 4, after the amend design roast and its fixes).
+ 
+-**After the commit nothing aborts.** A step from step 3's sync through step 6 that fails is retried
++**After the commit nothing aborts.** A step from step 4 through step 6 that fails is retried
+ once through its state's resume action; a second failure parks a `degraded-verdict`
+ `redesign incomplete — <step>: <cause>` and Amend Mode returns `applied` with what it produced, so
+ the next roast re-validates the open items.
+diff --git a/tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt b/tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt
+index bea163b2..cf1979c8 100644
+--- a/tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt
++++ b/tests/super-auto/fixtures/contract-lint/run-state-added-fields.txt
+@@ -4,3 +4,4 @@ approvals · finding-route
+ approvals · finding-disposition
+ approvals · review-collection
+ approvals · root-acceptance
++approvals · source-correspondence
+diff --git a/tests/super-auto/resume-sync-contract.mjs b/tests/super-auto/resume-sync-contract.mjs
+new file mode 100644
+index 00000000..3e16fdb6
+--- /dev/null
++++ b/tests/super-auto/resume-sync-contract.mjs
+@@ -0,0 +1,86 @@
++// Mechanical instruction-contract checks only. Agent-behavior evaluations are separate.
++// Catches replay bypassing sync, repeating it in two states, or advancing after sync failure.
++import assert from 'node:assert/strict';
++import { readFileSync } from 'node:fs';
++
++const root = new URL('../../', import.meta.url);
++const sources = {
++  auto: readFileSync(new URL('skills/super-auto/resume.md', root), 'utf8'),
++  design: readFileSync(new URL('skills/super-design/SKILL.md', root), 'utf8'),
++};
++const bullet = (text, state) => text.match(new RegExp('^- `' + state + '`:[^\\n]*', 'm'))?.[0] ?? '';
++const step3 = text => text.match(/^3\. \*\*Commit\*\*[\s\S]*?(?=^4\. \*\*File)/m)?.[0] ?? '';
++
++function problems(texts) {
++  const errors = [];
++  for (const name of ['auto', 'design']) {
++    const committed = bullet(texts[name], 'specs-committed');
++    if (!/Key Abstractions sync[\s\S]*then file/.test(committed)) {
++      errors.push(`${name}: specs-committed must replay sync before filing`);
++    }
++    const checked = bullet(texts[name], 'amend-checked');
++    if (!checked.includes('continue at that bullet') || checked.includes('finish step 3 from after its commit')) {
++      errors.push(`${name}: landed amend-checked must use the same specs-committed boundary`);
++    }
++  }
++  const sync = step3(texts.design);
++  for (const required of ['committed sections', 'already completed', 'adopt existing owners',
++    'retain `specs-committed`', 'before filing or advancing']) {
++    if (!sync.includes(required)) errors.push(`producer sync missing: ${required}`);
++  }
++  if (!texts.design.includes('A step from step 4 through step 6 that fails')) {
++    errors.push('producer: postcommit degraded/applied policy must exclude sync');
++  }
++  return errors;
++}
++
++let failures = 0;
++let total = 0;
++function test(name, fn) {
++  total++;
++  try { fn(); console.log(`PASS ${name}`); }
++  catch (error) { failures++; console.error(`FAIL ${name}: ${error.message}`); }
++}
++
++test('both actual replay paths share an idempotent sync boundary before filing', () => {
++  assert.deepEqual(problems(sources), []);
++});
++
++// Independent literal positive control: confirms the checker accepts a complete contract
++// even when unrelated prose differs. This does not execute an agent or a tracker sync.
++const positive = {
++  auto: '- `amend-checked`: landed: rewrite state and continue at that bullet.\n' +
++    '- `specs-committed`: replay Key Abstractions sync, then file missing items.\n',
++  design: '- `amend-checked`: landed: rewrite state and continue at that bullet.\n' +
++    '- `specs-committed`: replay Key Abstractions sync, then file missing items.\n' +
++    '3. **Commit** specs. Sync committed sections even if already completed; adopt existing owners. ' +
++    'On failure retain `specs-committed`; retry before filing or advancing.\n' +
++    '4. **File** missing items.\nA step from step 4 through step 6 that fails is retried.\n',
++};
++test('literal complete contract is accepted', () => assert.deepEqual(problems(positive), []));
++for (const name of ['auto', 'design']) {
++  test(`${name}: missing-sync replay is detected`, () => {
++    const changed = { ...positive, [name]: positive[name].replace(
++      'replay Key Abstractions sync, then file', 'file') };
++    assert.ok(problems(changed).includes(`${name}: specs-committed must replay sync before filing`));
++  });
++  test(`${name}: sync repeated in amend-checked before the common boundary is detected`, () => {
++    const changed = { ...positive, [name]: positive[name].replace('landed: rewrite state',
++      'landed: finish step 3 from after its commit, rewrite state') };
++    assert.ok(problems(changed).some(e => e.startsWith(`${name}: landed amend-checked`)));
++  });
++}
++for (const [name, before, after, error] of [
++  ['already-completed replay lost', 'already completed', 'first attempt', 'already completed'],
++  ['owner adoption lost', 'adopt existing owners', 'create owners again', 'adopt existing owners'],
++  ['failed sync advances state', 'retain `specs-committed`', 'write `applied`', 'retain `specs-committed`'],
++  ['sync covered by degraded/applied policy', 'A step from step 4 through step 6 that fails',
++    "A step from step 3’s sync through step 6 that fails", 'exclude sync'],
++]) {
++  test(name, () => {
++    assert.ok(problems({ ...positive, design: positive.design.replace(before, after) })
++      .some(e => e.includes(error)));
++  });
++}
++console.log(`${total - failures} passed / ${failures} failed`);
++if (failures) process.exitCode = 1;

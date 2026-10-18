@@ -1,0 +1,375 @@
+{
+  "proposalOnly": true,
+  "historicalStudySource": "0bb280edcf5fc6a60499fdfdb090d1819a432963",
+  "currentSource": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+  "originalRequiredObservable": {
+    "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/task-7-brief.md",
+    "acceptanceLine": 25,
+    "requirement": "Alias/provenance/negative-case fixtures pass; coordinator owns representative fresh-agent semantic tagging evaluation."
+  },
+  "historicalStudyArtifacts": [
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/report.md",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/report.md",
+      "sha256": "1cd4d953f3a00af6e1c54d28fc578c91ec48c8d5ca2ab84b3618cb6b92548941",
+      "bytes": 10665
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/scenario-C.txt",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/scenario-C.txt",
+      "sha256": "f6d138d7994fd7ee8a8e702f096c70770e2ade61c0c71e381e572e3ba4e54a04",
+      "bytes": 2162
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/guidance-C.txt",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/guidance-C.txt",
+      "sha256": "083328f6ac268e9aabddee389e119d647379946e59bbbaf128658c6ab1165d54",
+      "bytes": 26646
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/source-manifest.json",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/source-manifest.json",
+      "sha256": "9679ac9bad123c54d776423b0d03a5b638279444578ccb92d655573fcd965eda",
+      "bytes": 6454
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/source-recheck.json",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/source-recheck.json",
+      "sha256": "9f07eb40826991af0ce77e97357ccb1a501003aaad38bd835ef59440f2dc6490",
+      "bytes": 3019
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/claim-summary.json",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/claim-summary.json",
+      "sha256": "d0c59ddaf465d2c233a573461e0c602711401b9872ce27536c7575f9accf9708",
+      "bytes": 4233
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/scores.json",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/scores.json",
+      "sha256": "136ca9f658167040177ee67d77e361bb6b792282e12d2f6812ac60b5d9dfdf5b",
+      "bytes": 175367
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/trials.json",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/trials.json",
+      "sha256": "772be5f68f141724352885bf9587ccb6537c2f7a70230f7b4de0f87a540996e8",
+      "bytes": 3303
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-1-prompt.txt",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/C-after-1-prompt.txt",
+      "sha256": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d",
+      "bytes": 823
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-1-response.txt",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/C-after-1-response.txt",
+      "sha256": "852fab7e5011968d93d6594d010a7c40034f095c617f1b5ec3ac27369c15cd88",
+      "bytes": 2291
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-2-prompt.txt",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/C-after-2-prompt.txt",
+      "sha256": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d",
+      "bytes": 823
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-2-response.txt",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/C-after-2-response.txt",
+      "sha256": "fbb0b92431ebf2dcbc6b99613d86e5245c0d1790741bb4508fb1661c32686336",
+      "bytes": 2270
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-3-prompt.txt",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/C-after-3-prompt.txt",
+      "sha256": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d",
+      "bytes": 823
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-3-response.txt",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/C-after-3-response.txt",
+      "sha256": "bb5789032e63cf0301001cfc584a421680dc339521eee77741aa6f9c2b366036",
+      "bytes": 2352
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-4-prompt.txt",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/C-after-4-prompt.txt",
+      "sha256": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d",
+      "bytes": 823
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-4-response.txt",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/C-after-4-response.txt",
+      "sha256": "def702d154e4dda58b1847ef38aeb1d4e8fde6248652ea14445adb1538216cd7",
+      "bytes": 2341
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-5-prompt.txt",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/C-after-5-prompt.txt",
+      "sha256": "ec964d5e1727932b4271b21e9b1c057a4861646a66bd51e18b50d536caeaa35d",
+      "bytes": 823
+    },
+    {
+      "originalPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-5-response.txt",
+      "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/C-after-5-response.txt",
+      "sha256": "623321f3371d4ef6714339e929a09b1c3cc467c458f56e2789b45830833fb22d",
+      "bytes": 2260
+    }
+  ],
+  "sourceBinding": [
+    {
+      "originalManifestEntry": {
+        "case": "C",
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.6/skills/super-roast/reporter-prompt.md",
+        "repository_relative_path": "skills/super-roast/reporter-prompt.md",
+        "commit": "0bb280edcf5fc6a60499fdfdb090d1819a432963",
+        "start": 120,
+        "end": 144,
+        "sha256_full": "9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1",
+        "sha256_excerpt": "ae7cbca04cd67cb3fab19c0729e9bbadaeb257412428e1225351ad9271b11f87",
+        "snapshot": "/private/tmp/ufz-after-behavior/source-snapshot/super-roast/reporter-prompt.md"
+      },
+      "historicalSnapshot": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/historical-source/skills/super-roast/reporter-prompt.md",
+      "historicalFullSha256": "9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1",
+      "historicalExcerptSha256": "ae7cbca04cd67cb3fab19c0729e9bbadaeb257412428e1225351ad9271b11f87",
+      "currentSource": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "currentFullSha256": "9c53e99f7173fd14daf0451a211588659176c4728f39f0e940ff13fa60e095c1",
+      "currentSameLineExcerptSha256": "ae7cbca04cd67cb3fab19c0729e9bbadaeb257412428e1225351ad9271b11f87",
+      "fullMatches": true,
+      "excerptMatches": true,
+      "applicabilityRole": "operative C8 process-tag clause; exact bytes unchanged"
+    },
+    {
+      "originalManifestEntry": {
+        "case": "C",
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.6/skills/super-auto/report-prompt.md",
+        "repository_relative_path": "skills/super-auto/report-prompt.md",
+        "commit": "0bb280edcf5fc6a60499fdfdb090d1819a432963",
+        "start": 1,
+        "end": 79,
+        "sha256_full": "d6aeca28475787b7facb65b63260db804f62c5603020bff6138c8a569d699e91",
+        "sha256_excerpt": "d6aeca28475787b7facb65b63260db804f62c5603020bff6138c8a569d699e91",
+        "snapshot": "/private/tmp/ufz-after-behavior/source-snapshot/super-auto/report-prompt.md"
+      },
+      "historicalSnapshot": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/historical-source/skills/super-auto/report-prompt.md",
+      "historicalFullSha256": "d6aeca28475787b7facb65b63260db804f62c5603020bff6138c8a569d699e91",
+      "historicalExcerptSha256": "d6aeca28475787b7facb65b63260db804f62c5603020bff6138c8a569d699e91",
+      "currentSource": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "currentFullSha256": "b9184a6bae2228e517e2d661aff9ed61eb6f544c79ce628457d789b4af8a3bbb",
+      "currentSameLineExcerptSha256": "b93429a13955a2be2eb24c6a672f37f73fb7a0d5bd66a99110f7a78b63b7f0c7",
+      "fullMatches": false,
+      "excerptMatches": false,
+      "applicabilityRole": "reporting context; changed full diff inspected, C8 grouping semantics unaffected"
+    },
+    {
+      "originalManifestEntry": {
+        "case": "C",
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.6/skills/upstream-feedback/SKILL.md",
+        "repository_relative_path": "skills/upstream-feedback/SKILL.md",
+        "commit": "0bb280edcf5fc6a60499fdfdb090d1819a432963",
+        "start": 16,
+        "end": 123,
+        "sha256_full": "2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30",
+        "sha256_excerpt": "4b996ad976613a98475d6c79f4b06b1f3c7a4f87285c1eeb0853e15d9d316b8d",
+        "snapshot": "/private/tmp/ufz-after-behavior/source-snapshot/upstream-feedback/SKILL.md"
+      },
+      "historicalSnapshot": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/historical-source/skills/upstream-feedback/SKILL.md",
+      "historicalFullSha256": "2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30",
+      "historicalExcerptSha256": "4b996ad976613a98475d6c79f4b06b1f3c7a4f87285c1eeb0853e15d9d316b8d",
+      "currentSource": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "currentFullSha256": "2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30",
+      "currentSameLineExcerptSha256": "4b996ad976613a98475d6c79f4b06b1f3c7a4f87285c1eeb0853e15d9d316b8d",
+      "fullMatches": true,
+      "excerptMatches": true,
+      "applicabilityRole": "operative C8 process-tag clause; exact bytes unchanged"
+    },
+    {
+      "originalManifestEntry": {
+        "case": "C",
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.6/skills/super-code/task-reviewer-prompt.md",
+        "repository_relative_path": "skills/super-code/task-reviewer-prompt.md",
+        "commit": "0bb280edcf5fc6a60499fdfdb090d1819a432963",
+        "start": 124,
+        "end": 149,
+        "sha256_full": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8",
+        "sha256_excerpt": "fd1fb30c1e2ba77724552c704071868e3d517455f91a2a5b3715b28a437af506",
+        "snapshot": "/private/tmp/ufz-after-behavior/source-snapshot/super-code/task-reviewer-prompt.md"
+      },
+      "historicalSnapshot": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/historical-source/skills/super-code/task-reviewer-prompt.md",
+      "historicalFullSha256": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8",
+      "historicalExcerptSha256": "fd1fb30c1e2ba77724552c704071868e3d517455f91a2a5b3715b28a437af506",
+      "currentSource": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "currentFullSha256": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8",
+      "currentSameLineExcerptSha256": "fd1fb30c1e2ba77724552c704071868e3d517455f91a2a5b3715b28a437af506",
+      "fullMatches": true,
+      "excerptMatches": true,
+      "applicabilityRole": "operative C8 process-tag clause; exact bytes unchanged"
+    },
+    {
+      "originalManifestEntry": {
+        "case": "C",
+        "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.6/skills/super-code/task-reviewer-prompt.md",
+        "repository_relative_path": "skills/super-code/task-reviewer-prompt.md",
+        "commit": "0bb280edcf5fc6a60499fdfdb090d1819a432963",
+        "start": 185,
+        "end": 198,
+        "sha256_full": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8",
+        "sha256_excerpt": "542f9066b02c1fe713aac03b681590e9e82b886237036edef550a52c21c5ae88",
+        "snapshot": "/private/tmp/ufz-after-behavior/source-snapshot/super-code/task-reviewer-prompt.md"
+      },
+      "historicalSnapshot": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/historical-source/skills/super-code/task-reviewer-prompt.md",
+      "historicalFullSha256": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8",
+      "historicalExcerptSha256": "542f9066b02c1fe713aac03b681590e9e82b886237036edef550a52c21c5ae88",
+      "currentSource": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "currentFullSha256": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8",
+      "currentSameLineExcerptSha256": "542f9066b02c1fe713aac03b681590e9e82b886237036edef550a52c21c5ae88",
+      "fullMatches": true,
+      "excerptMatches": true,
+      "applicabilityRole": "operative C8 process-tag clause; exact bytes unchanged"
+    }
+  ],
+  "currentContracts": [
+    {
+      "source": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "path": "skills/super-code/coordinator-subagents.md",
+      "sha256": "3ce518c8a66ba4e28c512e41cc546264d5b20e909e1bafbccc41a9bbcf848fff",
+      "lineStart": 101,
+      "lineEnd": 107,
+      "text": "For recurring process observations, use the exact process-tag table in\n`coordinator-workflow.md` §Finish: `cleanup-inspection` and its two inspection-denial aliases,\n`missing-evidence` and its two absent-evidence aliases, and existing `suite-not-run`. Preserve each\nraw finding, task ID and source reference. Read compact `[recurrence-id: …]` / `[source-line: N]`\nmetadata as identity/provenance transport, not as a class or Task status. Other tags retain exact\nfinding-text distinctions, including assertion values and paths. A recurrence count supports\nreassessment; finding identity, disposition, severity and fix scope require separate judgments.\n"
+    },
+    {
+      "source": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "path": "skills/super-code/coordinator-workflow.md",
+      "sha256": "5b11bc9f00d5e94fbf3a5229d7e40472d6c6793006037f2481d0253080e604bc",
+      "lineStart": 1494,
+      "lineEnd": 1513,
+      "text": "**Recurring minors are clustered, run-wide** (issue #3 defect 2): a signature seen ≥5 times or\non ≥3 distinct tasks is reported once as a `Recurring minor: ×N across M task(s)` ledger line\nand a `RECURRING MINOR` log line. The small process vocabulary is an exact lookup on `[class]`:\n\n| Process class | Accepted tags |\n| --- | --- |\n| `cleanup-inspection` | `cleanup-inspection`, `cleanup-inspection-denied`, `process-inspection-refused` |\n| `missing-evidence` | `missing-evidence`, `evidence-missing`, `test-evidence-missing` |\n| `suite-not-run` | `suite-not-run` (existing class) |\n\nThe first class denotes denied inspection of owned-process liveness; `cleanup-denied` is ambiguous\nand stays distinct, as do survived processes and termination failures. Missing evidence denotes\nabsent evidence, independently of a failed live measurement. Unknown tags and untagged findings\nuse an exact-text fingerprint, preserving numeric/path distinctions between product bugs and\nassertions. The existing untagged `review-package resolved HEAD in <path> (<N> bytes)` process\nmessage retains its bounded legacy normalization. Tags are compared without case; original tag\nspelling and ledger/report evidence stay intact. Grouped lines add `[process-class: <canonical>]`;\nthis is a grouping fact, not a finding ID. Counts support reassessment: identity, severity,\ndisposition and fix scope remain separate judgments. Resume resolves the same aliases from raw\ntags and retains unknown exact-text identities through the compact fingerprint.\n"
+    },
+    {
+      "source": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "path": "skills/super-code/coordinator.js",
+      "sha256": "154bd1069d2e20eaeb24c460c09360c7e281de6a1f8ff74824db089bb53dafa1",
+      "lineStart": 631,
+      "lineEnd": 675,
+      "text": "// Exact process tags only. \"cleanup-denied\" can mean termination denial, so is not an alias.\n// suite-not-run retains the established process class; no generic test-failure class is pooled.\nconst processAliases = new Map([\n  ['cleanup-inspection', 'cleanup-inspection'],\n  ['cleanup-inspection-denied', 'cleanup-inspection'],\n  ['process-inspection-refused', 'cleanup-inspection'],\n  ['missing-evidence', 'missing-evidence'],\n  ['evidence-missing', 'missing-evidence'],\n  ['test-evidence-missing', 'missing-evidence'],\n  ['suite-not-run', 'suite-not-run'],\n])\nconst processClass = (kind, text) => processAliases.get(classTag(text) ?? (kind === 'blocker' ? String(text).trim().toLowerCase() : null)) ?? null\n// Compact transport identity, not defect identity. Keep in sync with ledger-digest's byte hash.\nfunction recurrenceId(text) {\n  const carried = /(?:^| )\\[recurrence-id: (v1-[0-9]+-[0-9]+-[0-9]+)\\](?: \\[source-line: [0-9]+\\])?$/.exec(String(text))\n  if (carried) return carried[1]\n  const bytes = encodeURIComponent(String(text).replace(/^[ \\t\\r]+|[ \\t\\r]+$/g, '')).replace(/%([0-9A-F]{2})/g, (_, h) => String.fromCharCode(parseInt(h, 16)))\n  let a = 0, b = 0\n  for (let i = 0; i < bytes.length; i++) { const c = bytes.charCodeAt(i); a = (a * 31 + c) % 2147483647; b = (b * 131 + c) % 2147483629 }\n  return 'v1-' + bytes.length + '-' + a + '-' + b\n}\nconst recurrenceSig = (kind, text) => `${kind}:${processClass(kind, text) ?? (/^review-package resolved HEAD in \\S+ \\(\\d+ bytes\\)$/i.test(String(text)) ? minorSignature(text) : recurrenceId(text))}`\nfunction seedRecurrence(kind, id, text, sourceLine = null) {\n  const sig = recurrenceSig(kind, text)\n  const cl = minorClusters.get(sig) ?? { count: 0, tasks: new Set(), sample: text + (sourceLine ? \" [source-line: \" + sourceLine + \"]\" : \"\"), reported: false }\n  cl.count++; cl.tasks.add(id); minorClusters.set(sig, cl)\n}\nfunction noteRecurrence(kind, id, text, phase) {\n  const sig = recurrenceSig(kind, text)\n  const cl = minorClusters.get(sig) ?? { count: 0, tasks: new Set(), sample: text, reported: false }\n  cl.count++; cl.tasks.add(id); minorClusters.set(sig, cl)\n  if (cl.reported || !(cl.count >= 5 || cl.tasks.size >= 3)) return\n  cl.reported = true; recurringReported++\n  const sample = String(cl.sample).replace(/\\s+/g, ' ').trim()\n  const spread = `×${cl.count} across ${cl.tasks.size} task(s)`\n  log(`RECURRING ${kind.toUpperCase()} ${spread} — grouped observation for reassessment: ${sample}`)\n  if (kind === 'blocker') noteSlowness(`recurring blocker ${spread} (${[...cl.tasks].join(', ')}): ${sample} — each instance costs a triage cycle; reassess the grouped evidence`)\n  const grouping = processClass(kind, text) ? ' [process-class: ' + processClass(kind, text) + ']' : ''\n  queueLedger(`Recurring ${kind}: ${spread} (${[...cl.tasks].join(', ')})${grouping} — ${sample}`,\n    `ledger-recurring:${recurringReported}`, phase,\n    `Recurring ${kind}: ${spread} (${[...cl.tasks].join(', ')})${grouping} — sample elided`)\n}\n// Slowness signals and the cheap action taken (or left for the session); logged as they happen and\n// returned as `slowness`.\nconst slowness = []\n"
+    }
+  ],
+  "claim": "C8 only",
+  "actualObservedC8": [
+    {
+      "trial": "C-after-1",
+      "originalAgent": "/root/after_behavior_evals/c_after_1",
+      "score": {
+        "definition": "Groups equivalent cleanup refusal tags as one process class/aliases retaining originals; keeps distinct incidents/defects and test assertion class separate, no automatic severity escalation.",
+        "disposition": "pass",
+        "evidence_quotes": [
+          "- Attribution: B’s `preExisting=true` finding is FYI for B’s docs-only change because the defect reproduces at B’s base `4b44`. The run baseline `0a00` passes the same check, and A’s landing `3a33` introduces the failure. B is exonerated; A’s repair obligation remains open. No repair has landed.\n- Repair history: C’s latest attempt is clean after repairing two confirmed findings. Retain those findings and repair artifacts as history; the latest clean verdict does not erase earlier findings or resolve A’s regression.\n- Task counts: tracker and Git support four completed implementation tasks—A, B, C, D—and four task landings. The two merges absorbing updated main add zero task landings. “Six tasks” is unsupported.\n- Evidence limits: the ledger is truncated after C and has no valid metrics line. Ledger totals and complete ledger/Git/tracker reconciliation remain unavailable. Preserve readable tracker/Git evidence; do not infer ledger-only or completed-only discrepancies from truncation.\n- Timing: planning took 60 minutes, code 50, and review 20: 130 minutes overall. D was created at 10:40 and dispatched at 10:45. Its readiness is unknown; the five-minute interval does not establish five minutes of ready-queue waiting, and scheduler start at 10:00 establishes no earlier eligibility.\n- Concurrency: the snapshot shows eight active agents, including three implementation task slots. It establishes neither sustained concurrency nor eight implementation workers.\n- Scaling: the model predicts code could fall from 50 to 25 minutes, assuming no new bottleneck. Holding planning and review constant gives 105 minutes overall—about 19% shorter, or 1.24× speedup. “Doubling workers halves delivery time” is unsupported.\n- Process grouping: group A’s `[cleanup-permission-denied]` and C’s `[process-inspection-refused]` under `[cleanup-inspection]`, preserving original tags, refs, PIDs, and fixtures. Count two incidents sharing a process class, without claiming identical product defects. Keep B’s wrong retry expectation as a separate `[test-assertion-failure]` record. Three recorded friction events remain visible."
+        ],
+        "judgment": "Explicitly supports the frozen claim."
+      },
+      "responsePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-1-response.txt",
+      "responseSha256": "852fab7e5011968d93d6594d010a7c40034f095c617f1b5ec3ac27369c15cd88",
+      "allRecordedC8QuotesExact": true,
+      "groupingResponseTail": "- Process grouping: group A’s `[cleanup-permission-denied]` and C’s `[process-inspection-refused]` under `[cleanup-inspection]`, preserving original tags, refs, PIDs, and fixtures. Count two incidents sharing a process class, without claiming identical product defects. Keep B’s wrong retry expectation as a separate `[test-assertion-failure]` record. Three recorded friction events remain visible."
+    },
+    {
+      "trial": "C-after-2",
+      "originalAgent": "/root/after_behavior_evals/c_after_2",
+      "score": {
+        "definition": "Groups equivalent cleanup refusal tags as one process class/aliases retaining originals; keeps distinct incidents/defects and test assertion class separate, no automatic severity escalation.",
+        "disposition": "pass",
+        "evidence_quotes": [
+          "- Attribution: the defect passes at run baseline `0a00`, first fails at A’s landing `3a33`, and remains present at B’s base `4b44`. B’s docs-only change is exonerated; its task-relative `preExisting=true` packet is FYI in B’s review. A remains the run’s repair owner. Preserve the unresolved data-loss defect as Blocking at run scope; no linked repair verification exists.\n- Repair history: C’s latest attempt is clean after repairing two previously confirmed findings. Retain those findings and their repair artifacts as historical repair evidence. C’s clean result does not discharge A’s defect.\n- Task accounting: tracker and first-parent Git history support four completed implementation tasks, `A,B,C,D`, and four task landings. The two merges absorbing updated main add zero task landings. The ledger is truncated after C and has no valid metrics block; ledger totals and full ledger/Git/completed reconciliation remain unavailable. These gaps do not invalidate the four source-supported completions.\n- Timing and concurrency: planning took 60 minutes, code 50, review 20: 130 minutes overall. D’s creation-to-dispatch interval was five minutes (`10:40–10:45`); its ready timestamp is missing, so scheduler wait is unknown. The snapshot shows eight active agents, including three implementation task slots; it establishes neither sustained utilization nor doubled worker capacity.\n- Scaling: the model conditionally reduces code from 50 to 25 minutes, assuming no new bottleneck. Holding planning and review constant yields 105 minutes overall, a 25-minute saving, approximately 19%. It does not establish halved delivery time.\n- Process grouping: group A’s `[cleanup-permission-denied]` and C’s `[process-inspection-refused]` under `[cleanup-inspection]` because both describe sandbox-denied liveness inspection. Preserve both original tags, PID/fixture references, and separate incident identities; grouping establishes no shared product defect. Keep B’s wrong retry expectation under `[test-assertion-failure]` separately."
+        ],
+        "judgment": "Explicitly supports the frozen claim."
+      },
+      "responsePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-2-response.txt",
+      "responseSha256": "fbb0b92431ebf2dcbc6b99613d86e5245c0d1790741bb4508fb1661c32686336",
+      "allRecordedC8QuotesExact": true,
+      "groupingResponseTail": "- Process grouping: group A’s `[cleanup-permission-denied]` and C’s `[process-inspection-refused]` under `[cleanup-inspection]` because both describe sandbox-denied liveness inspection. Preserve both original tags, PID/fixture references, and separate incident identities; grouping establishes no shared product defect. Keep B’s wrong retry expectation under `[test-assertion-failure]` separately."
+    },
+    {
+      "trial": "C-after-3",
+      "originalAgent": "/root/after_behavior_evals/c_after_3",
+      "score": {
+        "definition": "Groups equivalent cleanup refusal tags as one process class/aliases retaining originals; keeps distinct incidents/defects and test assertion class separate, no automatic severity escalation.",
+        "disposition": "pass",
+        "evidence_quotes": [
+          "- **Attribution:** B is exonerated locally: the defect reproduces at its task base `4b44`, and B changes only documentation. Its `preExisting=true` packet is FYI for B’s review. Run baseline `0a00` passed the same check; A’s landing `3a33` introduced the failure. A remains the run’s repair owner. The unresolved run regression is Blocking because it risks real production data loss.\n- **Repair history:** C’s latest attempt is clean after repairing two previously confirmed findings. Retain those findings and repair artifacts as historical evidence; a clean latest verdict does not erase repair work or discharge A’s obligation.\n- **Task counts:** Tracker records four closed implementation leaves: A, B, C, D. Git independently shows four task landings. The two merges absorbing updated main add zero task landings. “Six tasks” is unsupported. Ledger transport is truncated after C, and no valid metrics line exists: ledger-derived run totals and complete reconciliation remain unavailable; readable tracker and Git observations remain usable.\n- **Timing and concurrency:** Planning took 60 minutes, code 50, and review 20: 130 minutes overall. The snapshot shows eight active agents, including three implementation task slots; it does not establish concurrency throughout the run. D’s creation-to-dispatch interval is five minutes. Its ready timestamp is missing, so ready-queue wait is unknown; the scheduler’s 10:00 start does not establish D waited 45 minutes.\n- **Scaling:** The conditional model halves code time to 25 minutes, assuming no new bottleneck. Holding planning and review constant gives 105 minutes overall—a 25-minute reduction, about 19%, or 1.24× speedup. “Doubling workers halves delivery time” is unsupported.\n- **Process grouping:** Group A’s and C’s liveness-inspection refusals under `[cleanup-inspection]`, preserving both original tags, identities, references, and unresolved inspection obligations. They are two occurrences sharing a process cause, not one product defect. Keep B’s wrong retry expectation under `[test-assertion-failure]` separately."
+        ],
+        "judgment": "Explicitly supports the frozen claim."
+      },
+      "responsePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-3-response.txt",
+      "responseSha256": "bb5789032e63cf0301001cfc584a421680dc339521eee77741aa6f9c2b366036",
+      "allRecordedC8QuotesExact": true,
+      "groupingResponseTail": "- **Process grouping:** Group A’s and C’s liveness-inspection refusals under `[cleanup-inspection]`, preserving both original tags, identities, references, and unresolved inspection obligations. They are two occurrences sharing a process cause, not one product defect. Keep B’s wrong retry expectation under `[test-assertion-failure]` separately.\n\nThe authoritative `report-status` line is unavailable in the supplied evidence; do not invent it or publish “clean run.”"
+    },
+    {
+      "trial": "C-after-4",
+      "originalAgent": "/root/after_behavior_evals/c_after_4",
+      "score": {
+        "definition": "Groups equivalent cleanup refusal tags as one process class/aliases retaining originals; keeps distinct incidents/defects and test assertion class separate, no automatic severity escalation.",
+        "disposition": "pass",
+        "evidence_quotes": [
+          "- Attribution: B’s `preExisting=true` packet is FYI for B’s docs-only change, with failure reproduced at task base `4b44`. Run baseline `0a00` passed the same check; A’s landing `3a33` introduced the failure. A retains the run’s Blocking repair obligation. No verified repair exists; B’s exoneration does not clear it.\n- Repair history: C’s latest attempt is clean after repairing two confirmed findings. Retain those repairs and their verification evidence as historical repairs; the latest verdict does not erase them or discharge A’s regression.\n- Counts: tracker evidence supports four closed implementation leaves: A, B, C, D. Git supports four task landings plus two main-absorption merges; absorption adds zero task landings. The ledger is truncated after C and has no valid metrics line. Ledger totals and full identity reconciliation remain unavailable; explicitly reconcile D against the retained ledger. Do not infer six tasks from six merges.\n- Timing: planning took 60 minutes, code 50, and review 20: 130 minutes overall. D’s observed creation-to-dispatch interval was five minutes, 10:40–10:45. Its ready timestamp is absent, so ready-queue delay is unknown; scheduler start at 10:00 does not establish D’s wait.\n- Concurrency: the snapshot shows eight active agents, including three implementation task slots. It establishes neither eight implementation workers nor sustained utilization.\n- Scaling: the conditional model halves code time to 25 minutes, assuming no new bottleneck. With planning and review unchanged, total delivery becomes 105 minutes: 25 minutes saved, approximately 19% faster by elapsed-time reduction, or 1.24× speedup. This is a prediction, not measured doubling.\n- Process diagnosis: group A’s `[cleanup-permission-denied]` and C’s `[process-inspection-refused]` under `[cleanup-inspection]` because both describe sandbox-denied liveness inspection. Preserve both original records, PIDs, fixtures, and unresolved inspection obligations. Grouping identifies recurring process friction, not identical product defects. Keep B’s wrong retry expectation under `[test-assertion-failure]` separately."
+        ],
+        "judgment": "Explicitly supports the frozen claim."
+      },
+      "responsePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-4-response.txt",
+      "responseSha256": "def702d154e4dda58b1847ef38aeb1d4e8fde6248652ea14445adb1538216cd7",
+      "allRecordedC8QuotesExact": true,
+      "groupingResponseTail": "- Process diagnosis: group A’s `[cleanup-permission-denied]` and C’s `[process-inspection-refused]` under `[cleanup-inspection]` because both describe sandbox-denied liveness inspection. Preserve both original records, PIDs, fixtures, and unresolved inspection obligations. Grouping identifies recurring process friction, not identical product defects. Keep B’s wrong retry expectation under `[test-assertion-failure]` separately."
+    },
+    {
+      "trial": "C-after-5",
+      "originalAgent": "/root/after_behavior_evals/c_after_5",
+      "score": {
+        "definition": "Groups equivalent cleanup refusal tags as one process class/aliases retaining originals; keeps distinct incidents/defects and test assertion class separate, no automatic severity escalation.",
+        "disposition": "pass",
+        "evidence_quotes": [
+          "- Attribution: B’s `preExisting=true` packet is FYI relative to B’s base `4b44`, exonerating B’s docs change. It does not exonerate the run: baseline `0a00` passed the same check, A’s landing `3a33` introduced the failure, and no repair has landed. Retain A as repair owner; require linked live/pass verification of the exact check and configuration on the fixed source.\n- Repair history: C’s latest attempt is clean after repairing two confirmed findings. Preserve both historical findings and their repair evidence; the latest clean verdict does not erase those repairs or discharge A’s regression.\n- Counts: tracker and Git support four completed implementation tasks, A–D, and four task landings. The two updated-main absorption merges add zero task landings. D is Git/tracker-confirmed but unconfirmed by the ledger truncated after C; reconcile its missing ledger record. No valid ledger metrics exist, so ledger-derived run totals remain unavailable. Neither “six tasks” nor “clean run” is supported.\n- Timing and concurrency: planning took 60 minutes, code 50, and review 20: 130 minutes overall. The snapshot shows eight active agents, including three implementation task slots; it does not establish sustained concurrency. D’s creation-to-dispatch interval was five minutes. Its ready timestamp is missing, so ready-queue delay is unknown; scheduler start at 10:00 does not establish a 45-minute wait.\n- Scaling: the model predicts code could fall from 50 to 25 minutes, assuming no new bottleneck. Holding planning and review constant gives 105 minutes overall, about 19% less elapsed time—not half the delivery time. This is a conditional estimate, not measured scaling.\n- Process grouping: normalize A’s `[cleanup-permission-denied]` and C’s `[process-inspection-refused]` to `[cleanup-inspection]` based on their descriptions. Retain two incidents, original tags, distinct PIDs/fixtures, and unresolved inspection obligations. This groups process friction without merging product defects. Keep B’s wrong retry expectation separately as `[test-assertion-failure]`."
+        ],
+        "judgment": "Explicitly supports the frozen claim."
+      },
+      "responsePath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/behavior-after/C-after-5-response.txt",
+      "responseSha256": "623321f3371d4ef6714339e929a09b1c3cc467c458f56e2789b45830833fb22d",
+      "allRecordedC8QuotesExact": true,
+      "groupingResponseTail": "- Process grouping: normalize A’s `[cleanup-permission-denied]` and C’s `[process-inspection-refused]` to `[cleanup-inspection]` based on their descriptions. Retain two incidents, original tags, distinct PIDs/fixtures, and unresolved inspection obligations. This groups process friction without merging product defects. Keep B’s wrong retry expectation separately as `[test-assertion-failure]`."
+    }
+  ],
+  "scoresUnchanged": {
+    "installed_6_0": {
+      "pass": 5,
+      "fail": 0
+    },
+    "no_guidance": {
+      "pass": 5,
+      "fail": 0
+    },
+    "after": {
+      "pass": 5,
+      "fail": 0,
+      "ambiguous": 0,
+      "omitted": 0
+    }
+  },
+  "independentAssessment": {
+    "path": "/private/tmp/ufz-correction-final-r11-assessment.md",
+    "retained": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/independent-assessment.md",
+    "sha256": "8787ec2e8d0a5b04d7345635febf3a1ba36644a0ee8d7d2a8368c030a6651782",
+    "verdict": "SUPPORTED within original representative semantic-tagging scope; historical C8 reuse plus current mechanics"
+  },
+  "contextDiff": {
+    "path": "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/r11-c8/report-context.diff",
+    "sha256": "cd02a31e2d642b93af3a8686c2cfda0c049da6bc40a6d72a82535adc96a5f55b",
+    "judgment": "Complete context diff inspected: durable source/disputed-ledger reporting, redesign states and cleanup retention do not alter the operative C8 grouping/identity/severity/fix-scope rules."
+  },
+  "scope": "Actual historical model answers reused only for unchanged C8 semantic contract. No new experiment, no A–N tagging-case relabel, no full-case/current-guide carry-forward, no runtime normalization authority for unknown cleanup-permission-denied tag.",
+  "limits": [
+    "Five fresh gpt-6.1-sol/medium/fork_turns=none excerpt-pack respondents; historical manual unblinded scoring and shared system/developer context.",
+    "Both historical comparison arms already5/5; no improvement claim.",
+    "Not automatic skill discovery, a complete current coordinator session, universal tagging reliability, hosted/live Workflow or every unknown tag.",
+    "Original pending/unperformed statements remain true for their historical source; later attributed C8 answers supply current relevant representative observable."
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "argv": [
+    "git",
+    "add",
+    "counter.mjs",
+    "check.mjs"
+  ],
+  "actualArgv": [
+    "/opt/homebrew/bin/git",
+    "add",
+    "counter.mjs",
+    "check.mjs"
+  ],
+  "environment": {
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "HOME": "/private/tmp/ufz-correction-actual-continuity-4911223a/caller-home",
+    "TMPDIR": "/private/tmp/ufz-correction-actual-continuity-4911223a/tmp",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "LANG": "C",
+    "LC_ALL": "C"
+  },
+  "executableSha256": "9048038886ac36210fbb616b49b0707465f63683cb04e33a2013baf95f746938",
+  "cwd": "/private/tmp/ufz-correction-actual-continuity-4911223a/product",
+  "exitCode": 0,
+  "stdout": "/private/tmp/ufz-correction-actual-continuity-4911223a/preparation-receipts/product-stage.stdout",
+  "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr": "/private/tmp/ufz-correction-actual-continuity-4911223a/preparation-receipts/product-stage.stderr",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

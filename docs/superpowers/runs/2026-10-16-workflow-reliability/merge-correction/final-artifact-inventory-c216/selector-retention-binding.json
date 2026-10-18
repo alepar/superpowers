@@ -1,0 +1,50 @@
+{
+  "head": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+  "scope": "Original690 and earlier707 sidecars/receipt remain byte-exact with original endpoints. No selector executed at c216; no current707 restamp or archive omission authority.",
+  "checks": [
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/final-artifact-inventory/retained-selector-evidence/refreshed-receipt.json",
+      "expectedSha256": "dacda758567b03ec65ca87d043312c77f3f29a83f7e03d2cc61c97bfca6d4caa",
+      "actualSha256": "dacda758567b03ec65ca87d043312c77f3f29a83f7e03d2cc61c97bfca6d4caa",
+      "sameBytes": true,
+      "originalBase": null,
+      "originalHead": null,
+      "originalGaps": null,
+      "originalOmissions": null,
+      "freshAtC216": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/final-artifact-inventory/retained-selector-evidence/same-source-after-fix-review-inputs.json",
+      "expectedSha256": "7e0cab463e46aeda3b090b3a8a3dcded6fd8d48922b0b5d6c0c9e3d0a1274ddd",
+      "actualSha256": "7e0cab463e46aeda3b090b3a8a3dcded6fd8d48922b0b5d6c0c9e3d0a1274ddd",
+      "sameBytes": true,
+      "originalBase": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+      "originalHead": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+      "originalGaps": 707,
+      "originalOmissions": 0,
+      "freshAtC216": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/final-artifact-inventory/retained-selector-evidence/corrected-product-range-review-inputs.json",
+      "expectedSha256": "82850a174d5166a18354721eab63a782fe734ed931c2628ba0554c1eb7415514",
+      "actualSha256": "82850a174d5166a18354721eab63a782fe734ed931c2628ba0554c1eb7415514",
+      "sameBytes": true,
+      "originalBase": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+      "originalHead": "480f7a23e515bfb8d593d65775f2202086fdc1f6",
+      "originalGaps": 707,
+      "originalOmissions": 0,
+      "freshAtC216": false
+    },
+    {
+      "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/final-artifact-inventory/retained-selector-evidence/original-690-review-inputs.json",
+      "expectedSha256": "c838e1390ca298afea5a1d8d5e4f5b2b6a74ab696ba8768d7e7780f39ff4707e",
+      "actualSha256": "c838e1390ca298afea5a1d8d5e4f5b2b6a74ab696ba8768d7e7780f39ff4707e",
+      "sameBytes": true,
+      "originalBase": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+      "originalHead": "ee275436bc69c3dd77cf1753399e0f93b44f2cff",
+      "originalGaps": 690,
+      "originalOmissions": 0,
+      "freshAtC216": false
+    }
+  ]
+}

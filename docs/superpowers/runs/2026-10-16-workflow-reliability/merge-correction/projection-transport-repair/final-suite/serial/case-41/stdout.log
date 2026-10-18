@@ -1,0 +1,11 @@
+PASS both actual replay paths share an idempotent sync boundary before filing
+PASS literal complete contract is accepted
+PASS auto: missing-sync replay is detected
+PASS auto: sync repeated in amend-checked before the common boundary is detected
+PASS design: missing-sync replay is detected
+PASS design: sync repeated in amend-checked before the common boundary is detected
+PASS already-completed replay lost
+PASS owner adoption lost
+PASS failed sync advances state
+PASS sync covered by degraded/applied policy
+10 passed / 0 failed

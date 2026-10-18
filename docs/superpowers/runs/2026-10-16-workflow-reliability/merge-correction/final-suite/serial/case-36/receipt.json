@@ -1,0 +1,218 @@
+{
+  "actualArgv": [
+    "/opt/homebrew/Cellar/node/26.9.0/bin/node",
+    "tests/super-code/recovery-hold-scope-r1.mjs"
+  ],
+  "afterSource": {
+    "clean": true,
+    "environment": {
+      "CI": "1",
+      "CODEX_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/control/codex-home",
+      "GIT_CONFIG_GLOBAL": "/dev/null",
+      "GIT_CONFIG_NOSYSTEM": "1",
+      "GIT_CONFIG_SYSTEM": "/dev/null",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "HOME": "/private/tmp/ufz-correction-final-suite-c2168120/control/home",
+      "LANG": "C",
+      "LC_ALL": "C",
+      "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "TMPDIR": "/private/tmp/ufz-correction-final-suite-c2168120/control/tmp",
+      "TZ": "UTC",
+      "XDG_CACHE_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/control/xdg-cache",
+      "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/control/xdg-config",
+      "XDG_DATA_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/control/xdg-data",
+      "XDG_STATE_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/control/xdg-state"
+    },
+    "head": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+    "probes": {
+      "head": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-c2168120",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "YzIxNjgxMjAwYWFjMjBmYjAyMjNiNmIwZTgzZTk1M2IxYmM3NWNkZQo="
+      },
+      "status": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-c2168120",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all",
+          "--ignore-submodules=none"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": ""
+      },
+      "tree": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-c2168120",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD^{tree}"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "Mjk0ZWUzMTg2Njk4YTI5YzExMmI3ZWQ3ZGFkZWQ1MDYyODhhNTJmMQo="
+      }
+    },
+    "probesSucceeded": true,
+    "rawStatusBase64": "",
+    "tree": "294ee3186698a29c112b7ed7daded506288a52f1"
+  },
+  "beforeSource": {
+    "clean": true,
+    "environment": {
+      "CI": "1",
+      "CODEX_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/control/codex-home",
+      "GIT_CONFIG_GLOBAL": "/dev/null",
+      "GIT_CONFIG_NOSYSTEM": "1",
+      "GIT_CONFIG_SYSTEM": "/dev/null",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "HOME": "/private/tmp/ufz-correction-final-suite-c2168120/control/home",
+      "LANG": "C",
+      "LC_ALL": "C",
+      "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "TMPDIR": "/private/tmp/ufz-correction-final-suite-c2168120/control/tmp",
+      "TZ": "UTC",
+      "XDG_CACHE_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/control/xdg-cache",
+      "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/control/xdg-config",
+      "XDG_DATA_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/control/xdg-data",
+      "XDG_STATE_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/control/xdg-state"
+    },
+    "head": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+    "probes": {
+      "head": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-c2168120",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "YzIxNjgxMjAwYWFjMjBmYjAyMjNiNmIwZTgzZTk1M2IxYmM3NWNkZQo="
+      },
+      "status": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-c2168120",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all",
+          "--ignore-submodules=none"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": ""
+      },
+      "tree": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-c2168120",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD^{tree}"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "Mjk0ZWUzMTg2Njk4YTI5YzExMmI3ZWQ3ZGFkZWQ1MDYyODhhNTJmMQo="
+      }
+    },
+    "probesSucceeded": true,
+    "rawStatusBase64": "",
+    "tree": "294ee3186698a29c112b7ed7daded506288a52f1"
+  },
+  "cause": null,
+  "configurationSha256": "7879d00cbeeec441381855e82b2156eb95f1b50ad3ed944acbbd4225bdc0dda6",
+  "cwd": "/private/tmp/ufz-correction-final-source-c2168120",
+  "durationSeconds": 2.806,
+  "endUtc": "2026-10-17T23:07:37Z",
+  "entrypointSha256": "f70be0ca1dc5249438c3433d1673850553b61eb7ddcf004fb74bca4859aa018f",
+  "environment": {
+    "CI": "1",
+    "CODEX_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/case-36/codex-home",
+    "GIT_CONFIG_GLOBAL": "/dev/null",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_CONFIG_SYSTEM": "/dev/null",
+    "GIT_OPTIONAL_LOCKS": "0",
+    "HOME": "/private/tmp/ufz-correction-final-suite-c2168120/case-36/home",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "TMPDIR": "/private/tmp/ufz-correction-final-suite-c2168120/case-36/tmp",
+    "TZ": "UTC",
+    "XDG_CACHE_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/case-36/xdg-cache",
+    "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/case-36/xdg-config",
+    "XDG_DATA_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/case-36/xdg-data",
+    "XDG_STATE_HOME": "/private/tmp/ufz-correction-final-suite-c2168120/case-36/xdg-state"
+  },
+  "executable": {
+    "bytes": 132848,
+    "name": "node",
+    "path": "/opt/homebrew/Cellar/node/26.9.0/bin/node",
+    "sha256": "28f0fc07e2b86fc0eae5f9751f34ab14d63bd0132882f89cc4a5b4a44965592e",
+    "versionArgv": [
+      "/opt/homebrew/Cellar/node/26.9.0/bin/node",
+      "--version"
+    ],
+    "versionExitCode": 0,
+    "versionStderr": "",
+    "versionStdout": "v26.9.0\n"
+  },
+  "exitCode": 0,
+  "id": "36",
+  "planCommand": "node tests/super-code/recovery-hold-scope-r1.mjs",
+  "planSha256": "3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76",
+  "requirementIds": [
+    "combined-suite-case-36"
+  ],
+  "runnerSha256": "7e34ddc54f52dc193ed84d07b44bf4e0fda1fa978fbc6e1c7aad053367e0d41d",
+  "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+  "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+  "startUtc": "2026-10-17T23:07:34Z",
+  "status": "passed",
+  "stderrBytes": 0,
+  "stderrPath": "/private/tmp/ufz-correction-final-suite-c2168120/case-36/stderr.log",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdoutBytes": 119,
+  "stdoutPath": "/private/tmp/ufz-correction-final-suite-c2168120/case-36/stdout.log",
+  "stdoutSha256": "c03435020aa1e6938a6820b5c3f740d433a4ba7cb2256c3d763e0f53c090f15b",
+  "timeout": false
+}

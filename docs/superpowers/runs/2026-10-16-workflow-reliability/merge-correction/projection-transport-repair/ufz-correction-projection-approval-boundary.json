@@ -1,0 +1,7 @@
+{
+  "recordedUtc": "2026-10-17T23:28:05.898926+00:00",
+  "deniedAction": "worker python3 /private/tmp/ufz-correction-projection-repair/add-test.py mutating external authorized correction checkout",
+  "reportedReason": "automatic approval review could not verify trusted user authorization; agent brief not accepted as authority",
+  "state": "external source unchanged; no retry or alternate-tool write",
+  "safeAlternative": "standalone /private/tmp checkout; concrete patch, RED/GREEN, scoped review before asking about application/integration"
+}

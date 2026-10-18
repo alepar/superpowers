@@ -1,0 +1,97 @@
+test_acceptance_closed_pipe (__main__.ProjectionOutput.test_acceptance_closed_pipe) ... ok
+test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) ... 
+  test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='valid', consumer='ordinary') ... FAIL
+  test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='valid', consumer='acceptance') ... FAIL
+  test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='missing-live', consumer='ordinary') ... FAIL
+  test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='missing-live', consumer='acceptance') ... FAIL
+  test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='missing-human', consumer='ordinary') ... FAIL
+  test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='missing-human', consumer='acceptance') ... FAIL
+  test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='missing-artifact', consumer='ordinary') ... FAIL
+  test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='missing-artifact', consumer='acceptance') ... FAIL
+  test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='malformed-json', consumer='ordinary') ... FAIL
+  test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='malformed-json', consumer='acceptance') ... FAIL
+test_gap_projection_acceptance_consumer (__main__.ProjectionOutput.test_gap_projection_acceptance_consumer) ... ok
+test_gap_projection_pipe (__main__.ProjectionOutput.test_gap_projection_pipe) ... ok
+test_incomplete_pipe_write_is_failure (__main__.ProjectionOutput.test_incomplete_pipe_write_is_failure) ... ok
+test_large_acceptance_transport (__main__.ProjectionOutput.test_large_acceptance_transport) ... ok
+test_large_gap_acceptance_transport (__main__.ProjectionOutput.test_large_gap_acceptance_transport) ... ok
+test_large_projection_acceptance_consumer (__main__.ProjectionOutput.test_large_projection_acceptance_consumer) ... ok
+test_large_projection_pipe (__main__.ProjectionOutput.test_large_projection_pipe) ... ok
+test_small_acceptance_transport (__main__.ProjectionOutput.test_small_acceptance_transport) ... ok
+test_valid_empty_acceptance_consumer (__main__.ProjectionOutput.test_valid_empty_acceptance_consumer) ... ok
+test_valid_empty_projection_pipe (__main__.ProjectionOutput.test_valid_empty_projection_pipe) ... ok
+
+======================================================================
+FAIL: test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='valid', consumer='ordinary')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 239, in test_aggregate_projection_above_default_buffer
+AssertionError: 'projection unavailable' unexpectedly found in 'status: clean [degraded: finding projection unavailable — retain known findings, root acceptance pending: finding projection unavailable; finding projection unavailable — retain known findings]\nqualifier: finding projection unavailable — retain known findings\nqualifier: root acceptance pending: finding projection unavailable; finding projection unavailable — retain known findings\n'
+
+======================================================================
+FAIL: test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='valid', consumer='acceptance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 249, in test_aggregate_projection_above_default_buffer
+AssertionError: 3 != 0 : b''
+
+======================================================================
+FAIL: test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='missing-live', consumer='ordinary')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 239, in test_aggregate_projection_above_default_buffer
+AssertionError: 'projection unavailable' unexpectedly found in 'status: clean [degraded: finding projection unavailable — retain known findings, root acceptance pending: measurement: unavailable (live required); owner: super-auto; finding projection unavailable; finding projection unavailable — retain known findings]\nqualifier: finding projection unavailable — retain known findings\nqualifier: root acceptance pending: measurement: unavailable (live required); owner: super-auto; finding projection unavailable; finding projection unavailable — retain known findings\n'
+
+======================================================================
+FAIL: test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='missing-live', consumer='acceptance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 252, in test_aggregate_projection_above_default_buffer
+AssertionError: True is not false : {'owner': 'super-auto', 'sourceTree': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'eligible': False, 'pending': ['measurement: unavailable (live required); owner: super-auto'], 'gaps': ['finding projection unavailable', 'finding projection unavailable — retain known findings'], 'nonblockingFindings': []}
+
+======================================================================
+FAIL: test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='missing-human', consumer='ordinary')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 239, in test_aggregate_projection_above_default_buffer
+AssertionError: 'projection unavailable' unexpectedly found in 'status: clean [degraded: finding projection unavailable — retain known findings, root acceptance pending: finish: human decision pending; owner: human; finding projection unavailable; finding projection unavailable — retain known findings]\nqualifier: finding projection unavailable — retain known findings\nqualifier: root acceptance pending: finish: human decision pending; owner: human; finding projection unavailable; finding projection unavailable — retain known findings\n'
+
+======================================================================
+FAIL: test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='missing-human', consumer='acceptance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 252, in test_aggregate_projection_above_default_buffer
+AssertionError: True is not false : {'owner': 'super-auto', 'sourceTree': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'eligible': False, 'pending': ['finish: human decision pending; owner: human'], 'gaps': ['finding projection unavailable', 'finding projection unavailable — retain known findings'], 'nonblockingFindings': []}
+
+======================================================================
+FAIL: test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='missing-artifact', consumer='ordinary')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 239, in test_aggregate_projection_above_default_buffer
+AssertionError: 'projection unavailable' unexpectedly found in 'status: clean [degraded: finding projection unavailable — retain known findings, root acceptance pending: source coverage: /var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/tmpw0yrbv0t/review-23.md (aggregate/report-23): original report unavailable or malformed; finding projection unavailable; finding projection unavailable — retain known findings]\nqualifier: finding projection unavailable — retain known findings\nqualifier: root acceptance pending: source coverage: /var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/tmpw0yrbv0t/review-23.md (aggregate/report-23): original report unavailable or malformed; finding projection unavailable; finding projection unavailable — retain known findings\n'
+
+======================================================================
+FAIL: test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='missing-artifact', consumer='acceptance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 252, in test_aggregate_projection_above_default_buffer
+AssertionError: True is not false : {'owner': 'super-auto', 'sourceTree': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'eligible': False, 'pending': [], 'gaps': ['source coverage: /var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/tmpw0yrbv0t/review-23.md (aggregate/report-23): original report unavailable or malformed', 'finding projection unavailable', 'finding projection unavailable — retain known findings'], 'nonblockingFindings': []}
+
+======================================================================
+FAIL: test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='malformed-json', consumer='ordinary')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 239, in test_aggregate_projection_above_default_buffer
+AssertionError: 'projection unavailable' unexpectedly found in 'status: clean [degraded: finding projection unavailable — retain known findings, root acceptance pending: finding projection unavailable; finding projection unavailable — retain known findings]\nqualifier: finding projection unavailable — retain known findings\nqualifier: root acceptance pending: finding projection unavailable; finding projection unavailable — retain known findings\n'
+
+======================================================================
+FAIL: test_aggregate_projection_above_default_buffer (__main__.ProjectionOutput.test_aggregate_projection_above_default_buffer) (case='malformed-json', consumer='acceptance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 252, in test_aggregate_projection_above_default_buffer
+AssertionError: True is not false : {'owner': 'super-auto', 'sourceTree': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'eligible': False, 'pending': [], 'gaps': ['finding projection unavailable', 'finding projection unavailable — retain known findings'], 'nonblockingFindings': []}
+
+----------------------------------------------------------------------
+Ran 12 tests in 29.039s
+
+FAILED (failures=10)

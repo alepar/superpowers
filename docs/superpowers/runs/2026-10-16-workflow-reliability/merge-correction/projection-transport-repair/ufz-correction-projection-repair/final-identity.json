@@ -1,0 +1,11 @@
+{
+  "checkout": "/private/tmp/ufz-correction-projection-repair-source",
+  "base": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+  "head": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+  "tree": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2",
+  "changedPaths": [
+    "skills/super-auto/scripts/report-status",
+    "tests/super-auto/projection-output-r1.sh"
+  ],
+  "porcelain": ""
+}

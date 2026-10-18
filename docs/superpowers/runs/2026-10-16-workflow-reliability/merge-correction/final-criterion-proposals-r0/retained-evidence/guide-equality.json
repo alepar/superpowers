@@ -1,0 +1,65 @@
+{
+  "sourceHead": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+  "checks": [
+    {
+      "path": "skills/super-auto/SKILL.md",
+      "same": true,
+      "sha256": "c7947601428c4365805b5001562e696ad4dbd28425eedb34c2d140f990417f4b"
+    },
+    {
+      "path": "skills/super-auto/resume.md",
+      "same": true,
+      "sha256": "4497ce1d0d47a0307ea6bb96eb008687595797e5ea1068ea7dd89b10bf546baf"
+    },
+    {
+      "path": "skills/super-auto/run-state.md",
+      "same": true,
+      "sha256": "48cff44fb61eb3255952677deb3d6f4f05bd5eaaa68308dceab432d39df7f203"
+    },
+    {
+      "path": "skills/super-auto/report-prompt.md",
+      "same": true,
+      "sha256": "b9184a6bae2228e517e2d661aff9ed61eb6f544c79ce628457d789b4af8a3bbb"
+    },
+    {
+      "path": "skills/super-code/coordinator-subagents.md",
+      "same": true,
+      "sha256": "3ce518c8a66ba4e28c512e41cc546264d5b20e909e1bafbccc41a9bbcf848fff"
+    },
+    {
+      "path": "skills/super-code/assembler-prompt.md",
+      "same": true,
+      "sha256": "51071e255350347a56cc7124c6ca5fb8050d57705c8865c476c3730858164cef"
+    },
+    {
+      "path": "skills/super-code/task-reviewer-prompt.md",
+      "same": true,
+      "sha256": "e56081ee222894a286605007a0131aeec4692942eed684c5cc7b7f52be62d1e8"
+    },
+    {
+      "path": "skills/finishing-a-development-branch/SKILL.md",
+      "same": true,
+      "sha256": "6620d2a4c74d4063f5a628e0b9b3d429fed38d40a047bb1eb6d3be3481718a0c"
+    },
+    {
+      "path": "skills/upstream-feedback/SKILL.md",
+      "same": true,
+      "sha256": "2daad7d73e54462e8fe24f1152be47ffbbd8fe135a638bb851b97286b989ff30"
+    },
+    {
+      "path": "skills/upstream-feedback/report-template.md",
+      "same": true,
+      "sha256": "e14aff3f47879ea603b1ede239295021e7a563fbaca8996f351926b3b72d1375"
+    },
+    {
+      "path": "skills/upstream-feedback/analyst-prompt.md",
+      "same": true,
+      "sha256": "b9a5d6fb0b92f1bae8155291cb74e58712258b4f815adddcd169dd3cfea72cd2"
+    },
+    {
+      "path": "skills/super-design/SKILL.md",
+      "same": true,
+      "sha256": "e23a402ce0fde5dbb4245c4bf4c0de6361aec144cfec71c0e2dfc787c38ecf95"
+    }
+  ]
+}

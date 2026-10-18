@@ -1,0 +1,165 @@
+# Review package: 2091eb4910e73273f06586bb653eddc750639e23..9e4e057136d449348135bfc18d1f084cb6e4c303
+
+## Commits
+9e4e0571 fix(super-code): preserve delivery attempts before verification
+
+## Files changed
+ skills/super-code/scripts/run-profile.mjs          | 16 ++++---
+ .../test-verification-completion-metrics.sh        | 54 ++++++++++++++++++++++
+ 2 files changed, 64 insertions(+), 6 deletions(-)
+
+## Diff
+diff --git a/skills/super-code/scripts/run-profile.mjs b/skills/super-code/scripts/run-profile.mjs
+index 9e44725a..0346d918 100644
+--- a/skills/super-code/scripts/run-profile.mjs
++++ b/skills/super-code/scripts/run-profile.mjs
+@@ -1135,50 +1135,54 @@ if (leaves) {
+   for (const [id, deps] of leaves) if (!rows.has(id)) rows.set(id, { id, n: undefined, deps: new Set(deps), files: new Set(), opaque: false, graph: true, residual: true,
+     mappings: plan0 && (creation.get(id) ?? -Infinity) <= plan0.end ? [{ at: plan0.end, agent: plan0 }] : [] })
+ }
+ // The planning a dispatch at time t followed: the bead's latest mapping by then.
+ const mappingFor = (id, t) => (rows.get(id)?.mappings ?? []).filter(m => m.at !== null && m.at <= t + EPS).at(-1) ?? null
+ const cutAt = (dependent, blocker) => cuts.find(c => c.dependent === dependent && c.blocker === blocker)?.at ?? Infinity
+ const depsAt = (id, t) => [...(rows.get(id)?.deps ?? [])].filter(d => rows.has(d) && cutAt(id, d) > t)
+ const dependentsOf = new Map()
+ for (const r of rows.values()) for (const d of r.deps) { if (!dependentsOf.has(d)) dependentsOf.set(d, new Set()); dependentsOf.get(d).add(r.id) }
+ 
+-// ---- per-bead attempts; every attempt starts with an `impl` dispatch (a review re-entry re-runs setup),
+-// or with the `brief:` that preceded it in older coordinators ----
++// ---- per-bead attempts: impl/brief starts delivery; a later typed verification
++// starts a separate attempt even when recovery skips implementation and review. ----
+ const beads = new Map()
+ for (const a of timed) if (a.bead) {
+   if (!beads.has(a.bead)) beads.set(a.bead, { id: a.bead, n: rows.get(a.bead)?.n, agents: [], attempts: [] })
+   beads.get(a.bead).agents.push(a)
+ }
+ const hasJournal = run => runs.find(r => r.runId === run)?.journal
++const isVerification = a => a.result?.completionKind === 'verification-only'
++  || (a.kind === 'close-only' && a.suffix === 'verification')
++  || (a.kind === 'ledger' && /^verification-settlement(?::retry)?$/.test(a.suffix))
+ for (const b of beads.values()) {
+   let cur = null
+   for (const a of b.agents) {
+     const afterBrief = cur && cur.agents.at(-1)?.kind === 'brief'
+-    if (!cur || a.kind === 'brief' || (a.kind === 'impl' && !afterBrief)) { cur = { bead: b.id, agents: [] }; b.attempts.push(cur) }
++    // A closure/settlement-only resume must not reclassify the preceding delivery:
++    // its implementation release and evidenced landing remain independent facts.
++    const verificationReentry = cur && a.kind !== 'impl' && isVerification(a) && !cur.agents.some(isVerification)
++    if (!cur || a.kind === 'brief' || (a.kind === 'impl' && !afterBrief) || verificationReentry) { cur = { bead: b.id, agents: [] }; b.attempts.push(cur) }
+     cur.agents.push(a)
+     a.attempt = cur
+   }
+   for (const at of b.attempts) {
+     const by = st => at.agents.filter(a => a.stage === st)
+     const head = at.agents[0]
+     at.start = head.start
+     at.run = head.run
+     const implHead = at.agents.find(a => a.kind === 'impl')
+     at.status = implHead ? (implHead.result?.status ?? (implHead.failed ? 'FAILED' : null)) : null
+     at.impl = by('implement'); at.review = by('review'); at.fix = by('fix'); at.lane = at.agents.filter(a => LANE.has(a.stage))
+     // Coordinator-owned labels retain verification identity on closure-only resume.
+     // CLOSED is repair output; only the acknowledged, post-check settlement append
+     // confirms completion. Legacy untyped closure cannot establish a Git landing.
+-    at.verificationOnly = at.agents.some(a => a.result?.completionKind === 'verification-only'
+-      || (a.kind === 'close-only' && a.suffix === 'verification')
+-      || (a.kind === 'ledger' && /^verification-settlement(?::retry)?$/.test(a.suffix)))
++    at.verificationOnly = at.agents.some(isVerification)
+     at.verificationCompleted = at.status === 'VERIFIED' || at.agents.some(a => a.kind === 'ledger'
+       && /^verification-settlement(?::retry)?$/.test(a.suffix) && a.result?.appended === true)
+     if (at.verificationOnly) at.status = at.verificationCompleted ? 'VERIFIED' : 'VERIFICATION_PENDING'
+     at.unknownClosure = !at.verificationOnly && at.status !== 'ALREADY_MERGED'
+       && at.agents.some(a => a.kind === 'close-only' && !a.suffix)
+     at.split = by('split')[0] ?? null
+     at.blocker = by('blocker')
+     // The slot is held to the chain's end before integration; a failed merge's blocker path takes one
+     // again after the lane turn.
+     const laneStart = at.lane.length ? at.lane[0].start : Infinity
+diff --git a/tests/super-code/test-verification-completion-metrics.sh b/tests/super-code/test-verification-completion-metrics.sh
+index 86041b37..48bfe679 100644
+--- a/tests/super-code/test-verification-completion-metrics.sh
++++ b/tests/super-code/test-verification-completion-metrics.sh
+@@ -66,30 +66,84 @@ class WorkflowMetrics(unittest.TestCase):
+             prior=kind=='prior-merge'
+             if prior:
+                 agents += [dict(label='impl:verify.1',start=3,end=8,result=dict(status='IMPLEMENTED')),
+                            dict(label='merge:verify.1',start=8,end=10,result=dict(merged=True))]
+             agents += [dict(label='impl:verify.1',start=20,end=30,result=dict(status='IMPLEMENTED',completionKind='verification-only')),
+                        dict(label='review:verify.1',start=31,end=40,result=dict(status='CLEAN',completionKind='verification-only')),
+                        dict(label='close-only:verify.1:verification',start=41,end=42,result=dict(status='BLOCKED' if kind=='pending' else 'CLOSED'))]
+             if kind!='pending':
+                 agents += [dict(label='close-check:verify.1',start=43,end=44,result=dict(closed=['verify.1'])),
+                            dict(label='ledger:verify.1:verification-settlement',start=45,end=46,result=dict(appended=True))]
++            if kind=='brief': agents.insert(2,dict(label='brief:verify.1',start=18,end=19))
+             sc=dict(t0='2026-10-01T00:00:00Z',launch=dict(epicId='verify',config=dict(concurrency=1)),agents=agents)
+             scenario=d/'scenario.json'; scenario.write_text(json.dumps(sc))
+             subprocess.run(['node',str(ROOT/'tests/super-code/run-profile-fixture.mjs'),str(scenario),str(d/'workflow')],check=True,capture_output=True)
+             p=subprocess.run(['node',str(ROOT/'skills/super-code/scripts/run-profile.mjs'),'--workflow',str(d/'workflow'),'--out',str(d/'profile')],check=True,capture_output=True,text=True)
+             data=json.loads((d/'profile.json').read_text()); bead=data['beads'][0]
+             self.assertEqual(bead['landed'],prior,'verification close-only is tracker completion, not a Git landing')
+             self.assertEqual(bead['verificationOnlyCompleted'],kind!='pending')
++            if kind=='brief': self.assertEqual(bead['attempts'],['VERIFIED'],'legacy brief remains attached to its implementation')
+             self.assertEqual(data['lane']['merges'],int(prior))
+             self.assertEqual(bead['landedAt'],'2026-10-01T00:00:10.000Z' if prior else None)
+             if kind!='pending': self.assertIn('verification-only 1',p.stdout)
+             else: self.assertNotIn('verification-only 1',p.stdout)
+             if not prior: self.assertIsNone(data['simulation'])
+             print('Workflow '+kind+': landing='+str(bead['landed'])+', verified='+str(bead['verificationOnlyCompleted']))
+ 
++    def test_workflow_verification_with_legacy_brief(self): self.check_case('brief')
+     def test_workflow_verified_close(self): self.check_case('verified')
+     def test_workflow_pending_close_is_not_completed(self): self.check_case('pending')
+     def test_workflow_prior_merge_survives_verification(self): self.check_case('prior-merge')
+ 
++
++class WorkflowHistory(unittest.TestCase):
++    # Exact event shapes from the independent R3 readiness/prior-close probe pairs.
++    # Adding verification bookkeeping must not change already-evidenced delivery facts.
++    def check_history(self, family, completion):
++        mapping=[dict(id='ep.1',n=1,deps=[])]
++        if family=='readiness': mapping.append(dict(id='ep.2',n=2,deps=['ep.1']))
++        agents=[dict(label='ledger-append:launch',start=0,end=1),
++                dict(label='plan',start=1,end=2,result=dict(mapping=mapping)),
++                dict(label='impl:ep.1',start=10,end=20,result=dict(status='IMPLEMENTED' if family=='readiness' else 'ALREADY_MERGED'))]
++        if family=='readiness':
++            agents += [dict(label='impl:ep.2',start=25,end=30,result=dict(status='IMPLEMENTED')),
++                       dict(label='merge:ep.1',start=35,end=40,result=dict(merged=True)),
++                       dict(label='merge:ep.2',start=45,end=50,result=dict(merged=True))]
++        else:
++            agents += [dict(label='close-only:ep.1:landed',start=21,end=22,result=dict(status='CLOSED'))]
++        if completion not in ['baseline','settlement-only']:
++            agents += [dict(label='close-only:ep.1:verification',start=60,end=61,result=dict(status='CLOSED'))]
++        if completion in ['settled','failed-settlement','settlement-only']:
++            agents += [dict(label='ledger:ep.1:verification-settlement',start=62,end=63,result=dict(appended=completion!='failed-settlement'))]
++        sc=dict(t0='2026-10-01T00:00:00Z',launch=dict(epicId='ep',config=dict(concurrency=2,earlyUnblock=True) if family=='readiness' else dict(concurrency=1)),agents=agents)
++        with tempfile.TemporaryDirectory() as tmp:
++            d=pathlib.Path(tmp); scenario=d/'scenario.json'; scenario.write_text(json.dumps(sc))
++            subprocess.run(['node',str(ROOT/'tests/super-code/run-profile-fixture.mjs'),str(scenario),str(d/'workflow')],check=True,capture_output=True)
++            subprocess.run(['node',str(ROOT/'skills/super-code/scripts/run-profile.mjs'),'--workflow',str(d/'workflow'),'--out',str(d/'profile')],check=True,capture_output=True)
++            data=json.loads((d/'profile.json').read_text()); beads={b['id']:b for b in data['beads']}; parent=beads['ep.1']
++            self.assertTrue(parent['landed'],'later verification cannot erase an evidenced landing')
++            self.assertEqual(parent['landedAt'],'2026-10-01T00:00:'+('40' if family=='readiness' else '22')+'.000Z')
++            self.assertEqual(parent['verificationOnlyCompleted'],completion in ['settled','settlement-only'])
++            if family=='readiness':
++                child=beads['ep.2']
++                self.assertEqual(child['dependencyReadyAt'],'2026-10-01T00:00:20.000Z','historical implementation still releases its child before merge')
++                self.assertEqual(child['readyAt'],'2026-10-01T00:00:20.000Z')
++                self.assertEqual(child['waitMs'],5000)
++                self.assertEqual(data['lane']['merges'],2)
++            original='IMPLEMENTED' if family=='readiness' else 'ALREADY_MERGED'
++            expected=[original]+([] if completion=='baseline' else ['VERIFIED' if completion in ['settled','settlement-only'] else 'VERIFICATION_PENDING'])
++            self.assertEqual(parent['attempts'],expected,'delivery and later verification retain distinct identities')
++            print('Workflow history '+family+'/'+completion+': '+str(parent['attempts'])+', landing='+parent['landedAt'])
++
++    def test_readiness_control(self): self.check_history('readiness','baseline')
++    def test_readiness_after_verification(self): self.check_history('readiness','settled')
++    def test_prior_landed_closure_control(self): self.check_history('prior-close','baseline')
++    def test_prior_landed_closure_after_verification(self): self.check_history('prior-close','settled')
++    def test_readiness_after_pending_verification(self): self.check_history('readiness','pending')
++    def test_prior_landed_closure_after_pending_verification(self): self.check_history('prior-close','pending')
++    def test_readiness_after_failed_settlement(self): self.check_history('readiness','failed-settlement')
++    def test_prior_landed_closure_after_failed_settlement(self): self.check_history('prior-close','failed-settlement')
++    def test_readiness_after_settlement_only_resume(self): self.check_history('readiness','settlement-only')
++    def test_prior_landed_closure_after_settlement_only_resume(self): self.check_history('prior-close','settlement-only')
++
+ unittest.main(verbosity=2)
+ TEST

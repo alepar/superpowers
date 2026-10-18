@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "experiment": "one controlled ordinary-caller actual-helper interruption",
+  "helperSourceHead": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+  "helperSourceTree": "9d74c04d6a465e02439dc08e2076395d8e791583",
+  "helpers": [
+    {
+      "path": "skills/super-auto/scripts/report-status",
+      "sha256": "16995ba49a018edde1387c597bd08c0916fba2011d8693e073fa57ce15ea8963"
+    },
+    {
+      "path": "skills/super-auto/scripts/collection-records.cjs",
+      "sha256": "fa444c243485404d761eb59ab53ca6b4bd7c97218dfc5521cc527fe5414def4f"
+    },
+    {
+      "path": "skills/super-auto/scripts/scope-dispositions",
+      "sha256": "2007aabe7f3d9531850b4e4aebd694eb7b9e640c2906680f50655b4849d29eb0"
+    },
+    {
+      "path": "skills/super-code/scripts/report-verdict",
+      "sha256": "3e7b3d48eb5678ae97e76c17f13497e6009de7960a310538ba5bb90adb758661"
+    }
+  ],
+  "commandEnvironment": {
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "HOME": "/private/tmp/ufz-correction-actual-continuity-4911223a/caller-home",
+    "TMPDIR": "/private/tmp/ufz-correction-actual-continuity-4911223a/tmp",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "LANG": "C",
+    "LC_ALL": "C"
+  },
+  "product": "/private/tmp/ufz-correction-actual-continuity-4911223a/product",
+  "productHead": "a62d639b2b0e0eaa28c2738d191a090181dd8308",
+  "productTree": "7bbc73a84e449537a879f97da684a079df85e674",
+  "run": "/private/tmp/ufz-correction-actual-continuity-4911223a/run.md",
+  "workspace": "/private/tmp/ufz-correction-actual-continuity-4911223a/caller-workspace",
+  "initialReport": "/private/tmp/ufz-correction-actual-continuity-4911223a/retained-originals/invocation-i1-report.md",
+  "silentRetryReport": "/private/tmp/ufz-correction-actual-continuity-4911223a/retained-originals/invocation-i2-silent-report.md",
+  "requiredOriginalBytes": "/private/tmp/ufz-correction-actual-continuity-4911223a/retained-originals/counter-source.mjs",
+  "initialRunSha256": "ede3cd1853fdf11bacf00fe840cbff4d47615d78e31a22ec45a80c2426368d91",
+  "expectedRecoveredReview": "/private/tmp/ufz-correction-actual-continuity-4911223a/caller-workspace/final-review-continuity-i1.md",
+  "priorSource": "continuity-i1/final",
+  "priorOccurrences": [
+    {
+      "section": "Must fix before landing",
+      "position": 1,
+      "key": "[Blocking] counter.mjs:1 \u2014 nonnegativeCount(-1) returns -1; the actual criterion fails.",
+      "text": "[Blocking] counter.mjs:1 \u2014 nonnegativeCount(-1) returns -1; the actual criterion fails."
+    },
+    {
+      "section": "Deferred OK",
+      "position": 1,
+      "key": "[Should-fix] counter.mjs:2 \u2014 decodeSnapshot has no input size budget; retain this separate deferred item for its owner.",
+      "text": "[Should-fix] counter.mjs:2 \u2014 decodeSnapshot has no input size budget; retain this separate deferred item for its owner."
+    },
+    {
+      "section": "Untested scope",
+      "position": 1,
+      "key": "Snapshot memory usage and performance were not measured.",
+      "text": "Snapshot memory usage and performance were not measured."
+    }
+  ],
+  "limits": [
+    "Reports are controlled fixture inputs; helper and criterion commands execute.",
+    "No real tracker, root, human acceptance or hosted Workflow claim.",
+    "The actual initial criterion failure and interrupted collection remain immutable.",
+    "Positive control fixes only negative counts; independent deferred item remains.",
+    "Independent final review stays unestablished in this fixture."
+  ]
+}

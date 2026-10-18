@@ -1,0 +1,27 @@
+{
+  "base": "7b18b0c26b9f19d531c558e112d490743901a13b",
+  "commit": "2091eb4910e73273f06586bb653eddc750639e23",
+  "tree": "0f5b6749c3504bf4c2bbdc595df2ec8d641436d3",
+  "files": {
+    "skills/super-code/coordinator.js": {
+      "gitBlob": "603bbe5837322468620e56da1147d8ec525423bf",
+      "sha256": "faf14fdbc9cf5a403012f9e0041ff2d14cd401733211c17b622ebb2f9214612a"
+    },
+    "skills/super-code/scripts/run-profile.mjs": {
+      "gitBlob": "9e44725ac62e4e9878ea7fd2046a3fd1bd604ceb",
+      "sha256": "6a35af949df3000a935e745835431d6655ba087dbd6a6e3938278cb6a86e882c"
+    },
+    "tests/super-code/replay-harness.mjs": {
+      "gitBlob": "e472e16b2c834e262b906e39730cfd328e55104e",
+      "sha256": "f75e12682da2e97f9e824be9fa4b7578ca7b3fc3650498c2ac2dfd37c2ad30ff"
+    },
+    "tests/super-code/test-verification-completion-metrics.sh": {
+      "gitBlob": "86041b3796032758af50152f7175d6f071fc37c0",
+      "sha256": "0404bd57fcc7017346296ac7782e6f9128d7b41b0c818ce489ae4f0018a9852f"
+    },
+    "tests/super-code/test-verification-settlement-profile.mjs": {
+      "gitBlob": "b3b33bd131fa79d6420ce04000908e6809918c8e",
+      "sha256": "168086dcdd8c08e2b995e96343aab75e3a2d363031e29132facca26980c96b88"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+diff --git a/counter.mjs b/counter.mjs
+index 14a4067..943256f 100644
+--- a/counter.mjs
++++ b/counter.mjs
+@@ -1,2 +1,2 @@
+-export const nonnegativeCount = value => value;
++export const nonnegativeCount = value => Math.max(0, value);
+ export const decodeSnapshot = text => JSON.parse(text);

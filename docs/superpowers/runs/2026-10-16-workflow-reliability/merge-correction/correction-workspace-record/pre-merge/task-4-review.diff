@@ -1,0 +1,546 @@
+diff --git a/skills/super-auto/SKILL.md b/skills/super-auto/SKILL.md
+index ca2090a0..fd34a1d1 100644
+--- a/skills/super-auto/SKILL.md
++++ b/skills/super-auto/SKILL.md
+@@ -168,7 +168,7 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t
+ | 1 | Design (`design`) | `super-design` | Pass: the goal (on a resume, `run.md`'s recorded `idea:`), the artifact-directory override, the `run.md` path together with run-state.md, whose field names and formats govern every write (a co-writer that never sees the contract invents an incompatible one), the `roast-design` phase token to write when that stage begins, the design mode (Mode B when `planOneShot` or `autonomous` is set), `autonomous` and `skipPlanRoast`, and — resuming mid-roast — the starting round. Say the hand-off is `super-auto`'s. It drives the root brainstorm, decomposition, every subepic brainstorm, the coverage loop and the design roast, recording into `run.md` as it goes. |
+ | 2 | Design roast (`roast-design`) | `super-roast` (design) | Runs inside phase 1's `super-design` invocation, via its own offer; fix loop capped per run-state.md item 5 (Roast iteration counts), cap handling in §Roast caps. In a one-shot run without `autonomous`, the run stops after this phase for design review (§Autonomous mode). `super-auto` holds no control while it runs, so `super-design` writes `phase: roast-design`, the report paths and `roastDesignRound` into `run.md` itself, per `super-design` §Run-State File (when a caller supplies one) and §Who writes run.md. After the roast loop, `super-design`'s parallelism pass reshapes the bead graph (safe edge cuts applied, the rest parked as `graph-change` items) and records its `graph-pass:` line before handing back. |
+ | 3 | Code (`code`) | `super-code` | The integration branch is this run's branch, and its integration worktree is this run's worktree — both exist already, from pre-flight (§Run directory). Create nothing; pass them — the worktree's real path explicitly, as `integrationWorktree`, never left for `super-code` to derive: the run branch `super-auto/<slug>` contains a slash, and `super-code`'s no-arg fallback derives a slash-collapsed `.worktrees/` path that matches no worktree this run ever created. (`branch` was recorded at run-directory creation.) Autonomous or interactive per flag; under `autonomous` with Workflow, pass `config.edgeCuts: 'apply-safe'` so its optional edge audit may apply safe edge cuts. Ordinary-subagent mode runs no background edge audit. Say in the invocation that `super-auto` owns the finish — there is no config flag, and without it `super-code` merges and deletes the worktree the report still needs. Pass `args.runTag` = run.md's `runTag:` on this and every re-entry, and `config.contextWindows` from `context-preflight --json`; at phase 3's start re-register the marker with `--epic` and `--ledger <run worktree>/.superpowers/sdd/<epic>-plan/progress.md`. Also pass the friction-log path — the git-ignored `<run worktree>/.superpowers/sdd/<epic>-plan/friction-pending.md`, never `<run-dir>/friction.md` (see the friction rule under §Phase 6 — report — report) — so phase 3 can append to it, `processRoots: [<absolute run dir>]` so super-code's Finish process sweep covers the run directory too, and `deferSweep: true` on this and every fix-loop re-entry: the one full-suite sweep runs in phase 6 (each merge inside `super-code` still runs its build-only `mergeCheck` — compile/typecheck, no tests). Its final review is consumed per §Final-review items. |
+-| 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, the run's spec paths as `super-roast`'s stated intent (every `*-design.md` in the run directory, the root spec named by `run.md`'s `spec:` first, then the nested ones in name order; paths only, never their text), the iteration number from `roastCodeRound` (without it round 2's report overwrites round 1's file), `autonomous` when the run is (without it super-roast pauses for a human at its loop exits), `config.iterationCap` = `3 + redesignCycles-code`, and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared — and the latest existing punch-list file (`…-roast-pr-<M>-punch-list.txt` with the highest M below this round; a redesign round writes none, so the round after it passes the one before; none yet: pass no punch list) (§Step 2 — scope filter), which super-roast passes to its `scripts/assemble-args` as `--punch-listed` so the round reports those keys as open, not new. The round after a redesign cycle also names the findings ledger path in its stated intent as reference-only input (§Redesign cycle). Before each round, capture the integration head once with `git rev-parse --verify <branch>^{commit}`; pass that captured SHA with the recorded base to the assembler: `bash <skills-root>/super-code/scripts/dispatch-text --ledger <ledger> --run-tag <run.md runTag> assemble --consumer roast-code --instance r<roastCodeRound> --base <base sha> --head <captured head sha> --spec <the spec paths>` (`--instance audit` for the post-cap audit), spawn one mechanical-tier agent with "Read <path> and follow it exactly", and read its returned `dir`, `exit` and `fits`. Then pass super-roast `--repo <integration worktree> --base <base sha> --head <captured head sha>` and `--diff-stat @<dir>/diffstat.txt` and `--artifact "<branch>@<sha> vs <base>@<sha> — stated intent: <spec paths> — assembled inputs: <dir>/digest.md, slices under <dir>/slices/"`; never `--context` (assemble-args reads it only in design mode). When the agent reports a cause prefixed `review input selection:`, preserve its `review-inputs.json` and generated-input provenance gap, record the round as unavailable, and recover the claimed provenance before re-entry; direct fallback cannot clear that gap. For other missing or non-zero assembler results, run the round directly with the same captured base/head and append `assembler: unavailable — <cause>` to the friction log; `fits: no` does not change the roast inputs. Once super-roast returns `reportMarkdown`, write it to the round's report file and from then on read that report only through `bash <skills-root>/super-code/scripts/report-verdict <file>`. |
++| 4 | Code roast (`roast-code`) | `super-roast` (PR) | Against the live integration branch, diffed against `run.md`'s `base`. Pass the run directory as the report-location override, the run's spec paths as `super-roast`'s stated intent (every `*-design.md` in the run directory, the root spec named by `run.md`'s `spec:` first, then the nested ones in name order; paths only, never their text), the iteration number from `roastCodeRound` (without it round 2's report overwrites round 1's file), `autonomous` when the run is (without it super-roast pauses for a human at its loop exits), `config.iterationCap` = `3 + redesignCycles-code`, and on rounds ≥2 the prior report — without which the round re-litigates what the last one already cleared — and the latest existing punch-list file (`…-roast-pr-<M>-punch-list.txt` with the highest M below this round; a redesign round writes none, so the round after it passes the one before; none yet: pass no punch list) (§Step 2 — scope filter), which super-roast passes to its `scripts/assemble-args` as `--punch-listed` so the round reports those keys as open, not new. The round after a redesign cycle also names the findings ledger path in its stated intent as reference-only input (§Redesign cycle). Before each round, capture the integration head once with `git rev-parse --verify <branch>^{commit}`; pass that captured SHA with the recorded base to the assembler: `bash <skills-root>/super-code/scripts/dispatch-text --ledger <ledger> --run-tag <run.md runTag> assemble --consumer roast-code --instance r<roastCodeRound> --base <base sha> --head <captured head sha> --spec <the spec paths>` (`--instance audit` for the post-cap audit), spawn one mechanical-tier agent with "Read <path> and follow it exactly", and read its returned `dir`, `exit` and `fits`. Then pass super-roast `--repo <integration worktree> --base <base sha> --head <captured head sha>` and `--diff-stat @<dir>/diffstat.txt` and `--artifact "<branch>@<sha> vs <base>@<sha> — stated intent: <spec paths> — assembled inputs: <dir>/digest.md, slices under <dir>/slices/"`; never `--context` (assemble-args reads it only in design mode). When the agent reports a cause prefixed `review input selection:`, preserve its `review-inputs.json`, complete changed-path inventory and generated-input provenance gaps. Only the typed `review input selection: provenance unavailable; captured source available` result permits a separately named bounded direct review of the same captured base/head: declare actual inspected paths/hunks and every unreviewed path/hunk, retain zero unsupported omissions, and keep the round/whole-range review unavailable for acceptance. Preserve its original unavailable invocation and artifacts; record the new partial report separately with an explicitly incomplete verdict even when it finds no defect. Source identity, binding or write-guard failures remain hard unavailable. Direct fallback and a green suite cannot clear provenance or whole-range gaps. For other missing or non-zero assembler results, run the round directly with the same captured base/head and append `assembler: unavailable — <cause>` to the friction log; `fits: no` does not change the roast inputs. Once super-roast returns `reportMarkdown`, write it to the round's report file and from then on read that report only through `bash <skills-root>/super-code/scripts/report-verdict <file>`. |
+ | 5 | Fix loop (`fix-loop`) | — | Per round: Step 1 (ledger, step-back, local or redesign), then Steps 2–4 or the redesign cycle, then back to phase 4; see §Phase 5 — the code fix loop. |
+ | 6 | Report (`report`) | — | Sweep, sweep-fix pass, report, upstream-feedback; see §Phase 6 — report. |
+ | 7 | Finish (`finish`→`done`) | `finishing-a-development-branch` | Merge + clean up, once, gated by §Invariants I2 (phase-7 gate). Invoke it from this run's worktree, supplying `run.md`'s `branch` as the feature branch to merge and `base` as its destination, so neither is asked nor inferred from the cwd. Open the hand-back with `report.md`'s status line verbatim and its path, then the menu, with any parked upstream-feedback draft at the same menu (report-prompt.md §Output shape). The menu itself is always the human's, autonomous or not (§Invariants I5 (human-owned merge)). If the suite fails there, rewrite `report.md`'s status line with `report-status --stalled finish` (report-prompt.md §The status block) before stopping. Supply §Phase 7 — cleanup preconditions to the finisher: its Step 6 must wait for these checks, and any retained/unknown resource prevents removal of its containing parent. Delivery and the human's branch choice can finish while cleanup stays pending; record the retained facts before writing `done` and clearing the marker with `bash <skills-root>/super-code/scripts/run-marker clear --worktree <run worktree>`. No process sweep or required state write may be deferred until after its resources are removed. |
+@@ -484,11 +484,11 @@ bash <this skill's dir>/scripts/report-status --collect RUN_MD --invocation ID -
+ 
+ Quote the actual arguments. `ID` is the persisted Launch token; `WORKSPACE` is its `.superpowers/sdd/<epic>-plan` directory. Use the returned `reviewPath`, or literal `none` for null; never manufacture a clean review. Add repeated `--required RELATIVE_FILE` arguments for any known required direct inputs not discoverable in the bundle. Collection preserves the invocation's final review, split reviews, direct `.diff` and assembled input tree under `<run-dir>/reviews/<ID>/`. It appends exact `report-verdict --complete --source` records, changing only their artifact pointer to the archive. Completion records include file hashes. Copying identical bytes is idempotent; differing destinations remain untouched and produce a gap.
+ 
+-On later `final-review` and `roast-code` assemblies, the shared assembler's `dispatch-text review-inputs` operation reads these records and archived blobs from the captured Git range. Its selected diffstat/slices omit only exact manifest-claimed generated input files with verified saved hashes; original final/cluster reports, findings, collection metadata and unclaimed files remain review inputs. The digest carries the omitted payloads' captured revision, run-record/invocation, archive/report paths and hashes. Keep the complete archives unchanged. Omission supplies no finding disposition or verdict; corrupt, missing, conflicting or incomplete claimed provenance remains an explicit unavailable evidence gap, including through fallback.
++On later `final-review` and `roast-code` assemblies, the shared assembler's `dispatch-text review-inputs` operation reads these records and archived blobs from the captured Git range. Its selected diffstat/slices omit only exact manifest-claimed generated input files with verified saved hashes; original final/cluster reports, findings, collection metadata and unclaimed files remain review inputs. The digest carries the omitted payloads' captured revision, run-record/invocation, archive/report paths and hashes. Keep the complete archives unchanged. Omission supplies no finding disposition or verdict; corrupt, missing, conflicting or incomplete claimed provenance remains an explicit unavailable evidence gap. Independently captured source may receive the bounded review described above; preserve all gaps and the full inventory, with no unsupported omission or whole-range readiness.
+ 
+ Run `report-status --collect RUN_MD` to replay pending collection before any subsequent invocation or cleanup. Exit 0 confirms preservation; exit 3 retains durable gaps/pending evidence with the orchestrator as owner. Exit 2/4 establishes no collection. Preserve the source workspace and all archive copies until collection succeeds; a missing required review or split input blocks re-entry/cleanup. Confirm a previously unsettled launch actually ended from its ledger/result before supplying settlement arguments; artifact presence alone is insufficient. Commit the collection and profile/friction records together after settlement. Neither collection nor Finish regenerates or overwrites the invocation bundle.
+ 
+-For each settled roast source already in the committed run directory, append its complete extraction as `finding-source` with an immutable source such as `roast-code/round-N`; record the scope filter's decisions as `finding-route` refs. Keep the existing externally owned roast ledger, triggers and amend workflow; adapt an external disposition only after validating explicit refs and semantic support. Unsupported silence-based dissolution leaves the local finding open. Resume and reporting consume the same local projection.
++At each design/code handoff and resume, preserve the **entire actual settled producer input list** in `roast-design` / `roast-code`, including earlier and amend rounds, keys-only inputs and genuinely empty reports. Reconcile both `findingsLedgerDesign` and `findingsLedger` against that declared population. Ledger headers or zero rows never establish completeness; missing declarations remain owned coverage gaps. For every original report, append complete `report-verdict --complete --source` extraction as `finding-source` with its existing immutable source (for example `roast-design/round-N` or `roast-code/round-N`), even for a recognized empty report. Preserve original raw bytes, extraction failures and all earlier occurrences. For archived copies, keys-only inputs or a supported legacy interpretation, use the exact optional hash-bound `source-correspondence` contract in run-state.md; supply actual evidence-backed completeness judgment, never reconstruct a guessed producer list or fabricate an empty source. Record the scope filter's decisions as `finding-route` refs. Keep the existing externally owned roast ledger, triggers and amend workflow; adapt an external disposition only after validating explicit refs and semantic support. Unsupported silence-based dissolution leaves the local finding open. Resume and reporting consume the same local projection.
+ 
+ ## Subagent dispatch
+ 
+diff --git a/skills/super-auto/resume.md b/skills/super-auto/resume.md
+index 7a1a0e49..3e06639a 100644
+--- a/skills/super-auto/resume.md
++++ b/skills/super-auto/resume.md
+@@ -28,6 +28,15 @@ A resume message that changes something is recorded, not dropped. If it sets a f
+ 
+ Before any later super-code invocation, report or cleanup, reconcile every `review-collection` intent in `approvals:` against its persisted Launch and settled ledger/result (run-state.md §Review collection records). If the invocation is still active, resume it with that same invocationId. When settlement is confirmed but unrecorded, run the explicit `report-status --collect RUN_MD --invocation ID --workspace WORKSPACE --review REVIEW_PATH_OR_none --verdict RETURNED_REVIEW` command from SKILL.md §Review collection, retaining any declared `--required` inputs. Then run `report-status --collect RUN_MD` to replay all collections. A copy without completion is replayed; identical archive bytes and exact source records remain unchanged. An archived complete bundle can be checked from its retained hashes after the source worktree is gone.
+ 
++At the settled design/code handoff, reconcile the complete original producer input sets in
++`roast-design` and `roast-code` with both ledger pointers, including amend/earlier rounds and
++recognized empty reports. If a producer persisted its pointer before outer collection, preserve
++that owned gap and append each original source's complete extraction with its existing identity
++before acceptance. Replay identical records idempotently. Missing declarations, unknown empty
++headers, extraction failures and unsupported correspondence remain gaps. Use run-state.md's
++`source-correspondence` schema only for evidence-backed exact correspondence; display-key
++membership checks transport, never identity, linking or disposition.
++
+ Exit 3 preserves a pending collection/gap with the orchestrator as recovery owner; exit 2/4 establishes no collection. Keep source and archive copies, record the recovery reason and defer later invocation/cleanup until preservation succeeds. A required null or missing review stays a `final review` evidence gap; null with `no work landed` introduces no review source. Replay finding routes and supported dispositions from approvals without rewriting them.
+ 
+ Run `scope-dispositions --project RUN_MD` next. Use every outstanding group's original occurrence refs for active work and Remaining; use its `--keys` output only for outstanding deferred punch-list input, checking status/gaps even when empty. The latest `codeBuckets.review` remains the latest invocation's verdict. It cannot clear earlier findings, and a task success or ready retry adds no resolution evidence. Do not reconstruct the view from the latest review or the historical union of `scopeFilter` punch-list keys. Preserve unavailable inline source occurrences and report their gaps.
+diff --git a/skills/super-auto/run-state.md b/skills/super-auto/run-state.md
+index dfbc73f7..1580f4d3 100644
+--- a/skills/super-auto/run-state.md
++++ b/skills/super-auto/run-state.md
+@@ -60,6 +60,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i
+ | `approvals · design-review` | `- design-review · pending \| approved` | 7 | super-auto |
+ | `approvals · review-collection` | `- review-collection · <JSON invocation/workspace/review/required/settlement/archive facts>` | 7 | super-auto, before launch and after settled collection |
+ | `approvals · root-acceptance` | `- root-acceptance · <JSON requirements/evidence/recovery/checkEvidence/runFailures/decisions>` | 7 | super-auto, before code and after settlement or acceptance evidence changes |
++| `approvals · source-correspondence` | `- source-correspondence · <supported hash-bound correspondence JSON>` | 7 | super-auto, at settled handoff/resume when direct artifact matching is insufficient |
+ | `approvals · finding-source` | `- finding-source · <complete extraction JSON>` | 7 | super-auto, on source collection |
+ | `approvals · finding-link` | `- finding-link · <JSON refs and basis>` | 7 | super-auto, after judging an explicit match |
+ | `approvals · finding-route` | `- finding-route · <JSON ref and owner/fix/deferred>` | 7 | super-auto, when routing a finding |
+@@ -229,6 +230,26 @@ After confirmed settlement, `report-status --collect RUN_MD --invocation ID --wo
+ 
+ The helper appends complete extraction JSON under `finding-source`, preserving immutable `ID/final` and `ID/cluster-N` identities and every section/position/key/text, with an archive pointer under `reviews/ID/`. It copies final/cluster review files, the direct `.diff` when present, and the complete assembled input directory, checking declared files and split manifest slices. An interrupted copy is replayable before completion. Identical copies do not change; conflicting bytes remain untouched. Completion adds `complete:true`, `files:[{"path":"<bundle-relative path>","sha256":"<hash>"}]` and `gaps:[]`; missing/incomplete/conflicting artifacts add `complete:false` and nonempty `gaps`. Earlier records and supported finding dispositions remain append-only. The last collection record per invocation describes recovery progress; it never disposes a finding.
+ 
++A caller-confirmed recovered null report uses the same settlement command with `--recover-null`.
++It requires the exact original invocation/workspace/ordered required inputs, the expected
++`final-review-ID.md`, and a regular strict-extractable report with the actual supplied verdict.
++It appends `recovery:{"kind":"settled-null","recordSha256":"<hash>","review":"<old verdict>"}`;
++the hash is SHA-256 of UTF-8 `JSON.stringify` of the immediately preceding valid settled-null
++record in parsed property order. Every later snapshot retains that marker and recovered path/
++verdict. Plain replay/file presence does not promote null; malformed/missing markers and arbitrary
++source changes remain gaps. Preserve every original unavailable event. This recovery reconciles
++preservation only: a new bounded review is a fresh invocation/artifact, not a fabricated original
++whole-range result.
++
++For a bounded captured-source report, write new `bounded-draft.md` and `bounded-coverage.json`
++inside its existing `assembled/final-review-ID-final/` directory so normal bundle collection
++preserves them without changing the launch required-input list. Retain the original failed
++selection sidecar and provenance in place. The final report carries full base/head, hash-bound sidecar/draft/coverage references,
++the complete changed-path inventory, actual inspected hunk headers, remaining paths/hunks and
++all original gaps. `dispatch-text bounded-review` validates source and writes the expected final
++report exclusively with forced `not ready` and whole-epic untested scope. Collection completion
++means those bytes were preserved; whole-range acceptance remains pending.
++
+ `report-status --collect RUN_MD` replays all retained collections. It verifies complete archive hashes even after source cleanup. Exit 0 confirms preservation; exit 3 leaves pending/gaps and requires preserving the source workspace plus archive before later invocation or cleanup; exit 2/4 establishes no collection. Unsettled intents require ledger/result confirmation, not inference from artifact presence. A missing source extraction retains known inline occurrences and exposes unavailable coverage. Ordinary `report-status RUN_MD` is read-only: with new records it adds `outstanding findings: N`, `review collections pending: N`, `review collection gaps: N` and/or `finding evidence gaps: N` qualifiers as applicable, derived from this collection history and the shared outstanding projection. Unavailable tooling/projection is qualified explicitly. Without new records legacy status output is unchanged.
+ 
+ ## Caller-owned root acceptance
+@@ -321,6 +342,51 @@ An unavailable artifact reports a gap while its inline extraction still preserve
+ Extraction failure is a gap, never a replacement empty source. An explicit clean recognized
+ review may have `occurrences:[]`; a run with no retained sources has unknown coverage.
+ 
++**Declared producer population.** `roast-design` and `roast-code` retain the complete actual
++settled report/input lists consumed by their respective ledger producers, including earlier,
++amend, keys-only and genuinely empty inputs. At handoff/resume the outer owner collects complete
++original extractions for every declared input. A ledger requires its matching-loop declaration;
++even a genuine zero-row header cannot prove which inputs were consumed. Missing/ambiguous inputs,
++truncated ledgers, unavailable original bytes and incomplete extraction remain coverage gaps.
++The gate checks report-key membership against ledger rows in both directions for transport
++consistency only; this never supplies occurrence identity, links, relevance or resolution.
++
++**Optional source correspondence.** Directly registered original reports need no association.
++When exact archival/keys/legacy correspondence needs an explicit owner judgment, append this
++single JSON object after `- source-correspondence · ` in `approvals:`:
++
++```json
++{"version":1,"artifact":"<original declared report or keys file>","sha256":"<original bytes SHA-256>","source":"<existing immutable source ID>","retainedArtifact":"<registered retained report or adapter>","retainedSha256":"<retained bytes SHA-256>","judgment":"supported","basis":"<why this exact source correspondence is complete>","evidence":["<raw/retained inspection evidence>"],"lines":[{"line":2,"refs":[{"source":"<same named source>","section":"Must fix before landing","position":1}]}]}
++```
++
++Both artifacts resolve from the run directory (absolute paths also work), must remain readable,
++and must match their hashes. `source` is already registered at `retainedArtifact`; the gate
++freshly re-extracts that artifact and compares the complete extraction. Keep every original raw
++artifact and parser failure. This record creates no source, link, relevance or disposition.
++Malformed, unsupported or conflicting associations remain gaps even beside a valid association.
++
++For keys-only input, `lines` maps each actual nonempty key line exactly once, using its original
++1-based physical line number and nonempty exact occurrence refs from this one retained source.
++A first `review: ready|not ready|none` header and blank lines are excluded. Missing, duplicate,
++header, unknown, cross-source or uncovered mappings fail. A single keys file spanning multiple
++source identities remains a gap; matching display keys alone supply no correspondence.
++For same-byte archived reports, omit `lines`; original and retained full extraction must match.
++Repeated exact associations and identical archived copies are allowed, conflicting source,
++content or line mappings are not.
++
++For a malformed historical report requiring a judged retained interpretation, add:
++
++```json
++{"interpretation":{"kind":"legacy-adapter","originalVerdict":"<actual original compact-parser verdict>","limitations":["<original strict-extraction failure and interpretation limits>"]}}
++```
++
++Original strict extraction must fail while the compact parser still recognizes its kind/verdict.
++The adapter kind/verdict and `originalVerdict` must match that historical outcome. Keep failure
++receipts and independent completeness judgment in `evidence`; limitations identify interpretation.
++A valid ordinary report cannot take this rewrite route, and an unrecognized source remains a gap.
++The gate validates bytes, refs and parser outcomes; the owner must support semantic completeness.
++A valid-empty adapter cannot authorize refs into another source or replace an unknown population.
++
+ **Reference and link.** An occurrence reference is exactly
+ `{"source":"inv-a/final","section":"Deferred OK","position":1}`. Section and source strings
+ match exactly, and position is the extractor's positive section-local integer. Source path,
+diff --git a/skills/super-code/assembler-prompt.md b/skills/super-code/assembler-prompt.md
+index a115d65f..82837459 100644
+--- a/skills/super-code/assembler-prompt.md
++++ b/skills/super-code/assembler-prompt.md
+@@ -25,8 +25,13 @@ Parameters: [CONSUMER], [INSTANCE], [OUT_DIR], [WORKTREE], [BASE], [HEAD], [SECT
+    `generated-input-provenance.md`. These are the authoritative selected inputs for steps 3–5.
+    On any nonzero exit, preserve those outputs and relay `exit: 2`, `fits: unavailable`,
+    `clusterFits: []`, `clusters: 0`, `dir: [OUT_DIR]`, with `cause` prefixed
+-   `review input selection:` and the command's explicit evidence gap. Stop here; an invalid
+-   provenance refusal remains unavailable through any fallback, never a clean assembly.
++   `review input selection:` and the command's explicit evidence gap. If the sidecar has
++   `status:unavailable`, `sourceAvailable:true`, `wholeRangeReady:false`, zero omissions and
++   the matching full base/head, start the cause exactly `review input selection: provenance
++   unavailable; captured source available` (one line), then append its gaps. This permits a
++   separately written bounded review; the assembly and omission authority remain unavailable.
++   Other selection failures keep the generic prefix and prohibit fallback. Stop here; preserve
++   every failed output. A directory name or copied historical run record grants no authority.
+    For other consumers, run `git diff --stat [BASE]..[HEAD] > [OUT_DIR]/diffstat.txt`.
+ 3. Write `[OUT_DIR]/digest.md` with one `## <name>` heading per [SECTIONS] line, in that order, each
+    built only from the source its definition names. Copy; don't paraphrase or rank. A source that has
+diff --git a/skills/super-code/coordinator-subagents.md b/skills/super-code/coordinator-subagents.md
+index 037d8c4e..8c41f8dd 100644
+--- a/skills/super-code/coordinator-subagents.md
++++ b/skills/super-code/coordinator-subagents.md
+@@ -239,6 +239,13 @@ and every final review mode below, including direct-input fallbacks. Their gener
+ before any artifact/package writes and refuses existing outputs even on same-source retry.
+ An assembler guard refusal returns exit 2 with cause prefixed `review source guard:`: preserve
+ the partial bundle and return `reviewPath: null` instead of bypassing it with a direct review.
++A provenance-only cause `review input selection: provenance unavailable; captured source available`
++permits the generated single-review prompt's bounded route: retain the original sidecar/gaps,
++inspect named captured paths/hunks, and use `dispatch-text bounded-review` to emit a forced
++`not ready` report from its preserved draft and coverage JSON. Whole-epic review remains pending;
++collection completeness and a green sweep cannot clear it. A missing/malformed sidecar or a
++source/write refusal still returns unavailable. Preserve a settled unavailable invocation and
++start a fresh invocation for a new partial review; do not relabel its old result.
+ Other assembler failures keep their existing fallback. A failed capture without a persisted
+ binding leaves final review unavailable with the command/error evidence. Task `review` takes the
+ implementer's captured `--head` alongside `--base`; `check-fix-review` takes the fixer's `--head`.
+diff --git a/skills/super-code/coordinator.js b/skills/super-code/coordinator.js
+index 1d6c710f..9fc99c03 100644
+--- a/skills/super-code/coordinator.js
++++ b/skills/super-code/coordinator.js
+@@ -2330,14 +2330,15 @@ if (reviewSourceGap) finalSource = null
+ const reviewPath = `${workspaceAbs}/final-review-${invocationId}.md`
+ const clusterReviewPath = n => `${workspaceAbs}/final-review-${invocationId}.cluster-${n}.md`
+ const CAPPED_CAUSE = 'inputs exceed the window and no usable clusters'
+-let frSourceRefusal = null
++let frSourceRefusal = null, frProvenanceGap = null
+ let frMode = 'unavailable', frDir = null, frClusters = [], frLine = landedWork && !invocationPersisted ? 'Final review: unavailable (invocation identity persistence unavailable)' : landedWork && !finalSource ? 'Final review: unavailable (captured source commits unavailable)' : null, frAsmClusters = null
+ if (landedWork && invocationPersisted && finalSource) {
+   const reviewWindow = Number(config.contextWindows?.finalReview) || FINAL_REVIEW_FALLBACK_WINDOW.workflow
+   const reviewThreshold = Math.floor(reviewWindow * 0.4)
+   const asm = await dispatch(() => assemblePrompt('final-review', 'final', { threshold: reviewThreshold, base: finalSource.base, head: finalSource.head }), 'assemble:final',
+     { label: 'assemble:final', phase: 'Finish', ...tier('mechanical'), schema: ASSEMBLED })
+-  if (asm?.exit === 2 && /^(review source guard:|review input selection:)/.test(String(asm.cause || ''))) frSourceRefusal = asm.cause
++  if (asm?.exit === 2 && /^review input selection: provenance unavailable; captured source available/.test(String(asm.cause || ''))) frProvenanceGap = asm.cause
++  else if (asm?.exit === 2 && /^(review source guard:|review input selection:)/.test(String(asm.cause || ''))) frSourceRefusal = asm.cause
+   const fm = /^fits: (yes|no) \((\d+) of (\d+)\)/.exec(String(asm?.fits ?? '').trim())
+   frClusters = (asm?.clusterFits ?? []).map(l => /^cluster-fits: (.+) (yes|no) \(/.exec(String(l).trim())).filter(Boolean)
+     .map((m, i) => ({ n: i + 1, name: m[1].trim(), fits: m[2] === 'yes' }))
+@@ -2352,6 +2353,7 @@ if (landedWork && invocationPersisted && finalSource) {
+   const k = asm?.clusters ?? frClusters.length
+   frLine = exit3Fits ? 'Final review: single (inputs fit; clusters.json rejected — direct inputs)'
+     : frSourceRefusal ? 'Final review: unavailable (source guard refused; partial bundle preserved)'
++    : frProvenanceGap ? 'Final review: bounded (captured source available; omission provenance unavailable)'
+     : frMode === 'unavailable' ? 'Final review: single (assembler unavailable)'
+     : frMode === 'capped' ? 'Final review: single (no usable clusters — capped)'
+     : `Final review: ${frMode} (inputs ${totalK}K ${frMode === 'single' ? '<=' : '>'} 40% of ${windowK}K) · clusters ${k}`
+@@ -2375,11 +2377,11 @@ else if (!finalSource) review = 'FINAL REVIEW UNAVAILABLE — captured source co
+ else if (frSourceRefusal) review = 'FINAL REVIEW UNAVAILABLE — partial bundle preserved: ' + frSourceRefusal
+ else if (frMode !== 'split') {
+   const single = await dispatch(() => finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, lastPlanned?.planPath, sweepSummary, metrics,
+-    { dir: frMode === 'single' ? frDir : null, capped: frMode === 'capped', reviewPath, base: finalSource.base, head: finalSource.head }), 'final-review',
++    { dir: frMode === 'single' ? frDir : null, capped: frMode === 'capped', provenanceGap: frProvenanceGap, selectionPath: frDir ? frDir + '/review-inputs.json' : null, reviewPath, base: finalSource.base, head: finalSource.head }), 'final-review',
+     { label: 'final-review', phase: 'Finish', ...tier('finalReview'), schema: FINAL_VERDICT })
+   const v = String(single?.verdict ?? '').trim()
+   reviewWritten = !!v
+-  review = !v ? FINAL_REVIEW_UNAVAILABLE : frMode === 'capped' ? notReadyWith(v, [CAPPED_CAUSE]) : v
++  review = !v ? FINAL_REVIEW_UNAVAILABLE : frProvenanceGap ? notReadyWith(v, ['whole-epic coverage and omission provenance remain incomplete']) : frMode === 'capped' ? notReadyWith(v, [CAPPED_CAUSE]) : v
+ } else {
+   const unreviewed = frClusters.filter(c => !c.fits).map(c => `cluster ${c.n} (${c.name}): over the window`)
+   if (Number.isFinite(frAsmClusters) && frAsmClusters > frClusters.length) unreviewed.push((frAsmClusters - frClusters.length) + ' cluster(s) in clusters.json with no parsable cluster-fits line')
+@@ -2950,11 +2952,17 @@ function reviewSource(repo, base, head) {
+ function reviewFileFormat() {
+   return 'End the file with exactly these four headings, in this order: "## Verdict", followed by one line that is exactly "ready" or "not ready (<one-line summary>)"; then "## Must fix before landing", "## Untested scope" and "## Deferred OK", each followed by flat "- " bullets, one item per bullet on one line (no numbered lists, no nested bullets, no bold labels in place of these headings), or the single line "- none".'
+ }
+-function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, planPath, sweepSummary, metrics = [], { dir = null, capped = false, reviewPath = `${workspaceAbs}/final-review-${invocationId}.md`, base, head } = {}) {
++function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledgerPath, planPath, sweepSummary, metrics = [], { dir = null, capped = false, provenanceGap = null, selectionPath = null, reviewPath = `${workspaceAbs}/final-review-${invocationId}.md`, base, head } = {}) {
+   // Whole-epic review (opus). It forms its own view against the spec before reading prior verdicts,
+   // so unflagged defects aren't crowded out by the ledger. With `dir` its inputs are the assembled
+   // digest and slices; `capped` means they exceed its window and no usable clusters exist.
+-  const selectionGap = 'Before reviewing, inspect ' + workspaceAbs + '/assembled/final-review-' + invocationId + '-final/review-inputs.json when present. If unreadable, malformed, unavailable or carrying selection/evidence gaps, preserve that explicit gap and return unavailable without writing a verdict or a direct package. An assembler cause prefixed "review input selection:" also remains unavailable through fallback. '
++  const selection = selectionPath || workspaceAbs + '/assembled/final-review-' + invocationId + '-final/review-inputs.json'
++  const quote = v => "'" + String(v).replace(/'/g, "'\"'\"'") + "'"
++  const boundedDir = selection.slice(0, selection.lastIndexOf('/'))
++  const boundedCommand = ['node', quote(codeSkill + '/scripts/dispatch-text.mjs'), 'bounded-review', '--ledger', quote(workspaceAbs + '/progress.md'), '--base', quote(base), '--head', quote(head), '--selection', quote(selection), '--draft', quote(boundedDir + '/bounded-draft.md'), '--coverage', quote(boundedDir + '/bounded-coverage.json'), '--out', quote(reviewPath)].join(' ')
++  const selectionGap = 'Before reviewing, inspect ' + selection + ' when present. Unreadable/malformed selection, mismatched base/head, or sourceAvailable:false is a hard refusal: preserve all files and return unavailable. A status:unavailable sidecar with sourceAvailable:true, wholeRangeReady:false, no omissions and retained gaps permits only a bounded captured-source review. ' + (provenanceGap ? 'This dispatch is bounded because: ' + provenanceGap + '. Require that sidecar before proceeding. ' : '') +
++    'BOUNDED ROUTE: preserve the failed assembly and original sidecar. Read the full changed-path inventory, then inspect manageable named paths/hunks from captured Git; do not build or load a whole-range package. Write a new draft to ' + boundedDir + '/bounded-draft.md and coverage JSON to ' + boundedDir + '/bounded-coverage.json, each exclusively (refuse existing files). Coverage is {"inspected":[{"path":"<actually inspected changed path>","hunks":["<exact captured @@ hunk header>"]}]}; list only hunks you actually inspected. Record remaining paths/hunks and all provenance gaps as unreviewed, retaining concrete findings. Use the final-review headings below in the draft. Then run `' + boundedCommand + '`; it validates coverage against captured source and writes the final report with a forced not-ready verdict. Return its verdict/path. This bounded branch replaces the package/write steps below; never overwrite an old unavailable report or reuse a settled invocation. A whole-range review remains outstanding even if the draft says ready or the suite passed. NORMAL ROUTE (no selection gaps): '
++
+   const pkg = dir
+     ? `Your inputs are the assembled digest ${dir}/digest.md and the slices under ${dir}/slices/; open source files only to check a named risk.`
+     : planPath
+diff --git a/skills/super-code/scripts/dispatch-text.mjs b/skills/super-code/scripts/dispatch-text.mjs
+index 51253abb..1ade3ae0 100644
+--- a/skills/super-code/scripts/dispatch-text.mjs
++++ b/skills/super-code/scripts/dispatch-text.mjs
+@@ -47,6 +47,8 @@ kinds and options:
+                     [--threshold N] [--base SHA] [--head SHA] [--spec P1,P2]
+   review-inputs     --base SHA --head SHA --out-dir DIR
+                     (captured-Git selection, slices and generated-input provenance; exit 3 unavailable)
++  bounded-review   --base SHA --head SHA --selection FILE --draft FILE --coverage FILE --out FILE
++                    (preserve bounded draft and coverage; write a forced incomplete final report)
+   bind-review-source --read | --base SHA --head SHA [--artifact PATH]
+                     (persist immutable invocation source; refuse existing artifact writes)
+   final-review      --mode single|cluster|seam|stub --base SHA --head SHA [--dir D] [--capped] [--sweep F|deferred]
+@@ -155,7 +157,7 @@ function reviewInputs(repo, base, head, out) {
+       if (posix.basename(run) !== 'run.md') continue
+       let text
+       try { text = blob(run).toString() } catch (e) { gap(revision + ': ' + e.message); continue }
+-      const latest = new Map(), identities = new Map(), savedHashes = new Map()
++      const latest = new Map(), identities = new Map(), savedHashes = new Map(), history = new Map()
+       let approvals = false
+       for (const [lineNumber, line] of text.split('\n').entries()) {
+         if (/^[A-Za-z][A-Za-z0-9-]*:/.test(line)) approvals = line === 'approvals:'
+@@ -170,16 +172,31 @@ function reviewInputs(repo, base, head, out) {
+               !(r.complete === undefined || typeof r.complete === 'boolean') ||
+               !(r.gaps === undefined || (Array.isArray(r.gaps) && r.gaps.every(g => typeof g === 'string' && g))) ||
+               !(r.files === undefined || (Array.isArray(r.files) && r.files.every(f => f && safe(f.path) && /^[a-f0-9]{64}$/.test(f.sha256))))) throw Error('invalid collection fields')
++          if (r.complete && (!r.settled || !Array.isArray(r.gaps) || r.gaps.length ||
++              (r.reviewPath === null ? r.review !== 'no work landed' : !r.files?.some(f => f.path === 'final-review-' + r.invocationId + '.md')))) throw Error('invalid complete collection fields')
+           const identity = JSON.stringify([r.workspace, r.required])
+-          const old = identities.get(r.invocationId)
+-          if (old && (old.identity !== identity || (old.settled && old.reviewPath !== r.reviewPath))) gap(revision + ':' + run + ': conflicting collection identity ' + r.invocationId)
++          const old = identities.get(r.invocationId), previous = latest.get(r.invocationId)?.record
++          let recovered = false
++          // Match the collector's preserved settled-null transition, including mandatory
++          // markers on every subsequent snapshot. Hash the exact parsed object, not line metadata.
++          if (r.recovery !== undefined || previous?.recovery !== undefined || (previous?.settled && previous.reviewPath === null && r.reviewPath !== null)) {
++            const recovery = r.recovery, original = history.get(recovery?.recordSha256)
++            recovered = !!(recovery && recovery.kind === 'settled-null' && original?.settled && original.reviewPath === null &&
++              original.review === recovery.review && original.invocationId === r.invocationId &&
++              original.workspace === r.workspace && JSON.stringify(original.required) === JSON.stringify(r.required) &&
++              r.settled && r.reviewPath === posix.join(r.workspace, 'final-review-' + r.invocationId + '.md') &&
++              (hash(JSON.stringify(previous)) === recovery.recordSha256 || (previous?.reviewPath === r.reviewPath && previous.review === r.review && JSON.stringify(previous.recovery) === JSON.stringify(recovery))))
++            if (!recovered) throw Error('invalid settled-null recovery provenance')
++          }
++          if (old && (old.identity !== identity || (old.settled && old.reviewPath !== r.reviewPath && !recovered))) gap(revision + ':' + run + ': conflicting collection identity ' + r.invocationId)
+           identities.set(r.invocationId, { identity, settled: r.settled, reviewPath: r.reviewPath })
+           for (const f of r.files || []) {
+             const key = r.invocationId + '/' + f.path, previous = savedHashes.get(key)
+             if (previous && previous !== f.sha256) gap(revision + ':' + run + ': conflicting saved hash ' + key)
+             savedHashes.set(key, f.sha256)
+           }
+-          latest.set(r.invocationId, { ...r, line: lineNumber + 1 })
++          latest.set(r.invocationId, { ...r, line: lineNumber + 1, record: r })
++          history.set(hash(JSON.stringify(r)), r)
+         } catch (e) { gap(revision + ':' + run + ':' + (lineNumber + 1) + ': malformed collection record: ' + e.message) }
+       }
+       for (const r of latest.values()) {
+@@ -223,7 +240,7 @@ function reviewInputs(repo, base, head, out) {
+     }
+     return { tree, blob, archives, claims }
+   }
+-  let selected = changed, omitted = [], archives = [], slices = []
++  let selected = changed, omitted = [], archives = [], slices = [], sourceAvailable = false
+   try {
+     const before = snapshot(base), after = snapshot(head)
+     archives = after.archives
+@@ -236,7 +253,10 @@ function reviewInputs(repo, base, head, out) {
+       omitted = changed.filter(p => after.claims.has(p)).map(p => after.claims.get(p))
+       selected = changed.filter(p => !after.claims.has(p))
+     }
+-    writeFileSync(join(out, 'diffstat.txt'), selected.length ? git('diff', '--no-renames', '--stat', base + '..' + head, '--', ...selected) : '')
++    sourceAvailable = true
++    // With zero omissions selected is the full captured range; a redundant long
++    // path argv can exceed ARG_MAX even though the Git source is readable.
++    writeFileSync(join(out, 'diffstat.txt'), selected.length ? git('diff', '--no-renames', '--stat', base + '..' + head, ...(omitted.length ? ['--', ...selected] : [])) : '')
+     if (!gaps.length) {
+       mkdirSync(join(out, 'slices'), { recursive: true })
+       for (const [n, p] of selected.entries()) {
+@@ -246,8 +266,8 @@ function reviewInputs(repo, base, head, out) {
+         slices.push({ path: p, slice })
+       }
+     }
+-  } catch (e) { gap('captured input extraction unavailable: ' + e.message); selected = changed; omitted = [] }
+-  const result = { base, head, status: gaps.length ? 'unavailable' : 'complete', changed: selected, slices, archives, omitted, gaps }
++  } catch (e) { sourceAvailable = false; gap('captured input extraction unavailable: ' + e.message); selected = changed; omitted = [] }
++  const result = { base, head, sourceAvailable, wholeRangeReady: false, status: gaps.length ? 'unavailable' : 'complete', changed: selected, slices, archives, omitted, gaps }
+   writeFileSync(join(out, 'review-inputs.json'), JSON.stringify(result, null, 2) + '\n')
+   writeFileSync(join(out, 'generated-input-provenance.md'), [
+     '## Generated-input provenance',
+@@ -258,7 +278,7 @@ function reviewInputs(repo, base, head, out) {
+     ...gaps.map(g => '- Selection/evidence gap (unavailable): ' + g),
+     'Open each report/archive at its recorded revision. Omission supplies no finding disposition or verdict.',
+   ].join('\n') + '\n')
+-  console.log(JSON.stringify({ status: result.status, dir: out, selected: selected.length, omitted: omitted.length, gaps }))
++  console.log(JSON.stringify({ status: result.status, sourceAvailable, wholeRangeReady: false, dir: out, selected: selected.length, omitted: omitted.length, gaps }))
+   process.exit(gaps.length ? 3 : 0)
+ }
+ 
+@@ -276,7 +296,7 @@ const testPaths = o['test-paths'] ? list(o['test-paths']) : L.testPaths
+ const ws = dirname(resolve(o.ledger))
+ const runTag = o['run-tag'] || L.runTag || epic
+ const invocationId = L.invocationId
+-const reviewOutput = kind === 'bind-review-source' || kind === 'final-review' || (kind === 'assemble' && o.consumer === 'final-review')
++const reviewOutput = kind === 'bounded-review' || kind === 'bind-review-source' || kind === 'final-review' || (kind === 'assemble' && o.consumer === 'final-review')
+ if (reviewOutput && (typeof invocationId !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId))) fail('review output needs a persisted filesystem-safe Launch invocationId')
+ if (o['invocation-id'] !== undefined && o['invocation-id'] !== invocationId) fail('--invocation-id must match the persisted Launch invocationId')
+ // Source facts use the existing compact Recovery transport (Launch lines are elided by digest).
+@@ -333,6 +353,51 @@ if (kind === 'review-inputs') {
+   if (!o.base || !o.head || !o['out-dir']) fail('review-inputs needs --base, --head and --out-dir')
+   reviewInputs(worktree, o.base, o.head, resolve(o['out-dir']))
+ }
++// A bounded artifact is a new report, never a rewrite of an unavailable invocation.
++// The writer rechecks captured source and inventory; sidecar claims alone grant no authority.
++if (kind === 'bounded-review') {
++  if (!boundSource || !['selection', 'draft', 'coverage', 'out'].every(k => o[k])) fail('bounded-review needs --selection, --draft, --coverage and --out plus persisted source')
++  const { base, head } = boundSource
++  const git = (...args) => execFileSync('git', ['--literal-pathspecs', ...args], { cwd: worktree, maxBuffer: 64 * 1024 * 1024 }).toString()
++  try {
++    for (const sha of [base, head]) if (git('rev-parse', '--verify', sha + '^{commit}').trim() !== sha) throw Error('captured commit unavailable')
++    const bytes = readFileSync(o.selection), selection = JSON.parse(bytes), coverage = JSON.parse(readFileSync(o.coverage, 'utf8'))
++    const changed = git('diff', '--no-renames', '--name-only', '-z', base + '..' + head).split('\0').filter(Boolean)
++    if (selection.base !== base || selection.head !== head || selection.status !== 'unavailable' || selection.sourceAvailable !== true ||
++        selection.wholeRangeReady !== false || !Array.isArray(selection.omitted) || selection.omitted.length ||
++        !Array.isArray(selection.gaps) || !selection.gaps.length || !selection.gaps.every(g => typeof g === 'string' && g.trim()) ||
++        JSON.stringify(selection.changed) !== JSON.stringify(changed)) throw Error('bounded selection/source inventory mismatch')
++    if (!Array.isArray(coverage.inspected) || !coverage.inspected.length) throw Error('actual inspected paths/hunks required')
++    const seen = new Set()
++    for (const item of coverage.inspected) {
++      if (!item || !changed.includes(item.path) || seen.has(item.path) || !Array.isArray(item.hunks) || !item.hunks.length || !item.hunks.every(h => typeof h === 'string' && h.trim())) throw Error('invalid inspected coverage')
++      // Exact captured hunk headers bind coverage to source rather than mutable checkout text.
++      const diff = git('diff', '--no-renames', base + '..' + head, '--', item.path)
++      for (const hunk of item.hunks) if (!diff.split('\n').includes(hunk) || !hunk.startsWith('@@ ')) throw Error('inspected hunk absent from captured source')
++      seen.add(item.path)
++    }
++    const output = resolve(o.out)
++    if (output !== join(ws, 'final-review-' + invocationId + '.md')) throw Error('output must be this invocation expected final report')
++    if ([o.selection, o.draft, o.coverage].some(p => resolve(p) === output)) throw Error('preserve original bounded evidence')
++    for (const p of [output, output + '.diff']) {
++      try { lstatSync(p); throw Error('partial artifact already exists; preserve it: ' + p) } catch (e) { if (e.code !== 'ENOENT') throw e }
++    }
++    const draft = readFileSync(o.draft, 'utf8')
++    const extraction = JSON.parse(execFileSync('bash', [join(here, 'report-verdict'), '--complete', '--source', invocationId + '/bounded-draft', resolve(o.draft)], { encoding: 'utf8' }))
++    if (extraction.kind !== 'final-review' || !/^## Verdict\r?$/m.test(draft) || !/^## Untested scope\r?$/m.test(draft)) throw Error('bounded draft must use strict final-review headings')
++    const verdict = 'not ready (unreviewed: whole-epic coverage and omission provenance remain incomplete)'
++    const hash = b => createHash('sha256').update(b).digest('hex')
++    const evidence = { base, head, selection: resolve(o.selection), selectionSha256: hash(bytes), draft: resolve(o.draft), draftSha256: hash(draft), coverage: resolve(o.coverage), coverageSha256: hash(readFileSync(o.coverage)), inspected: coverage.inspected, changed, unreviewedPaths: changed.filter(p => !seen.has(p)), gaps: selection.gaps, wholeRangeReady: false }
++    // Preserve every draft finding/section verbatim. Only the verdict changes; coverage
++    // becomes an explicit untested occurrence that existing extraction/collection retains.
++    const body = draft.replace(/(^## Verdict\r?\n)([\s\S]*?)(?=^## |$(?![\s\S]))/m, '$1' + verdict + '\n')
++      .replace(/^## Untested scope\r?$/m, '## Untested scope\n- whole-epic review incomplete; bounded inspected hunks only; all remaining hunks and provenance gaps remain unreviewed')
++    const result = '# Bounded captured-source review\n\nCoverage record: ' + JSON.stringify(evidence) + '\n\n' + body
++    writeFileSync(output, result, { flag: 'wx' })
++    console.log(JSON.stringify({ verdict, path: output, wholeRangeReady: false }))
++  } catch (e) { fail('bounded review unavailable: ' + e.message) }
++  process.exit(0)
++}
+ const planPath = o.plan || join(ws, `${epic}-plan.md`)
+ 
+ const B = await loadBuilders({
+@@ -467,7 +532,7 @@ switch (kind) {
+       const sweep = o.sweep === 'deferred' ? B.SWEEP_DEFERRED : o.sweep ? readArg('sweep')
+         : lastSweep(ledgerText) ?? (L.sweep === 'deferred' ? B.SWEEP_DEFERRED : null)
+       const metrics = o.metrics ? readLines('metrics') : lastMetrics(ledgerText)
+-      text = B.finalReviewPrompt(epic, branch, worktree, '.superpowers/sdd/' + epic + '-plan/progress.md', planPath, sweep, metrics, { dir: o.dir || null, capped: !!o.capped, reviewPath, base: source.base, head: source.head })
++      text = B.finalReviewPrompt(epic, branch, worktree, '.superpowers/sdd/' + epic + '-plan/progress.md', planPath, sweep, metrics, { dir: o.dir || null, capped: !!o.capped, provenanceGap: null, selectionPath: o.dir ? o.dir + '/review-inputs.json' : null, reviewPath, base: source.base, head: source.head })
+       label = `final-review-${invocationId}-single`
+     } else if (o.mode === 'cluster') {
+       need('dir', 'cluster', 'name')
+diff --git a/skills/super-design/SKILL.md b/skills/super-design/SKILL.md
+index cd6cea8d..caa3d23e 100644
+--- a/skills/super-design/SKILL.md
++++ b/skills/super-design/SKILL.md
+@@ -1111,7 +1111,7 @@ Write these, each as it happens:
+ |---|---|
+ | the root spec's path | `brainstorming` commits it |
+ | the root epic id | §Decomposition creates it |
+-| each roast report path | `super-roast` returns it |
++| the complete actual settled `roast-design` report/input list, including earlier, amend and genuinely empty rounds | `super-roast` returns each report; preserve all prior inputs when writing the list |
+ | the roast round count | incremented **per round**, before the next round starts |
+ | a parked escalation, beyond-cap item, verdict qualifier, or graph change | the round or pass that produced it |
+ | `findingsLedgerDesign: <path>` (`<artifact-dir>/findings-ledger-design.md`; single-valued, replaced) | Step 1 first builds the ledger |
+@@ -1128,6 +1128,12 @@ Write these, each as it happens:
+ field names, entry shapes, and relative-path rule exactly; the caller reads these fields back, and
+ a co-writer that invents its own shapes produces a state file the caller cannot parse.
+ 
++At handoff, leave the complete original input list beside `findingsLedgerDesign`, even for
++zero-row ledgers. The outer caller owns complete source extraction and any supported hash-bound
++correspondence under its run-state contract. If interrupted between pointer persistence and
++outer collection, retain the original reports and declare that collection gap for resume;
++ledger keys/statuses alone never establish complete source population or local dispositions.
++
+ **Gate decisions are recorded, and replayed rather than re-made.** Before deciding the top split
+ (§The Process step 6) or running a coverage round (§Coverage), check the run-state file for what
+ is already recorded:
+diff --git a/tests/super-auto/selection-recovery-correction.mjs b/tests/super-auto/selection-recovery-correction.mjs
+new file mode 100644
+index 00000000..5646686d
+--- /dev/null
++++ b/tests/super-auto/selection-recovery-correction.mjs
+@@ -0,0 +1,84 @@
++import fs from 'node:fs';
++import path from 'node:path';
++import os from 'node:os';
++import cp from 'node:child_process';
++import {createHash} from 'node:crypto';
++import assert from 'node:assert/strict';
++const root=process.cwd(),tmp=fs.mkdtempSync(path.join(os.tmpdir(),'selection-correction-')),repo=path.join(tmp,'repo'),ws=path.join(tmp,'workspace');
++fs.mkdirSync(repo);fs.mkdirSync(ws);
++const run=path.join(repo,'runs/current/run.md'),ledger=path.join(ws,'progress.md'),dt=path.join(root,'skills/super-code/scripts/dispatch-text'),rs=path.join(root,'skills/super-auto/scripts/report-status');
++const write=(p,t)=>{fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,t)};
++const exec=(c,a,cwd=repo)=>cp.execFileSync(c,a,{cwd,encoding:'utf8'}).trim();
++const git=(...a)=>exec('git',a),cli=(...a)=>cp.spawnSync('bash',[dt,...a],{cwd:repo,encoding:'utf8'});
++let failed=0,passed=0,n=0;
++function check(name,f){if(process.env.TEST_FILTER&&!name.includes(process.env.TEST_FILTER))return;try{f();passed++;console.log('PASS '+name)}catch(e){failed++;console.error('FAIL '+name+': '+e.stack)}}
++function commit(){git('add','.');git('commit','-qm','snapshot '+n++);return git('rev-parse','HEAD')}
++function selection(head,out=path.join(tmp,'selection-'+n++)){const r=cli('review-inputs','--ledger',ledger,'--base',base,'--head',head,'--out-dir',out);return {...r,out,data:JSON.parse(fs.readFileSync(path.join(out,'review-inputs.json')))}}
++function collect(...a){return cp.spawnSync('bash',[rs,'--collect',run,...a],{encoding:'utf8'})}
++console.log('implementation identities: '+JSON.stringify({head:exec('git',['rev-parse','HEAD'],root),dispatchSha256:createHash('sha256').update(fs.readFileSync(path.join(root,'skills/super-code/scripts/dispatch-text.mjs'))).digest('hex'),coordinatorSha256:createHash('sha256').update(fs.readFileSync(path.join(root,'skills/super-code/coordinator.js'))).digest('hex')}));
++const report='## Verdict\nready\n## Must fix before landing\n- product.txt:1 — retained concrete finding\n## Untested scope\n- none\n## Deferred OK\n- none\n';
++git('init','-q');git('config','user.email','fixture@example.test');git('config','user.name','Fixture');
++write(run,'flags: skipPlanRoast=false skipCodeRoast=false\nphase: code\napprovals:\n');write(path.join(repo,'product.txt'),'before\n');const base=commit();
++write(ledger,'Launch: args '+JSON.stringify({epicId:'fixture',integrationBranch:'fixture',integrationWorktree:repo,invocationId:'bounded'})+'\n');
++const args=['--invocation','probe','--workspace',ws,'--review','none','--verdict','UNAVAILABLE'];assert.equal(collect(...args).status,3);
++const old=fs.readFileSync(run,'utf8');const source=path.join(ws,'final-review-probe.md');write(source,report);
++assert.equal(collect('--invocation','probe','--workspace',ws,'--review',source,'--verdict','ready','--recover-null').status,0);
++assert(fs.readFileSync(run,'utf8').includes(old.trimEnd()));write(path.join(repo,'product.txt'),'after\n');const recovered=fs.readFileSync(run,'utf8'),head=commit();
++check('real recovered collector history grants only validated omission authority',()=>{const s=selection(head);assert.equal(s.status,0,s.stdout+s.stderr);assert.deepEqual(s.data.gaps,[])});
++for(const mode of ['all markers','last marker','forged predecessor','changed recovered verdict','changed required','changed path'])check('reject '+mode,()=>{
++ const lines=recovered.split('\n'),indices=lines.flatMap((l,i)=>l.startsWith('- review-collection · ')?[i]:[]),last=indices.at(-1);
++ for(const i of indices){const r=JSON.parse(lines[i].split(' · ')[1]);if(r.recovery){if(mode==='all markers'||(mode==='last marker'&&i===last))delete r.recovery;else if(mode==='forged predecessor')r.recovery.recordSha256='0'.repeat(64);else if(mode==='changed recovered verdict'&&i===last)r.review='not ready';else if(mode==='changed required')r.required=['different'];else if(mode==='changed path')r.reviewPath=path.join(ws,'other.md')};lines[i]='- review-collection · '+JSON.stringify(r)}
++ write(run,lines.join('\n'));const s=selection(commit());assert.equal(s.status,3);assert.equal(s.data.omitted.length,0);assert(s.data.gaps.length);write(run,recovered);
++});
++check('reject hash-linked but invalid complete null predecessor',()=>{
++ const lines=recovered.split('\n'),records=lines.flatMap((line,i)=>line.startsWith('- review-collection · ')?[{i,r:JSON.parse(line.split(' · ')[1])}]:[]);
++ const predecessor=records.filter(({r})=>r.reviewPath===null).at(-1);predecessor.r.complete=true;predecessor.r.gaps=[];
++ const digest=createHash('sha256').update(JSON.stringify(predecessor.r)).digest('hex');
++ for(const record of records){if(record.r.recovery)record.r.recovery.recordSha256=digest;lines[record.i]='- review-collection · '+JSON.stringify(record.r)}
++ write(run,lines.join('\n'));const invalid=selection(commit());assert.equal(invalid.status,3);assert.equal(invalid.data.omitted.length,0);write(run,recovered);
++});
++write(run,recovered);
++// This actual copied run record has no sibling archive. Its name cannot authorize omission,
++// but the captured independent product hunk is still available for a bounded review.
++write(path.join(repo,'fixtures/captured/run.md'),recovered);const nestedHead=commit();
++assert.equal(cli('bind-review-source','--ledger',ledger,'--base',base,'--head',nestedHead).status,0);
++const s=selection(nestedHead,path.join(ws,'assembled/final-review-bounded-final'));
++fs.appendFileSync(run,'- review-collection · '+JSON.stringify({invocationId:'bounded',workspace:ws,reviewPath:path.join(ws,'final-review-bounded.md'),review:'pending',required:[],settled:false})+'\n');
++check('nested historical provenance retains source availability without omission or whole-range readiness',()=>{assert.equal(s.status,3);assert.equal(s.data.sourceAvailable,true);assert.equal(s.data.wholeRangeReady,false);assert(s.data.changed.includes('product.txt'));assert.equal(s.data.omitted.length,0);assert(s.data.gaps.some(g=>g.includes('fixtures/captured/run.md')))});
++const draft=path.join(s.out,'bounded-draft.md'),coverage=path.join(s.out,'bounded-coverage.json'),output=path.join(ws,'final-review-bounded.md');write(draft,report);write(coverage,JSON.stringify({inspected:[{path:'product.txt',hunks:['@@ -1 +1 @@']}]}));
++const finalize=(extra=[])=>cli('bounded-review','--ledger',ledger,'--base',base,'--head',nestedHead,'--selection',path.join(s.out,'review-inputs.json'),'--draft',draft,'--coverage',coverage,'--out',output,...extra);
++check('bounded report forces incomplete verdict and survives extraction and collection',()=>{
++ const r=finalize();assert.equal(r.status,0,r.stdout+r.stderr);const text=fs.readFileSync(output,'utf8');assert.match(text,/not ready/);assert.match(text,/retained concrete finding/);assert.match(text,/fixtures\/captured\/run.md/);assert.equal(fs.readFileSync(draft,'utf8'),report);
++ const extracted=JSON.parse(exec('bash',[path.join(root,'skills/super-code/scripts/report-verdict'),'--complete','--source','bounded/final',output]));assert.match(extracted.verdict,/not ready/);assert(extracted.occurrences.some(o=>JSON.stringify(o).includes('retained concrete finding')));assert(extracted.occurrences.some(o=>JSON.stringify(o).includes('whole-epic')));
++ const result=collect('--invocation','bounded','--workspace',ws,'--review',output,'--verdict',extracted.verdict);assert.equal(result.status,0,result.stdout+result.stderr);assert.equal(fs.readFileSync(path.join(repo,'runs/current/reviews/bounded/assembled/final-review-bounded-final/bounded-draft.md'),'utf8'),report);assert.deepEqual(fs.readFileSync(path.join(repo,'runs/current/reviews/bounded/assembled/final-review-bounded-final/bounded-coverage.json')),fs.readFileSync(coverage));assert.match(exec('bash',[rs,run]),/whole-epic|outstanding|unresolved|pending|not ready/);
++ const tree=git('rev-parse',nestedHead+'^{tree}'), snapshot={version:1,owner:'super-auto',sourceTree:tree,requirements:[{id:'whole-review',kind:'review',owner:'caller'},{id:'suite',kind:'measurement',owner:'caller',command:'suite',configuration:'fixture',requiredLive:true},{id:'human',kind:'human',owner:'human'}],evidence:[{sourceTree:tree,command:'suite',configuration:'fixture',kind:'live',outcome:'pass',location:'fixture.log'}],reviews:[{id:'whole-review',sourceTree:tree,outcome:'unavailable',location:output}],decisions:[{id:'human',authority:'human',decision:'accept',evidence:['fixture human decision']}],recovery:{obligations:[],gaps:[]},checkEvidence:{records:[],requiredLiveChecks:[],gaps:[]},runFailures:[],findingAcceptance:[]};
++ const sources=fs.readFileSync(run,'utf8').split('\n').filter(l=>l.startsWith('- finding-source · ')).map(l=>JSON.parse(l.split(' · ')[1]));
++ for(const source of sources)for(const occurrence of source.occurrences)snapshot.findingAcceptance.push({ref:{source:source.source,section:occurrence.section,position:occurrence.position},judgment:'supported',effect:occurrence.section==='Untested scope'?'required':'nonblocking',requirement:'whole-review',basis:'fixture exact scope judgment',evidence:[source.artifact]});
++ fs.appendFileSync(run,'- root-acceptance · '+JSON.stringify(snapshot)+'\n');const gate=cp.spawnSync('bash',[rs,'--acceptance',run,'--tree',tree],{encoding:'utf8'});assert.equal(gate.status,3,gate.stdout+gate.stderr);assert.equal(JSON.parse(gate.stdout).eligible,false);assert.match(gate.stdout,/whole-review/);assert.match(gate.stdout,/pending|remains required/);assert.doesNotMatch(gate.stdout,/missing measurement|missing human|relevance unproven/);
++});
++check('bounded writer preserves existing report',()=>{const before=fs.existsSync(output)?fs.readFileSync(output):null;const r=finalize();assert.equal(r.status,2);if(before)assert.deepEqual(fs.readFileSync(output),before)});
++check('bounded writer rejects source mismatch',()=>assert.equal(finalize(['--head',head]).status,2));
++// Remove only the fresh fixture output after the preservation check so negative writer
++// controls cannot pass merely because the existing-output guard fires first.
++if(fs.existsSync(output))fs.renameSync(output,output+'.saved');
++const selectionFile=path.join(s.out,'review-inputs.json'),selectionBytes=fs.readFileSync(selectionFile);
++for(const [name,edit] of [
++ ['claimed omission',v=>v.omitted.push({path:'product.txt'})],
++ ['incomplete inventory',v=>v.changed=v.changed.filter(p=>p!=='product.txt')],
++ ['source unavailable',v=>v.sourceAvailable=false],
++ ['missing gaps',v=>v.gaps=[]],
++ ['wrong captured source',v=>v.head=head]
++])check('bounded writer rejects '+name,()=>{const value=JSON.parse(selectionBytes);edit(value);write(selectionFile,JSON.stringify(value));const r=finalize();assert.equal(r.status,2,r.stdout+r.stderr);assert(!fs.existsSync(output));write(selectionFile,selectionBytes)});
++check('bounded writer rejects invented inspected hunk',()=>{write(coverage,JSON.stringify({inspected:[{path:'product.txt',hunks:['@@ -99 +99 @@']}]}));assert.equal(finalize().status,2);assert(!fs.existsSync(output));write(coverage,JSON.stringify({inspected:[{path:'product.txt',hunks:['@@ -1 +1 @@']}]}))});
++check('bounded writer refuses missing captured commit object',()=>{const saved=fs.readFileSync(ledger,'utf8');write(ledger,saved.replaceAll(nestedHead,'f'.repeat(40)));assert.equal(finalize(['--head','f'.repeat(40)]).status,2);assert(!fs.existsSync(output));write(ledger,saved)});
++check('ordinary prompt exposes bounded source route',()=>{const r=cli('final-review','--ledger',ledger,'--base',base,'--head',nestedHead,'--mode','single','--stdout');assert.equal(r.status,0,r.stderr);assert.match(r.stdout,/bounded-review/);assert.match(r.stdout,/inspected/);assert.doesNotMatch(r.stdout,/carrying selection\/evidence gaps, preserve that explicit gap and return unavailable/)});
++check('large captured range does not lose source to redundant diffstat argv',()=>{
++ // Enough real long Git paths to exceed this host's argument limit. Selection must
++ // ask Git for the whole range directly when no path has omission authority.
++ const prefix=Array.from({length:4},(_,i)=>('segment'+i+'-').padEnd(180,'x')).join('/');
++ const limit=Number(exec('getconf',['ARG_MAX'])),count=Math.ceil(limit/(prefix.length+12))+80;
++ console.log('large range fixture: '+JSON.stringify({argMax:limit,files:count,pathPrefixBytes:prefix.length}));
++ for(let i=0;i<count;i++)write(path.join(repo,prefix,'file-'+i+'.txt'),'captured source '+i+'\n');
++ const wide=selection(commit());assert.equal(wide.status,3,wide.stderr);assert.equal(wide.data.sourceAvailable,true,wide.data.gaps.at(-1));assert.equal(wide.data.omitted.length,0);assert(wide.data.changed.length>=count);assert(!wide.data.gaps.some(g=>g.includes('E2BIG')));
++});
++console.log(JSON.stringify({passed,failed,tmp,base,head:nestedHead,sourceHead:git('rev-parse','HEAD')}));if(!process.env.KEEP_FIXTURES&&!failed)fs.rmSync(tmp,{recursive:true,force:true});process.exitCode=failed?1:0;
+diff --git a/tests/super-code/replay-harness.mjs b/tests/super-code/replay-harness.mjs
+index ed4527e7..afd4b924 100644
+--- a/tests/super-code/replay-harness.mjs
++++ b/tests/super-code/replay-harness.mjs
+@@ -1650,6 +1650,17 @@ async function main() {
+       check(promptOf(out.trace, 'final-review:cluster:1')?.includes('"## Untested scope"') && promptOf(out.trace, 'final-review:seam')?.includes('"## Untested scope"'), 'cluster and seam prompts fix the review-file headings')
+     }
+ 
++    scenario('final review: provenance-only refusal permits bounded review but never ready')
++    {
++      const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'assemble:final': asmOf({ exit: 2, fits: 'unavailable', cause: 'review input selection: provenance unavailable; captured source available' }) }) })
++      assertNoThrow(out)
++      check(out.counts['final-review'] === 1, 'captured source reaches a bounded review despite provenance gaps', JSON.stringify(out.counts))
++      check(out.result?.review?.startsWith('not ready (') && out.result.review.includes('whole-epic'), 'synthetic ready cannot clear mechanically incomplete whole-epic coverage', out.result?.review)
++      check(promptOf(out.trace, 'final-review')?.includes('bounded-review'), 'bounded artifact uses the mechanical incomplete writer')
++      const denied = await run({ args: liveArgs(), canned: oneTaskCanned({ 'assemble:final': asmOf({ exit: 2, fits: 'unavailable', cause: 'review source guard: existing partial output' }) }) })
++      check(!denied.counts['final-review'] && denied.result?.reviewPath === null, 'source/write refusal remains hard unavailable')
++    }
++
+     scenario('final review: assembler unavailable → uncapped single on direct inputs')
+     {
+       const out = await run({ args: liveArgs(), canned: oneTaskCanned({ 'assemble:final': null }) })

@@ -1,0 +1,18 @@
+{
+  "head": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+  "checks": "Generated inventory/provenance consistency only; no repository tests.",
+  "fullPathSet11767": true,
+  "delta3304": true,
+  "all62SourcePathsAccounted": true,
+  "all11FinalFixPackageHashesMatch": true,
+  "all3Task6FollowupHashesAndBlobsMatch": true,
+  "all242HistoricalMembersAnd11ReportsMatch": true,
+  "all79OriginalRawProposalOperationalBindingsMatch": true,
+  "all10InterpretationInputsAnd2AdapterReviewArtifactsMatch": true,
+  "all18PriorRoleAssessmentsUnchanged": true,
+  "prior364OnlyPlanSpecChanged": true,
+  "originalSelectorSidecarsPreserved": true,
+  "noOmissionsAuthorized": true,
+  "noAllPathSemanticReadClaim": true,
+  "onlyWrites": "/private/tmp/ufz-correction-final-artifact-inventory-c216"
+}

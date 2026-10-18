@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "owner": "super-auto",
+  "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+  "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+  "authority": "mQ0VuyiMVWeP bounded correction/acceptance; no gate waiver",
+  "originalGaps": {
+    "recovery": [
+      "Initial root-acceptance snapshot missing before code; late checkpoint only.",
+      "Whole-run finding population unestablished:74 strict extraction gaps plus5 successful unregistered sources; task-report-history-intake-r1.json.",
+      "Whole-epic final review not ready;690 selection/provenance review gaps remain; scoped post-cap audit cannot supply whole-epic coverage.",
+      "Complete historical returned Recovery/checkEvidence/requiredLiveChecks/runFailures reduction unavailable. Legacy failures/fix history/missing run-baseline attribution retained; task-base failure does not exonerate earlier run introduction.",
+      "Historical aggregate final-suite command/configuration differs from37 measured serial commands; exact reconciliation pending.",
+      "Fresh-agent interrupted-invocation/finding continuity assessment unestablished; merged changed-instruction representative assessment pending.",
+      "Caller/review-root process inspection/final-parent cleanup not performed here; retain unknown resources until separately verified."
+    ],
+    "checkEvidence": [
+      "Historical task/reviewer requiredLiveChecks population has no authoritative complete reduction; no empty-clean claim."
+    ]
+  },
+  "independentPerGapJudgment": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/final-global-review.md \u00a7 Original root gaps: current resolution versus retained qualification",
+  "knownHistoricalLiveDeclarationMap": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/final-livecheck-assessment/assessment.json",
+  "currentActualMeasurementRecords": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/final-suite/retention-and-parent-verification.json",
+  "historicalQualifications": [
+    "No initial pre-code root snapshot; only the late actual checkpoint exists.",
+    "Unknown absent original wrappers/callbacks/output aliases/run-start attribution remain unknown; no complete historical causal reduction or empty-clean claim.",
+    "Original690/707 selector gaps retain old endpoints, no current omission authority; current full review used exact62source/11767path role scope.",
+    "79 originals, five unknown original verdicts,29supplements35source qualifications and all failed/unavailable measurements remain unchanged.",
+    "M remains4/5; excerpt C8 reuse bounded, no general improvement or hosted Workflow assertion.",
+    "All owned roots retained; six validation roots inspected, active caller/main pane retained, unrelated/global absence unknown."
+  ],
+  "retainedProvenanceObligations": [
+    {
+      "version": 1,
+      "id": "review-source:inv-c96916a964634bb0bb5f2bd3b8e1769b",
+      "kind": "deferred",
+      "operation": "record",
+      "reason": "immutable invocation review source",
+      "evidence": [
+        "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.superpowers/sdd/super-plan-ufz-plan/progress.md"
+      ],
+      "data": {
+        "reviewSource": {
+          "invocationId": "inv-c96916a964634bb0bb5f2bd3b8e1769b",
+          "base": "d84541ae20a97f3a4a28aa6b1d3d2043c3de1bb5",
+          "head": "ee275436bc69c3dd77cf1753399e0f93b44f2cff"
+        }
+      }
+    }
+  ],
+  "runFailureInterpretation": "No fabricated historical run baseline/owner or producer return. Retain original typed/raw failure observations and narrower different-source fix correspondence; current known declared checks have actual source-bound pass records.",
+  "humanDecision": "Still absent; actual conditional human merge instruction assessed separately only after nonhuman gates pass."
+}

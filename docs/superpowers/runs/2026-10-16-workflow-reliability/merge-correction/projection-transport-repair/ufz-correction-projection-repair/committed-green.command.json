@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "bash",
+    "tests/super-auto/projection-output-r1.sh"
+  ],
+  "cwd": "/private/tmp/ufz-correction-projection-repair-source",
+  "source": {
+    "head": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+    "tree": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2",
+    "status": "",
+    "ownedSha256": {
+      "skills/super-auto/scripts/report-status": "c99c1052114eb32883bfd0d102b5e8efd5ca062d7c99a63c311f58259b619517",
+      "tests/super-auto/projection-output-r1.sh": "8d90a77a8c2184bc6adac4cba06f1304bf8f5532b5e3173982f0832b91975db0"
+    }
+  }
+}

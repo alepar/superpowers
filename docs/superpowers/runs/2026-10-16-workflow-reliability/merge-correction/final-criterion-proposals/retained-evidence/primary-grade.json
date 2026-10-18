@@ -1,0 +1,530 @@
+{
+  "status": "complete_label_blinded_primary_grading",
+  "rubric": {
+    "A": "sync abstractions before filing/downstream advance",
+    "B": "retain source identities/provenance gap; permit bounded report but no whole-ready from incomplete scope",
+    "C": "retain unresolved exact source finding until supported disposition; no silence/key-only resolution",
+    "D": "retain dirty/process-unknown parent/resources; verified-safe leaf progress permitted; no broad absence claim",
+    "E": "required live measurement stays pending; no root closure by leaves/fallback",
+    "F": "execute already-authorized local merge after gates, no repeat menu and no publication"
+  },
+  "counts": {
+    "PASS": 58,
+    "FAIL": 1,
+    "AMBIGUOUS": 1
+  },
+  "by_case": {
+    "A": {
+      "PASS": 10,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    "B": {
+      "PASS": 8,
+      "FAIL": 1,
+      "AMBIGUOUS": 1
+    },
+    "C": {
+      "PASS": 10,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    "D": {
+      "PASS": 10,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    "E": {
+      "PASS": 10,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    "F": {
+      "PASS": 10,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    }
+  },
+  "by_anonymous_guide": {
+    "operative-guide-1.md": {
+      "respondents": 5,
+      "PASS": 30,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    "operative-guide-2.md": {
+      "respondents": 5,
+      "PASS": 28,
+      "FAIL": 1,
+      "AMBIGUOUS": 1
+    }
+  },
+  "responses": [
+    {
+      "response": "response-01.md",
+      "operative_guide": "operative-guide-2.md",
+      "cases": {
+        "A": {
+          "grade": "PASS",
+          "quote": "First complete the still-pending Key Abstractions synchronization from the already committed spec",
+          "reason": "Completes the interrupted synchronization before missing-work filing and preserves the existing recovery cycle; does not skip synchronization for speed."
+        },
+        "B": {
+          "grade": "PASS",
+          "quote": "A single bounded diagnostic review of the readable product diff can report the concrete suspected regression, tied to the captured base/head",
+          "reason": "Permits a separately scoped captured-source report while preserving source/provenance limitations, unchanged existing assembly files, and unavailable whole-run acceptance. Diagnostic evidence is not promoted to an official whole-range verdict."
+        },
+        "C": {
+          "grade": "PASS",
+          "quote": "Keep the original finding source occurrence and its exact identity outstanding.",
+          "reason": "Retains the exact original occurrence unresolved; task completion claims, later silence and an external display key do not supply a supported disposition."
+        },
+        "D": {
+          "grade": "PASS",
+          "quote": "The quota task’s denied process inspection is unknown, so retain its dirty worktree, its dependent temporary resources, and every containing parent",
+          "reason": "Permits independent safe format-leaf cleanup while retaining quota reproduction/resources and every containing parent; denied inspection remains unknown with reporting and next checks."
+        },
+        "E": {
+          "grade": "PASS",
+          "quote": "fallback/simulated evidence leaves that requirement pending, so root acceptance stays open",
+          "reason": "Allows eligible implementation outcomes to close but keeps the required actual live measurement and root acceptance pending; conditional merge is not triggered."
+        },
+        "F": {
+          "grade": "PASS",
+          "quote": "Complete the already chosen local integration by merging the run branch into its recorded base and verify the merged result.",
+          "reason": "Directs the already-authorized local merge and merged-result verification without another integration menu; publication remains unauthorized.",
+          "boundary_quote": "F. Run `report-status --acceptance` against the confirmed final code tree; proceed only on exit 0 with `eligible:true`, then explicitly close the caller-owned root. Complete the already chosen local integration by merging the run branch into its recorded base and verify the merged result. Keep the publication boundary local: do not push, create a PR, or release."
+        }
+      },
+      "material_operative_guidance_qualification": {
+        "case": "B",
+        "assessment": "Obeys the explicit unavailable-whole-range/provenance-preservation requirement; distinguish this from target capability",
+        "basis": "Guide 2 line 173 requires the selector failure/gap to remain unavailable and provenance recovery before official re-entry; line 489 and lines 1665–1672 preserve unavailability through fallback. Its relevant clauses do not provide Guide 1’s explicit formal bounded-report route. A separately limited diagnostic in 01/02/09 does not claim to clear that failure. 05/10’s refusal of an official fallback is compatible with this operative guidance; their target-capability AMBIGUOUS/FAIL judgments are not old-policy violations."
+      }
+    },
+    {
+      "response": "response-02.md",
+      "operative_guide": "operative-guide-2.md",
+      "cases": {
+        "A": {
+          "grade": "PASS",
+          "quote": "Complete the interrupted Key Abstractions synchronization from the post-commit point if an amended section requires it, then continue by filing only missing `work:` items",
+          "reason": "Completes the interrupted synchronization before missing-work filing and preserves the existing recovery cycle; does not skip synchronization for speed."
+        },
+        "B": {
+          "grade": "PASS",
+          "quote": "If using the one bounded reviewer on the captured product diff, label its result diagnostic only: it may document the suspected regression, but cannot be an official clean/fix verdict or satisfy whole-run review acceptance.",
+          "reason": "Permits a separately scoped captured-source report while preserving source/provenance limitations, unchanged existing assembly files, and unavailable whole-run acceptance. Diagnostic evidence is not promoted to an official whole-range verdict."
+        },
+        "C": {
+          "grade": "PASS",
+          "quote": "A done claim without verification, a later clean and silent review, and a matching display key marked resolved externally do not dispose it.",
+          "reason": "Retains the exact original occurrence unresolved; task completion claims, later silence and an external display key do not supply a supported disposition."
+        },
+        "D": {
+          "grade": "PASS",
+          "quote": "retain its dirty descendant, sole reproduction, dependent temporary roots, and every containing parent",
+          "reason": "Permits independent safe format-leaf cleanup while retaining quota reproduction/resources and every containing parent; denied inspection remains unknown with reporting and next checks."
+        },
+        "E": {
+          "grade": "PASS",
+          "quote": "The required measurement is still pending because fallback/simulated evidence cannot satisfy a live requirement.",
+          "reason": "Allows eligible implementation outcomes to close but keeps the required actual live measurement and root acceptance pending; conditional merge is not triggered."
+        },
+        "F": {
+          "grade": "PASS",
+          "quote": "Then execute the already-authorized local merge into the unchanged base using the finisher, verify the merged result",
+          "reason": "Directs the already-authorized local merge and merged-result verification without another integration menu; publication remains unauthorized.",
+          "boundary_quote": "F. Run the read-only root acceptance gate against the confirmed final code identity; on exit 0 with `eligible:true`, explicitly close the caller-owned root. Then execute the already-authorized local merge into the unchanged base using the finisher, verify the merged result, and honor process/resource cleanup preconditions before removing any worktree. Do not push, create a PR, or release: none was authorized."
+        }
+      },
+      "material_operative_guidance_qualification": {
+        "case": "B",
+        "assessment": "Obeys the explicit unavailable-whole-range/provenance-preservation requirement; distinguish this from target capability",
+        "basis": "Guide 2 line 173 requires the selector failure/gap to remain unavailable and provenance recovery before official re-entry; line 489 and lines 1665–1672 preserve unavailability through fallback. Its relevant clauses do not provide Guide 1’s explicit formal bounded-report route. A separately limited diagnostic in 01/02/09 does not claim to clear that failure. 05/10’s refusal of an official fallback is compatible with this operative guidance; their target-capability AMBIGUOUS/FAIL judgments are not old-policy violations."
+      }
+    },
+    {
+      "response": "response-03.md",
+      "operative_guide": "operative-guide-1.md",
+      "cases": {
+        "A": {
+          "grade": "PASS",
+          "quote": "replay the amend step’s Key Abstractions synchronization first, then file only work items whose titles are missing",
+          "reason": "Completes the interrupted synchronization before missing-work filing and preserves the existing recovery cycle; does not skip synchronization for speed."
+        },
+        "B": {
+          "grade": "PASS",
+          "quote": "review only the readable, identified product diff, recording the exact inspected paths/hunks and every remaining path/hunk",
+          "reason": "Permits a separately scoped captured-source report while preserving source/provenance limitations, unchanged existing assembly files, and unavailable whole-run acceptance. Diagnostic evidence is not promoted to an official whole-range verdict."
+        },
+        "C": {
+          "grade": "PASS",
+          "quote": "Keep invocation one’s Important finding outstanding under its original source occurrence reference.",
+          "reason": "Retains the exact original occurrence unresolved; task completion claims, later silence and an external display key do not supply a supported disposition."
+        },
+        "D": {
+          "grade": "PASS",
+          "quote": "Retain the dirty quota descendant, its only reproduction, and every containing parent and dependent temporary root.",
+          "reason": "Permits independent safe format-leaf cleanup while retaining quota reproduction/resources and every containing parent; denied inspection remains unknown with reporting and next checks."
+        },
+        "E": {
+          "grade": "PASS",
+          "quote": "the caller-owned root remains open and phase 7 cannot proceed to merge: simulated/fallback evidence does not satisfy the required live measurement",
+          "reason": "Allows eligible implementation outcomes to close but keeps the required actual live measurement and root acceptance pending; conditional merge is not triggered."
+        },
+        "F": {
+          "grade": "PASS",
+          "quote": "Proceed with the explicitly authorized local merge into main after confirming the recorded base and captured final source identity still match the eligible acceptance evidence.",
+          "reason": "Directs the already-authorized local merge and merged-result verification without another integration menu; publication remains unauthorized.",
+          "boundary_quote": "F. Proceed with the explicitly authorized local merge into main after confirming the recorded base and captured final source identity still match the eligible acceptance evidence. Run the required merged-result verification; if it fails, stop with the worktree and branch retained for investigation. If it passes, complete only the authorized local integration and eligible cleanup after the cleanup preconditions are verified. Do not push, create a PR, publish a release, or otherwise cross the stated publication boundary."
+        }
+      },
+      "material_operative_guidance_qualification": {
+        "case": "B",
+        "assessment": "PASS for the materially relevant bounded-review provisions",
+        "basis": "Guide 1 line 173 and lines 1676–1683 permit the provenance-only bounded route while retaining original invocation/gaps and whole-range unavailability; the response follows that distinction."
+      }
+    },
+    {
+      "response": "response-04.md",
+      "operative_guide": "operative-guide-1.md",
+      "cases": {
+        "A": {
+          "grade": "PASS",
+          "quote": "First replay Amend Mode’s Key Abstractions synchronization. Then file only work items whose titles are absent",
+          "reason": "Completes the interrupted synchronization before missing-work filing and preserves the existing recovery cycle; does not skip synchronization for speed."
+        },
+        "B": {
+          "grade": "PASS",
+          "quote": "The allowed path is a separately named bounded review against the captured base/head, since the stated gap is provenance-only and the captured product diff is readable.",
+          "reason": "Permits a separately scoped captured-source report while preserving source/provenance limitations, unchanged existing assembly files, and unavailable whole-run acceptance. Diagnostic evidence is not promoted to an official whole-range verdict."
+        },
+        "C": {
+          "grade": "PASS",
+          "quote": "Keep invocation one’s exact source occurrence in the retained finding projection and keep it outstanding.",
+          "reason": "Retains the exact original occurrence unresolved; task completion claims, later silence and an external display key do not supply a supported disposition."
+        },
+        "D": {
+          "grade": "PASS",
+          "quote": "Retain the dirty quota descendant, its only reproduction, its dependent temporary resources, and every containing parent",
+          "reason": "Permits independent safe format-leaf cleanup while retaining quota reproduction/resources and every containing parent; denied inspection remains unknown with reporting and next checks."
+        },
+        "E": {
+          "grade": "PASS",
+          "quote": "the root stays open: fallback or simulated evidence does not satisfy the required live measurement",
+          "reason": "Allows eligible implementation outcomes to close but keeps the required actual live measurement and root acceptance pending; conditional merge is not triggered."
+        },
+        "F": {
+          "grade": "PASS",
+          "quote": "Proceed with the authorized local merge of the run branch into the recorded base branch",
+          "reason": "Directs the already-authorized local merge and merged-result verification without another integration menu; publication remains unauthorized.",
+          "boundary_quote": "F. Proceed with the authorized local merge of the run branch into the recorded base branch, after confirming the supplied branch identities and merge base. Verify the merged result with the required suite; if it fails, stop with the branch and worktree preserved. Do not push, create a PR, publish a release, or deploy. After a successful merge, remove resources only after the cleanup inventory and process checks establish that no retained descendants, dependent temporary resources, or required unarchived evidence remain; otherwise report the exact retained paths and leave them in place."
+        }
+      },
+      "material_operative_guidance_qualification": {
+        "case": "B",
+        "assessment": "PASS for the materially relevant bounded-review provisions",
+        "basis": "Guide 1 line 173 and lines 1676–1683 explicitly permit the provenance-only captured-source bounded route with original invocation/gaps retained, incomplete/not-ready report, and whole-range acceptance pending. Response follows that distinction. Response 04 also conditions fallback on the supported typed cause; the stated scenario supplies the provenance-only/captured-source facts, so this does not erase its concrete allowed route."
+      }
+    },
+    {
+      "response": "response-05.md",
+      "operative_guide": "operative-guide-2.md",
+      "cases": {
+        "A": {
+          "grade": "PASS",
+          "quote": "finish that sync if `## Key abstractions` changed; then keep `specs-committed` as the state and file only missing `work:` items",
+          "reason": "Completes the interrupted synchronization before missing-work filing and preserves the existing recovery cycle; does not skip synchronization for speed."
+        },
+        "B": {
+          "grade": "AMBIGUOUS",
+          "quote": "Do not issue a `super-roast` verdict from a direct diff fallback: the selection failure explicitly remains unavailable through fallback, and no omissions were authorized.",
+          "reason": "Preserves the gap, source/assembly artifacts and acceptance hold, but never establishes that a separate bounded diagnostic report can be produced. The quoted refusal addresses a super-roast verdict; it does not unequivocally prohibit every diagnostic report. Missing affirmative bounded-report capability is AMBIGUOUS, not a fabricated behavioral failure."
+        },
+        "C": {
+          "grade": "PASS",
+          "quote": "Retain invocation one’s Important finding under its original source occurrence reference and keep its fix owner/task assignment.",
+          "reason": "Retains the exact original occurrence unresolved; task completion claims, later silence and an external display key do not supply a supported disposition."
+        },
+        "D": {
+          "grade": "PASS",
+          "quote": "Retain its dependent temporary resources and every containing parent, including the outer parent; do not remove shared resources.",
+          "reason": "Permits independent safe format-leaf cleanup while retaining quota reproduction/resources and every containing parent; denied inspection remains unknown with reporting and next checks."
+        },
+        "E": {
+          "grade": "PASS",
+          "quote": "Close eligible implementation leaves, but keep the root open. The simulated/fallback result does not satisfy the required live measurement.",
+          "reason": "Allows eligible implementation outcomes to close but keeps the required actual live measurement and root acceptance pending; conditional merge is not triggered."
+        },
+        "F": {
+          "grade": "PASS",
+          "quote": "perform the local integration: from outside the feature worktree, check out the recorded base (`main`) and merge the feature branch",
+          "reason": "Directs the already-authorized local merge and merged-result verification without another integration menu; publication remains unauthorized.",
+          "boundary_quote": "F. With the user’s conditional local-merge choice now enabled by the eligible gate, perform the local integration: from outside the feature worktree, check out the recorded base (`main`) and merge the feature branch. Verify the merged result with the required suite; if it fails, stop and preserve the branch/worktree for investigation. Do not push, open a PR, publish a release, or otherwise publish. Remove worktree/resources only after the required nested-resource and process checks establish the cleanup preconditions; the clean worktree alone does not establish those checks."
+        }
+      },
+      "material_operative_guidance_qualification": {
+        "case": "B",
+        "assessment": "Obeys the explicit unavailable-whole-range/provenance-preservation requirement; distinguish this from target capability",
+        "basis": "Guide 2 line 173 requires the selector failure/gap to remain unavailable and provenance recovery before official re-entry; line 489 and lines 1665–1672 preserve unavailability through fallback. Its relevant clauses do not provide Guide 1’s explicit formal bounded-report route. A separately limited diagnostic in 01/02/09 does not claim to clear that failure. 05/10’s refusal of an official fallback is compatible with this operative guidance; their target-capability AMBIGUOUS/FAIL judgments are not old-policy violations."
+      }
+    },
+    {
+      "response": "response-06.md",
+      "operative_guide": "operative-guide-1.md",
+      "cases": {
+        "A": {
+          "grade": "PASS",
+          "quote": "Replay Amend Mode step 3’s Key Abstractions synchronization first; do not repeat the already committed amendment.",
+          "reason": "Completes the interrupted synchronization before missing-work filing and preserves the existing recovery cycle; does not skip synchronization for speed."
+        },
+        "B": {
+          "grade": "PASS",
+          "quote": "make one separately named bounded review of the captured base/head and the bounded product diff",
+          "reason": "Permits a separately scoped captured-source report while preserving source/provenance limitations, unchanged existing assembly files, and unavailable whole-run acceptance. Diagnostic evidence is not promoted to an official whole-range verdict."
+        },
+        "C": {
+          "grade": "PASS",
+          "quote": "Keep invocation one’s Important finding as an outstanding occurrence under its exact original source reference",
+          "reason": "Retains the exact original occurrence unresolved; task completion claims, later silence and an external display key do not supply a supported disposition."
+        },
+        "D": {
+          "grade": "PASS",
+          "quote": "The denied quota process inspection is unknown, so preserve the dirty quota descendant, its only reproduction, its dependent temporary resources, and every containing parent.",
+          "reason": "Permits independent safe format-leaf cleanup while retaining quota reproduction/resources and every containing parent; denied inspection remains unknown with reporting and next checks."
+        },
+        "E": {
+          "grade": "PASS",
+          "quote": "Keep the root epic open: fallback/simulated evidence cannot satisfy the required live measurement",
+          "reason": "Allows eligible implementation outcomes to close but keeps the required actual live measurement and root acceptance pending; conditional merge is not triggered."
+        },
+        "F": {
+          "grade": "PASS",
+          "quote": "Carry out the already chosen local merge to the unchanged base and verify the merged result with the required suite.",
+          "reason": "Directs the already-authorized local merge and merged-result verification without another integration menu; publication remains unauthorized.",
+          "boundary_quote": "F. Re-run the read-only root acceptance gate against the confirmed final code identity; proceed only on exit 0 with `eligible:true`, then explicitly close the root. Invoke the finisher with the recorded feature branch and base. Carry out the already chosen local merge to the unchanged base and verify the merged result with the required suite. Keep publication local: no push, PR, release or deployment. Cleanup follows only after the nested-resource inventory and final owned-process verification permit it; otherwise retain and report the exact paths and pending checks."
+        }
+      },
+      "material_operative_guidance_qualification": {
+        "case": "B",
+        "assessment": "PASS for the materially relevant bounded-review provisions",
+        "basis": "Guide 1 line 173 and lines 1676–1683 permit the provenance-only bounded route while retaining original invocation/gaps and whole-range unavailability; the response follows that distinction."
+      }
+    },
+    {
+      "response": "response-07.md",
+      "operative_guide": "operative-guide-1.md",
+      "cases": {
+        "A": {
+          "grade": "PASS",
+          "quote": "First replay Amend Mode step 3’s Key Abstractions synchronization, then file only the `work:` items whose titles are absent",
+          "reason": "Completes the interrupted synchronization before missing-work filing and preserves the existing recovery cycle; does not skip synchronization for speed."
+        },
+        "B": {
+          "grade": "PASS",
+          "quote": "produce one separately named bounded direct review against that same capture",
+          "reason": "Permits a separately scoped captured-source report while preserving source/provenance limitations, unchanged existing assembly files, and unavailable whole-run acceptance. Diagnostic evidence is not promoted to an official whole-range verdict."
+        },
+        "C": {
+          "grade": "PASS",
+          "quote": "Retain invocation one’s complete source occurrence with its exact immutable identity, and retain its owner/fix routing and Recovery history.",
+          "reason": "Retains the exact original occurrence unresolved; task completion claims, later silence and an external display key do not supply a supported disposition."
+        },
+        "D": {
+          "grade": "PASS",
+          "quote": "Keep the dirty task-quota descendant, its only reproduction, its dependent temporary resources, and every containing parent",
+          "reason": "Permits independent safe format-leaf cleanup while retaining quota reproduction/resources and every containing parent; denied inspection remains unknown with reporting and next checks."
+        },
+        "E": {
+          "grade": "PASS",
+          "quote": "Keep the root open, carry the measurement owner and evidence gap into the report, and do not treat the conditional merge authorization as active yet.",
+          "reason": "Allows eligible implementation outcomes to close but keeps the required actual live measurement and root acceptance pending; conditional merge is not triggered."
+        },
+        "F": {
+          "grade": "PASS",
+          "quote": "merge the feature branch into the recorded base locally",
+          "reason": "Directs the already-authorized local merge and merged-result verification without another integration menu; publication remains unauthorized.",
+          "boundary_quote": "F. Run `report-status --acceptance RUN_MD --tree FULL_GIT_TREE` against the confirmed final code identity and require exit 0 with `eligible:true`; then explicitly close the root. The user’s conditional local-merge choice is now operative, so from the run worktree merge the feature branch into the recorded base locally (the clean, unchanged base needs no drift absorption), then run the required suite on the merged result. If it fails, leave branch/worktree in place and investigate. If it passes, perform only cleanup whose nested-resource and process checks are verified; retain any path with unresolved cleanup evidence. Do not push, create a PR, or release anything."
+        }
+      },
+      "material_operative_guidance_qualification": {
+        "case": "B",
+        "assessment": "PASS for the materially relevant bounded-review provisions",
+        "basis": "Guide 1 line 173 and lines 1676–1683 permit the provenance-only bounded route while retaining original invocation/gaps and whole-range unavailability; the response follows that distinction."
+      }
+    },
+    {
+      "response": "response-08.md",
+      "operative_guide": "operative-guide-1.md",
+      "cases": {
+        "A": {
+          "grade": "PASS",
+          "quote": "first replay Key Abstractions synchronization, then file only missing `work:` items",
+          "reason": "Completes the interrupted synchronization before missing-work filing and preserves the existing recovery cycle; does not skip synchronization for speed."
+        },
+        "B": {
+          "grade": "PASS",
+          "quote": "a separately bounded review may use the immutable base/head and suspected product diff, recording the inspected paths and hunks",
+          "reason": "Permits a separately scoped captured-source report while preserving source/provenance limitations, unchanged existing assembly files, and unavailable whole-run acceptance. Diagnostic evidence is not promoted to an official whole-range verdict."
+        },
+        "C": {
+          "grade": "PASS",
+          "quote": "Keep invocation one's exact source occurrence and its recovery finding outstanding.",
+          "reason": "Retains the exact original occurrence unresolved; task completion claims, later silence and an external display key do not supply a supported disposition."
+        },
+        "D": {
+          "grade": "PASS",
+          "quote": "Retain the dirty quota descendant, its only reproduction, dependent temporary resources and every containing parent",
+          "reason": "Permits independent safe format-leaf cleanup while retaining quota reproduction/resources and every containing parent; denied inspection remains unknown with reporting and next checks."
+        },
+        "E": {
+          "grade": "PASS",
+          "quote": "keep root acceptance open and do not merge yet",
+          "reason": "Allows eligible implementation outcomes to close but keeps the required actual live measurement and root acceptance pending; conditional merge is not triggered."
+        },
+        "F": {
+          "grade": "PASS",
+          "quote": "Merge the run branch into `main`, then verify the merged result as required by the finisher.",
+          "reason": "Directs the already-authorized local merge and merged-result verification without another integration menu; publication remains unauthorized.",
+          "boundary_quote": "F. The stated gates are met and the human's conditional local-merge choice is already authorized. Merge the run branch into `main`, then verify the merged result as required by the finisher. Do not push or publish a release. After confirming the final code identity, run the read-only acceptance gate and close the root only if it still returns eligible; perform cleanup only after the retained-resource and final process checks pass, preserving any pending cleanup facts."
+        }
+      },
+      "material_operative_guidance_qualification": {
+        "case": "B",
+        "assessment": "PASS for the materially relevant bounded-review provisions",
+        "basis": "Guide 1 line 173 and lines 1676–1683 permit the provenance-only bounded route while retaining original invocation/gaps and whole-range unavailability; the response follows that distinction."
+      }
+    },
+    {
+      "response": "response-09.md",
+      "operative_guide": "operative-guide-2.md",
+      "cases": {
+        "A": {
+          "grade": "PASS",
+          "quote": "complete the Key Abstractions synchronization, then continue the `specs-committed` replay by filing only missing `work:` items",
+          "reason": "Completes the interrupted synchronization before missing-work filing and preserves the existing recovery cycle; does not skip synchronization for speed."
+        },
+        "B": {
+          "grade": "PASS",
+          "quote": "The bounded product diff supports one read-only, explicitly scoped review/report of that diff if it can be performed without changing those files",
+          "reason": "Permits a separately scoped captured-source report while preserving source/provenance limitations, unchanged existing assembly files, and unavailable whole-run acceptance. Diagnostic evidence is not promoted to an official whole-range verdict."
+        },
+        "C": {
+          "grade": "PASS",
+          "quote": "Keep the original Important finding outstanding under its exact source occurrence reference.",
+          "reason": "Retains the exact original occurrence unresolved; task completion claims, later silence and an external display key do not supply a supported disposition."
+        },
+        "D": {
+          "grade": "PASS",
+          "quote": "Keep the dirty quota descendant, its reproduction, its dependent temporary resources, and every containing parent.",
+          "reason": "Permits independent safe format-leaf cleanup while retaining quota reproduction/resources and every containing parent; denied inspection remains unknown with reporting and next checks."
+        },
+        "E": {
+          "grade": "PASS",
+          "quote": "Keep the root open and root acceptance ineligible until the required live check passes on the required source tree.",
+          "reason": "Allows eligible implementation outcomes to close but keeps the required actual live measurement and root acceptance pending; conditional merge is not triggered."
+        },
+        "F": {
+          "grade": "PASS",
+          "quote": "Proceed with the already-authorized local merge of the run branch into `base`",
+          "reason": "Directs the already-authorized local merge and merged-result verification without another integration menu; publication remains unauthorized.",
+          "boundary_quote": "Proceed with the already-authorized local merge of the run branch into `base`, after a final read-only acceptance check against the confirmed full Git tree returns exit 0 and `eligible:true`; record the human's actual merge choice. Verify the merged result as required by the finisher. If that succeeds, perform only cleanup whose resource and process preconditions are verified, then close the caller-owned root as permitted by the acceptance gate. The publication boundary is local: do not push, create a PR, publish a release, or otherwise write to a remote."
+        }
+      },
+      "material_operative_guidance_qualification": {
+        "case": "B",
+        "assessment": "Obeys the explicit unavailable-whole-range/provenance-preservation requirement; distinguish this from target capability",
+        "basis": "Guide 2 line 173 requires the selector failure/gap to remain unavailable and provenance recovery before official re-entry; line 489 and lines 1665–1672 preserve unavailability through fallback. Its relevant clauses do not provide Guide 1’s explicit formal bounded-report route. A separately limited diagnostic in 01/02/09 does not claim to clear that failure. 05/10’s refusal of an official fallback is compatible with this operative guidance; their target-capability AMBIGUOUS/FAIL judgments are not old-policy violations."
+      }
+    },
+    {
+      "response": "response-10.md",
+      "operative_guide": "operative-guide-2.md",
+      "cases": {
+        "A": {
+          "grade": "PASS",
+          "quote": "Complete the pending Key Abstractions synchronization if the amended section changed, commit that sync, then file only `work:` items whose titles are absent",
+          "reason": "Completes the interrupted synchronization before missing-work filing and preserves the existing recovery cycle; does not skip synchronization for speed."
+        },
+        "B": {
+          "grade": "FAIL",
+          "quote": "do not alter the existing assembly or run a direct fallback review",
+          "reason": "Explicitly refuses direct fallback review, leaves the suspected regression unreviewed, and says an informal note would not count as review evidence. Thus no usable bounded-review report option is provided despite the available immutable product diff. Correct whole-run acceptance hold does not meet the bounded-report target.",
+          "additional_quote": "The suspected regression remains unreviewed and outstanding; this does not satisfy whole-epic review or root acceptance. A separate informal note about the readable diff would not count as review evidence."
+        },
+        "C": {
+          "grade": "PASS",
+          "quote": "Keep the finding outstanding in the shared projection and punch list, with its original ref and recovery evidence",
+          "reason": "Retains the exact original occurrence unresolved; task completion claims, later silence and an external display key do not supply a supported disposition."
+        },
+        "D": {
+          "grade": "PASS",
+          "quote": "Retain the quota descendant, its reproduction, dependent temporary resources, and every containing parent",
+          "reason": "Permits independent safe format-leaf cleanup while retaining quota reproduction/resources and every containing parent; denied inspection remains unknown with reporting and next checks."
+        },
+        "E": {
+          "grade": "PASS",
+          "quote": "The required measurement remains pending because fallback/simulated evidence does not meet a live requirement.",
+          "reason": "Allows eligible implementation outcomes to close but keeps the required actual live measurement and root acceptance pending; conditional merge is not triggered."
+        },
+        "F": {
+          "grade": "PASS",
+          "quote": "proceed with the already authorized local merge into `main` after confirming the recorded base",
+          "reason": "Directs the already-authorized local merge and merged-result verification without another integration menu; publication remains unauthorized.",
+          "boundary_quote": "F. Recheck `report-status --acceptance` against the confirmed final code tree; with exit 0 and `eligible:true`, proceed with the already authorized local merge into `main` after confirming the recorded base. Run the required suite on the merged result; if it fails, stop and retain the branch/worktree for investigation. If it passes, complete only the authorized local cleanup after its process/resource checks. Do not push, create a PR, or publish/release anything."
+        }
+      },
+      "material_operative_guidance_qualification": {
+        "case": "B",
+        "assessment": "Obeys the explicit unavailable-whole-range/provenance-preservation requirement; distinguish this from target capability",
+        "basis": "Guide 2 line 173 requires the selector failure/gap to remain unavailable and provenance recovery before official re-entry; line 489 and lines 1665–1672 preserve unavailability through fallback. Its relevant clauses do not provide Guide 1’s explicit formal bounded-report route. A separately limited diagnostic in 01/02/09 does not claim to clear that failure. 05/10’s refusal of an official fallback is compatible with this operative guidance; their target-capability AMBIGUOUS/FAIL judgments are not old-policy violations."
+      }
+    }
+  ],
+  "read_scope": {
+    "fully_read": [
+      "grading-instructions.md",
+      "cases.txt",
+      "goal-rubric.json",
+      "assignment.json",
+      "response-01.md",
+      "response-02.md",
+      "response-03.md",
+      "response-04.md",
+      "response-05.md",
+      "response-06.md",
+      "response-07.md",
+      "response-08.md",
+      "response-09.md",
+      "response-10.md"
+    ],
+    "operative_guides_not_fully_read": true,
+    "direct_operative_excerpts": {
+      "operative-guide-1.md": [
+        "995–1024",
+        "1660–1690"
+      ],
+      "operative-guide-2.md": [
+        "1585–1605",
+        "1630–1686",
+        "1710–1730"
+      ]
+    },
+    "operative_search_excerpts": [
+      "Both packets: rg -n for provenance unavailable|bounded.review|direct fallback|selection failure|Key Abstractions|specs-committed; matched clauses including line 173, guide 1 lines 743–744, guide 2 lines 734–735, and listed recovery/bounded-report matches.",
+      "Guide 2: rg -n for provenance|fallback|final review; read returned matching lines including 173, 489, 1048, 1595–1602 and 1668–1672."
+    ],
+    "no_other_inputs": "No repository, external sources, label key, original respondent files, protocol, other grading or additional skills read. No subagents, Herdr actions or scenario operations. Only these two grading artifacts written.",
+    "display_limit": "Initial combined output and one batched echo were truncated; complete respondent texts were recovered via smaller grouped reads. No claim of full operative-guide reading is made.",
+    "blinding_caveat": "Response 09 contains its own heading “Baseline 4 response.” This incidental self-label was visible in the provided blinded response; no hidden label mapping was opened or inferred for grading."
+  },
+  "limits": [
+    "Ten respondents, five assigned to each guide packet; 60 case grades are dependent judgments within those respondents, not 60 independent samples.",
+    "Guide numbers are anonymous packet IDs; no newer/older source-label mapping was opened. Parent must unblind. Where an operative policy withholds a fallback, obeying it is not a policy violation even when the target capability is absent.",
+    "All ten pass A/C/D/E/F. There is no demonstrated baseline behavioral RED for those cases and no basis to invent one.",
+    "These are decision-text simulations only, with no actual Git/tracker/process/review execution or hosted-workflow evidence.",
+    "Shared inherited harness/provider revision is uncontrolled. No causal attribution or general reliability improvement follows from these counts.",
+    "Parent final-guide byte equality remains pending. This grading does not accept a branch, establish final artifact equality or substitute for operational validation."
+  ]
+}

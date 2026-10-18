@@ -1,0 +1,218 @@
+{
+  "actualArgv": [
+    "/bin/bash",
+    "tests/super-auto/test-contract-lint.sh"
+  ],
+  "afterSource": {
+    "clean": true,
+    "environment": {
+      "CI": "1",
+      "CODEX_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/codex-home",
+      "GIT_CONFIG_GLOBAL": "/dev/null",
+      "GIT_CONFIG_NOSYSTEM": "1",
+      "GIT_CONFIG_SYSTEM": "/dev/null",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/home",
+      "LANG": "C",
+      "LC_ALL": "C",
+      "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "TMPDIR": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/tmp",
+      "TZ": "UTC",
+      "XDG_CACHE_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-cache",
+      "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-config",
+      "XDG_DATA_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-data",
+      "XDG_STATE_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-state"
+    },
+    "head": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+    "probes": {
+      "head": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-fd52ffc7",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "ZmQ1MmZmYzdhOGRlMGM0NDEyYzUxN2FkZWMyZDQ5NzlkMDY5MDZmZgo="
+      },
+      "status": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-fd52ffc7",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all",
+          "--ignore-submodules=none"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": ""
+      },
+      "tree": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-fd52ffc7",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD^{tree}"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "ZTlmYjVlMWI3NjY5NzI2NGVmN2FkZTI5ZGM1ZmM3OWVhNTc4OThjMgo="
+      }
+    },
+    "probesSucceeded": true,
+    "rawStatusBase64": "",
+    "tree": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2"
+  },
+  "beforeSource": {
+    "clean": true,
+    "environment": {
+      "CI": "1",
+      "CODEX_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/codex-home",
+      "GIT_CONFIG_GLOBAL": "/dev/null",
+      "GIT_CONFIG_NOSYSTEM": "1",
+      "GIT_CONFIG_SYSTEM": "/dev/null",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/home",
+      "LANG": "C",
+      "LC_ALL": "C",
+      "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "TMPDIR": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/tmp",
+      "TZ": "UTC",
+      "XDG_CACHE_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-cache",
+      "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-config",
+      "XDG_DATA_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-data",
+      "XDG_STATE_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-state"
+    },
+    "head": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+    "probes": {
+      "head": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-fd52ffc7",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "ZmQ1MmZmYzdhOGRlMGM0NDEyYzUxN2FkZWMyZDQ5NzlkMDY5MDZmZgo="
+      },
+      "status": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-fd52ffc7",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all",
+          "--ignore-submodules=none"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": ""
+      },
+      "tree": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-fd52ffc7",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD^{tree}"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "ZTlmYjVlMWI3NjY5NzI2NGVmN2FkZTI5ZGM1ZmM3OWVhNTc4OThjMgo="
+      }
+    },
+    "probesSucceeded": true,
+    "rawStatusBase64": "",
+    "tree": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2"
+  },
+  "cause": null,
+  "configurationSha256": "404556bb231ab04078471ab36fc883d2fe7babed6d5e717658b912cb92876f38",
+  "cwd": "/private/tmp/ufz-correction-final-source-fd52ffc7",
+  "durationSeconds": 112.128,
+  "endUtc": "2026-10-17T23:37:02Z",
+  "entrypointSha256": "d0bc031e5be20049f3f6dd45bf32d4c44762e6f2fb3d95f96100ac52f0304e95",
+  "environment": {
+    "CI": "1",
+    "CODEX_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-12/codex-home",
+    "GIT_CONFIG_GLOBAL": "/dev/null",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_CONFIG_SYSTEM": "/dev/null",
+    "GIT_OPTIONAL_LOCKS": "0",
+    "HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-12/home",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "TMPDIR": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-12/tmp",
+    "TZ": "UTC",
+    "XDG_CACHE_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-12/xdg-cache",
+    "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-12/xdg-config",
+    "XDG_DATA_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-12/xdg-data",
+    "XDG_STATE_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-12/xdg-state"
+  },
+  "executable": {
+    "bytes": 1290128,
+    "name": "bash",
+    "path": "/bin/bash",
+    "sha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+    "versionArgv": [
+      "/bin/bash",
+      "--version"
+    ],
+    "versionExitCode": 0,
+    "versionStderr": "",
+    "versionStdout": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)\nCopyright (C) 2007 Free Software Foundation, Inc.\n"
+  },
+  "exitCode": 0,
+  "id": "12",
+  "planCommand": "bash tests/super-auto/test-contract-lint.sh",
+  "planSha256": "849eecb5c549c07fc59ce98e95e529a1a551a104a4e4f9e210ea0989ab7174bc",
+  "requirementIds": [
+    "combined-suite-case-12"
+  ],
+  "runnerSha256": "7e34ddc54f52dc193ed84d07b44bf4e0fda1fa978fbc6e1c7aad053367e0d41d",
+  "sourceHead": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+  "sourceTree": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2",
+  "startUtc": "2026-10-17T23:35:10Z",
+  "status": "passed",
+  "stderrBytes": 0,
+  "stderrPath": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-12/stderr.log",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdoutBytes": 2059,
+  "stdoutPath": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-12/stdout.log",
+  "stdoutSha256": "f03dce48ddc9eb45449c06c75b790bab1de6a957808f5a45d6695f7f343dee91",
+  "timeout": false
+}

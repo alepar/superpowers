@@ -1,0 +1,61 @@
+{
+  "stage": "baseline-red-integrity",
+  "sourceTree": "79fc403800ff3b89c60012d61d7e55f5f0e7099d",
+  "outcome": "fail",
+  "entries": 81,
+  "hashMatches": 76,
+  "missing": [
+    "caller/build/caller-output.txt",
+    "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md",
+    "caller/.superpowers/sdd/ufz-live-review-plan/progress.md",
+    "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff",
+    "caller/.superpowers/sdd/ufz-live-review-plan/ufz-live-review-plan.md"
+  ],
+  "hashMismatches": []
+}
+{
+  "stage": "restored-git-tree-integrity",
+  "sourceTree": "f062b7c7ec1b967aa64952fad937ff6982cdb084",
+  "outcome": "pass",
+  "entries": 81,
+  "hashMatches": 81,
+  "missing": [],
+  "hashMismatches": [],
+  "original76ByteIdentical": 76,
+  "manifestAndReportUnchanged": true,
+  "restoredGitBlobs": [
+    {
+      "identity": "caller/build/caller-output.txt",
+      "sha256": "2fd7eea5648b3ba81c32ca30175ab8032f915e6b3a06c37deaa74145cc34a1f9",
+      "gitBlob": "07187bf126847e6b50f0028de40ab9f974c8a858",
+      "bytes": 30
+    },
+    {
+      "identity": "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md",
+      "sha256": "48ced495dd63e6a6824b836c1503649ddf5bd8113c003d39c655bc5212cfb073",
+      "gitBlob": "222cd1aad7dc82d3caa1f18e66871e726d78e0e9",
+      "bytes": 4072
+    },
+    {
+      "identity": "caller/.superpowers/sdd/ufz-live-review-plan/progress.md",
+      "sha256": "b5b94bdab87dad925cac97ba8a51a04e066353df60120f483a14fda4f8a2e7a4",
+      "gitBlob": "f5919ff840e0ea1cc9f69f67e7b3cbcf5672e01b",
+      "bytes": 436
+    },
+    {
+      "identity": "caller/.superpowers/sdd/ufz-live-review-plan/final-review-seat-b-live.md.diff",
+      "sha256": "99ee436cce41bc648250612a01fa1c31c2187d9e7aeaf909aff073e894a727d5",
+      "gitBlob": "d11e03902519b235eb40d715e1fc45a046be85b1",
+      "bytes": 597
+    },
+    {
+      "identity": "caller/.superpowers/sdd/ufz-live-review-plan/ufz-live-review-plan.md",
+      "sha256": "cd7e91a3f6462f45d3e521f076815fa608f3fd9a0578352a75d8d310c38593d3",
+      "gitBlob": "6335fd448976ae21b02dc8b19f85ca32abbf0ea7",
+      "bytes": 72
+    }
+  ],
+  "onlySixDeclaredAdditions": true,
+  "retentionMapResolved": true
+}
+PASS: all 81 original manifest identities hash-match captured Git blobs; exact five restored; original 76 unchanged; no historical observations rewritten.

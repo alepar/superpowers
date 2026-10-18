@@ -1,0 +1,36 @@
+{
+  "head": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+  "readScope": "Both complete committed bodies read from git show at c216; no truncation. Source-code diff/stat and new helper/test headers read for role only, not independent product audit. Task6 review-round1/round2 full reports read; implementation report-after-round2 source/round sections inspected, not claimed full body review.",
+  "documents": [
+    {
+      "path": "docs/superpowers/plans/2026-10-17-workflow-reliability-merge-correction.md",
+      "bytes": 11436,
+      "sha256": "73578d4afd084425c8420864b1a254e169a37d64c66aa5a0bdbbb348c47475c2",
+      "actualTextBasis": [
+        "Tasks1–5 checked, five Task6 acceptance/measurement/review/merge checkboxes remain open.",
+        "Final-source-freeze paragraph pins4911223a and explicitly says scoped re-review pending at that entry.",
+        "Later measurements, exact-ref dispositions, behavior assessment and merge facts belong append-only in RUN/SDD; later run-only commits require outside-run equality proof.",
+        "Authorization remains local merge after gates; no push/release/external filing or waiver."
+      ],
+      "assessment": "The plan records a source freeze and pending gates, not completed global acceptance. Historical failures/pinned policy/source identities remain explicit."
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-16-workflow-reliability-design.md",
+      "bytes": 15114,
+      "sha256": "efd92e2f0026aea1a57a1d6e49af11e16747b9dfe465283b5ea18d6a32bf2c22",
+      "actualTextBasis": [
+        "Original five invariants remain intact.",
+        "Dated authorized-correction note attributes two policy resolutions to independent policy review and enumerates bounded scheduler/collection/recovery/selection/sync/cleanup/metrics repairs.",
+        "At that entry, representative after evaluations, actual interrupted-helper exercise, combined-source verification, final whole-branch review and real root gate remain pending.",
+        "Earlier37 commands stay bound to their old source; fallback/text decisions cannot substitute for required live checks."
+      ],
+      "assessment": "Note is an attributed implementation/policy history with explicit temporal limits. It supplies no current final measurement or root-pass claim; source correctness still belongs to actual scoped reviewers."
+    }
+  ],
+  "unchangedPrimaryIndex": {
+    "path": "docs/superpowers/specs/INDEX.md",
+    "sha256": "d6f5531b0f77e36a518aeb97e870001a8db7ff28613d846e9edd702f39a75fe1",
+    "role": "unchanged primary catalog; original global-composer ownership retained, not independently reread here"
+  },
+  "remainingClaimAuthority": "Parent/global composer integrates scoped source reviews, future source-bound measurements, actual continuity evidence and current gate. No branch-ready or omission authority is conferred."
+}

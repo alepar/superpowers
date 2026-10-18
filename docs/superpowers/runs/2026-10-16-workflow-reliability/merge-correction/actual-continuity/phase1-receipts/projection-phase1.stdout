@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "findings": [
+    {
+      "ref": {
+        "source": "continuity-i1/final",
+        "section": "Must fix before landing",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "continuity-i1/final",
+          "artifact": "/private/tmp/ufz-correction-actual-continuity-4911223a/retained-originals/invocation-i1-report.md",
+          "section": "Must fix before landing",
+          "position": 1,
+          "key": "[Blocking] counter.mjs:1 — nonnegativeCount(-1) returns -1; the actual criterion fails.",
+          "text": "[Blocking] counter.mjs:1 — nonnegativeCount(-1) returns -1; the actual criterion fails."
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/ufz-correction-actual-continuity-4911223a/retained-originals/invocation-i1-report.md",
+        "reviews/continuity-i1/final-review-continuity-i1.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "continuity-i1/final",
+        "section": "Deferred OK",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "continuity-i1/final",
+          "artifact": "/private/tmp/ufz-correction-actual-continuity-4911223a/retained-originals/invocation-i1-report.md",
+          "section": "Deferred OK",
+          "position": 1,
+          "key": "[Should-fix] counter.mjs:2 — decodeSnapshot has no input size budget; retain this separate deferred item for its owner.",
+          "text": "[Should-fix] counter.mjs:2 — decodeSnapshot has no input size budget; retain this separate deferred item for its owner."
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/ufz-correction-actual-continuity-4911223a/retained-originals/invocation-i1-report.md",
+        "reviews/continuity-i1/final-review-continuity-i1.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "continuity-i1/final",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "continuity-i1/final",
+          "artifact": "/private/tmp/ufz-correction-actual-continuity-4911223a/retained-originals/invocation-i1-report.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "Snapshot memory usage and performance were not measured.",
+          "text": "Snapshot memory usage and performance were not measured."
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/ufz-correction-actual-continuity-4911223a/retained-originals/invocation-i1-report.md",
+        "reviews/continuity-i1/final-review-continuity-i1.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    },
+    {
+      "ref": {
+        "source": "continuity-i2/final",
+        "section": "Untested scope",
+        "position": 1
+      },
+      "occurrences": [
+        {
+          "source": "continuity-i2/final",
+          "artifact": "reviews/continuity-i2/final-review-continuity-i2.md",
+          "section": "Untested scope",
+          "position": 1,
+          "key": "This retry does not reassess earlier retained findings.",
+          "text": "This retry does not reassess earlier retained findings."
+        }
+      ],
+      "artifacts": [
+        "reviews/continuity-i2/final-review-continuity-i2.md"
+      ],
+      "variants": [],
+      "links": [],
+      "routes": [],
+      "dispositions": [],
+      "outstanding": true,
+      "deferred": false
+    }
+  ],
+  "gaps": [],
+  "metrics": {
+    "scope": "retained sources",
+    "sources": 2,
+    "sourceKinds": [
+      "final-review"
+    ],
+    "occurrences": 4,
+    "occurrenceGroups": 4,
+    "findings": 4,
+    "otherSectionGroups": 0,
+    "sections": [
+      "Must fix before landing",
+      "Deferred OK",
+      "Untested scope"
+    ],
+    "repaired": 0,
+    "rejected": 0,
+    "outstanding": 4,
+    "deferred": 0,
+    "gaps": 0
+  }
+}

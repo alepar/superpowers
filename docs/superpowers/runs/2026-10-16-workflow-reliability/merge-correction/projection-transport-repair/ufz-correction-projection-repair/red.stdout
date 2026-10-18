@@ -1,0 +1,10 @@
+aggregate projection: 1236591 bytes, 24 sources, 384 exact refs, 336 outstanding; maximum extraction 42556 bytes
+acceptance empty=False gap=True: 126 retained refs, exit 3
+projection empty=False gap=True: 204584 bytes, exit 3
+acceptance transport empty=False gap=False: 99830 bytes, exit 0
+acceptance transport empty=False gap=True: 100022 bytes, exit 3
+acceptance empty=False gap=False: 126 retained refs, exit 0
+projection empty=False gap=False: 204409 bytes, exit 0
+acceptance transport empty=True gap=False: 143 bytes, exit 0
+acceptance empty=True gap=False: 0 retained refs, exit 0
+projection empty=True gap=False: 381 bytes, exit 0

@@ -1,0 +1,11 @@
+{
+  "quotesVerified": 25,
+  "errors": [],
+  "counts": {
+    "respondents": 5,
+    "case_decisions": 5,
+    "PASS": 5,
+    "FAIL": 0,
+    "AMBIGUOUS": 0
+  }
+}

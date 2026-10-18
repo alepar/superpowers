@@ -1,0 +1,9 @@
+{
+  "measuredSourceHead": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+  "measuredSourceTree": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2",
+  "outsideRunTreeEntriesSha256": "a2c41ffeb59b693c09c28b9dd11c2c1a072e8d7b974a3a928090e31f023b48bc",
+  "outsideRunPathCount": 1059,
+  "workingTrackedOutsideRunDiff": "",
+  "rule": "Later evidence is RUN-only; carry exact outsideRUN equality, never restamp fulltree results",
+  "checkedUtc": "2026-10-18T00:34:03.442026+00:00"
+}

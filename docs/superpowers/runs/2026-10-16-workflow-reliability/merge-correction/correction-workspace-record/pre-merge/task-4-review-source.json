@@ -1,0 +1,57 @@
+{
+  "base": "583f2486ebe6b00a5c6fe3b87bc3d5b98ed53533",
+  "head": "480f7a23e515bfb8d593d65775f2202086fdc1f6",
+  "diffSha256": "dbe934101cb59cc2fd84ef5ac866390e44fd1bb2002871bb75f3d4e33100a570",
+  "files": [
+    {
+      "path": "skills/super-auto/SKILL.md",
+      "sha256": "c7947601428c4365805b5001562e696ad4dbd28425eedb34c2d140f990417f4b",
+      "bytes": 87107
+    },
+    {
+      "path": "skills/super-auto/resume.md",
+      "sha256": "4dba00643a26fe3cebf90f8b4d5bf79efed916b700b9a3f5fa7ff3919732331e",
+      "bytes": 17294
+    },
+    {
+      "path": "skills/super-auto/run-state.md",
+      "sha256": "48cff44fb61eb3255952677deb3d6f4f05bd5eaaa68308dceab432d39df7f203",
+      "bytes": 60469
+    },
+    {
+      "path": "skills/super-code/assembler-prompt.md",
+      "sha256": "51071e255350347a56cc7124c6ca5fb8050d57705c8865c476c3730858164cef",
+      "bytes": 4716
+    },
+    {
+      "path": "skills/super-code/coordinator-subagents.md",
+      "sha256": "3ce518c8a66ba4e28c512e41cc546264d5b20e909e1bafbccc41a9bbcf848fff",
+      "bytes": 24313
+    },
+    {
+      "path": "skills/super-code/coordinator.js",
+      "sha256": "9d12dd0c8d50f93b51bb486e1af9a7d65c6a642de0e9d4c500775620e18d3fb8",
+      "bytes": 304691
+    },
+    {
+      "path": "skills/super-code/scripts/dispatch-text.mjs",
+      "sha256": "f669b649ed115d8f92fac6cd46c025722c1b206841df084f4a3a633ad4ffe087",
+      "bytes": 39995
+    },
+    {
+      "path": "skills/super-design/SKILL.md",
+      "sha256": "6782644f096547a62917af5020a766eae40e91c2ccafbe3e15bf2db49bc5a502",
+      "bytes": 105173
+    },
+    {
+      "path": "tests/super-auto/selection-recovery-correction.mjs",
+      "sha256": "f9bf48d00df117219e056a76746dd14a63ed082120531aac05d3bed2d9a89a46",
+      "bytes": 12830
+    },
+    {
+      "path": "tests/super-code/replay-harness.mjs",
+      "sha256": "d75451549811e819b3fbb261178171b08441d5dc35c7703760e8142ea5ddf4d9",
+      "bytes": 438312
+    }
+  ]
+}

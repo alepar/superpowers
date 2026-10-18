@@ -1,0 +1,19 @@
+{
+  "recordedUtc": "2026-10-17T22:53:34.176640+00:00",
+  "owner": "main-correction-parent",
+  "ownWorkflowEnginesInFlight": false,
+  "basis": "No coordinator/roast Workflow launched in this correction parent; native API reviewers are read-only. Actual controlled helper fixture phases1/2 ended before this suite. No concurrent correction product writer or local test/fixture run.",
+  "processObservation": {
+    "argv": [
+      "/bin/ps",
+      "-axo",
+      "pid,ppid,comm"
+    ],
+    "exitCode": 0,
+    "stdout": "/private/tmp/ufz-correction-final-suite-ps-c2168120.txt",
+    "sha256": "b67bae24b0ee3ff51e04542254cb77b3db0faf9fd4ea129faaa35a910b5b8d9d",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "externalHostActivity": "Unknown; process comm inventory is not proof of all hosted or other sessions activity.",
+  "limits": "Serial correctness suite; no timing/performance improvement claim or global process-absence claim. Owned source/output roots retained."
+}

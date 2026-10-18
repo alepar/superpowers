@@ -1,0 +1,8 @@
+{
+  "head": "ccf312e408173acd57fe48d9d24d0bfaee88f12d",
+  "tree": "636e4a1220850b829660d7c36e35afd12fd16521",
+  "baselineHead": "a62d639b2b0e0eaa28c2738d191a090181dd8308",
+  "baselineTree": "7bbc73a84e449537a879f97da684a079df85e674",
+  "criterionCommand": "node check.mjs",
+  "configuration": "controlled-fixture"
+}

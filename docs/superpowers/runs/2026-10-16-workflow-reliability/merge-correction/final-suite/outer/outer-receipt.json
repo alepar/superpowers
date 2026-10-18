@@ -1,0 +1,106 @@
+{
+  "status": "passed",
+  "preparedUtc": "2026-10-17T22:54:00Z",
+  "callerArgv": [
+    "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python",
+    "-I",
+    "/private/tmp/ufz-correction-suite-outer-launcher.py",
+    "/private/tmp/ufz-correction-suite-runner-r1/runner.py",
+    "/private/tmp/ufz-correction-final-suite-plan-c2168120.json",
+    "/private/tmp/ufz-correction-final-suite-outer-c2168120",
+    "/private/tmp/ufz-correction-final-suite-quiet-facts-c2168120.json"
+  ],
+  "cwd": "/private/tmp/ufz-correction-final-source-c2168120",
+  "quietHostFactSemantics": "Caller observation only; no global process-absence inference.",
+  "resourceRetention": "All outer/inner/source roots retained for separate scoped inspection.",
+  "environment": {
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "CI": "1",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "__CF_USER_TEXT_ENCODING": "0x1F5:0x0:0x0",
+    "HOME": "/private/tmp/ufz-correction-final-suite-outer-c2168120/home",
+    "TMPDIR": "/private/tmp/ufz-correction-final-suite-outer-c2168120/tmp"
+  },
+  "identities": {
+    "runner.py": {
+      "path": "/private/tmp/ufz-correction-suite-runner-r1/runner.py",
+      "bytes": 20159,
+      "sha256": "7e34ddc54f52dc193ed84d07b44bf4e0fda1fa978fbc6e1c7aad053367e0d41d",
+      "archive": "/private/tmp/ufz-correction-final-suite-outer-c2168120/inputs/runner.py"
+    },
+    "plan.json": {
+      "path": "/private/tmp/ufz-correction-final-suite-plan-c2168120.json",
+      "bytes": 14290,
+      "sha256": "3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76",
+      "archive": "/private/tmp/ufz-correction-final-suite-outer-c2168120/inputs/plan.json"
+    },
+    "launcher.py": {
+      "path": "/private/tmp/ufz-correction-suite-outer-launcher.py",
+      "bytes": 6180,
+      "sha256": "89b2316cdd4773d49fa5db379dabdac55ed7d34c3fbb85d3046ac15faa49c87e",
+      "archive": "/private/tmp/ufz-correction-final-suite-outer-c2168120/inputs/launcher.py"
+    },
+    "quiet-host-facts.json": {
+      "path": "/private/tmp/ufz-correction-final-suite-quiet-facts-c2168120.json",
+      "bytes": 1015,
+      "sha256": "572914aed7bd0957af1f4e93efcdf6899f423dffafc944e05b94ba8b10d0bf00",
+      "archive": "/private/tmp/ufz-correction-final-suite-outer-c2168120/inputs/quiet-host-facts.json"
+    },
+    "python": {
+      "path": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "bytes": 34640,
+      "sha256": "87d4df53fd91304be5bac391fb204643c36b7df2023c04a0953bcbc7d4fdf634",
+      "archive": "/private/tmp/ufz-correction-final-suite-outer-c2168120/inputs/python.executable"
+    },
+    "bash": {
+      "path": "/bin/bash",
+      "bytes": 1290128,
+      "sha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+      "archive": "/private/tmp/ufz-correction-final-suite-outer-c2168120/inputs/bash.executable"
+    },
+    "node": {
+      "path": "/opt/homebrew/Cellar/node/26.9.0/bin/node",
+      "bytes": 132848,
+      "sha256": "28f0fc07e2b86fc0eae5f9751f34ab14d63bd0132882f89cc4a5b4a44965592e",
+      "archive": "/private/tmp/ufz-correction-final-suite-outer-c2168120/inputs/node.executable"
+    },
+    "git": {
+      "path": "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+      "bytes": 3699840,
+      "sha256": "9048038886ac36210fbb616b49b0707465f63683cb04e33a2013baf95f746938",
+      "archive": "/private/tmp/ufz-correction-final-suite-outer-c2168120/inputs/git.executable"
+    }
+  },
+  "pythonVersionProbe": {
+    "argv": [
+      "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "-I",
+      "--version"
+    ],
+    "exitCode": 0,
+    "stdout": "Python 3.14.7\n",
+    "stderr": ""
+  },
+  "actualArgv": [
+    "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+    "-I",
+    "/private/tmp/ufz-correction-suite-runner-r1/runner.py",
+    "/private/tmp/ufz-correction-final-suite-plan-c2168120.json"
+  ],
+  "startedUtc": "2026-10-17T22:54:00Z",
+  "endedUtc": "2026-10-17T23:09:26Z",
+  "exitCode": 0,
+  "changedInputs": [],
+  "stdout": {
+    "path": "/private/tmp/ufz-correction-final-suite-outer-c2168120/stdout.log",
+    "bytes": 3088,
+    "sha256": "d01fbec93f87d620116f9b5ec39f5f49dd83137c5f5e38be62ab09c25369a1d4"
+  },
+  "stderr": {
+    "path": "/private/tmp/ufz-correction-final-suite-outer-c2168120/stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

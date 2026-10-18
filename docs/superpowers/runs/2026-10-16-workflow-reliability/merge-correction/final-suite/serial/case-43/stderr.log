@@ -1,0 +1,13 @@
+test_corrupt_bare_repository_is_unknown (__main__.Inventory.test_corrupt_bare_repository_is_unknown) ... ok
+test_corrupt_git_metadata_is_unknown (__main__.Inventory.test_corrupt_git_metadata_is_unknown) ... ok
+test_denied_repository_inventory (__main__.Inventory.test_denied_repository_inventory) ... ok
+test_git_unavailable_is_unknown (__main__.Inventory.test_git_unavailable_is_unknown) ... ok
+test_nested_worktree_refused (__main__.Inventory.test_nested_worktree_refused) ... ok
+test_nonrepository_at_filesystem_boundary (__main__.Inventory.test_nonrepository_at_filesystem_boundary) ... ok
+test_valid_leaf_repository (__main__.Inventory.test_valid_leaf_repository) ... ok
+test_verified_nonrepository_temp (__main__.Inventory.test_verified_nonrepository_temp) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.945s
+
+OK

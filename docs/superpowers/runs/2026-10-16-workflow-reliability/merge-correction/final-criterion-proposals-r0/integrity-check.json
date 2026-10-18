@@ -1,0 +1,1713 @@
+{
+  "proposalOnly": true,
+  "method": "Read-only data/ref/hash consistency checks; no product suite/test invoked, no fresh broad semantic source reread claimed.",
+  "projectionOriginalRefMembership": [
+    {
+      "id": "new-001",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-002",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-003",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-004",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-005",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-006",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-007",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-008",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-009",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-010",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-011",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-012",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-013",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-014",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-015",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-016",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-017",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-018",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-019",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-020",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-021",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-022",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-023",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-024",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-025",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-026",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-027",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-028",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-029",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-030",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-031",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-032",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-033",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-034",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-035",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-036",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-037",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-038",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-039",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-040",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-041",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-042",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-043",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-044",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-045",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-046",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-047",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-048",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-049",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-050",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-051",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-052",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-053",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-054",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-055",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-056",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-057",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-058",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-059",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-060",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-061",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-062",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-063",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-064",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-065",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-066",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-067",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-068",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-069",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-070",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-071",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-072",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-073",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-074",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-075",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-076",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-077",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-078",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-079",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-080",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-081",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-082",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-083",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-084",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-085",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-086",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-087",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-088",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-089",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-090",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-091",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-092",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-093",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-094",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-095",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-096",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-097",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-098",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-099",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-100",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-101",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-102",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-103",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-104",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-105",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-106",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-107",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-108",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-109",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-110",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-111",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-112",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-113",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-114",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-115",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-116",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-117",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-118",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-119",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-120",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-121",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-122",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-123",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-124",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-125",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-126",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-127",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-128",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-129",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-130",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-131",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-132",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-133",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-134",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-135",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-136",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-137",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-138",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-139",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-140",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-141",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-142",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-143",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-144",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-145",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-146",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-147",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-148",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-149",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-150",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-151",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-152",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-153",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-154",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-155",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-156",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-157",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-158",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-159",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-160",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-161",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-162",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-163",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-164",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-165",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-166",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-167",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-168",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-169",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-170",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-171",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-172",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-173",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-174",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-175",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-176",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-177",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-178",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-179",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-180",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-181",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-182",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-183",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-184",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-185",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-186",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-187",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-188",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-189",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-190",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-191",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-192",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-193",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-194",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-195",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-196",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-197",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-198",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-199",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-200",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-201",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-202",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-203",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-204",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-205",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-206",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-207",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-208",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-209",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-210",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-211",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-212",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "new-213",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-01",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-02",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-03",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-04",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-05",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-06",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-07",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-08",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-09",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-10",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-11",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-12",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-13",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-14",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-15",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-16",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-17",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-18",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-19",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-20",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-21",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-22",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-23",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-24",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-25",
+      "found": true,
+      "outstanding": true
+    },
+    {
+      "id": "old-required-26",
+      "found": true,
+      "outstanding": true
+    }
+  ],
+  "originalRawIntegrity": [
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-1-review.md",
+      "expectedSha256": "c68c0a9bfa651f5d7e55de8766ff753d850ea6044a340f6ae62ba1c96a41175d",
+      "actualSha256": "c68c0a9bfa651f5d7e55de8766ff753d850ea6044a340f6ae62ba1c96a41175d",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-10-report-fix.md",
+      "expectedSha256": "bc70a14beee63fc416649e137b725afe0775f0f4e460a1da073074bee62b99b2",
+      "actualSha256": "bc70a14beee63fc416649e137b725afe0775f0f4e460a1da073074bee62b99b2",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-10-report.md",
+      "expectedSha256": "3bf63e2c2512b94815d16983c3951aaa2ed915be8114b8e06137ef06ad429bdc",
+      "actualSha256": "3bf63e2c2512b94815d16983c3951aaa2ed915be8114b8e06137ef06ad429bdc",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-10-review.md",
+      "expectedSha256": "85ad074f9dcf13adc467a16b7aaefe5c2b05a8df17c7be8a9a620fccb3179eff",
+      "actualSha256": "85ad074f9dcf13adc467a16b7aaefe5c2b05a8df17c7be8a9a620fccb3179eff",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-11-report-fix.md",
+      "expectedSha256": "8603a79f34ede43e37b9b79f99df8cf2c908763ba2be4cba95e1b60b44612bf7",
+      "actualSha256": "8603a79f34ede43e37b9b79f99df8cf2c908763ba2be4cba95e1b60b44612bf7",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-11-report.md",
+      "expectedSha256": "d9098cce626e9d346c74f53ae128c2639589e3c513525679e5126c65d7822a65",
+      "actualSha256": "d9098cce626e9d346c74f53ae128c2639589e3c513525679e5126c65d7822a65",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-11-review-seam-round-1.md",
+      "expectedSha256": "d1e376d98066ad62c0d8ba4ae177042aa4646e32efb4f6b569d4f16c08349f4c",
+      "actualSha256": "d1e376d98066ad62c0d8ba4ae177042aa4646e32efb4f6b569d4f16c08349f4c",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-11-review.md",
+      "expectedSha256": "7a89c03af06a3300b1575a6c86db3ac27aec090471f7911c22c9e25e2666c240",
+      "actualSha256": "7a89c03af06a3300b1575a6c86db3ac27aec090471f7911c22c9e25e2666c240",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-12-report.md",
+      "expectedSha256": "92a854850f1c331741b6460a534eaf5fc52cd45eeb1c9de358a732cad4be9c05",
+      "actualSha256": "92a854850f1c331741b6460a534eaf5fc52cd45eeb1c9de358a732cad4be9c05",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-12-review.md",
+      "expectedSha256": "bd73b81f2a7538ddde230e566c5ce4b15e34e9db01d7ed8e87efa908939b19d5",
+      "actualSha256": "bd73b81f2a7538ddde230e566c5ce4b15e34e9db01d7ed8e87efa908939b19d5",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-12-seam-findings.md",
+      "expectedSha256": "d63d25b32fe1deb6ee8a2725884152a74e58ab2d6838f37ece45e3db03e4f520",
+      "actualSha256": "d63d25b32fe1deb6ee8a2725884152a74e58ab2d6838f37ece45e3db03e4f520",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-13-report.md",
+      "expectedSha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+      "actualSha256": "b8965aa02651ff83ed77db6d482562a79d9a9e67ce3ce03705d2f345f5b67382",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-13-review.md",
+      "expectedSha256": "04648fa95281c762c17013a60089d095821b40dbaf125a8cc96ba96206efd293",
+      "actualSha256": "04648fa95281c762c17013a60089d095821b40dbaf125a8cc96ba96206efd293",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-14-report-fix.md",
+      "expectedSha256": "475573dd491b797cd33c17e5c5e462ee02b49d777c4b16f30cacc1e5fba72e37",
+      "actualSha256": "475573dd491b797cd33c17e5c5e462ee02b49d777c4b16f30cacc1e5fba72e37",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-14-report.md",
+      "expectedSha256": "357bc2dd23756a3b1614d94315aa131290048ee23800dd2b920d521c4ef64528",
+      "actualSha256": "357bc2dd23756a3b1614d94315aa131290048ee23800dd2b920d521c4ef64528",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-14-review.md",
+      "expectedSha256": "72c30a7fabb893e3759d1daa4ada0c92ba0b3546caa223d314bf46c6303807aa",
+      "actualSha256": "72c30a7fabb893e3759d1daa4ada0c92ba0b3546caa223d314bf46c6303807aa",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-15-report-fix.md",
+      "expectedSha256": "6a4d3fcd4f1736b97c0ec4e71375af6ad3caf5bd13387652043a0cd874ff269e",
+      "actualSha256": "6a4d3fcd4f1736b97c0ec4e71375af6ad3caf5bd13387652043a0cd874ff269e",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-15-report.md",
+      "expectedSha256": "c2b9f1b0e58195372f325af12fd4ab725c8062bb3c76cceac5ef53043d66d205",
+      "actualSha256": "c2b9f1b0e58195372f325af12fd4ab725c8062bb3c76cceac5ef53043d66d205",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-15-review.md",
+      "expectedSha256": "25be8fc4371e665456fda4f476f8cc55af8719fc263a651ff78db2840f606871",
+      "actualSha256": "25be8fc4371e665456fda4f476f8cc55af8719fc263a651ff78db2840f606871",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-15-seam-findings.md",
+      "expectedSha256": "27a00268406c455df66d5e086295003d28e21bebeb7c8f64f197543737048f32",
+      "actualSha256": "27a00268406c455df66d5e086295003d28e21bebeb7c8f64f197543737048f32",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-16-report.md",
+      "expectedSha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+      "actualSha256": "0520dc3c6fce27444ce88da9a03419da67f699c5e7f10ef9f96cdfe31fe9bad8",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-16-review.md",
+      "expectedSha256": "6c5ded48dfc13d85feffcc7a8274d9403ebd813af4ebf0fa8d88a71e3b658685",
+      "actualSha256": "6c5ded48dfc13d85feffcc7a8274d9403ebd813af4ebf0fa8d88a71e3b658685",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-16-seam-findings.md",
+      "expectedSha256": "cb4c7bb62ed4e37059a20834a847393bb232993914aab25ef2ac74292d856e1c",
+      "actualSha256": "cb4c7bb62ed4e37059a20834a847393bb232993914aab25ef2ac74292d856e1c",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-17-review.md",
+      "expectedSha256": "2bea2a976a645314d676f3a3a8161de3f3c28c85c6b8cc75185a51bdde1fbd4f",
+      "actualSha256": "2bea2a976a645314d676f3a3a8161de3f3c28c85c6b8cc75185a51bdde1fbd4f",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-18-report.md",
+      "expectedSha256": "16d6edada2fd3c4cd1cd8052f8ef3d789a1969517b0a932ae61f1e1c087f147f",
+      "actualSha256": "16d6edada2fd3c4cd1cd8052f8ef3d789a1969517b0a932ae61f1e1c087f147f",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-19-review.md",
+      "expectedSha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+      "actualSha256": "caa0325029349cd0cf07f973ad92b84ffee8025964dc55d73ab02f40e3e4eb43",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-2-report.md",
+      "expectedSha256": "56998c1fbf2c69adc8b7ce2f5e5a8484e72a0677d6225ba6b594829865bcfacb",
+      "actualSha256": "56998c1fbf2c69adc8b7ce2f5e5a8484e72a0677d6225ba6b594829865bcfacb",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-2-review.md",
+      "expectedSha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+      "actualSha256": "da0bd4053cf377ef81868934f50a73fc5c3929a18ae00282660793637c93233f",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-20-report.md",
+      "expectedSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "actualSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-20-review.md",
+      "expectedSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+      "actualSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-21-report.md",
+      "expectedSha256": "ded9e2487facfbe03bdb65942d71fd13fbc5033eea469616fef8f658d1100fb1",
+      "actualSha256": "ded9e2487facfbe03bdb65942d71fd13fbc5033eea469616fef8f658d1100fb1",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-21-review.md",
+      "expectedSha256": "5969df81ffe155ad754fcbf2e90affb892e4309d64bdef692ef83a8e638f30a8",
+      "actualSha256": "5969df81ffe155ad754fcbf2e90affb892e4309d64bdef692ef83a8e638f30a8",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-22-report.md",
+      "expectedSha256": "60e27d7e3fbdb5361276e39bacefb6ac327e2313226355eec4b6d171a1c074b0",
+      "actualSha256": "60e27d7e3fbdb5361276e39bacefb6ac327e2313226355eec4b6d171a1c074b0",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-22-review.md",
+      "expectedSha256": "0e3259a5b4ccf991a34a064a49b911d6d53f8fe74de58c16f0552a92cf69a7b7",
+      "actualSha256": "0e3259a5b4ccf991a34a064a49b911d6d53f8fe74de58c16f0552a92cf69a7b7",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-23-review.md",
+      "expectedSha256": "977d843fe6240dd89d2f76a48c9ddc8c6ec2400c417734fbf5afcdfc8f3cc75c",
+      "actualSha256": "977d843fe6240dd89d2f76a48c9ddc8c6ec2400c417734fbf5afcdfc8f3cc75c",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-24-report.md",
+      "expectedSha256": "66df77aba22e32de46dbca851bc88fc35133ab3ca13cd66fb6f8668f58ec7edd",
+      "actualSha256": "66df77aba22e32de46dbca851bc88fc35133ab3ca13cd66fb6f8668f58ec7edd",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-24-review.md",
+      "expectedSha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+      "actualSha256": "75b13662a538e5b8bdb65f3c6195ad8114d2f8124356abe6eebb0638c8f00114",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-25-report.md",
+      "expectedSha256": "2f7e7c08ee35d88fe1e95a5572bd25ef0de29c53fc06ffc41c4ef331e462cd2a",
+      "actualSha256": "2f7e7c08ee35d88fe1e95a5572bd25ef0de29c53fc06ffc41c4ef331e462cd2a",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-25-review.md",
+      "expectedSha256": "d6804d4165c6ee1f7033233f392f7b1ab1e081c2b6186e430d8892f573609ed2",
+      "actualSha256": "d6804d4165c6ee1f7033233f392f7b1ab1e081c2b6186e430d8892f573609ed2",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-26-report.md",
+      "expectedSha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+      "actualSha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-26-review.md",
+      "expectedSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+      "actualSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-27-report.md",
+      "expectedSha256": "1dc0f2669b3d7020016170e55e2c8802e43c447aea62f86c8e34c043ff1919a0",
+      "actualSha256": "1dc0f2669b3d7020016170e55e2c8802e43c447aea62f86c8e34c043ff1919a0",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-27-review.md",
+      "expectedSha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+      "actualSha256": "3d0912096a03b83ad7df643c1c3b3dbff19da341a4c402cc2ea4c52ee65de230",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-28-report.md",
+      "expectedSha256": "d9fc784e5530e5a444be5dffcda46b3985bddc077da25f6ad82154e6843f99ec",
+      "actualSha256": "d9fc784e5530e5a444be5dffcda46b3985bddc077da25f6ad82154e6843f99ec",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-28-review.md",
+      "expectedSha256": "e0c26193fdd7e10a6007af2712638d7bed29472ebd30ec71079524cf673ff834",
+      "actualSha256": "e0c26193fdd7e10a6007af2712638d7bed29472ebd30ec71079524cf673ff834",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-29-report.md",
+      "expectedSha256": "7329c80ed780c89856c1eae2fb14e98b5147a796574ed054e1a2c44aa3fdc25b",
+      "actualSha256": "7329c80ed780c89856c1eae2fb14e98b5147a796574ed054e1a2c44aa3fdc25b",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-29-review.md",
+      "expectedSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+      "actualSha256": "e7ea4e05f6d5f6d38577a424150bd3831b6b89a52143817e34da16195f37e479",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-3-report.md",
+      "expectedSha256": "75d2c6c69d778a928086772227f499db3da273e38af38795077304cbfd83815f",
+      "actualSha256": "75d2c6c69d778a928086772227f499db3da273e38af38795077304cbfd83815f",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-3-review-seam.md",
+      "expectedSha256": "be6380ef90d188ebf583d42ec1d648caf8bc930f02555340445c10cb1fce29b3",
+      "actualSha256": "be6380ef90d188ebf583d42ec1d648caf8bc930f02555340445c10cb1fce29b3",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-3-review.md",
+      "expectedSha256": "e2c40372e4ff960ee7a208b5c0299a709b906dcf8dfa02380f9a936101a01473",
+      "actualSha256": "e2c40372e4ff960ee7a208b5c0299a709b906dcf8dfa02380f9a936101a01473",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-4-report.md",
+      "expectedSha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+      "actualSha256": "9377bf1144195183416a18ffc080336065c1bd6ca8556b0d55886e311f98d7bb",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-4-review-seam.md",
+      "expectedSha256": "7f3a31ab07ac8583bae3a7d8fed6bb8ce55eea0ef5bcaa4c9ae1714cb63b3a1d",
+      "actualSha256": "7f3a31ab07ac8583bae3a7d8fed6bb8ce55eea0ef5bcaa4c9ae1714cb63b3a1d",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-4-review.md",
+      "expectedSha256": "103391048733112edfa4fe9e424876fc2e8b04abab032b96f73df00db70721d8",
+      "actualSha256": "103391048733112edfa4fe9e424876fc2e8b04abab032b96f73df00db70721d8",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-4-seam-findings.md",
+      "expectedSha256": "31884f5cbc94461343cbb07ad2525e89daa26848e34678ccf9c3a746f1cd301a",
+      "actualSha256": "31884f5cbc94461343cbb07ad2525e89daa26848e34678ccf9c3a746f1cd301a",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-5-report.md",
+      "expectedSha256": "7c36f76db74492fc878050e4b33e297a26f80d5e1f9c5e8b56113884c133950c",
+      "actualSha256": "7c36f76db74492fc878050e4b33e297a26f80d5e1f9c5e8b56113884c133950c",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-5-review-seam.md",
+      "expectedSha256": "8ffa12bc3bee14e0296f6709860df3dfcf8aac93f359e528c5d7843191a67e3b",
+      "actualSha256": "8ffa12bc3bee14e0296f6709860df3dfcf8aac93f359e528c5d7843191a67e3b",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-5-review.md",
+      "expectedSha256": "4556b5c1f1ac2597f15f6077d2c037b9ba0fe5a599cbc79124754b70f248aa8b",
+      "actualSha256": "4556b5c1f1ac2597f15f6077d2c037b9ba0fe5a599cbc79124754b70f248aa8b",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-6-report.md",
+      "expectedSha256": "6f5b3143993ae976b66f5e4dc2f4cba94acb305b1fd4110aee968382002738a5",
+      "actualSha256": "6f5b3143993ae976b66f5e4dc2f4cba94acb305b1fd4110aee968382002738a5",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-6-review.md",
+      "expectedSha256": "4f314e502afb443f9fc68aa2c62e947b893dd530d4c655ce634336bc0a8656b1",
+      "actualSha256": "4f314e502afb443f9fc68aa2c62e947b893dd530d4c655ce634336bc0a8656b1",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-7-report.md",
+      "expectedSha256": "89aedc908d19c725e168fe286c8fc4650274151619a7f29ea767e23ea546048d",
+      "actualSha256": "89aedc908d19c725e168fe286c8fc4650274151619a7f29ea767e23ea546048d",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-7-review-seam.md",
+      "expectedSha256": "cd4ebee9e4c7461a4b85a77fce14524c3a918217584a8b0d939f244a6d6b0052",
+      "actualSha256": "cd4ebee9e4c7461a4b85a77fce14524c3a918217584a8b0d939f244a6d6b0052",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-7-review.md",
+      "expectedSha256": "c82f8c645046094774f87a9423a40d9f8ff0014f0c8bf453dae174b7b3575fc3",
+      "actualSha256": "c82f8c645046094774f87a9423a40d9f8ff0014f0c8bf453dae174b7b3575fc3",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-8-report.md",
+      "expectedSha256": "78ca5a5693b8c16f14dc6611018df236391e942d956829113fc5fe63019ba07e",
+      "actualSha256": "78ca5a5693b8c16f14dc6611018df236391e942d956829113fc5fe63019ba07e",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-8-review.md",
+      "expectedSha256": "d0f5b4ac24d05149f4be22aa734826fc3f34bbf89e75d22cf8eb800c16fa66e6",
+      "actualSha256": "d0f5b4ac24d05149f4be22aa734826fc3f34bbf89e75d22cf8eb800c16fa66e6",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-9-report.md",
+      "expectedSha256": "e1d2b5661bede95dc83cb3a05bd19f066cdae9c6b656a862ce28c5b7de4542d6",
+      "actualSha256": "e1d2b5661bede95dc83cb3a05bd19f066cdae9c6b656a862ce28c5b7de4542d6",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-9-review.md",
+      "expectedSha256": "14205f970fe477bf49a30a4f562b6c3b98b5315d28b398155769136f161a93d5",
+      "actualSha256": "14205f970fe477bf49a30a4f562b6c3b98b5315d28b398155769136f161a93d5",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/2026-10-16-workflow-reliability-roast-pr-1.md",
+      "expectedSha256": "72af921126010e80f3cf8342ae8fbaf774e17e8403f6dd9b1b4419ec0af4b7da",
+      "actualSha256": "72af921126010e80f3cf8342ae8fbaf774e17e8403f6dd9b1b4419ec0af4b7da",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-1-report.md",
+      "expectedSha256": "32c571bcb048bf53f884416323c1f5827203ffd5aebf1d3b8eb06b83f2b83cdd",
+      "actualSha256": "32c571bcb048bf53f884416323c1f5827203ffd5aebf1d3b8eb06b83f2b83cdd",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-17-report.md",
+      "expectedSha256": "6afdbddc09ff4e2233b27cfd2329da95fe54390237cc14613f2e5b801db2f684",
+      "actualSha256": "6afdbddc09ff4e2233b27cfd2329da95fe54390237cc14613f2e5b801db2f684",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-19-report.md",
+      "expectedSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+      "actualSha256": "f87cb8fbc6ae1145de527bfe6214f2c55e8430d0d7a1f4d51463a3d00cbcc44e",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/task-report-history-r1/raw/task-23-report.md",
+      "expectedSha256": "e62195290fcb51fe564be4c7104f3255fcbcb2e97c386d514b6231e537085607",
+      "actualSha256": "e62195290fcb51fe564be4c7104f3255fcbcb2e97c386d514b6231e537085607",
+      "matches": true
+    },
+    {
+      "path": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/legacy-adapter-revision2/raw/2026-10-16-workflow-reliability-roast-design-1.md",
+      "expectedSha256": "1b482a781b24fc213e1fac0316a5286ea87ffd2e3ebf5391d481dcf050757ed2",
+      "actualSha256": "1b482a781b24fc213e1fac0316a5286ea87ffd2e3ebf5391d481dcf050757ed2",
+      "matches": true
+    }
+  ],
+  "priorInputsUnchanged": [
+    {
+      "path": "/private/tmp/ufz-correction-final-relevance-proposals/REPORT.md",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-final-relevance-proposals/new213-exact-ref-relevance.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-final-relevance-proposals/old26-required-group-mappings.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-final-relevance-proposals/candidate-findingAcceptance-updates.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-final-relevance-proposals/historical-qualification-map.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-final-relevance-proposals/source-and-schema-evidence.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-final-relevance-proposals/remaining-dependencies.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-final-relevance-proposals/adoption-audit.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-legacy-relevance/REPORT.md",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-legacy-relevance/exact-ref-proposals.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-legacy-relevance/historical-evidence-rebinding.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-legacy-relevance/prior-history-judgments.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-legacy-relevance/additional-evidence.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-legacy-relevance/supplemental-proposals.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-legacy-relevance/source-gap-proposals.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-legacy-relevance/unresolved-evidence-requirements.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-legacy-relevance/revision2-delta/exact-ref-delta-proposals.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-legacy-relevance/revision2-delta/source-bound-evidence.json",
+      "matches": true
+    },
+    {
+      "path": "/private/tmp/ufz-correction-legacy-relevance/revision2-delta/pending-evidence-requirements.json",
+      "matches": true
+    }
+  ]
+}

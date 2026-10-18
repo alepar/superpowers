@@ -1,0 +1,8 @@
+status: clean [degraded: escalated bucket: none recorded, pendingRetry bucket: none recorded, parked bucket: none recorded, stalled bucket: none recorded, sweep: none recorded, outstanding findings: 3, root acceptance pending: independent-final-review: review pending; owner: independent-reviewer; reserved-fixture-human-choice: human decision pending; owner: fixture-human; finding acceptance relevance unproven: [{"source":"continuity-i1/final","section":"Deferred OK","position":1}]; finding acceptance relevance unproven: [{"source":"continuity-i1/final","section":"Untested scope","position":1}]; finding acceptance relevance unproven: [{"source":"continuity-i2/final","section":"Untested scope","position":1}]]
+qualifier: escalated bucket: none recorded
+qualifier: pendingRetry bucket: none recorded
+qualifier: parked bucket: none recorded
+qualifier: stalled bucket: none recorded
+qualifier: sweep: none recorded
+qualifier: outstanding findings: 3
+qualifier: root acceptance pending: independent-final-review: review pending; owner: independent-reviewer; reserved-fixture-human-choice: human decision pending; owner: fixture-human; finding acceptance relevance unproven: [{"source":"continuity-i1/final","section":"Deferred OK","position":1}]; finding acceptance relevance unproven: [{"source":"continuity-i1/final","section":"Untested scope","position":1}]; finding acceptance relevance unproven: [{"source":"continuity-i2/final","section":"Untested scope","position":1}]

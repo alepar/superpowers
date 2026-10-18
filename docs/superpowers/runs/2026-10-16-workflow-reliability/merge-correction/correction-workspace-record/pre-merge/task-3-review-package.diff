@@ -1,0 +1,507 @@
+87166167 fix(super-auto): reconcile retained source population at acceptance
+
+
+ skills/super-auto/scripts/report-status            | 149 ++++++++++++++-
+ .../acceptance-population-correction.mjs           | 212 +++++++++++++++++++++
+ 2 files changed, 359 insertions(+), 2 deletions(-)
+
+
+diff --git a/skills/super-auto/scripts/report-status b/skills/super-auto/scripts/report-status
+index 20f4182c..2ca51b5d 100755
+--- a/skills/super-auto/scripts/report-status
++++ b/skills/super-auto/scripts/report-status
+@@ -50,129 +50,274 @@
+ # `code findings parked` (parked non-empty), `tasks pending retry` (pendingRetry non-empty),
+ # `final review: <review>` (review not `CLEAN` or `ready`, so the `<verdict> (<N> confirmed)` and
+ # `not ready (<summary>)` forms; `none recorded` when empty), then the sweep:
+ #   `sweep: <sweep>`              it is not a pass: it carries a failing signal (a non-zero failed
+ #                                 or errors count, FAIL, DEFERRED, INVALID, UNAVAILABLE) or lacks
+ #                                 the pass form `<P> passed, 0 failed, 0 errors`;
+ #   `sweep: unstamped — <sweep>`  a pass with no ` @ <sha>` stamp;
+ #   `sweep: not at tip — <sweep>` a pass whose stamp is not --tip and differs from it outside the
+ #                                 run directory.
+ #
+ # Prints the status line, then one `qualifier: <text>` line per qualifier, in the order above.
+ # Bash and awk, plus git only to compare a sweep stamp with --tip: needs no jq, so it never prints
+ # JQ_UNAVAILABLE.
+ # Ordinary status: exit 0 ok, 2 bad input; legacy records require only Bash/awk.
+ # Additive finding/collection records use Node for the shared projection; unavailability
+ # is an explicit qualifier. --collect is the settled-bundle write mode (usage below):
+ # exit 0 preserved, 3 evidence gaps, 2 bad input, 4 Node unavailable.
+ set -euo pipefail
+ 
+ # This is a read-only root-close gate. Requirements and producer facts live in the
+ # existing approvals block; neither completed leaves nor the latest verdict supplies them.
+ if [ "${1:-}" = --acceptance ]; then
+   command -v node >/dev/null 2>&1 || { echo 'NODE_UNAVAILABLE: caller root acceptance unverified' >&2; exit 4; }
+   script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+   node - "$script_dir" "$@" <<'ACCEPTANCE'
+-const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
++const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
+ const [scripts,,run,...args]=process.argv.slice(2);
+ if(!run || (args.length && (args.length!==2 || args[0]!=='--tree'))){console.error('usage: report-status --acceptance RUN_MD [--tree FULL_GIT_TREE]');process.exit(2)}
+ const tree=args[1],pending=[],gaps=[],requirements=new Map(),snapshots=[],nonblockingFindings=[];
+ const text=v=>typeof v==='string'&&v.trim()!=='',hash=v=>typeof v==='string'&&/^(?:[0-9a-f]{40}|[0-9a-f]{64})$/.test(v);
+ const object=v=>v&&typeof v==='object'&&!Array.isArray(v);
+ const gap=s=>gaps.push(s),wait=s=>pending.push(s);
+ let input;try{input=fs.readFileSync(run,'utf8')}catch(e){console.error(e.message);process.exit(2)}
+ let approvals=false;
+ for(const line of input.split(/\r?\n/)){
+  if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';
+  if(!line.startsWith('- root-acceptance'))continue;
+  try{
+   if(!approvals||!line.startsWith('- root-acceptance · '))throw Error('outside approvals or malformed record');
+   const r=JSON.parse(line.slice('- root-acceptance · '.length));
+   if(!object(r)||r.version!==1||r.owner!=='super-auto'||!hash(r.sourceTree))throw Error('invalid source/owner/version');
+   if(!Array.isArray(r.requirements)||!r.requirements.length)throw Error('missing acceptance requirements');
+   for(const q of r.requirements){
+    if(!object(q)||!text(q.id)||!text(q.owner)||!['review','measurement','human'].includes(q.kind))throw Error('invalid acceptance requirements');
+    if(q.kind==='measurement'&&(!text(q.command)||!text(q.configuration)||typeof q.requiredLive!=='boolean'))throw Error('invalid measurement requirements');
+    requirements.set(q.id,q);
+   }
+   for(const k of ['evidence','reviews','decisions','runFailures'])if(!Array.isArray(r[k]))throw Error('missing '+k);
+   if(r.findingAcceptance!==undefined&&!Array.isArray(r.findingAcceptance))throw Error('invalid finding acceptance judgments');
+   if(!object(r.recovery)||!Array.isArray(r.recovery.obligations)||!Array.isArray(r.recovery.gaps)||!object(r.checkEvidence)||!['records','gaps','requiredLiveChecks'].every(k=>Array.isArray(r.checkEvidence[k])))throw Error('missing producer obligations/check evidence');
+   snapshots.push(r);
+  }catch(e){gap('root acceptance record: '+e.message)}
+ }
+ const current=snapshots.at(-1);
++// Review source is immutable provenance carried by Recovery's deferred transport,
++// not a deferred measurement. Validate history as well as the current snapshot.
++const reviewSources=new Map();
++const isReviewSource=r=>object(r)&&(typeof r.id==='string'&&r.id.startsWith('review-source:')||object(r.data)&&Object.hasOwn(r.data,'reviewSource'));
++for(const snapshot of snapshots)for(const r of snapshot.recovery.obligations.filter(isReviewSource)){
++ const source=r.data?.reviewSource;
++ if(r.version!==1||r.kind!=='deferred'||r.operation!=='record'||!text(r.reason)||!Array.isArray(r.evidence)||!r.evidence.length||!r.evidence.every(text)||
++    !object(r.data)||Object.keys(r.data).length!==1||!object(source)||!text(source.invocationId)||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(source.invocationId)||
++    r.id!=='review-source:'+source.invocationId||!hash(source.base)||!hash(source.head)){
++  gap('invalid review-source provenance: '+(r.id||'unknown'));continue;
++ }
++ const old=reviewSources.get(source.invocationId);
++ if(old&&(old.base!==source.base||old.head!==source.head))gap('conflicting review-source provenance: '+source.invocationId);
++ else reviewSources.set(source.invocationId,source);
++}
+ if(!current)gap('caller acceptance requirements unavailable');
+ else{
+  if(tree!==undefined&&!hash(tree)){console.error('not a full Git tree identity');process.exit(2)}
+  if(tree!==undefined&&tree!==current.sourceTree)gap('acceptance source differs from requested source tree');
+  const records=snapshots.flatMap(r=>[...r.evidence,...r.checkEvidence.records]);
+  const identity=r=>object(r)&&hash(r.sourceTree)&&text(r.command)&&text(r.configuration);
+  const valid=r=>identity(r)&&text(r.location)&&['live','simulated','fallback'].includes(r.kind)&&['pass','fail','unavailable'].includes(r.outcome);
+  for(const r of records)if(!valid(r))gap('invalid source-bound measurement evidence');
+  function measure(q,label){
+   if(!identity(q)){gap(label+': measurement identity unavailable');return false}
+   const matches=records.filter(r=>valid(r)&&r.sourceTree===q.sourceTree&&r.command===q.command&&r.configuration===q.configuration&&(!q.id||!q.taskCheck||r.id===q.id)&&(!q.requiredLive||r.kind==='live'));
+   // Contradictory outcomes at an immutable source do not silently turn into a pass.
+   if(matches.some(r=>r.outcome==='pass')&&!matches.some(r=>r.outcome==='fail'))return true;
+   const result=matches.some(r=>r.outcome==='fail')?'fail':matches.some(r=>r.outcome==='unavailable')?'unavailable':'unavailable'+(q.requiredLive?' (live required)':'');
+   wait(label+': '+result+'; owner: '+(q.owner||'caller'));return false;
+  }
+  for(const kind of ['review','measurement','human'])if(![...requirements.values()].some(q=>q.kind===kind))gap('missing '+kind+' acceptance requirements');
+  for(const q of requirements.values()){
+   if(q.kind==='measurement')measure({...q,sourceTree:q.sourceTree||current.sourceTree},q.id);
+   else if(q.kind==='review'){
+    const review=current.reviews.filter(r=>r&&r.id===q.id).at(-1);
+    if(!review||review.sourceTree!==current.sourceTree||review.outcome!=='pass'||!text(review.location))wait(q.id+': review pending; owner: '+q.owner);
+   }else{
+    const decision=current.decisions.filter(r=>r&&r.id===q.id).at(-1);
+    if(!decision||decision.authority!=='human'||decision.decision!=='accept'||!Array.isArray(decision.evidence)||!decision.evidence.length||!decision.evidence.every(text))wait(q.id+': human decision pending; owner: '+q.owner);
+   }
+  }
+  for(const r of snapshots)for(const q of r.checkEvidence.requiredLiveChecks)measure({...q,requiredLive:true,taskCheck:true},'required live check '+(q?.command||'unknown'));
+  for(const g of [...current.recovery.gaps,...current.checkEvidence.gaps])gap(typeof g==='string'?g:JSON.stringify(g));
+  const failures=new Map();
+  for(const f of current.runFailures){
+   if(!object(f)||!text(f.id)||!['run-introduced','pre-run','gap'].includes(f.classification)||!['open','verified'].includes(f.state)){gap('invalid run failure classification');continue}
+   failures.set(f.id,f);
+-  if(f.classification==='pre-run')continue; // diagnostic unless acceptance separately requires repair
+   for(const g of f.gaps||[])gap(f.id+': '+(typeof g==='string'?g:JSON.stringify(g)));
++  if(f.classification==='pre-run')continue; // diagnostic repair status cannot erase attribution gaps
+   if(f.classification==='gap'||f.state!=='verified')wait(f.id+': '+f.classification+' '+f.state+'; owner: '+(f.owner||'caller'));
+  }
+  for(const r of current.recovery.obligations){
+   if(!object(r)||r.version!==1||!text(r.id)||!['hold','pending-closure','deferred'].includes(r.kind)||r.operation!=='record'||!text(r.reason)||!Array.isArray(r.evidence)||!r.evidence.length||!r.evidence.every(text)||!object(r.data)){gap('invalid recovery obligation');continue}
++  if(isReviewSource(r))continue; // validated above, never invent command/configuration work
+   if(r.data.runFailure){if(!failures.has(r.id))gap(r.id+': run failure classification unavailable');continue}
+   if(r.kind==='deferred'){
+    const binding=[...requirements.values()].find(q=>q.kind==='measurement'&&Array.isArray(q.obligations)&&q.obligations.includes(r.id));
+    // Deferred final-suite records predate any tested tree. The caller explicitly binds
+    // their exact IDs to the final measurement; a pass cannot clear another obligation.
+    if(binding && (!r.data.command||r.data.command===binding.command) && (!r.data.configuration||r.data.configuration===binding.configuration) && (!r.data.sourceTree||r.data.sourceTree===(binding.sourceTree||current.sourceTree)))measure({...binding,sourceTree:binding.sourceTree||current.sourceTree,requiredLive:true},r.id);
+    else measure({...r.data,requiredLive:true},r.id);
+   }
+   else wait(r.id+': '+r.kind+' '+r.reason+'; owner: '+(r.data.owner||'caller'));
+  }
+ }
++// The outer caller collects settled reports. The read-only gate reconciles known
++// producer pointers with complete retained extraction, never ledger display keys.
++const runDir=path.dirname(path.resolve(run)),sources=[],declared=new Map(),ledgers=[],correspondences=[];
++const artifactPath=value=>{const resolved=path.resolve(runDir,value);try{return fs.realpathSync(resolved)}catch{return resolved}};
++let inApprovals=false,fenced=false;
++for(const line of input.split(/\r?\n/)){
++ if(/^\s*(```|~~~)/.test(line)){fenced=!fenced;continue}if(fenced)continue;
++ if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))inApprovals=line==='approvals:';
++ if(inApprovals&&line.startsWith('- finding-source · ')){
++  try{const s=JSON.parse(line.slice('- finding-source · '.length));if(object(s)&&text(s.source)&&text(s.artifact))sources.push(s)}catch{}
++ }
++ if(line.startsWith('- source-correspondence')){
++  try{
++   if(!inApprovals||!line.startsWith('- source-correspondence · '))throw Error();
++   correspondences.push(JSON.parse(line.slice('- source-correspondence · '.length)));
++  }catch{gap('source coverage: malformed source-correspondence record')}
++ }
++ const report=line.match(/^(roast-design|roast-code):\s*(.*)$/);
++ if(report)for(const artifact of report[2].split(',').map(s=>s.trim())){
++  if(!artifact)gap('source coverage: empty '+report[1]+' report pointer');
++  else declared.set(artifactPath(artifact),'roast');
++ }
++ const ledger=line.match(/^(findingsLedgerDesign|findingsLedger):\s*(.*)$/);
++ if(ledger)ledgers.push({artifact:ledger[2].trim(),loop:ledger[1]==='findingsLedgerDesign'?'design':'code'});
++}
++const repo=cp.spawnSync('git',['-C',runDir,'rev-parse','--show-toplevel'],{encoding:'utf8'});
++const repoDir=repo.status===0?repo.stdout.trim():null;
++const ledgerKeys=new Map();
++for(const {artifact,loop} of ledgers){
++ try{
++  if(!artifact)throw Error('empty ledger pointer');
++  const lines=fs.readFileSync(path.resolve(runDir,artifact),'utf8').trimEnd().split(/\r?\n/);
++  if(!new RegExp('^# findings ledger — '+loop+' — through r[0-9]+$').test(lines[0])||!/^triggers: .+/.test(lines[1]||'')||
++     !/^blocking: .+/.test(lines[2]||'')||!/^ignored-overrides: [0-9]+$/.test(lines[3]||''))throw Error('malformed ledger header');
++  for(const [index,line] of lines.slice(4).entries()){
++   if(!line.trim())continue;
++   const row=line.match(/^- (\[[^\]]+\] .+) · raised r[0-9]+@(?:[a-f0-9]+|-) · .+ · source (roast|final-review) · text (.+)$/);
++   if(!row){gap('source coverage: malformed ledger row '+artifact+':'+(index+5));continue}
++   // The producer preserves its input path. Accept a run-relative or repo-relative
++   // path only when it selects one unambiguous original file, never by basename/key.
++   const candidates=[...new Set([artifactPath(row[3]),...(repoDir?[artifactPath(path.resolve(repoDir,row[3]))]:[])])].filter(p=>fs.existsSync(p));
++   if(candidates.length!==1){gap('source coverage: unavailable or ambiguous ledger report '+artifact+':'+(index+5)+' '+row[3]);continue}
++   const kind=row[2]==='final-review'?'keys':'roast';
++   const cacheKey=JSON.stringify([candidates[0],kind]);
++   if(!ledgerKeys.has(cacheKey)){
++    if(kind==='keys')ledgerKeys.set(cacheKey,fs.readFileSync(candidates[0],'utf8').split(/\r?\n/).map(k=>k.trim().replace(/^r[0-9]+\s+/,'')));
++    else{
++     const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',candidates[0]],{encoding:'utf8'});
++     ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\r?\n/):[]);
++    }
++   }
++   // Key membership checks the ledger producer's pointer transport only. It never
++   // identifies, links or resolves occurrences; complete source/ref checks follow.
++   if(!ledgerKeys.get(cacheKey).includes(row[1]))gap('source coverage: inconsistent ledger key/report pointer '+artifact+':'+(index+5));
++   if(declared.has(candidates[0])&&declared.get(candidates[0])!==kind)gap('source coverage: conflicting report kind '+candidates[0]);
++   else declared.set(candidates[0],kind);
++  }
++ }catch(e){gap('source coverage: declared ledger '+artifact+': '+e.message)}
++}
++const extractor=path.resolve(scripts,'../../super-code/scripts/report-verdict');
++const content=r=>JSON.stringify([r.version,r.source,r.kind,r.verdict,r.occurrences]);
++const extract=(artifact,source)=>cp.spawnSync('bash',[extractor,'--complete','--source',source,artifact],{encoding:'utf8'});
++const sha=artifact=>crypto.createHash('sha256').update(fs.readFileSync(artifact)).digest('hex');
++const refId=r=>JSON.stringify([r?.source,r?.section,r?.position]);
++const associated=new Map();
++for(const association of correspondences){
++ try{
++  const a=association;
++  if(!object(a)||a.version!==1||!text(a.artifact)||!text(a.source)||!text(a.retainedArtifact)||!(/^[a-f0-9]{64}$/).test(a.sha256)||!(/^[a-f0-9]{64}$/).test(a.retainedSha256)||
++     a.judgment!=='supported'||!text(a.basis)||!Array.isArray(a.evidence)||!a.evidence.length||!a.evidence.every(text))throw Error('unsupported or malformed association');
++  const original=artifactPath(a.artifact),retained=artifactPath(a.retainedArtifact),kind=declared.get(original);
++  if(!kind)throw Error('association does not name a declared original input');
++  if(sha(original)!==a.sha256||sha(retained)!==a.retainedSha256)throw Error('original or retained hash mismatch');
++  const matches=sources.filter(s=>s.source===a.source&&artifactPath(s.artifact)===retained);
++  const result=extract(retained,a.source);
++  if(!matches.length||result.status!==0)throw Error('retained source extraction unavailable');
++  const actual=JSON.parse(result.stdout);
++  if(matches.some(s=>content(s)!==content(actual)))throw Error('retained source differs from complete extraction');
++  if(kind==='keys'){
++   if(actual.kind!=='final-review'||!Array.isArray(a.lines))throw Error('keys input needs final-review source and complete line correspondence');
++   const lines=fs.readFileSync(original,'utf8').split(/\r?\n/),keyLines=[];
++   for(const [i,line] of lines.entries()){
++    if(i===0&&/^review: (ready|not ready|none)$/.test(line))continue;
++    if(!line.trim())continue;
++    if(!/^(?:r[0-9]+ )?\[Must-fix\] .+/.test(line))throw Error('malformed keys input');
++    keyLines.push(i+1);
++   }
++   if(!keyLines.length)throw Error('ledger row points at empty keys input');
++   const known=new Set(actual.occurrences.map(o=>refId({source:a.source,...o}))),seen=new Set();
++   for(const mapping of a.lines){
++    if(!object(mapping)||!Number.isSafeInteger(mapping.line)||!keyLines.includes(mapping.line)||seen.has(mapping.line)||
++       !Array.isArray(mapping.refs)||!mapping.refs.length||mapping.refs.some(r=>!object(r)||r.source!==a.source||!known.has(refId(r))))throw Error('invalid keys line occurrence correspondence');
++    seen.add(mapping.line);
++   }
++   if(seen.size!==keyLines.length)throw Error('incomplete keys line correspondence');
++  }else{
++   if(actual.kind!==kind)throw Error('retained report kind differs from declaration');
++   const raw=extract(original,a.source);
++   if(a.sha256===a.retainedSha256){if(raw.status!==0||content(JSON.parse(raw.stdout))!==content(actual))throw Error('original report extraction mismatch')}
++   else{
++    // Adapters are reviewed interpretations of malformed historical reports. Never
++    // convert an ordinary valid source or restamp the original historical verdict.
++    const interpretation=a.interpretation;
++    if(raw.status===0||!object(interpretation)||interpretation.kind!=='legacy-adapter'||!text(interpretation.originalVerdict)||
++       !Array.isArray(interpretation.limitations)||!interpretation.limitations.length||!interpretation.limitations.every(text))throw Error('legacy adapter requires retained interpretation limitations and original extraction failure');
++    const compact=cp.spawnSync('bash',[extractor,original],{encoding:'utf8'});
++    const verdict=compact.stdout?.split('\n').find(l=>l.startsWith('verdict: '))?.slice(9),originalKind=compact.stdout?.split('\n').find(l=>l.startsWith('kind: '))?.slice(6);
++    if(compact.status!==0||originalKind!==actual.kind||verdict!==actual.verdict||interpretation.originalVerdict!==verdict)throw Error('adapter changes or lacks original historical kind/verdict');
++   }
++  }
++  const binding=JSON.stringify([a.sha256,a.source,a.retainedSha256,a.lines||null]);
++  if(associated.has(original)&&associated.get(original)!==binding)throw Error('conflicting immutable source correspondence');
++  associated.set(original,binding);
++ }catch(e){gap('source coverage: source-correspondence '+(association?.artifact||'unknown')+': '+e.message)}
++}
++for(const [artifact,kind] of declared){
++ if(associated.has(artifact))continue;
++ if(kind==='keys'){gap('source coverage: keys-only ledger input needs supported original-source correspondence: '+artifact);continue}
++ const matches=sources.filter(s=>artifactPath(s.artifact)===artifact);
++ if(!matches.length){gap('source coverage: declared report has no retained source extraction: '+artifact);continue}
++ for(const s of matches){
++  const extracted=extract(artifact,s.source);
++  try{
++   if(extracted.status!==0)throw Error('original report unavailable or malformed');
++   const actual=JSON.parse(extracted.stdout);
++   if(actual.kind!==kind||content(actual)!==content(s))throw Error('retained extraction differs from complete original report');
++  }catch(e){gap('source coverage: '+artifact+' ('+s.source+'): '+e.message)}
++ }
++}
+ // Use the same validated projection as Remaining and resume. Valid empty is distinct
+ // from a missing extraction or an empty --keys stream carrying gaps.
+ const projection=cp.spawnSync('bash',[path.join(scripts,'scope-dispositions'),'--project',run],{encoding:'utf8'});
+ try{
+  if(![0,3].includes(projection.status))throw Error('unavailable');
+  const p=JSON.parse(projection.stdout);if(!Array.isArray(p.findings)||!Array.isArray(p.gaps))throw Error('malformed');
+  for(const g of p.gaps)gap('finding evidence: '+JSON.stringify(g));
+  const sameRef=(a,b)=>a&&b&&a.source===b.source&&a.section===b.section&&a.position===b.position;
+  for(const f of p.findings.filter(f=>f.outstanding)){
+   const refs=f.occurrences.map(o=>({source:o.source,section:o.section,position:o.position}));
+   // Explicit projection links establish one finding group. Assess it once through
+   // any exact member ref, retaining every original source occurrence in the result.
+   const judgment=(current?.findingAcceptance||[]).filter(j=>refs.some(ref=>sameRef(j?.ref,ref))).at(-1);
+   if(!judgment||judgment.judgment!=='supported'||!text(judgment.basis)||!Array.isArray(judgment.evidence)||!judgment.evidence.length||!judgment.evidence.every(text)||!['required','nonblocking'].includes(judgment.effect))gap('finding acceptance relevance unproven: '+JSON.stringify(refs));
+   else if(judgment.effect==='required'){
+    if(!text(judgment.requirement)||!requirements.has(judgment.requirement))gap('finding acceptance requirement unavailable: '+JSON.stringify(refs));
+    wait('finding '+JSON.stringify(refs)+' remains required for '+(judgment.requirement||'unknown acceptance'));
+   }else nonblockingFindings.push(...refs); // still outstanding in the shared punch-list projection
+  }
+ }catch{gap('finding projection unavailable')}
+ // Reuse ordinary status collection validation without recursively running this gate.
+ const status=cp.spawnSync('bash',[path.join(scripts,'report-status'),run],{encoding:'utf8',env:{...process.env,RS_SKIP_ACCEPTANCE:'1'}});
+ if(status.status!==0)gap('run status unavailable');
+ else for(const line of status.stdout.split('\n'))if(/^qualifier: (review collection|review collections|finding evidence|finding projection)/.test(line))gap(line.slice(11));
+ const result={owner:'super-auto',sourceTree:current?.sourceTree||null,eligible:pending.length===0&&gaps.length===0,pending:[...new Set(pending)],gaps:[...new Set(gaps)],nonblockingFindings};
+diff --git a/tests/super-auto/acceptance-population-correction.mjs b/tests/super-auto/acceptance-population-correction.mjs
+new file mode 100644
+index 00000000..b5cde231
+--- /dev/null
++++ b/tests/super-auto/acceptance-population-correction.mjs
+@@ -0,0 +1,212 @@
++#!/usr/bin/env node
++// Real report/ledger/recovery producers feed an otherwise satisfied root gate.
++import fs from 'node:fs';
++import os from 'node:os';
++import path from 'node:path';
++import cp from 'node:child_process';
++import assert from 'node:assert/strict';
++import {createHash} from 'node:crypto';
++import {fileURLToPath} from 'node:url';
++
++const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
++const scripts=path.join(root,'skills/super-auto/scripts');
++const code=path.join(root,'skills/super-code');
++const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'acceptance-population-'));
++const tree='a'.repeat(40), other='b'.repeat(40);
++let passed=0,failed=0;
++function cli(executable,args,cwd=tmp,want=0){
++ const out=cp.spawnSync(executable,args,{cwd,encoding:'utf8'});
++ assert.equal(out.status,want,out.stdout+out.stderr);return out.stdout;
++}
++function test(name,fn){if(process.env.TEST_FILTER&&!name.includes(process.env.TEST_FILTER))return;try{fn();passed++;console.log('PASS '+name)}catch(e){failed++;console.error('FAIL '+name+'\n'+e.stack)}}
++function extract(file,source){return JSON.parse(cli('bash',[path.join(code,'scripts/report-verdict'),'--complete','--source',source,file]))}
++function fixture(name){
++ const dir=path.join(tmp,name);fs.mkdirSync(dir);const run=path.join(dir,'run.md');
++ const final=path.join(dir,'final.md');fs.writeFileSync(final,'## Verdict\nready\n## Must fix before landing\nNone\n');
++ const snapshot={version:1,owner:'super-auto',sourceTree:tree,requirements:[
++  {id:'review',kind:'review',owner:'caller'},
++  {id:'suite',kind:'measurement',owner:'caller',command:'suite',configuration:'local',requiredLive:true},
++  {id:'human',kind:'human',owner:'human'}],
++  evidence:[{sourceTree:tree,command:'suite',configuration:'local',kind:'live',outcome:'pass',location:'fixture-live.log'}],
++  reviews:[{id:'review',sourceTree:tree,outcome:'pass',location:final}],
++  decisions:[{id:'human',authority:'human',decision:'accept',evidence:['synthetic fixture human decision']}],
++  recovery:{obligations:[],gaps:[]},checkEvidence:{records:[],requiredLiveChecks:[],gaps:[]},runFailures:[]};
++ const sources=[extract(final,'unrelated/final')],records=[],declarations=[];
++ function write(){fs.writeFileSync(run,'flags: skipPlanRoast=false skipCodeRoast=false\nphase: report\n'+declarations.join('\n')+'\napprovals:\n'+sources.map(s=>'- finding-source · '+JSON.stringify(s)+'\n').join('')+records.map(r=>'- '+r.type+' · '+JSON.stringify(r.data)+'\n').join('')+'- root-acceptance · '+JSON.stringify(snapshot)+'\n')}
++ function gate(want,pattern){write();const before=fs.readFileSync(run,'utf8');const result=JSON.parse(cli('bash',[path.join(scripts,'report-status'),'--acceptance',run,'--tree',tree],dir,want));assert.equal(fs.readFileSync(run,'utf8'),before,'gate must be read-only');assert.equal(result.eligible,want===0);if(pattern)assert.match(JSON.stringify(result),pattern);return result}
++ return {dir,run,snapshot,sources,records,declarations,write,gate};
++}
++function roast(f,name,body='- [Blocking] same.js:1 — retained original defect'){
++ const file=path.join(f.dir,name);fs.writeFileSync(file,'super-roast verdict: '+(body==='None'?'CLEAN':'NEEDS FIX')+'\ninputs: source @'+tree+'\n## Confirmed findings\n'+body+'\n');return file;
++}
++function ledger(f,loop,reports,override=true){
++ const out=path.join(f.dir,'ledger-'+loop+'.md'),overrides=path.join(f.dir,'overrides-'+loop+'.md');
++ fs.writeFileSync(overrides,override?'[Blocking] same.js:1 · disputed@r1 (preserve original disagreement)\n':'');
++ cli('bash',[path.join(root,'skills/super-design/scripts/findings-ledger'),'--loop',loop,'--out',out,...reports.flatMap((r,i)=>['--report',`${i+1}=${r}`]),'--overrides',overrides]);
++ f.declarations.push(`${loop==='design'?'findingsLedgerDesign':'findingsLedger'}: ${path.basename(out)}`);return out;
++}
++function relevance(source,effect='nonblocking'){
++ return {ref:{source:source.source,section:'Confirmed findings',position:1},judgment:'supported',effect,requirement:'review',basis:'fixture scope judgment of this exact occurrence',evidence:[source.artifact+'#Confirmed findings:1']};
++}
++const sha=file=>createHash('sha256').update(fs.readFileSync(file)).digest('hex');
++function correspondence(artifact,source){return {version:1,artifact,sha256:sha(artifact),source:source.source,retainedArtifact:source.artifact,retainedSha256:sha(source.artifact),judgment:'supported',basis:'fixture independent review establishes complete original source correspondence',evidence:[artifact+'#raw-review',source.artifact+'#completeness-review']}}
++
++try{
++ test('recognized empty source and independent prerequisites pass',()=>fixture('empty').gate(0));
++ for(const loop of ['design','code']){
++  test(`${loop}: real disputed ledger cannot hide behind unrelated clean review`,()=>{
++   const f=fixture(loop+'-disputed'),original=roast(f,'round-1.md'),ledgerFile=ledger(f,loop,[original]);
++   assert.match(fs.readFileSync(ledgerFile,'utf8'),/disputed@r1/);
++   f.gate(3,/coverage|population|reconcil/i);
++  });
++  test(`${loop}: resumed declared source needs exact extraction and relevance`,()=>{
++   const f=fixture(loop+'-resume'),original=roast(f,'round-1.md');ledger(f,loop,[original]);
++   f.declarations.push(`roast-${loop}: round-1.md`);
++   const source=extract(original,`roast-${loop}/round-1`);f.sources.push(source);
++   f.gate(3,/relevance unproven/);
++   f.snapshot.findingAcceptance=[relevance(source,'required')];f.gate(3,/remains required/);
++   f.snapshot.findingAcceptance=[relevance(source)];
++   const result=f.gate(0);assert.deepEqual(result.nonblockingFindings,[relevance(source).ref]);
++   const status=cli('bash',[path.join(scripts,'report-status'),f.run]);assert.match(status,/1 unresolved Blocking/);
++   // Idempotent caller append retains exactly the same immutable occurrence.
++   f.sources.push(structuredClone(source));f.gate(0);
++   const projection=JSON.parse(cli('bash',[path.join(scripts,'scope-dispositions'),'--project',f.run]));assert.equal(projection.findings.length,1);assert.equal(projection.findings[0].outstanding,true);
++   f.snapshot.findingAcceptance=[];f.records.push({type:'finding-disposition',data:{ref:relevance(source).ref,disposition:'resolved',judgment:'supported',basis:'fixture verified repair',evidence:['repair.log'],verification:'exact regression passed against repaired source'}});f.gate(0);
++   f.records[0].data.disposition='rejected';delete f.records[0].data.verification;f.gate(0);
++  });
++  test(`${loop}: later silent round never supplies local disposition`,()=>{
++   const f=fixture(loop+'-silence'),one=roast(f,'one.md'),two=roast(f,'two.md','None');
++   const file=ledger(f,loop,[one,two],false);assert.match(fs.readFileSync(file,'utf8'),/resolved@r2/);
++   f.declarations.push(`roast-${loop}: one.md, two.md`);
++   const source=extract(one,`roast-${loop}/round-1`);f.sources.push(source,extract(two,`roast-${loop}/round-2`));
++   f.gate(3,/relevance unproven/);f.snapshot.findingAcceptance=[relevance(source,'required')];f.gate(3,/remains required/);
++  });
++  test(`${loop}: stale ledger pointer to now-clean report is inconsistent evidence`,()=>{
++   const f=fixture(loop+'-stale'),original=roast(f,'original.md');ledger(f,loop,[original]);
++   roast(f,'original.md','None');f.sources.push(extract(original,`roast-${loop}/round-1`));
++   f.gate(3,/ledger.*(consistency|inconsistent|key)|key.*ledger/i);
++  });
++ }
++ for(const variant of ['missing-ledger','malformed-ledger','missing-report','unknown-empty','truncated-report','forged-empty-extraction','same-key-other-path'])test(variant+' remains explicit source coverage gap',()=>{
++  const f=fixture(variant);
++  if(variant.endsWith('ledger')){
++   f.declarations.push('findingsLedgerDesign: absent.md');
++   if(variant==='malformed-ledger')fs.writeFileSync(path.join(f.dir,'absent.md'),'# findings ledger — design — through r1\n- truncated\n');
++  }else{
++   f.declarations.push('roast-design: original.md');
++   if(variant==='unknown-empty')fs.writeFileSync(path.join(f.dir,'original.md'),'');
++   if(variant==='truncated-report')fs.writeFileSync(path.join(f.dir,'original.md'),'super-roast verdict: CLEAN\n## Confirmed findings\n');
++   if(variant==='forged-empty-extraction'||variant==='same-key-other-path'){
++    const original=roast(f,'original.md');
++    const source=extract(variant==='same-key-other-path'?roast(f,'unrelated.md'):original,'roast-design/round-1');
++    if(variant==='forged-empty-extraction')source.occurrences=[];
++    f.sources.push(source);f.snapshot.findingAcceptance=[relevance(source)];
++   }
++  }
++  f.gate(3,/coverage|population|reconcil/i);
++ });
++ test('explicit linked occurrences retain both original refs without duplicate judgment',()=>{
++  const f=fixture('linked'),a=roast(f,'one.md'),b=roast(f,'two.md');f.declarations.push('roast-code: one.md, two.md');
++  const sources=[extract(a,'roast-code/round-1'),extract(b,'roast-code/round-2')];f.sources.push(...sources);
++  f.snapshot.findingAcceptance=[relevance(sources[0])];f.gate(3,/relevance unproven/);
++  f.records.push({type:'finding-link',data:{refs:sources.map(s=>relevance(s).ref),basis:'reviewed explicit repeated occurrence'}});
++  assert.equal(f.gate(0).nonblockingFindings.length,2);
++ });
++ test('same-byte retained archive needs explicit correspondence and rejects conflicting identities',()=>{
++  const f=fixture('archive'),original=roast(f,'original.md'),retained=path.join(f.dir,'archive.md');fs.copyFileSync(original,retained);
++  const source=extract(retained,'roast-code/round-1');f.sources.push(source);f.declarations.push('roast-code: original.md');f.snapshot.findingAcceptance=[relevance(source)];
++  f.gate(3,/coverage/);
++  const association=correspondence(original,source);f.records.push({type:'source-correspondence',data:association});f.gate(0);
++  f.records.push({type:'source-correspondence',data:structuredClone(association)});f.gate(0);
++  const unrelated=extract(retained,'unrelated/round-1');f.sources.push(unrelated);f.snapshot.findingAcceptance.push(relevance(unrelated));
++  f.records.push({type:'source-correspondence',data:correspondence(original,unrelated)});f.gate(3,/conflicting immutable source correspondence/);
++ });
++ test('additional verified archive copy preserves the same source identity',()=>{
++  const f=fixture('archive-copy'),original=roast(f,'original.md'),copy=path.join(f.dir,'copy.md');fs.copyFileSync(original,copy);
++  const source=extract(copy,'roast-design/round-1');f.sources.push(source);f.declarations.push('roast-design: original.md');f.snapshot.findingAcceptance=[relevance(source)];
++  f.records.push({type:'source-correspondence',data:correspondence(original,source)});f.gate(0);
++  const next=path.join(f.dir,'copy-next.md');fs.copyFileSync(copy,next);const duplicate=extract(next,source.source);f.sources.push(duplicate);
++  f.records.push({type:'source-correspondence',data:correspondence(original,duplicate)});f.gate(0);
++ });
++ test('real ledger repo-relative text pointer resolves independently of caller cwd',()=>{
++  const f=fixture('repo-relative');cli('git',['init','-q',f.dir]);
++  fs.mkdirSync(path.join(f.dir,'reports'));const original=roast(f,'reports/round.md');
++  cli('bash',[path.join(root,'skills/super-design/scripts/findings-ledger'),'--loop','design','--out','ledger.md','--report','1=reports/round.md'],f.dir);
++  const runDir=path.join(f.dir,'run');fs.mkdirSync(runDir);fs.copyFileSync(path.join(f.dir,'ledger.md'),path.join(runDir,'ledger.md'));
++  f.declarations.push('findingsLedgerDesign: ledger.md');const source=extract(original,'roast-design/round-1');f.sources.push(source);f.snapshot.findingAcceptance=[relevance(source)];f.write();
++  const run=path.join(runDir,'run.md');fs.copyFileSync(f.run,run);
++  const result=JSON.parse(cli('bash',[path.join(scripts,'report-status'),'--acceptance',run,'--tree',tree],tmp));assert.equal(result.eligible,true);
++ });
++ test('supported legacy adapter preserves original source and verdict with both hashes',()=>{
++  const f=fixture('adapter'),original=roast(f,'original.md','- None\n  retained historical explanatory text');
++  const retained=roast(f,'retained.md','- [Blocking] same.js:1 — complete interpreted original concern');
++  const source=extract(retained,'roast-design/round-1');f.sources.push(source);f.declarations.push('roast-design: original.md');
++  const raw=fs.readFileSync(original,'utf8');f.snapshot.findingAcceptance=[relevance(source)];f.gate(3,/coverage/);
++  const association={...correspondence(original,source),interpretation:{kind:'legacy-adapter',originalVerdict:'NEEDS FIX',limitations:['Original strict extraction fails on mixed None/explanation; this is a reviewed interpretation, not the raw report.']}};
++  f.records.push({type:'source-correspondence',data:association});f.gate(0);
++  assert.equal(fs.readFileSync(original,'utf8'),raw);
++  for(const mutate of [a=>a.sha256='0'.repeat(64),a=>a.retainedSha256='0'.repeat(64),a=>a.judgment='unsupported',a=>a.evidence=[],a=>delete a.interpretation,a=>a.interpretation.originalVerdict='CLEAN',a=>a.source='unrelated/final']){
++   const invalid=structuredClone(association);mutate(invalid);f.records[0].data=invalid;f.gate(3,/coverage|correspondence/);
++  }
++  f.records[0].data=association;f.sources[1].occurrences=[];f.gate(3,/coverage|correspondence/);
++ });
++ test('real final-review keys ledger requires supported exact complete line mapping',()=>{
++  const f=fixture('keys'),original=roast(f,'clean-roast.md','None'),final=path.join(f.dir,'original-final.md');
++  fs.writeFileSync(final,'## Verdict\nnot ready\n## Must fix before landing\n- first defect\n- second defect\n## Untested scope\nNone\n');
++  const source=extract(final,'inv-keys/final');f.sources.push(source);
++  const refs=source.occurrences.map(o=>({source:source.source,section:o.section,position:o.position}));
++  f.snapshot.findingAcceptance=refs.map(ref=>({...relevance(source),ref}));
++  const keys=path.join(f.dir,'review.keys');fs.writeFileSync(keys,'review: not ready\n'+cli('bash',[path.join(code,'scripts/report-verdict'),'--keys',final]));
++  const out=path.join(f.dir,'ledger.md');cli('bash',[path.join(root,'skills/super-design/scripts/findings-ledger'),'--loop','code','--out',out,'--report','1='+original,'--final-review','1='+keys]);
++  f.declarations.push('findingsLedger: ledger.md');f.gate(3,/coverage|correspondence/);
++  const association={...correspondence(keys,source),lines:[{line:2,refs:[refs[0]]},{line:3,refs:[refs[1]]}]};
++  f.records.push({type:'source-correspondence',data:association});f.gate(0);
++  for(const mutate of [a=>a.lines.pop(),a=>a.lines.push(a.lines[0]),a=>a.lines[0].line=1,a=>a.lines[0].refs=[],a=>a.lines[0].refs[0].source='unrelated/final',a=>a.source='unrelated/final',a=>a.sha256='0'.repeat(64)]){
++   const invalid=structuredClone(association);mutate(invalid);f.records[0].data=invalid;f.gate(3,/coverage|correspondence/);
++  }
++  f.records[0].data=association;fs.appendFileSync(keys,'[Must-fix] later unaccounted concern\n');f.gate(3,/coverage|correspondence/);
++ });
++ test('actual immutable reviewSource producer is metadata, not a measurement',()=>{
++  const f=fixture('source-binding'),progress=path.join(f.dir,'progress.md');
++  fs.writeFileSync(progress,`Launch: mechanism ordinary-subagents · epic fixture · branch fixture · integrationWorktree ${f.dir} · invocationId inv-fixture\n`);
++  cli('node',[path.join(code,'scripts/dispatch-text.mjs'),'--ledger',progress,'bind-review-source','--base',tree,'--head',other]);
++  const record=JSON.parse(fs.readFileSync(progress,'utf8').split('\n').find(l=>l.startsWith('Recovery: ')).slice(10));
++  f.snapshot.recovery.obligations=[record];f.gate(0);
++  for(const mutate of [r=>delete r.data.reviewSource,r=>r.data.reviewSource=null,r=>r.id='wrong',r=>r.data.reviewSource.invocationId='other',r=>r.data.reviewSource.base='x',r=>r.kind='hold',r=>r.data.command='native']){
++   const malformed=structuredClone(record);mutate(malformed);f.snapshot.recovery.obligations=[malformed];f.gate(3,/review.source|provenance/i);
++  }
++  f.snapshot.recovery.obligations=[record];f.write();const earlier=fs.readFileSync(f.run,'utf8');
++  const conflict=structuredClone(f.snapshot);conflict.recovery.obligations[0].data.reviewSource.head=tree;
++  fs.appendFileSync(f.run,'- root-acceptance · '+JSON.stringify(conflict)+'\n');
++  const result=JSON.parse(cli('bash',[path.join(scripts,'report-status'),'--acceptance',f.run],f.dir,3));assert.match(JSON.stringify(result),/conflict.*review.source|review.source.*conflict/i);assert(fs.readFileSync(f.run,'utf8').startsWith(earlier));
++ });
++ test('genuine deferred live check still requires matching live evidence',()=>{
++  const f=fixture('live-check'),progress=path.join(f.dir,'progress.md'),results=path.join(f.dir,'results.json');
++  fs.writeFileSync(progress,`Launch: mechanism ordinary-subagents · epic fixture · branch fixture · integrationWorktree ${f.dir} · invocationId inv-live\n`);
++  const identity={id:'leaf',sourceTree:tree,command:'native',configuration:'hardware'};
++  const obligation={version:1,id:'native-deferred',kind:'deferred',operation:'record',reason:'required hardware check',evidence:['review.md'],data:identity};
++  f.snapshot.recovery.obligations=[obligation];
++  for(const kind of ['fallback','live']){
++   fs.writeFileSync(results,JSON.stringify([{dispatch:'review:leaf',result:{id:'leaf',evidence:[{...identity,kind,outcome:'pass',location:'native.log'}],requiredLiveChecks:[identity]}}]));
++   f.snapshot.checkEvidence=JSON.parse(cli('node',[path.join(code,'scripts/dispatch-text.mjs'),'--ledger',progress,'--stdout','check-evidence','--results-file',results]));
++   f.gate(kind==='live'?0:3,kind==='fallback'?/native/:undefined);
++  }
++ });
++ test('actual pre-run attribution retains earlier same-tree contradiction gaps',()=>{
++  // Load the unchanged real attribution producer, without dispatching a Workflow session.
++  const source=fs.readFileSync(path.join(code,'coordinator.js'),'utf8');
++  const classify=new Function(source.slice(source.indexOf('function classifyRunFailure('),source.indexOf('\nfunction runFailures('))+'\nreturn classifyRunFailure;')();
++  const identity={failure:'F',command:'smoke',configuration:'local'};
++  const record=(sourceTree,outcome)=>({sourceTree,outcome,command:'smoke',configuration:'local',location:outcome+'.log',kind:'live'});
++  const history=[{task:'leaf',dispatch:'review:leaf',claim:{...identity,observed:0,runBaseline:1},evidence:[record(tree,'fail'),record(tree,'pass')]},
++   {task:'later',dispatch:'review:later',claim:{...identity,observed:0,runBaseline:1},evidence:[record(other,'fail'),record(tree,'fail')]}];
++  const f=fixture('pre-run');const failure={id:'F',...classify({...identity,history})};
++  assert.equal(failure.classification,'pre-run');assert.match(failure.gaps.join('\n'),/opposite outcomes at the same source tree/);
++  f.snapshot.runFailures=[failure];f.gate(3,/opposite outcomes at the same source tree/);
++  f.snapshot.runFailures=[{id:'F',...classify({...identity,history:history.slice(1)})}];f.gate(0);
++ });
++}finally{
++ console.log(`${passed} passed, ${failed} failed; fixture artifacts: ${tmp}`);
++ if(!process.env.KEEP_FIXTURES)fs.rmSync(tmp,{recursive:true,force:true});
++}
++process.exitCode=failed?1:0;

@@ -1,0 +1,343 @@
+{
+      "requirementId": "l0001",
+      "task": "super-plan-ufz.29",
+      "classification": "actual requiredLiveChecks declaration, not example",
+      "family": "product-mechanics",
+      "historicalRequirement": {
+        "sourceTree": "b92dfaf4bbf2e897fe1b190a435e0a872564916e",
+        "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+        "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies"
+      },
+      "historicalOutcomes": [
+        "live/pass"
+      ],
+      "historicalEvidence": [
+        {
+          "evidenceId": "e0076",
+          "record": {
+            "sourceTree": "b92dfaf4bbf2e897fe1b190a435e0a872564916e",
+            "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+            "configuration": "TMPDIR=/tmp/sp-bce79baa/super-plan-ufz.29 HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CONFIG_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_DATA_HOME=/tmp/sp-bce79baa/super-plan-ufz.29 XDG_CACHE_HOME=/tmp/sp-bce79baa/super-plan-ufz.29; real builders/helper; injected coordinator agent replies",
+            "outcome": "pass",
+            "location": "evidence/super-plan-ufz.29/focused-final.log",
+            "kind": "live"
+          },
+          "provenance": [
+            {
+              "objectId": "o00141",
+              "sourceId": "s0173",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/dispatch/impl-super-plan-ufz.29-result.json",
+              "sourceSha256": "5a1ac39d8591a89ad931a750262aaa1f0c91cdc23618d18aab4f87f19c723fe2",
+              "location": {
+                "lineStart": 1,
+                "lineEnd": 68,
+                "charStart": 0,
+                "charEnd": 4085
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00209",
+              "sourceId": "s0263",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-26-report.md",
+              "sourceSha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+              "location": {
+                "lineStart": 75,
+                "lineEnd": 109,
+                "charStart": 6401,
+                "charEnd": 8664
+              },
+              "pointer": "$/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00211",
+              "sourceId": "s0264",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-26-review.md",
+              "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+              "location": {
+                "lineStart": 54,
+                "lineEnd": 114,
+                "charStart": 5896,
+                "charEnd": 10655
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00212",
+              "sourceId": "s0264",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-26-review.md",
+              "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+              "location": {
+                "lineStart": 123,
+                "lineEnd": 180,
+                "charStart": 11081,
+                "charEnd": 14794
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00258",
+              "sourceId": "s0428",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-26-report.md",
+              "sourceSha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+              "location": {
+                "lineStart": 75,
+                "lineEnd": 109,
+                "charStart": 6401,
+                "charEnd": 8664
+              },
+              "pointer": "$/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00260",
+              "sourceId": "s0429",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-26-review.md",
+              "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+              "location": {
+                "lineStart": 54,
+                "lineEnd": 114,
+                "charStart": 5896,
+                "charEnd": 10655
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00261",
+              "sourceId": "s0429",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-26-review.md",
+              "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+              "location": {
+                "lineStart": 123,
+                "lineEnd": 180,
+                "charStart": 11081,
+                "charEnd": 14794
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00285",
+              "sourceId": "s0483",
+              "path": "evidence/super-plan-ufz.29/checks.json",
+              "sourceSha256": "4a6782f2559b0afb46a0f52697b4b63b9ee46c3eeda680890decc0527fbba553",
+              "location": {
+                "lineStart": 1,
+                "lineEnd": 61,
+                "charStart": 0,
+                "charEnd": 4759
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00338",
+              "sourceId": "s0568",
+              "path": ".superpowers/sdd/super-plan-ufz-plan/task-26-report.md",
+              "sourceSha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+              "location": {
+                "lineStart": 75,
+                "lineEnd": 109,
+                "charStart": 6401,
+                "charEnd": 8664
+              },
+              "pointer": "$/1",
+              "identityKind": "local-untracked-snapshot"
+            },
+            {
+              "objectId": "o00340",
+              "sourceId": "s0569",
+              "path": ".superpowers/sdd/super-plan-ufz-plan/task-26-review.md",
+              "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+              "location": {
+                "lineStart": 54,
+                "lineEnd": 114,
+                "charStart": 5896,
+                "charEnd": 10655
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "local-untracked-snapshot"
+            },
+            {
+              "objectId": "o00341",
+              "sourceId": "s0569",
+              "path": ".superpowers/sdd/super-plan-ufz-plan/task-26-review.md",
+              "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+              "location": {
+                "lineStart": 123,
+                "lineEnd": 180,
+                "charStart": 11081,
+                "charEnd": 14794
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "local-untracked-snapshot"
+            }
+          ]
+        }
+      ],
+      "declarationProvenance": [
+        {
+          "objectId": "o00141",
+          "sourceId": "s0173",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/dispatch/impl-super-plan-ufz.29-result.json",
+          "sourceSha256": "5a1ac39d8591a89ad931a750262aaa1f0c91cdc23618d18aab4f87f19c723fe2",
+          "location": {
+            "lineStart": 1,
+            "lineEnd": 68,
+            "charStart": 0,
+            "charEnd": 4085
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00210",
+          "sourceId": "s0263",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-26-report.md",
+          "sourceSha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+          "location": {
+            "lineStart": 114,
+            "lineEnd": 126,
+            "charStart": 8700,
+            "charEnd": 9611
+          },
+          "pointer": "$/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00211",
+          "sourceId": "s0264",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-26-review.md",
+          "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+          "location": {
+            "lineStart": 54,
+            "lineEnd": 114,
+            "charStart": 5896,
+            "charEnd": 10655
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00212",
+          "sourceId": "s0264",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-26-review.md",
+          "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+          "location": {
+            "lineStart": 123,
+            "lineEnd": 180,
+            "charStart": 11081,
+            "charEnd": 14794
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00259",
+          "sourceId": "s0428",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-26-report.md",
+          "sourceSha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+          "location": {
+            "lineStart": 114,
+            "lineEnd": 126,
+            "charStart": 8700,
+            "charEnd": 9611
+          },
+          "pointer": "$/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00260",
+          "sourceId": "s0429",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-26-review.md",
+          "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+          "location": {
+            "lineStart": 54,
+            "lineEnd": 114,
+            "charStart": 5896,
+            "charEnd": 10655
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00261",
+          "sourceId": "s0429",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-26-review.md",
+          "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+          "location": {
+            "lineStart": 123,
+            "lineEnd": 180,
+            "charStart": 11081,
+            "charEnd": 14794
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00285",
+          "sourceId": "s0483",
+          "path": "evidence/super-plan-ufz.29/checks.json",
+          "sourceSha256": "4a6782f2559b0afb46a0f52697b4b63b9ee46c3eeda680890decc0527fbba553",
+          "location": {
+            "lineStart": 1,
+            "lineEnd": 61,
+            "charStart": 0,
+            "charEnd": 4759
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00339",
+          "sourceId": "s0568",
+          "path": ".superpowers/sdd/super-plan-ufz-plan/task-26-report.md",
+          "sourceSha256": "d555130dd69e76b417246142d68ac1375edc6be3f382b757dfd9503fe4bff66f",
+          "location": {
+            "lineStart": 114,
+            "lineEnd": 126,
+            "charStart": 8700,
+            "charEnd": 9611
+          },
+          "pointer": "$/0",
+          "identityKind": "local-untracked-snapshot"
+        },
+        {
+          "objectId": "o00340",
+          "sourceId": "s0569",
+          "path": ".superpowers/sdd/super-plan-ufz-plan/task-26-review.md",
+          "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+          "location": {
+            "lineStart": 54,
+            "lineEnd": 114,
+            "charStart": 5896,
+            "charEnd": 10655
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "local-untracked-snapshot"
+        },
+        {
+          "objectId": "o00341",
+          "sourceId": "s0569",
+          "path": ".superpowers/sdd/super-plan-ufz-plan/task-26-review.md",
+          "sourceSha256": "5eb89ba3e804761e01b4e0c0bf9ad71e7d3a4d31d39866c62de9f19b9a050a92",
+          "location": {
+            "lineStart": 123,
+            "lineEnd": 180,
+            "charStart": 11081,
+            "charEnd": 14794
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "local-untracked-snapshot"
+        }
+      ],
+      "currentEquivalentEvidenceNeeded": "At final source, execute the corresponding required current command/fixture with isolated outputs and exact source/configuration/outcome/location, or have the caller explicitly justify reuse of unchanged source-scoped historical evidence. A new source or altered seam requires relevant re-verification; final suite may cover several declarations only by explicit mapping.",
+      "nonReconstructableHistoricalUnknown": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "blocksCurrentAcceptance": "current equivalent check/applicability mapping remains pending; old passed identity is not itself an open failure",
+      "currentStatus": "prospective; no current execution by this reviewer"
+    }

@@ -1,0 +1,41 @@
+test source identities: {"head":"fd52ffc7a8de0c4412c517adec2d4979d06906ff","reportStatusSha256":"c99c1052114eb32883bfd0d102b5e8efd5ca062d7c99a63c311f58259b619517","testSha256":"bc8c9fcb9eb35044d81f0b3f7798e38b5625841e756f97c7f3c79220346542a4"}
+PASS recognized empty source and independent prerequisites pass
+PASS design: Blocking ledger truncation cannot supply ledger-only population
+PASS design: Blocking ledger truncation remains gap after supported source relevance
+PASS design: Should-fix ledger truncation cannot supply ledger-only population
+PASS design: Should-fix ledger truncation remains gap after supported source relevance
+PASS design: genuine empty ledger without caller population stays unknown
+PASS design: genuine empty ledger with complete declared source passes
+PASS design: real disputed ledger cannot hide behind unrelated clean review
+PASS design: resumed declared source needs exact extraction and relevance
+PASS design: later silent round never supplies local disposition
+PASS design: stale ledger pointer to now-clean report is inconsistent evidence
+PASS code: Blocking ledger truncation cannot supply ledger-only population
+PASS code: Blocking ledger truncation remains gap after supported source relevance
+PASS code: Should-fix ledger truncation cannot supply ledger-only population
+PASS code: Should-fix ledger truncation remains gap after supported source relevance
+PASS code: genuine empty ledger without caller population stays unknown
+PASS code: genuine empty ledger with complete declared source passes
+PASS code: real disputed ledger cannot hide behind unrelated clean review
+PASS code: resumed declared source needs exact extraction and relevance
+PASS code: later silent round never supplies local disposition
+PASS code: stale ledger pointer to now-clean report is inconsistent evidence
+PASS missing-ledger remains explicit source coverage gap
+PASS malformed-ledger remains explicit source coverage gap
+PASS missing-report remains explicit source coverage gap
+PASS unknown-empty remains explicit source coverage gap
+PASS truncated-report remains explicit source coverage gap
+PASS forged-empty-extraction remains explicit source coverage gap
+PASS same-key-other-path remains explicit source coverage gap
+PASS explicit linked occurrences retain both original refs without duplicate judgment
+PASS same-byte retained archive needs explicit correspondence and rejects conflicting identities
+PASS additional verified archive copy preserves the same source identity
+PASS real ledger repo-relative text pointer resolves independently of caller cwd
+PASS supported legacy adapter preserves original source and verdict with both hashes
+PASS real final-review keys ledger requires supported exact complete line mapping
+PASS declared empty final-review keys ready retain typed correspondence
+PASS declared empty final-review keys none retain typed correspondence
+PASS actual immutable reviewSource producer is metadata, not a measurement
+PASS genuine deferred live check still requires matching live evidence
+PASS actual pre-run attribution retains earlier same-tree contradiction gaps
+39 passed, 0 failed; fixture artifacts: /private/tmp/ufz-correction-final-suite-fd52ffc7/case-39/tmp/acceptance-population-DIflh1

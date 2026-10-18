@@ -1,0 +1,14 @@
+[
+  {
+    "source": "/private/tmp/ufz-correction-actual-continuity-4911223a/retained-originals/counter-source.mjs",
+    "destination": "/private/tmp/ufz-correction-actual-continuity-4911223a/caller-workspace/inputs/counter.mjs",
+    "sha256": "3cc3b5575bbd274bfd58e62f01d33cd55a31f955b9e805686cc74445e894ca06",
+    "timeUtc": "2026-10-17T22:50:40.863768+00:00"
+  },
+  {
+    "source": "/private/tmp/ufz-correction-actual-continuity-4911223a/retained-originals/invocation-i1-report.md",
+    "destination": "/private/tmp/ufz-correction-actual-continuity-4911223a/caller-workspace/final-review-continuity-i1.md",
+    "sha256": "89c2e3ef37ab52b167bbd19f381649bf8f4f74978c33f2ab5d9692fdcfe272f2",
+    "timeUtc": "2026-10-17T22:50:40.864177+00:00"
+  }
+]

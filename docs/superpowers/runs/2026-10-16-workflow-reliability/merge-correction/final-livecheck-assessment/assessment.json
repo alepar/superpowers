@@ -1,0 +1,1816 @@
+{
+  "schemaVersion": 1,
+  "scope": "Bounded original33 live-check applicability update and actual l0028/l0030 data conservation review. No final product measurements/eligibility judged.",
+  "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+  "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+  "original33": {
+    "inputPath": "/private/tmp/ufz-correction-recovery-applicability/obligation-map.json",
+    "inputSha256": "d8916dbf577297836037755ee9ee21c8abf1dfdadebfeb56f835dd789a743a7d",
+    "conservedWholeInput": "/private/tmp/ufz-correction-final-livecheck-assessment/inputs/original-obligation-map.json",
+    "exactOriginalArray": "/private/tmp/ufz-correction-final-livecheck-assessment/inputs/original-requiredLiveCheckMap-array.json",
+    "arraySha256": "41233956d643008fd3aaa41bb6cec1d1e367f883ef94c260f3e1d99ec449c3a0",
+    "exactObjectCount": 33,
+    "objects": [
+      {
+        "requirementId": "l0001",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0001.json",
+        "sha256": "0368e1ae74a3b01443e2d01f6e06443aee857293a98fb72859696327f31a4382",
+        "bytes": 14350,
+        "originalCharStart": 30724,
+        "originalCharEnd": 45074
+      },
+      {
+        "requirementId": "l0002",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0002.json",
+        "sha256": "ab248fd1c3643fd0c158a429517fda0f71dd7cc6d31f57afef51c3d7422fdfad",
+        "bytes": 14337,
+        "originalCharStart": 45080,
+        "originalCharEnd": 59417
+      },
+      {
+        "requirementId": "l0003",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0003.json",
+        "sha256": "cb52a4a8c415f9c2537fef5338494e7941d20caa004cd8da30c783929de08688",
+        "bytes": 7927,
+        "originalCharStart": 59423,
+        "originalCharEnd": 67350
+      },
+      {
+        "requirementId": "l0004",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0004.json",
+        "sha256": "b5cc0c4b0749b4f7e520006befa2f5c73321ef6503288aeaf587077e1daa63c8",
+        "bytes": 7910,
+        "originalCharStart": 67356,
+        "originalCharEnd": 75266
+      },
+      {
+        "requirementId": "l0005",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0005.json",
+        "sha256": "f5c776df46f8afb0f623628f9f4c0f14dc70b758d6f09b07b338a882aeb85540",
+        "bytes": 7910,
+        "originalCharStart": 75272,
+        "originalCharEnd": 83182
+      },
+      {
+        "requirementId": "l0006",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0006.json",
+        "sha256": "971ffa44b698da3de726c5f5b1b0d4fa4e7351db4f8471ad2fc0c80b162de7b6",
+        "bytes": 7812,
+        "originalCharStart": 83188,
+        "originalCharEnd": 91000
+      },
+      {
+        "requirementId": "l0007",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0007.json",
+        "sha256": "2b8db32601f4b2d8b339e2130edc9af5195896adc4baddc1d45931d8ff322bf3",
+        "bytes": 7693,
+        "originalCharStart": 91006,
+        "originalCharEnd": 98699
+      },
+      {
+        "requirementId": "l0008",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0008.json",
+        "sha256": "47705ae1afc328c7d4a112cf648c2c7e3d540a5f10f5076bb68ac52733dfc6f5",
+        "bytes": 7663,
+        "originalCharStart": 98705,
+        "originalCharEnd": 106368
+      },
+      {
+        "requirementId": "l0009",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0009.json",
+        "sha256": "4b155da2210eb9f3b275be135a4d0d4994c7026905b6e94dc7fa77feb87630a4",
+        "bytes": 7855,
+        "originalCharStart": 106374,
+        "originalCharEnd": 114229
+      },
+      {
+        "requirementId": "l0010",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0010.json",
+        "sha256": "da9ff65ebcfb9e66bc726e999a9cc0e88a2bc3757c9c56ea7de3f0b01c464931",
+        "bytes": 8024,
+        "originalCharStart": 114235,
+        "originalCharEnd": 122259
+      },
+      {
+        "requirementId": "l0011",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0011.json",
+        "sha256": "4cd0cedae644149bfecd0ee6ebdd53a2bf86fc3f2159cc4ad3755959e18a3abf",
+        "bytes": 14087,
+        "originalCharStart": 122265,
+        "originalCharEnd": 136352
+      },
+      {
+        "requirementId": "l0012",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0012.json",
+        "sha256": "57b2ee43590ad290fffc25ff242e480a8dda5ba1a96c7a002cecc51b62002019",
+        "bytes": 13967,
+        "originalCharStart": 136358,
+        "originalCharEnd": 150325
+      },
+      {
+        "requirementId": "l0013",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0013.json",
+        "sha256": "0cc4be9da07b1e8e108d64e6aa22149b30b1a9f921943928f4e809827b995cee",
+        "bytes": 14070,
+        "originalCharStart": 150331,
+        "originalCharEnd": 164401
+      },
+      {
+        "requirementId": "l0014",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0014.json",
+        "sha256": "5dfc232b6526ac47f2fc83ef314afbcec0dc68899c5150d0f0e66c26fb61e1f4",
+        "bytes": 16504,
+        "originalCharStart": 164407,
+        "originalCharEnd": 180911
+      },
+      {
+        "requirementId": "l0015",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0015.json",
+        "sha256": "e99c6f06722432d001f1bfa2618159b627db40e196993ed70aafb57244ce3b08",
+        "bytes": 16385,
+        "originalCharStart": 180917,
+        "originalCharEnd": 197302
+      },
+      {
+        "requirementId": "l0016",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0016.json",
+        "sha256": "96740f1cf68cac601a8ecbd3f46e3aa7cef7fc522d237662165a22d6c094a07b",
+        "bytes": 11160,
+        "originalCharStart": 197308,
+        "originalCharEnd": 208468
+      },
+      {
+        "requirementId": "l0017",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0017.json",
+        "sha256": "f9bb8916412fd2fd44812a312c38f2359889cbe9f2918ed8fb84a0da9424a5c1",
+        "bytes": 11149,
+        "originalCharStart": 208474,
+        "originalCharEnd": 219623
+      },
+      {
+        "requirementId": "l0018",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0018.json",
+        "sha256": "4873cd5a632a8ef285256b35b4b3885ba4545712a7148f2a750532e22f872748",
+        "bytes": 11217,
+        "originalCharStart": 219629,
+        "originalCharEnd": 230846
+      },
+      {
+        "requirementId": "l0019",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0019.json",
+        "sha256": "a333f8d2ededf30cb39afce918deccb93d55680e22d6ba86182801fa759b34f6",
+        "bytes": 11212,
+        "originalCharStart": 230852,
+        "originalCharEnd": 242064
+      },
+      {
+        "requirementId": "l0020",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0020.json",
+        "sha256": "51a5051bed8b5b3fc1243004cf1085fcb4270febbd5d658495524f04922e6586",
+        "bytes": 11345,
+        "originalCharStart": 242070,
+        "originalCharEnd": 253415
+      },
+      {
+        "requirementId": "l0021",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0021.json",
+        "sha256": "17e123e3855ed53cffffc8e5636d002626c9e9e8c621012bf592d86aecf4128c",
+        "bytes": 11318,
+        "originalCharStart": 253421,
+        "originalCharEnd": 264739
+      },
+      {
+        "requirementId": "l0022",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0022.json",
+        "sha256": "79152abc4665aafa7f07f5854c1576af549e5dafc8a44c816f335a37ca2387d8",
+        "bytes": 11328,
+        "originalCharStart": 264745,
+        "originalCharEnd": 276073
+      },
+      {
+        "requirementId": "l0023",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0023.json",
+        "sha256": "a9a2b30d406c32e19b8a9f8d2c96e6b72ceaff7aea1c3e05e82ca57e31650a49",
+        "bytes": 11367,
+        "originalCharStart": 276079,
+        "originalCharEnd": 287446
+      },
+      {
+        "requirementId": "l0024",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0024.json",
+        "sha256": "61b107fa52583d0ceb50406099628b6cf554d2e08ed5354778d3b9bc361273cf",
+        "bytes": 11354,
+        "originalCharStart": 287452,
+        "originalCharEnd": 298806
+      },
+      {
+        "requirementId": "l0025",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0025.json",
+        "sha256": "dce05f7b6c9b4bfac0e32185ff8774ccbf1fb67b32a0c66b6ed679b90b6ac90d",
+        "bytes": 10909,
+        "originalCharStart": 298812,
+        "originalCharEnd": 309721
+      },
+      {
+        "requirementId": "l0026",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0026.json",
+        "sha256": "587661ded433e5486113b256bc0bcad1c411e433b993e2f910bca379c4d7fb81",
+        "bytes": 10878,
+        "originalCharStart": 309727,
+        "originalCharEnd": 320605
+      },
+      {
+        "requirementId": "l0027",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0027.json",
+        "sha256": "2c611d8c679389f4d4f4e1f6ae4717be1030ab897b647bf1b7b8c8138d9782a9",
+        "bytes": 10879,
+        "originalCharStart": 320611,
+        "originalCharEnd": 331490
+      },
+      {
+        "requirementId": "l0028",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0028.json",
+        "sha256": "0b9427dcae8fdc7ce5f0c1e4be4d6eaa98b76095da8116253315d05b9b503287",
+        "bytes": 11294,
+        "originalCharStart": 331496,
+        "originalCharEnd": 342790
+      },
+      {
+        "requirementId": "l0029",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0029.json",
+        "sha256": "7542aef9c19fc9423fd4fb02550310565a84db9c02a21a536f927c0df080b4b4",
+        "bytes": 12018,
+        "originalCharStart": 342796,
+        "originalCharEnd": 354814
+      },
+      {
+        "requirementId": "l0030",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0030.json",
+        "sha256": "b46b321d600a42ea8b306d8bb83d5e947ccc040cdcbe322fb19cb02ee6b51d1d",
+        "bytes": 14002,
+        "originalCharStart": 354820,
+        "originalCharEnd": 368822
+      },
+      {
+        "requirementId": "l0031",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0031.json",
+        "sha256": "7a8a67ea26dc9a88ec8a93ef44bef969c017bad21bdff4ddca2cdd6565e89b9e",
+        "bytes": 13053,
+        "originalCharStart": 368828,
+        "originalCharEnd": 381881
+      },
+      {
+        "requirementId": "l0032",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0032.json",
+        "sha256": "7257e4301c9114ab743a67bb46c721f4989041ac8d28d6fe3b3b1e4c5be3971d",
+        "bytes": 9633,
+        "originalCharStart": 381887,
+        "originalCharEnd": 391520
+      },
+      {
+        "requirementId": "l0033",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0033.json",
+        "sha256": "0e3f41f04a9eadc2052cf2c892f92d891b36c27200b1f006446f7a9e4d72f21f",
+        "bytes": 9630,
+        "originalCharStart": 391526,
+        "originalCharEnd": 401156
+      }
+    ]
+  },
+  "executionPlan": {
+    "path": "/private/tmp/ufz-correction-final-suite-plan-c2168120.json",
+    "sha256": "3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76",
+    "distinctCommands": 47,
+    "extraTmpdirOperationsPending": 2,
+    "totalProductInvocationsIfCompleted": 49,
+    "commands45to47": [
+      {
+        "caseId": "45",
+        "command": "node tests/super-code/test-verification-settlement-profile.mjs",
+        "entrypointSha256": "168086dcdd8c08e2b995e96343aab75e3a2d363031e29132facca26980c96b88",
+        "requirementIds": [
+          "combined-suite-case-45"
+        ]
+      },
+      {
+        "caseId": "46",
+        "command": "node tests/super-code/unplanned-admission-final-wave.mjs",
+        "entrypointSha256": "7e5993760cf853d5477e2c82f1610b1147a3333389ed1e11c3e55fe4fcff0998",
+        "requirementIds": [
+          "combined-suite-case-46"
+        ]
+      },
+      {
+        "caseId": "47",
+        "command": "node tests/super-code/fixture-liveness-final-wave.mjs",
+        "entrypointSha256": "a9c532101fbe784cf437362ede92bc414f79814e42e8507f265bb42451954882",
+        "requirementIds": [
+          "combined-suite-case-47"
+        ]
+      }
+    ],
+    "state": "Parent reports serial47 running; no result read/certified by this review; two targeted variants pending"
+  },
+  "ownerAmendmentVerification": {
+    "path": "/private/tmp/ufz-correction-final-suite-owner-amendment.json",
+    "sha256": "74cf10972810c5a37fd2722c55fea9d5b6937170094721038690361f1e35c0af",
+    "authority": {
+      "receivedMessage": "mQ0VuyiMVWeP",
+      "thread": "d4xcusxkUh1",
+      "instruction": "bounded repair and acceptance reconciliation toward conditional local merge, no waiver/push/release"
+    },
+    "canonicalRunPath": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/docs/superpowers/runs/2026-10-16-workflow-reliability/run.md",
+    "canonicalRunSnapshotSha256AtRead": "d734705da47c4607efc2aaec2fa4ecf8636810c2a86176c38df5d3fa45f854fc",
+    "canonicalAmendmentExactlyEqualsPrivate": true,
+    "changesVerified": 50,
+    "originalRequirements": 57,
+    "currentRequirements": 69,
+    "allOldRequirementIdsRetained": true,
+    "all37OldCheckRecordsRetained": true,
+    "amendmentState": "prospective requirements only; no new measurements or acceptance established",
+    "oldAggregateMismatchPreservedAsPredecessor": true,
+    "authorityIsNotWaiver": true,
+    "currentEvidenceEntriesObserved": 0,
+    "requiredLivePopulationGapStillRecorded": [
+      "Historical task/reviewer requiredLiveChecks population has no authoritative complete reduction; no empty-clean claim."
+    ]
+  },
+  "dataOnlyJudgmentsFile": "data-only-judgments.json",
+  "dataOnlySupportedSlots": [
+    "l0028",
+    "l0030"
+  ],
+  "perOldGapFactBoundChanges": [
+    {
+      "requirementId": "l0001",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0001",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0001.json",
+        "sha256": "0368e1ae74a3b01443e2d01f6e06443aee857293a98fb72859696327f31a4382",
+        "bytes": 14350,
+        "originalCharStart": 30724,
+        "originalCharEnd": 45074
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "34",
+          "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+          "entrypointSha256": "32b045fd63cad1a3a4bd314dc6920b0fcd8837d20d69cf775b8d86bd4f4b8826",
+          "requirementIds": [
+            "combined-suite-case-34"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-34",
+          "next": {
+            "id": "combined-suite-case-34",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+            "configuration": "{\"caseId\":\"34\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"32b045fd63cad1a3a4bd314dc6920b0fcd8837d20d69cf775b8d86bd4f4b8826\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-34\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0002",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0002",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0002.json",
+        "sha256": "ab248fd1c3643fd0c158a429517fda0f71dd7cc6d31f57afef51c3d7422fdfad",
+        "bytes": 14337,
+        "originalCharStart": 45080,
+        "originalCharEnd": 59417
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "01",
+          "command": "node tests/super-code/replay-harness.mjs",
+          "entrypointSha256": "c9e0469c872975898ae20bc865bf6a404a0dc8aa9085769c2b8ecfd7015f73fc",
+          "requirementIds": [
+            "combined-suite-case-01"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-01",
+          "next": {
+            "id": "combined-suite-case-01",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/replay-harness.mjs",
+            "configuration": "{\"caseId\":\"01\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"c9e0469c872975898ae20bc865bf6a404a0dc8aa9085769c2b8ecfd7015f73fc\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-01\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0003",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0003",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0003.json",
+        "sha256": "cb52a4a8c415f9c2537fef5338494e7941d20caa004cd8da30c783929de08688",
+        "bytes": 7927,
+        "originalCharStart": 59423,
+        "originalCharEnd": 67350
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "36",
+          "command": "node tests/super-code/recovery-hold-scope-r1.mjs",
+          "entrypointSha256": "f70be0ca1dc5249438c3433d1673850553b61eb7ddcf004fb74bca4859aa018f",
+          "requirementIds": [
+            "combined-suite-case-36"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-36",
+          "next": {
+            "id": "combined-suite-case-36",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/recovery-hold-scope-r1.mjs",
+            "configuration": "{\"caseId\":\"36\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"f70be0ca1dc5249438c3433d1673850553b61eb7ddcf004fb74bca4859aa018f\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-36\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0004",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0004",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0004.json",
+        "sha256": "b5cc0c4b0749b4f7e520006befa2f5c73321ef6503288aeaf587077e1daa63c8",
+        "bytes": 7910,
+        "originalCharStart": 67356,
+        "originalCharEnd": 75266
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "01",
+          "command": "node tests/super-code/replay-harness.mjs",
+          "entrypointSha256": "c9e0469c872975898ae20bc865bf6a404a0dc8aa9085769c2b8ecfd7015f73fc",
+          "requirementIds": [
+            "combined-suite-case-01"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-01",
+          "next": {
+            "id": "combined-suite-case-01",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/replay-harness.mjs",
+            "configuration": "{\"caseId\":\"01\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"c9e0469c872975898ae20bc865bf6a404a0dc8aa9085769c2b8ecfd7015f73fc\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-01\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0005",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0005",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0005.json",
+        "sha256": "f5c776df46f8afb0f623628f9f4c0f14dc70b758d6f09b07b338a882aeb85540",
+        "bytes": 7910,
+        "originalCharStart": 75272,
+        "originalCharEnd": 83182
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "18",
+          "command": "bash tests/super-code/test-run-digest.sh",
+          "entrypointSha256": "ae18759dde95d630bc665dd198b985ed9d15265b4c31a55cd8f6338243ef40fa",
+          "requirementIds": [
+            "combined-suite-case-18"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-18",
+          "next": {
+            "id": "combined-suite-case-18",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-code/test-run-digest.sh",
+            "configuration": "{\"caseId\":\"18\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"ae18759dde95d630bc665dd198b985ed9d15265b4c31a55cd8f6338243ef40fa\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-18\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0006",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0006",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0006.json",
+        "sha256": "971ffa44b698da3de726c5f5b1b0d4fa4e7351db4f8471ad2fc0c80b162de7b6",
+        "bytes": 7812,
+        "originalCharStart": 83188,
+        "originalCharEnd": 91000
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "35",
+          "command": "node tests/super-code/invocation-start-r1.mjs",
+          "entrypointSha256": "8a4fb6034007e494e4cb9926519a3aaf01e6d1ef04e58afe973a05a388aeefe2",
+          "requirementIds": [
+            "combined-suite-case-35"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-35",
+          "next": {
+            "id": "combined-suite-case-35",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/invocation-start-r1.mjs",
+            "configuration": "{\"caseId\":\"35\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"8a4fb6034007e494e4cb9926519a3aaf01e6d1ef04e58afe973a05a388aeefe2\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-35\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0007",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0007",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0007.json",
+        "sha256": "2b8db32601f4b2d8b339e2130edc9af5195896adc4baddc1d45931d8ff322bf3",
+        "bytes": 7693,
+        "originalCharStart": 91006,
+        "originalCharEnd": 98699
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "01",
+          "command": "node tests/super-code/replay-harness.mjs",
+          "entrypointSha256": "c9e0469c872975898ae20bc865bf6a404a0dc8aa9085769c2b8ecfd7015f73fc",
+          "requirementIds": [
+            "combined-suite-case-01"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-01",
+          "next": {
+            "id": "combined-suite-case-01",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/replay-harness.mjs",
+            "configuration": "{\"caseId\":\"01\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"c9e0469c872975898ae20bc865bf6a404a0dc8aa9085769c2b8ecfd7015f73fc\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-01\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0008",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0008",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0008.json",
+        "sha256": "47705ae1afc328c7d4a112cf648c2c7e3d540a5f10f5076bb68ac52733dfc6f5",
+        "bytes": 7663,
+        "originalCharStart": 98705,
+        "originalCharEnd": 106368
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "03",
+          "command": "bash tests/super-code/test-dispatch-text.sh",
+          "entrypointSha256": "d48e7c7bc404b09ee053e45a9056c02b7912ef08b0d8ed48b4384539495e72b7",
+          "requirementIds": [
+            "combined-suite-case-03"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-03",
+          "next": {
+            "id": "combined-suite-case-03",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-code/test-dispatch-text.sh",
+            "configuration": "{\"caseId\":\"03\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"d48e7c7bc404b09ee053e45a9056c02b7912ef08b0d8ed48b4384539495e72b7\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-03\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0009",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0009",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0009.json",
+        "sha256": "4b155da2210eb9f3b275be135a4d0d4994c7026905b6e94dc7fa77feb87630a4",
+        "bytes": 7855,
+        "originalCharStart": 106374,
+        "originalCharEnd": 114229
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "34",
+          "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+          "entrypointSha256": "32b045fd63cad1a3a4bd314dc6920b0fcd8837d20d69cf775b8d86bd4f4b8826",
+          "requirementIds": [
+            "combined-suite-case-34"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-34",
+          "next": {
+            "id": "combined-suite-case-34",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+            "configuration": "{\"caseId\":\"34\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"32b045fd63cad1a3a4bd314dc6920b0fcd8837d20d69cf775b8d86bd4f4b8826\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-34\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0010",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0010",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0010.json",
+        "sha256": "da9ff65ebcfb9e66bc726e999a9cc0e88a2bc3757c9c56ea7de3f0b01c464931",
+        "bytes": 8024,
+        "originalCharStart": 114235,
+        "originalCharEnd": 122259
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "37",
+          "command": "node tests/super-code/startup-builder-seam-r1.mjs",
+          "entrypointSha256": "29bd8940eadbe2b67089a7ba5c3938a68cd7eebbf72425355c719e5d0c01e013",
+          "requirementIds": [
+            "combined-suite-case-37"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-37",
+          "next": {
+            "id": "combined-suite-case-37",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/startup-builder-seam-r1.mjs",
+            "configuration": "{\"caseId\":\"37\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"29bd8940eadbe2b67089a7ba5c3938a68cd7eebbf72425355c719e5d0c01e013\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-37\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0011",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0011",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0011.json",
+        "sha256": "4cd0cedae644149bfecd0ee6ebdd53a2bf86fc3f2159cc4ad3755959e18a3abf",
+        "bytes": 14087,
+        "originalCharStart": 122265,
+        "originalCharEnd": 136352
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "36",
+          "command": "node tests/super-code/recovery-hold-scope-r1.mjs",
+          "entrypointSha256": "f70be0ca1dc5249438c3433d1673850553b61eb7ddcf004fb74bca4859aa018f",
+          "requirementIds": [
+            "combined-suite-case-36"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-36",
+          "next": {
+            "id": "combined-suite-case-36",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/recovery-hold-scope-r1.mjs",
+            "configuration": "{\"caseId\":\"36\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"f70be0ca1dc5249438c3433d1673850553b61eb7ddcf004fb74bca4859aa018f\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-36\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0012",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0012",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0012.json",
+        "sha256": "57b2ee43590ad290fffc25ff242e480a8dda5ba1a96c7a002cecc51b62002019",
+        "bytes": 13967,
+        "originalCharStart": 136358,
+        "originalCharEnd": 150325
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "01",
+          "command": "node tests/super-code/replay-harness.mjs",
+          "entrypointSha256": "c9e0469c872975898ae20bc865bf6a404a0dc8aa9085769c2b8ecfd7015f73fc",
+          "requirementIds": [
+            "combined-suite-case-01"
+          ]
+        },
+        {
+          "caseId": "36",
+          "command": "node tests/super-code/recovery-hold-scope-r1.mjs",
+          "entrypointSha256": "f70be0ca1dc5249438c3433d1673850553b61eb7ddcf004fb74bca4859aa018f",
+          "requirementIds": [
+            "combined-suite-case-36"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/fail"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding. No measured run-start baseline/whole-run owner established.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-01",
+          "next": {
+            "id": "combined-suite-case-01",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/replay-harness.mjs",
+            "configuration": "{\"caseId\":\"01\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"c9e0469c872975898ae20bc865bf6a404a0dc8aa9085769c2b8ecfd7015f73fc\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-01\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        },
+        {
+          "id": "combined-suite-case-36",
+          "next": {
+            "id": "combined-suite-case-36",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/recovery-hold-scope-r1.mjs",
+            "configuration": "{\"caseId\":\"36\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"f70be0ca1dc5249438c3433d1673850553b61eb7ddcf004fb74bca4859aa018f\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-36\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ],
+      "failureFixCorrespondenceRetained": "Retain old fail and review o00148 observed:4 (and later observed:8)→verification:12 at 0c1a61d28b20d557e0664056906edbafaed34d36; current replay/recovery fixtures must pass.",
+      "historicalFailureNotErased": true
+    },
+    {
+      "requirementId": "l0013",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0013",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0013.json",
+        "sha256": "0cc4be9da07b1e8e108d64e6aa22149b30b1a9f921943928f4e809827b995cee",
+        "bytes": 14070,
+        "originalCharStart": 150331,
+        "originalCharEnd": 164401
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "18",
+          "command": "bash tests/super-code/test-run-digest.sh",
+          "entrypointSha256": "ae18759dde95d630bc665dd198b985ed9d15265b4c31a55cd8f6338243ef40fa",
+          "requirementIds": [
+            "combined-suite-case-18"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-18",
+          "next": {
+            "id": "combined-suite-case-18",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-code/test-run-digest.sh",
+            "configuration": "{\"caseId\":\"18\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"ae18759dde95d630bc665dd198b985ed9d15265b4c31a55cd8f6338243ef40fa\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-18\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0014",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0014",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0014.json",
+        "sha256": "5dfc232b6526ac47f2fc83ef314afbcec0dc68899c5150d0f0e66c26fb61e1f4",
+        "bytes": 16504,
+        "originalCharStart": 164407,
+        "originalCharEnd": 180911
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "35",
+          "command": "node tests/super-code/invocation-start-r1.mjs",
+          "entrypointSha256": "8a4fb6034007e494e4cb9926519a3aaf01e6d1ef04e58afe973a05a388aeefe2",
+          "requirementIds": [
+            "combined-suite-case-35"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-35",
+          "next": {
+            "id": "combined-suite-case-35",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/invocation-start-r1.mjs",
+            "configuration": "{\"caseId\":\"35\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"8a4fb6034007e494e4cb9926519a3aaf01e6d1ef04e58afe973a05a388aeefe2\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-35\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0015",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0015",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0015.json",
+        "sha256": "e99c6f06722432d001f1bfa2618159b627db40e196993ed70aafb57244ce3b08",
+        "bytes": 16385,
+        "originalCharStart": 180917,
+        "originalCharEnd": 197302
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "01",
+          "command": "node tests/super-code/replay-harness.mjs",
+          "entrypointSha256": "c9e0469c872975898ae20bc865bf6a404a0dc8aa9085769c2b8ecfd7015f73fc",
+          "requirementIds": [
+            "combined-suite-case-01"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-01",
+          "next": {
+            "id": "combined-suite-case-01",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/replay-harness.mjs",
+            "configuration": "{\"caseId\":\"01\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"c9e0469c872975898ae20bc865bf6a404a0dc8aa9085769c2b8ecfd7015f73fc\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-01\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0016",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0016",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0016.json",
+        "sha256": "96740f1cf68cac601a8ecbd3f46e3aa7cef7fc522d237662165a22d6c094a07b",
+        "bytes": 11160,
+        "originalCharStart": 197308,
+        "originalCharEnd": 208468
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "29",
+          "command": "bash tests/super-auto/archive-integrity-r1.sh",
+          "entrypointSha256": "21285fda3051e7dd001ca757310c128d55d29fdd630cd4b38ec19f56d828085c",
+          "requirementIds": [
+            "combined-suite-case-29"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-29",
+          "next": {
+            "id": "combined-suite-case-29",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-auto/archive-integrity-r1.sh",
+            "configuration": "{\"caseId\":\"29\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"21285fda3051e7dd001ca757310c128d55d29fdd630cd4b38ec19f56d828085c\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-29\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0017",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0017",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0017.json",
+        "sha256": "f9bb8916412fd2fd44812a312c38f2359889cbe9f2918ed8fb84a0da9424a5c1",
+        "bytes": 11149,
+        "originalCharStart": 208474,
+        "originalCharEnd": 219623
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "11",
+          "command": "bash tests/super-auto/test-scripts.sh",
+          "entrypointSha256": "425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e",
+          "requirementIds": [
+            "combined-suite-case-11"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-11",
+          "next": {
+            "id": "combined-suite-case-11",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-auto/test-scripts.sh",
+            "configuration": "{\"caseId\":\"11\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-11\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0018",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0018",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0018.json",
+        "sha256": "4873cd5a632a8ef285256b35b4b3885ba4545712a7148f2a750532e22f872748",
+        "bytes": 11217,
+        "originalCharStart": 219629,
+        "originalCharEnd": 230846
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "33",
+          "command": "bash tests/super-auto/projection-output-r1.sh",
+          "entrypointSha256": "514f03a926217fc2ac6b3dfae8fc15a8a70ff45bcf36b4cac88dc3758fce12ff",
+          "requirementIds": [
+            "combined-suite-case-33"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-33",
+          "next": {
+            "id": "combined-suite-case-33",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-auto/projection-output-r1.sh",
+            "configuration": "{\"caseId\":\"33\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"514f03a926217fc2ac6b3dfae8fc15a8a70ff45bcf36b4cac88dc3758fce12ff\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-33\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0019",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0019",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0019.json",
+        "sha256": "a333f8d2ededf30cb39afce918deccb93d55680e22d6ba86182801fa759b34f6",
+        "bytes": 11212,
+        "originalCharStart": 230852,
+        "originalCharEnd": 242064
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "11",
+          "command": "bash tests/super-auto/test-scripts.sh",
+          "entrypointSha256": "425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e",
+          "requirementIds": [
+            "combined-suite-case-11"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-11",
+          "next": {
+            "id": "combined-suite-case-11",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-auto/test-scripts.sh",
+            "configuration": "{\"caseId\":\"11\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-11\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0020",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0020",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0020.json",
+        "sha256": "51a5051bed8b5b3fc1243004cf1085fcb4270febbd5d658495524f04922e6586",
+        "bytes": 11345,
+        "originalCharStart": 242070,
+        "originalCharEnd": 253415
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "31",
+          "command": "bash tests/super-auto/generated-review-inputs-r1.sh",
+          "entrypointSha256": "a7da9f3718adf97186d277859164ae6dda6675ff463a448a91ff1d7192129b0c",
+          "requirementIds": [
+            "combined-suite-case-31"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-31",
+          "next": {
+            "id": "combined-suite-case-31",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-auto/generated-review-inputs-r1.sh",
+            "configuration": "{\"caseId\":\"31\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"a7da9f3718adf97186d277859164ae6dda6675ff463a448a91ff1d7192129b0c\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-31\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0021",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0021",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0021.json",
+        "sha256": "17e123e3855ed53cffffc8e5636d002626c9e9e8c621012bf592d86aecf4128c",
+        "bytes": 11318,
+        "originalCharStart": 253421,
+        "originalCharEnd": 264739
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "11",
+          "command": "bash tests/super-auto/test-scripts.sh",
+          "entrypointSha256": "425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e",
+          "requirementIds": [
+            "combined-suite-case-11"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-11",
+          "next": {
+            "id": "combined-suite-case-11",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-auto/test-scripts.sh",
+            "configuration": "{\"caseId\":\"11\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-11\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0022",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0022",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0022.json",
+        "sha256": "79152abc4665aafa7f07f5854c1576af549e5dafc8a44c816f335a37ca2387d8",
+        "bytes": 11328,
+        "originalCharStart": 264745,
+        "originalCharEnd": 276073
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "03",
+          "command": "bash tests/super-code/test-dispatch-text.sh",
+          "entrypointSha256": "d48e7c7bc404b09ee053e45a9056c02b7912ef08b0d8ed48b4384539495e72b7",
+          "requirementIds": [
+            "combined-suite-case-03"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-03",
+          "next": {
+            "id": "combined-suite-case-03",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-code/test-dispatch-text.sh",
+            "configuration": "{\"caseId\":\"03\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"d48e7c7bc404b09ee053e45a9056c02b7912ef08b0d8ed48b4384539495e72b7\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-03\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0023",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0023",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0023.json",
+        "sha256": "a9a2b30d406c32e19b8a9f8d2c96e6b72ceaff7aea1c3e05e82ca57e31650a49",
+        "bytes": 11367,
+        "originalCharStart": 276079,
+        "originalCharEnd": 287446
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "30",
+          "command": "bash tests/super-auto/collection-symlinks-r1.sh",
+          "entrypointSha256": "3e7eff204bbeb8502d41ea3cb4d3fce94240da278f573a3971457b10d6d39754",
+          "requirementIds": [
+            "combined-suite-case-30"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-30",
+          "next": {
+            "id": "combined-suite-case-30",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-auto/collection-symlinks-r1.sh",
+            "configuration": "{\"caseId\":\"30\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"3e7eff204bbeb8502d41ea3cb4d3fce94240da278f573a3971457b10d6d39754\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-30\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0024",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0024",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0024.json",
+        "sha256": "61b107fa52583d0ceb50406099628b6cf554d2e08ed5354778d3b9bc361273cf",
+        "bytes": 11354,
+        "originalCharStart": 287452,
+        "originalCharEnd": 298806
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "11",
+          "command": "bash tests/super-auto/test-scripts.sh",
+          "entrypointSha256": "425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e",
+          "requirementIds": [
+            "combined-suite-case-11"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-11",
+          "next": {
+            "id": "combined-suite-case-11",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-auto/test-scripts.sh",
+            "configuration": "{\"caseId\":\"11\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-11\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ]
+    },
+    {
+      "requirementId": "l0025",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0025",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0025.json",
+        "sha256": "dce05f7b6c9b4bfac0e32185ff8774ccbf1fb67b32a0c66b6ed679b90b6ac90d",
+        "bytes": 10909,
+        "originalCharStart": 298812,
+        "originalCharEnd": 309721
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Actual distinct target requirement ID/source/configuration now recorded; previous hypothetical run name replaced in assessment only",
+      "currentVerificationState": "Pending separate inherited/trailing targeted operation after serial47 suite; no variant pass inferred",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [],
+      "targetedRequirement": {
+        "id": "current-live-tmpdir-inherited",
+        "kind": "measurement",
+        "owner": "super-auto",
+        "command": "bash tests/super-code/test-dispatch-text.sh",
+        "configuration": "final-c2168120 controlled TMPDIR inherited variant; exact actual environment/source/tool receipt retained separately",
+        "requiredLive": true
+      }
+    },
+    {
+      "requirementId": "l0026",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0026",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0026.json",
+        "sha256": "587661ded433e5486113b256bc0bcad1c411e433b993e2f910bca379c4d7fb81",
+        "bytes": 10878,
+        "originalCharStart": 309727,
+        "originalCharEnd": 320605
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Actual distinct target requirement ID/source/configuration now recorded; previous hypothetical run name replaced in assessment only",
+      "currentVerificationState": "Pending separate inherited/trailing targeted operation after serial47 suite; no variant pass inferred",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [],
+      "targetedRequirement": {
+        "id": "current-live-tmpdir-trailing",
+        "kind": "measurement",
+        "owner": "super-auto",
+        "command": "bash tests/super-code/test-dispatch-text.sh",
+        "configuration": "final-c2168120 controlled TMPDIR trailing variant; exact actual environment/source/tool receipt retained separately",
+        "requiredLive": true
+      }
+    },
+    {
+      "requirementId": "l0027",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0027",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0027.json",
+        "sha256": "2c611d8c679389f4d4f4e1f6ae4717be1030ab897b647bf1b7b8c8138d9782a9",
+        "bytes": 10879,
+        "originalCharStart": 320611,
+        "originalCharEnd": 331490
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "03",
+          "command": "bash tests/super-code/test-dispatch-text.sh",
+          "entrypointSha256": "d48e7c7bc404b09ee053e45a9056c02b7912ef08b0d8ed48b4384539495e72b7",
+          "requirementIds": [
+            "combined-suite-case-03"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-03",
+          "next": {
+            "id": "combined-suite-case-03",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-code/test-dispatch-text.sh",
+            "configuration": "{\"caseId\":\"03\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"d48e7c7bc404b09ee053e45a9056c02b7912ef08b0d8ed48b4384539495e72b7\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-03\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ],
+      "tmpdirScope": "Only case03 owned slashfree; does not substitute l0025 inherited/l0026 trailing"
+    },
+    {
+      "requirementId": "l0028",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0028",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0028.json",
+        "sha256": "0b9427dcae8fdc7ce5f0c1e4be4d6eaa98b76095da8116253315d05b9b503287",
+        "bytes": 11294,
+        "originalCharStart": 331496,
+        "originalCharEnd": 342790
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Previously pending bounded conservation/qualification review completed by exact frozen Git blob, report source/output and raw-data/math checks",
+      "currentVerificationState": "Supported historical-scope reuse/conservation; no additional product run and no final-source behavior claim",
+      "priorScopeOrUnknownRetained": "Historic command/input bytes are retained; no current product execution or historical cause is established by this data-only pass.",
+      "sameIdAmendmentBindings": [],
+      "dataOnlyJudgmentReference": "data-only-judgments.json#l0028",
+      "remainingForThisSlot": []
+    },
+    {
+      "requirementId": "l0029",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0029",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0029.json",
+        "sha256": "7542aef9c19fc9423fd4fb02550310565a84db9c02a21a536f927c0df080b4b4",
+        "bytes": 12018,
+        "originalCharStart": 342796,
+        "originalCharEnd": 354814
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final owned source/evidence roots now identified; inspection remains separate",
+      "currentVerificationState": "Pending parent current owned-resource inspection after runs; no inspection performed/inferred",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [],
+      "ownedRootsKnown": [
+        "/private/tmp/ufz-correction-final-source-c2168120",
+        "/private/tmp/ufz-correction-final-suite-c2168120"
+      ]
+    },
+    {
+      "requirementId": "l0030",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0030",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0030.json",
+        "sha256": "b46b321d600a42ea8b306d8bb83d5e947ccc040cdcbe322fb19cb02ee6b51d1d",
+        "bytes": 14002,
+        "originalCharStart": 354820,
+        "originalCharEnd": 368822
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Previously pending bounded conservation/qualification review completed by exact frozen Git blob, report source/output and raw-data/math checks",
+      "currentVerificationState": "Supported historical-scope reuse/conservation; no additional product run and no final-source behavior claim",
+      "priorScopeOrUnknownRetained": "Historic command/input bytes are retained; no current product execution or historical cause is established by this data-only pass.",
+      "sameIdAmendmentBindings": [],
+      "dataOnlyJudgmentReference": "data-only-judgments.json#l0030",
+      "remainingForThisSlot": []
+    },
+    {
+      "requirementId": "l0031",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0031",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0031.json",
+        "sha256": "7a8a67ea26dc9a88ec8a93ef44bef969c017bad21bdff4ddca2cdd6565e89b9e",
+        "bytes": 13053,
+        "originalCharStart": 368828,
+        "originalCharEnd": 381881
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "03",
+          "command": "bash tests/super-code/test-dispatch-text.sh",
+          "entrypointSha256": "d48e7c7bc404b09ee053e45a9056c02b7912ef08b0d8ed48b4384539495e72b7",
+          "requirementIds": [
+            "combined-suite-case-03"
+          ]
+        },
+        {
+          "caseId": "35",
+          "command": "node tests/super-code/invocation-start-r1.mjs",
+          "entrypointSha256": "8a4fb6034007e494e4cb9926519a3aaf01e6d1ef04e58afe973a05a388aeefe2",
+          "requirementIds": [
+            "combined-suite-case-35"
+          ]
+        },
+        {
+          "caseId": "34",
+          "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+          "entrypointSha256": "32b045fd63cad1a3a4bd314dc6920b0fcd8837d20d69cf775b8d86bd4f4b8826",
+          "requirementIds": [
+            "combined-suite-case-34"
+          ]
+        },
+        {
+          "caseId": "37",
+          "command": "node tests/super-code/startup-builder-seam-r1.mjs",
+          "entrypointSha256": "29bd8940eadbe2b67089a7ba5c3938a68cd7eebbf72425355c719e5d0c01e013",
+          "requirementIds": [
+            "combined-suite-case-37"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/fail"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding. No measured run-start baseline/whole-run owner established.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-03",
+          "next": {
+            "id": "combined-suite-case-03",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-code/test-dispatch-text.sh",
+            "configuration": "{\"caseId\":\"03\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"d48e7c7bc404b09ee053e45a9056c02b7912ef08b0d8ed48b4384539495e72b7\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-03\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        },
+        {
+          "id": "combined-suite-case-35",
+          "next": {
+            "id": "combined-suite-case-35",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/invocation-start-r1.mjs",
+            "configuration": "{\"caseId\":\"35\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"8a4fb6034007e494e4cb9926519a3aaf01e6d1ef04e58afe973a05a388aeefe2\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-35\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        },
+        {
+          "id": "combined-suite-case-34",
+          "next": {
+            "id": "combined-suite-case-34",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/invocation-source-binding-r1.mjs",
+            "configuration": "{\"caseId\":\"34\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"32b045fd63cad1a3a4bd314dc6920b0fcd8837d20d69cf775b8d86bd4f4b8826\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-34\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        },
+        {
+          "id": "combined-suite-case-37",
+          "next": {
+            "id": "combined-suite-case-37",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "node tests/super-code/startup-builder-seam-r1.mjs",
+            "configuration": "{\"caseId\":\"37\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"29bd8940eadbe2b67089a7ba5c3938a68cd7eebbf72425355c719e5d0c01e013\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-37\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ],
+      "failureFixCorrespondenceRetained": "Retain old fail and review o00149 observed:3→verification:8 at e074a18493acc7ae30c0a31ceeb77964a0d4e4bc; preserve malformed reviewer observed:[3] as a discrepancy; current dispatch/startup/source-binding fixtures must pass.",
+      "historicalFailureNotErased": true
+    },
+    {
+      "requirementId": "l0032",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0032",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0032.json",
+        "sha256": "7257e4301c9114ab743a67bb46c721f4989041ac8d28d6fe3b3b1e4c5be3971d",
+        "bytes": 9633,
+        "originalCharStart": 381887,
+        "originalCharEnd": 391520
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "32",
+          "command": "bash tests/super-auto/outer-cleanup-r1.sh",
+          "entrypointSha256": "41277da48b5000b487ac63ec6b39ec6eb449d2f982a835537c8c82a1e81e9ee4",
+          "requirementIds": [
+            "combined-suite-case-32"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-32",
+          "next": {
+            "id": "combined-suite-case-32",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-auto/outer-cleanup-r1.sh",
+            "configuration": "{\"caseId\":\"32\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"41277da48b5000b487ac63ec6b39ec6eb449d2f982a835537c8c82a1e81e9ee4\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-32\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ],
+      "inlineEnvironmentEquivalenceBoundary": "Original inline TMPDIR/HOME/XDG command retained byte-identically; actual same-ID combined-case config explicitly amended to controlled env at final tree. Historical inventory-slot applicability bridge must be carried explicitly into final caller assessment, not silent exact-command equality."
+    },
+    {
+      "requirementId": "l0033",
+      "originalDeclarationExactBytes": {
+        "requirementId": "l0033",
+        "path": "/private/tmp/ufz-correction-final-livecheck-assessment/original-live-declarations/l0033.json",
+        "sha256": "0e3f41f04a9eadc2052cf2c892f92d891b36c27200b1f006446f7a9e4d72f21f",
+        "bytes": 9630,
+        "originalCharStart": 391526,
+        "originalCharEnd": 401156
+      },
+      "originalRequirementObjectUnchanged": true,
+      "mappedFinalCases": [
+        {
+          "caseId": "11",
+          "command": "bash tests/super-auto/test-scripts.sh",
+          "entrypointSha256": "425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e",
+          "requirementIds": [
+            "combined-suite-case-11"
+          ]
+        }
+      ],
+      "sourceHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+      "sourceTree": "294ee3186698a29c112b7ed7daded506288a52f1",
+      "oldOutcomeRetained": [
+        "live/pass"
+      ],
+      "historicalPassBecomesCurrentPass": false,
+      "factBoundChange": "Final source and approved source/configuration owner amendment now identified; current execution results still unassessed",
+      "currentVerificationState": "Pending actual final case receipt/outcome and original33 applicability integration; running suite has no final pass judged here",
+      "priorScopeOrUnknownRetained": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "sameIdAmendmentBindings": [
+        {
+          "id": "combined-suite-case-11",
+          "next": {
+            "id": "combined-suite-case-11",
+            "kind": "measurement",
+            "owner": "super-auto",
+            "command": "bash tests/super-auto/test-scripts.sh",
+            "configuration": "{\"caseId\":\"11\",\"cwd\":\"/private/tmp/ufz-correction-final-source-c2168120\",\"entrypointSha256\":\"425a60cf07538e100c13643e3b2aaa8c772753ba819283dc53f1629409e5e26e\",\"environmentContract\":\"prospective-suite-r1: exact minimal controlled HOME/TMPDIR/XDG/CODEX; tools captured by runner\",\"ownedEnvironmentRoot\":\"/private/tmp/ufz-correction-final-suite-c2168120/case-11\",\"planSha256\":\"3f9516e1bb167dd8a2a728d400ba4a5c599a39b85afa5f6ea401f15e0f050d76\"}",
+            "requiredLive": true
+          }
+        }
+      ],
+      "inlineEnvironmentEquivalenceBoundary": "Original inline TMPDIR/HOME/XDG command retained byte-identically; actual same-ID combined-case config explicitly amended to controlled env at final tree. Historical inventory-slot applicability bridge must be carried explicitly into final caller assessment, not silent exact-command equality."
+    }
+  ],
+  "inventoryBindingsFile": "inventory-bindings.json",
+  "notPerformed": [
+    "product/historical command or original script execution",
+    "suite result judgment",
+    "current owned-process inspection, signals or cleanup",
+    "new runner/test/framework",
+    "canonical RUN/product/index/Herdr/tracker writes",
+    "broader historical recertification",
+    "root eligibility or human decision inference"
+  ],
+  "remainingRequirements": [
+    "Actual final47 source-bound suite outcomes and all case/configuration receipts, including exact documented48/19/23 assertions",
+    "Actual inherited and trailing TMPDIR operations with separate exact configurations, plus case03 slashfree evidence",
+    "Explicit final historical33 applicability bridge from exact retained original declaration identities to actual new evidence, preserving original failures and source/configuration amendments",
+    "Parent scoped owned-resource inspection and truthful unknown/retention reporting (l0029)",
+    "Applicable independent review/guidance/finding-continuity/Recovery/human requirements remain caller-assessed; no waiver or historical reconstruction invented"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "observedUtc": "2026-10-17T23:52:08.980921+00:00",
+  "externalHead": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+  "mainHead": "832b051c870ae5c69adfa7f14d770292ab6c1a81",
+  "canonicalRunSha256": "a557583c44f6e3a9c6a5d581ecff4dfafce0072575bcb57d431fbe94087e8f06",
+  "trackedOutsideRunDirty": "",
+  "temporaryReviewedHead": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+  "state": "External application unperformed; original canonical/source state preserved after approval rejection"
+}

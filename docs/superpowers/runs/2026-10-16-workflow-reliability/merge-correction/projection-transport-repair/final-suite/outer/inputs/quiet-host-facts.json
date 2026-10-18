@@ -1,0 +1,19 @@
+{
+  "recordedUtc": "2026-10-17T23:33:24.461629+00:00",
+  "owner": "main-correction-parent",
+  "ownWorkflowEnginesInFlight": false,
+  "basis": "No own coordinator/roast Workflow launched; actual_projection_repair finished committed tests, scoped reviewer finished read-only review; no local correction product writer/test/fixture active. Original external worktree remains unchanged, patch reviewed in temporary clone.",
+  "processObservation": {
+    "argv": [
+      "/bin/ps",
+      "-axo",
+      "pid,ppid,comm"
+    ],
+    "exitCode": 0,
+    "stdout": "/private/tmp/ufz-correction-final-suite-ps-fd52ffc7.txt",
+    "sha256": "a0a241574b1c1ef437d50fa39777d344b83c69b50de58630284d71f895daf973",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "externalHostActivity": "Unknown; comm inventory cannot prove all hosted/other session activity.",
+  "limits": "Serial correctness suite; no causal performance/global absence claim; owned roots retained."
+}

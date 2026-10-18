@@ -1,0 +1,64 @@
+{
+  "argv": [
+    "/bin/bash",
+    "/private/tmp/ufz-correction-final-source-fd52ffc7/skills/super-code/scripts/stop-run-processes",
+    "--check",
+    "/private/tmp/ufz-correction-final-suite-c2168120",
+    "/private/tmp/ufz-correction-final-suite-outer-c2168120",
+    "/private/tmp/ufz-correction-final-tmpdir-variants-c2168120",
+    "/private/tmp/ufz-correction-actual-continuity-4911223a",
+    "/private/tmp/ufz-correction-final-source-c2168120",
+    "/private/tmp/ufz-correction-helper-source-4911223a",
+    "/private/tmp/ufz-correction-final-suite-fd52ffc7",
+    "/private/tmp/ufz-correction-final-suite-outer-fd52ffc7",
+    "/private/tmp/ufz-correction-final-tmpdir-variants-fd52ffc7",
+    "/private/tmp/ufz-correction-final-source-fd52ffc7",
+    "/private/tmp/ufz-correction-projection-repair-source",
+    "/private/tmp/ufz-correction-projection-repair",
+    "/private/tmp/ufz-correction-repaired-root-transport"
+  ],
+  "cwd": "/Users/alepar/AleCode/superpowers",
+  "environment": {
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_CONFIG_GLOBAL": "/dev/null",
+    "GIT_CONFIG_SYSTEM": "/dev/null"
+  },
+  "helperSourceHead": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+  "helperSha256": "958a514afdce2985a921ff7f18762a0f38bfc851363565bf7222528495f2f499",
+  "mode": "read-only --check; no signals or deletion",
+  "startUtc": "2026-10-17T23:49:00.068302+00:00",
+  "ownedRoots": [
+    "/private/tmp/ufz-correction-final-suite-c2168120",
+    "/private/tmp/ufz-correction-final-suite-outer-c2168120",
+    "/private/tmp/ufz-correction-final-tmpdir-variants-c2168120",
+    "/private/tmp/ufz-correction-actual-continuity-4911223a",
+    "/private/tmp/ufz-correction-final-source-c2168120",
+    "/private/tmp/ufz-correction-helper-source-4911223a",
+    "/private/tmp/ufz-correction-final-suite-fd52ffc7",
+    "/private/tmp/ufz-correction-final-suite-outer-fd52ffc7",
+    "/private/tmp/ufz-correction-final-tmpdir-variants-fd52ffc7",
+    "/private/tmp/ufz-correction-final-source-fd52ffc7",
+    "/private/tmp/ufz-correction-projection-repair-source",
+    "/private/tmp/ufz-correction-projection-repair",
+    "/private/tmp/ufz-correction-repaired-root-transport"
+  ],
+  "callerRetention": "Main pane and external correction worktree remain active/retained and are not cleanup targets.",
+  "limits": "Listed owned test/fixture roots only; unrelated/global host state unknown; unknown/matches retain all roots.",
+  "exitCode": 0,
+  "endUtc": "2026-10-17T23:49:01.557778+00:00",
+  "stdout": {
+    "path": "/private/tmp/ufz-correction-final-owned-inspection-fd52ffc7/stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "/private/tmp/ufz-correction-final-owned-inspection-fd52ffc7/stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "interpretation": "Verified discovery found no matching owned processes for listed roots at observation"
+}

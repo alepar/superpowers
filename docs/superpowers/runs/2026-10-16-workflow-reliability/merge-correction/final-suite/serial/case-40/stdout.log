@@ -1,0 +1,24 @@
+implementation identities: {"head":"c21681200aac20fb0223b6b0e83e953b1bc75cde","dispatchSha256":"f669b649ed115d8f92fac6cd46c025722c1b206841df084f4a3a633ad4ffe087","coordinatorSha256":"154bd1069d2e20eaeb24c460c09360c7e281de6a1f8ff74824db089bb53dafa1"}
+PASS real recovered collector history grants only validated omission authority
+PASS reject all markers
+PASS reject last marker
+PASS reject forged predecessor
+PASS reject changed recovered verdict
+PASS reject changed required
+PASS reject changed path
+PASS reject hash-linked but invalid complete null predecessor
+PASS nested historical provenance retains source availability without omission or whole-range readiness
+PASS bounded report forces incomplete verdict and survives extraction and collection
+PASS bounded writer preserves existing report
+PASS bounded writer rejects source mismatch
+PASS bounded writer rejects claimed omission
+PASS bounded writer rejects incomplete inventory
+PASS bounded writer rejects source unavailable
+PASS bounded writer rejects missing gaps
+PASS bounded writer rejects wrong captured source
+PASS bounded writer rejects invented inspected hunk
+PASS bounded writer refuses missing captured commit object
+PASS ordinary prompt exposes bounded source route
+large range fixture: {"argMax":1048576,"files":1507,"pathPrefixBytes":723}
+PASS large captured range does not lose source to redundant diffstat argv
+{"passed":21,"failed":0,"tmp":"/private/tmp/ufz-correction-final-suite-c2168120/case-40/tmp/selection-correction-sHgDPF","base":"4c349df307ac10d47273ed22ac0210048569137f","head":"3b18c7619d7862dfce0dc3338aba13d559763f0d","sourceHead":"84a6da792bf75f13bd63902090f9673600c55538"}

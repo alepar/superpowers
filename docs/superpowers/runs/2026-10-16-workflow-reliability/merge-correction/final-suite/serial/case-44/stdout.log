@@ -1,0 +1,19 @@
+earlier-complete: landing=True, merges=1
+earlier-merge: landing=True, merges=1
+implementation: landing=True, merges=1
+untimed-earlier-merge: landing=True, merges=0
+verification: landing=False, merges=0
+Workflow history prior-close/failed-settlement: ['ALREADY_MERGED', 'VERIFICATION_PENDING'], landing=2026-10-01T00:00:22.000Z
+Workflow history prior-close/pending: ['ALREADY_MERGED', 'VERIFICATION_PENDING'], landing=2026-10-01T00:00:22.000Z
+Workflow history prior-close/settlement-only: ['ALREADY_MERGED', 'VERIFIED'], landing=2026-10-01T00:00:22.000Z
+Workflow history prior-close/settled: ['ALREADY_MERGED', 'VERIFIED'], landing=2026-10-01T00:00:22.000Z
+Workflow history prior-close/baseline: ['ALREADY_MERGED'], landing=2026-10-01T00:00:22.000Z
+Workflow history readiness/failed-settlement: ['IMPLEMENTED', 'VERIFICATION_PENDING'], landing=2026-10-01T00:00:40.000Z
+Workflow history readiness/pending: ['IMPLEMENTED', 'VERIFICATION_PENDING'], landing=2026-10-01T00:00:40.000Z
+Workflow history readiness/settlement-only: ['IMPLEMENTED', 'VERIFIED'], landing=2026-10-01T00:00:40.000Z
+Workflow history readiness/settled: ['IMPLEMENTED', 'VERIFIED'], landing=2026-10-01T00:00:40.000Z
+Workflow history readiness/baseline: ['IMPLEMENTED'], landing=2026-10-01T00:00:40.000Z
+Workflow pending: landing=False, verified=False
+Workflow prior-merge: landing=True, verified=True
+Workflow brief: landing=False, verified=True
+Workflow verified: landing=False, verified=True

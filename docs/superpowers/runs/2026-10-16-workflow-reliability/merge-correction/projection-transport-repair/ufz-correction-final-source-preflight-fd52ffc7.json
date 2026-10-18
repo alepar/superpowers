@@ -1,0 +1,15 @@
+{
+  "source": {
+    "head": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+    "tree": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2",
+    "status": "",
+    "gitdir": ".git"
+  },
+  "standaloneGit": true,
+  "alternates": false,
+  "commands47ExactlyPreserved": true,
+  "changedEntrypoints": [
+    "bash tests/super-auto/projection-output-r1.sh"
+  ],
+  "state": "prepared only, independent review/actual run pending"
+}

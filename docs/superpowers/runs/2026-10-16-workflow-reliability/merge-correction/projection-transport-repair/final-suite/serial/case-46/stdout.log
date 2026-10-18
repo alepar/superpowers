@@ -1,0 +1,4 @@
+PASS unplanned admission eligible
+PASS unplanned admission task
+PASS unplanned admission global
+PASS unplanned admission during-wait

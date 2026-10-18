@@ -1,0 +1,63 @@
+amend-check: supersedes:
+  [PASS] design record with supersedes: passes
+  [PASS] design ok exit 0
+  [PASS] supersedes: naming no work: title: exit 3
+  [PASS] bad title named
+  [PASS] supersedes: under --loop code: exit 3
+  [PASS] code loop rejects the first item
+  [PASS] code record without supersedes: passes
+  [PASS] design record with <, &, " and -> in a work: title passes
+  [PASS] design record with no work: lines passes
+filing sequence (stub bd)
+  [PASS] filing block extracted from SKILL.md
+  [PASS] design loop: block exits 0
+  [PASS] design loop: closed root epic is reopened
+  [PASS] reopen precedes the first create
+  [PASS] bead titled New retry wrapper filed under the label
+  [PASS] bead titled Drop per-call retries filed under the label
+  [PASS] bead-new-4: parent is the root epic
+  [PASS] bead-new-5: parent is the root epic
+  [PASS] bd-7 superseded by the New retry wrapper bead
+  [PASS] bd-7 closed by the supersede
+  [PASS] already-closed bd-9 is not superseded
+  [PASS] both amend beads are ready when super-code re-enters
+  [PASS] resume replay: block exits 0
+  [PASS] resume replay files no duplicate (title dedupe)
+  [PASS] design loop with sweep: block exits 0
+  [PASS] design loop with sweep: two beads filed
+  [PASS] sweep depends on new-5
+  [PASS] sweep description names new-5
+  [PASS] sweep depends on new-6
+  [PASS] sweep description names new-6
+  [PASS] sweep description keeps its first line
+  [PASS] sweep description keeps its old blocked-by line
+  [PASS] sweep description gained exactly one line per bead (newline count)
+  [PASS] sweep replay: block exits 0
+  [PASS] sweep replay adds no dep add
+  [PASS] sweep replay leaves the description unchanged
+  [PASS] escaped title: block exits 0
+  [PASS] escaped title: filed once
+  [PASS] stub bd list prints the title Go-escaped
+  [PASS] escaped title: bd-7 superseded by its bead
+  [PASS] escaped title: sweep depends on its bead
+  [PASS] escaped title: sweep description names its bead
+  [PASS] escaped title replay: block exits 0
+  [PASS] escaped title replay files no duplicate
+  [PASS] escaped title replay adds no dep add
+  [PASS] no work: lines with sweep: block exits 0
+  [PASS] no work: lines: nothing filed
+  [PASS] no work: lines: no dep add
+  [PASS] no work: lines: sweep description unchanged
+  [PASS] no work: lines: nothing superseded
+  [PASS] code loop with sweep: block exits 0
+  [PASS] code loop with sweep: no dep add
+  [PASS] code loop with sweep: sweep description unchanged
+  [PASS] code loop: block exits 0
+  [PASS] code loop: closed root epic is reopened
+  [PASS] code loop: both amend beads plus the still-open bd-7 are ready
+  [PASS] code loop: no supersede call
+super-auto pointers
+  [PASS] step 3 points at Amend Mode step 4's filing sequence
+  [PASS] step 4 reopens the epic before re-entering super-code
+
+All redesign-cycle-filing tests passed

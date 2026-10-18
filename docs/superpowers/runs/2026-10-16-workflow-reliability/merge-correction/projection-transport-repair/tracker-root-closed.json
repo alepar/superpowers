@@ -1,0 +1,23 @@
+[
+  {
+    "id": "super-plan-ufz",
+    "title": "Workflow reliability across interruptions and retries",
+    "description": "Implement the approved workflow reliability design through bounded changes to existing components. Spec: docs/superpowers/specs/2026-10-16-workflow-reliability-design.md. Preserve workspace/process safety, fresh admission/recovery, independent evidence and acceptance, finding continuity and truthful metrics. No replacement engine or mandatory six-state finding lifecycle. Root completes only when its acceptance obligations are met; super-auto owns finish.\n\n## Global Constraints\n- Extend existing components; preserve Workflow and ordinary-subagent paths and compact coordinator inputs.\n- Concurrent roast-redesign run owns redesign triggers/amend and its ledger; reconcile the finding-continuity seam before implementation.\n\u003c!-- key-abstractions digest: begin --\u003e\n\u003c!-- key-abstractions digest: end --\u003e\n",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "epic",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-17T05:46:14Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-18T00:32:48Z",
+    "closed_at": "2026-10-18T00:32:48Z",
+    "close_reason": "Actual canonical root acceptance eligible:true after independently reviewed bounded correction,47+2 source-bound checks at fd52ffc7, supported exact-ref/history reconciliation and direct human local-merge approval. Evidence: docs/superpowers/runs/2026-10-16-workflow-reliability/merge-correction/projection-transport-repair/canonical-accepted/receipt.json. No push/release.",
+    "labels": [
+      "sp:super-plan-ufz"
+    ],
+    "dependent_count": 32,
+    "dependency_count": 0,
+    "comment_count": 0,
+    "revision": "536040099009856202"
+  }
+]

@@ -1,0 +1,71 @@
+{
+  "status": "failed actual gate preserved; new repair pending",
+  "files": [
+    {
+      "source": "/private/tmp/ufz-correction-root-gate-before-human/receipt.json",
+      "retained": "failed-gate/receipt.json",
+      "bytes": 1118,
+      "sha256": "4ecaba1694c1ae00ee6dfaf941996dee4b0f85214207e421a754e67b5d61ea32"
+    },
+    {
+      "source": "/private/tmp/ufz-correction-root-gate-before-human/stderr.log",
+      "retained": "failed-gate/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/private/tmp/ufz-correction-root-gate-before-human/stdout.log",
+      "retained": "failed-gate/stdout.log",
+      "bytes": 302,
+      "sha256": "facc05adddcedb129ee726d7fa09c53640c513b6b02f53febd47bbd83d86e153"
+    },
+    {
+      "source": "/private/tmp/ufz-correction-root-projection-diagnostic/default.stderr",
+      "retained": "diagnostic/default.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/private/tmp/ufz-correction-root-projection-diagnostic/default.stdout",
+      "retained": "diagnostic/default.stdout",
+      "bytes": 1067953,
+      "sha256": "1d2af58b44fe231662745a5e3cb4046a6587102c9df6ce48d1b15a7838a33500"
+    },
+    {
+      "source": "/private/tmp/ufz-correction-root-projection-diagnostic/diagnostic-2MiB.stderr",
+      "retained": "diagnostic/diagnostic-2MiB.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "/private/tmp/ufz-correction-root-projection-diagnostic/diagnostic-2MiB.stdout",
+      "retained": "diagnostic/diagnostic-2MiB.stdout",
+      "bytes": 1067953,
+      "sha256": "1d2af58b44fe231662745a5e3cb4046a6587102c9df6ce48d1b15a7838a33500"
+    },
+    {
+      "source": "/private/tmp/ufz-correction-root-projection-diagnostic/projection.json",
+      "retained": "diagnostic/projection.json",
+      "bytes": 1067953,
+      "sha256": "1d2af58b44fe231662745a5e3cb4046a6587102c9df6ce48d1b15a7838a33500"
+    },
+    {
+      "source": "/private/tmp/ufz-correction-root-projection-diagnostic/receipt.json",
+      "retained": "diagnostic/receipt.json",
+      "bytes": 436,
+      "sha256": "6cf488a0d372c4a77e73da24ac5bb62ee63fc1c6aab477973fd26793a66f9694"
+    },
+    {
+      "source": "/private/tmp/ufz-correction-root-projection-diagnostic/spawn-sync-probes.json",
+      "retained": "diagnostic/spawn-sync-probes.json",
+      "bytes": 1397,
+      "sha256": "419e2571a94731696618457427d85313185891bc770a4c036e88c2e18a91a3c2"
+    },
+    {
+      "source": "/private/tmp/ufz-correction-root-projection-diagnostic/stderr.log",
+      "retained": "diagnostic/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

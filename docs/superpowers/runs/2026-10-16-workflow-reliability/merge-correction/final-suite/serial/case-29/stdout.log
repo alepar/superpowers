@@ -1,0 +1,16 @@
+PASS: complete matching archive remains eligible and unchanged
+PASS: matching archive remains eligible after source cleanup
+PASS: missing final-review-integrity.md.diff blocks acceptance with a specific gap
+PASS: corrupted final-review-integrity.md.diff blocks acceptance with a specific gap
+PASS: missing final-review-integrity.md blocks acceptance with a specific gap
+PASS: corrupted final-review-integrity.md blocks acceptance with a specific gap
+PASS: missing final-review-integrity.cluster-1.md blocks acceptance with a specific gap
+PASS: corrupted final-review-integrity.cluster-1.md blocks acceptance with a specific gap
+PASS: missing assembled/final-review-integrity-final/clusters.json blocks acceptance with a specific gap
+PASS: corrupted assembled/final-review-integrity-final/clusters.json blocks acceptance with a specific gap
+PASS: missing assembled/final-review-integrity-final/slices/core.diff blocks acceptance with a specific gap
+PASS: corrupted assembled/final-review-integrity-final/slices/core.diff blocks acceptance with a specific gap
+PASS: missing required-input.diff blocks acceptance with a specific gap
+PASS: corrupted required-input.diff blocks acceptance with a specific gap
+PASS: integrity gaps preserve independent human acceptance obligations
+archive integrity: 15 scenarios passed

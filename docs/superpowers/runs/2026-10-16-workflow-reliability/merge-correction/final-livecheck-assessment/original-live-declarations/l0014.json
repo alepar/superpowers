@@ -1,0 +1,385 @@
+{
+      "requirementId": "l0014",
+      "task": "super-plan-ufz.23",
+      "classification": "actual requiredLiveChecks declaration, not example",
+      "family": "product-mechanics",
+      "historicalRequirement": {
+        "sourceTree": "6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06",
+        "command": "node tests/super-code/invocation-start-r1.mjs",
+        "configuration": "Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23"
+      },
+      "historicalOutcomes": [
+        "live/pass"
+      ],
+      "historicalEvidence": [
+        {
+          "evidenceId": "e0096",
+          "record": {
+            "sourceTree": "6a82c1133dce4fc3f9e7c7cf5c8f533e8326da06",
+            "command": "node tests/super-code/invocation-start-r1.mjs",
+            "configuration": "Node v26.9.0; Workflow-like VM with forbidden Date.now/Math.random; mechanical Resume simulated with external uuidgen; isolated TMPDIR/HOME/XDG under /tmp/sp-bce79baa/super-plan-ufz.23",
+            "outcome": "pass",
+            "location": "/Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/.worktrees/super-auto-workflow-reliability--task-super-plan-ufz.23/.superpowers/task23-evidence/startup-green.log",
+            "kind": "live"
+          },
+          "provenance": [
+            {
+              "objectId": "o00149",
+              "sourceId": "s0183",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/fix-super-plan-ufz.23-result.json",
+              "sourceSha256": "b6bcbcaea7aa8c8f8cbd6dca28f140b4c078c085c37944b56d7d8a6b4b98159e",
+              "location": {
+                "lineStart": 1,
+                "lineEnd": 169,
+                "charStart": 0,
+                "charEnd": 11251
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00154",
+              "sourceId": "s0199",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/impl-super-plan-ufz.23-result.json",
+              "sourceSha256": "76489014c84b8f72451ee5e6b0011fa99abf96a3125b8164333038b8435a4a06",
+              "location": {
+                "lineStart": 1,
+                "lineEnd": 70,
+                "charStart": 0,
+                "charEnd": 4135
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00177",
+              "sourceId": "s0227",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/retained-task-evidence/super-plan-ufz.23/fix-r1/archive/task-20-report-before-fix.md",
+              "sourceSha256": "417474cab3275a954e60d5b25aa7057b5edc63ca86b718bdf9e1e36bb3ed4754",
+              "location": {
+                "lineStart": 104,
+                "lineEnd": 173,
+                "charStart": 10181,
+                "charEnd": 14316
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00178",
+              "sourceId": "s0228",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/retained-task-evidence/super-plan-ufz.23/fix-r1/archive/task-20-review-before-fix.md",
+              "sourceSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+              "location": {
+                "lineStart": 69,
+                "lineEnd": 151,
+                "charStart": 9048,
+                "charEnd": 14983
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00190",
+              "sourceId": "s0244",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-20-report.md",
+              "sourceSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+              "location": {
+                "lineStart": 104,
+                "lineEnd": 173,
+                "charStart": 10181,
+                "charEnd": 14316
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00191",
+              "sourceId": "s0244",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-20-report.md",
+              "sourceSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+              "location": {
+                "lineStart": 230,
+                "lineEnd": 398,
+                "charStart": 21891,
+                "charEnd": 33142
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00192",
+              "sourceId": "s0245",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-20-review.md",
+              "sourceSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+              "location": {
+                "lineStart": 69,
+                "lineEnd": 151,
+                "charStart": 9048,
+                "charEnd": 14983
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00239",
+              "sourceId": "s0409",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-20-report.md",
+              "sourceSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+              "location": {
+                "lineStart": 104,
+                "lineEnd": 173,
+                "charStart": 10181,
+                "charEnd": 14316
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00240",
+              "sourceId": "s0409",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-20-report.md",
+              "sourceSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+              "location": {
+                "lineStart": 230,
+                "lineEnd": 398,
+                "charStart": 21891,
+                "charEnd": 33142
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00241",
+              "sourceId": "s0410",
+              "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-20-review.md",
+              "sourceSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+              "location": {
+                "lineStart": 69,
+                "lineEnd": 151,
+                "charStart": 9048,
+                "charEnd": 14983
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "pinned-git"
+            },
+            {
+              "objectId": "o00294",
+              "sourceId": "s0495",
+              "path": ".superpowers/sdd/super-plan-ufz-plan/fix-super-plan-ufz.23-result.json",
+              "sourceSha256": "b6bcbcaea7aa8c8f8cbd6dca28f140b4c078c085c37944b56d7d8a6b4b98159e",
+              "location": {
+                "lineStart": 1,
+                "lineEnd": 169,
+                "charStart": 0,
+                "charEnd": 11251
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "local-untracked-snapshot"
+            },
+            {
+              "objectId": "o00296",
+              "sourceId": "s0498",
+              "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.23-result.json",
+              "sourceSha256": "76489014c84b8f72451ee5e6b0011fa99abf96a3125b8164333038b8435a4a06",
+              "location": {
+                "lineStart": 1,
+                "lineEnd": 70,
+                "charStart": 0,
+                "charEnd": 4135
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "local-untracked-snapshot"
+            },
+            {
+              "objectId": "o00319",
+              "sourceId": "s0555",
+              "path": ".superpowers/sdd/super-plan-ufz-plan/task-20-report.md",
+              "sourceSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+              "location": {
+                "lineStart": 104,
+                "lineEnd": 173,
+                "charStart": 10181,
+                "charEnd": 14316
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "local-untracked-snapshot"
+            },
+            {
+              "objectId": "o00320",
+              "sourceId": "s0555",
+              "path": ".superpowers/sdd/super-plan-ufz-plan/task-20-report.md",
+              "sourceSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+              "location": {
+                "lineStart": 230,
+                "lineEnd": 398,
+                "charStart": 21891,
+                "charEnd": 33142
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "local-untracked-snapshot"
+            },
+            {
+              "objectId": "o00321",
+              "sourceId": "s0556",
+              "path": ".superpowers/sdd/super-plan-ufz-plan/task-20-review.md",
+              "sourceSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+              "location": {
+                "lineStart": 69,
+                "lineEnd": 151,
+                "charStart": 9048,
+                "charEnd": 14983
+              },
+              "pointer": "$/evidence/1",
+              "identityKind": "local-untracked-snapshot"
+            }
+          ]
+        }
+      ],
+      "declarationProvenance": [
+        {
+          "objectId": "o00154",
+          "sourceId": "s0199",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/impl-super-plan-ufz.23-result.json",
+          "sourceSha256": "76489014c84b8f72451ee5e6b0011fa99abf96a3125b8164333038b8435a4a06",
+          "location": {
+            "lineStart": 1,
+            "lineEnd": 70,
+            "charStart": 0,
+            "charEnd": 4135
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00177",
+          "sourceId": "s0227",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/retained-task-evidence/super-plan-ufz.23/fix-r1/archive/task-20-report-before-fix.md",
+          "sourceSha256": "417474cab3275a954e60d5b25aa7057b5edc63ca86b718bdf9e1e36bb3ed4754",
+          "location": {
+            "lineStart": 104,
+            "lineEnd": 173,
+            "charStart": 10181,
+            "charEnd": 14316
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00178",
+          "sourceId": "s0228",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/retained-task-evidence/super-plan-ufz.23/fix-r1/archive/task-20-review-before-fix.md",
+          "sourceSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+          "location": {
+            "lineStart": 69,
+            "lineEnd": 151,
+            "charStart": 9048,
+            "charEnd": 14983
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00190",
+          "sourceId": "s0244",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-20-report.md",
+          "sourceSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+          "location": {
+            "lineStart": 104,
+            "lineEnd": 173,
+            "charStart": 10181,
+            "charEnd": 14316
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00192",
+          "sourceId": "s0245",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/fix-r1-handoff/source/task-20-review.md",
+          "sourceSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+          "location": {
+            "lineStart": 69,
+            "lineEnd": 151,
+            "charStart": 9048,
+            "charEnd": 14983
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00239",
+          "sourceId": "s0409",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-20-report.md",
+          "sourceSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+          "location": {
+            "lineStart": 104,
+            "lineEnd": 173,
+            "charStart": 10181,
+            "charEnd": 14316
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00241",
+          "sourceId": "s0410",
+          "path": "docs/superpowers/runs/2026-10-16-workflow-reliability/task-report-history-r1/raw/task-20-review.md",
+          "sourceSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+          "location": {
+            "lineStart": 69,
+            "lineEnd": 151,
+            "charStart": 9048,
+            "charEnd": 14983
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "pinned-git"
+        },
+        {
+          "objectId": "o00296",
+          "sourceId": "s0498",
+          "path": ".superpowers/sdd/super-plan-ufz-plan/impl-super-plan-ufz.23-result.json",
+          "sourceSha256": "76489014c84b8f72451ee5e6b0011fa99abf96a3125b8164333038b8435a4a06",
+          "location": {
+            "lineStart": 1,
+            "lineEnd": 70,
+            "charStart": 0,
+            "charEnd": 4135
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "local-untracked-snapshot"
+        },
+        {
+          "objectId": "o00319",
+          "sourceId": "s0555",
+          "path": ".superpowers/sdd/super-plan-ufz-plan/task-20-report.md",
+          "sourceSha256": "63212dca79247789d59140ede604ce64b85587ee18be594e014fca99ab5fd9aa",
+          "location": {
+            "lineStart": 104,
+            "lineEnd": 173,
+            "charStart": 10181,
+            "charEnd": 14316
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "local-untracked-snapshot"
+        },
+        {
+          "objectId": "o00321",
+          "sourceId": "s0556",
+          "path": ".superpowers/sdd/super-plan-ufz-plan/task-20-review.md",
+          "sourceSha256": "06bcc559ab461e8f4ef4dc6c84d64ae08cff33bba9a138bf1b2f05471e199a77",
+          "location": {
+            "lineStart": 69,
+            "lineEnd": 151,
+            "charStart": 9048,
+            "charEnd": 14983
+          },
+          "pointer": "$/requiredLiveChecks/0",
+          "identityKind": "local-untracked-snapshot"
+        }
+      ],
+      "currentEquivalentEvidenceNeeded": "At final source, execute the corresponding required current command/fixture with isolated outputs and exact source/configuration/outcome/location, or have the caller explicitly justify reuse of unchanged source-scoped historical evidence. A new source or altered seam requires relevant re-verification; final suite may cover several declarations only by explicit mapping.",
+      "nonReconstructableHistoricalUnknown": "No current-source pass follows from historical pass; original output alias/anchor remains qualified where reference-manifest has no exact binding.",
+      "blocksCurrentAcceptance": "current equivalent check/applicability mapping remains pending; old passed identity is not itself an open failure",
+      "currentStatus": "prospective; no current execution by this reviewer"
+    }

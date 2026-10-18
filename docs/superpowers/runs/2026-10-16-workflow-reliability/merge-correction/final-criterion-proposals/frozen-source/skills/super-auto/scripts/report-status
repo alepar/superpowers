@@ -1,0 +1,709 @@
+#!/usr/bin/env bash
+# The report.md status line for one super-auto run, computed from its run.md. This script is the
+# only source of the status line and its degraded qualifiers; paste its output verbatim.
+#
+#   report-status RUN_MD [--tip SHA] [--stalled PHASE]
+#
+# RUN_MD: the run's run.md (fields per run-state.md). --tip SHA: the run branch's HEAD, the commit
+# the report describes; every report-prompt.md call passes it, and without it a sweep's stamp is
+# still required but not compared. A stamp other than SHA is still at the tip when `git diff` finds
+# no change between the two commits outside RUN_MD's directory, the run directory that phase 6
+# commits run.md, friction.md and report.md into after the sweep; a git failure counts as a change.
+# --stalled PHASE: the orchestrator judged the run stalled at
+# PHASE, a state run.md cannot carry.
+#
+# Status, first match wins:
+#   --stalled PHASE                         -> status: stalled at phase PHASE
+#   phase: capped-blocking                  -> status: stalled at phase capped-blocking
+#   codeBuckets.stalled true                -> status: stalled at phase code
+#   N > 0, M > 0 or pendingRetry non-empty  -> status: completed with N unresolved Blocking, M escalations
+#   otherwise                               -> status: clean
+# The two non-stalled forms take ` [degraded: q1, q2, ...]` when any qualifier applies.
+# N: the distinct finding keys in `roastCodeCapped:`, in `roastDesignCapped:` unless it ends
+#   `stopped`, and in every Blocking row of either findings ledger whose status is `disputed`
+#   (vision §4: a disputed Blocking finding is never cleared, whether or not the roast still
+#   confirms it). A key is counted once however many of these hold it; `rN ` prefixes are ignored.
+# M: parked `escalation` records plus ids in codeBuckets.escalated.
+#
+# Fields read, each with its writer and what its absent or other form gives:
+#   flags (skipPlanRoast, skipCodeRoast): SKILL.md §Pre-flight step 4. No line, or a key missing: exit 2.
+#   phase: SKILL.md §Who writes run.md. No line, or not a run-state.md token: exit 2.
+#   parked: super-design (phases 1-2), super-auto (phase 3 on). Absent: no records. A
+#     `degraded-verdict` record may end ` · resolves-on: sweep`.
+#   roastDesignCapped: super-design §Adversarial Review Loop (root only). Absent: nothing; a last
+#     slot other than `stopped` counts as `proceeded`.
+#   roastCodeCapped: SKILL.md §Cap disposition, on a cap or thrash exit with Blocking open. Absent: nothing.
+#   findingsLedger, findingsLedgerDesign: the loops' ledgers (super-design/scripts/findings-ledger
+#     rows `- <key> · raised r<M>@<sha> · <status> · …`), paths relative to RUN_MD's directory.
+#     Absent: nothing. A pointer to a missing file: qualifier `findings ledger not found: <path>`.
+#   codeBuckets: run-state.md item 6 at each phase 3->4 transition and re-entry; `sweep` rewritten by
+#     SKILL.md §Phase 6 — report steps 1 and 2. No block at phase report, finish or done: `final
+#     review: none recorded` and `sweep: none recorded`; no block earlier: nothing. A bucket line
+#     missing from the block: `<bucket> bucket: none recorded` (review and sweep: their own
+#     `none recorded` forms).
+#
+# Qualifiers, in this order, each once: `design roast capped-blocking` (roastDesignCapped not
+# stopped); `findings ledger not found: <path>`, per missing ledger; each parked `degraded-verdict` record's qualifier (the bracketed text in its part before
+# ` — `, else that part), skipped for a ` · resolves-on: sweep` record when --tip is given and the
+# sweep is a stamped pass at the tip (the sweep rules below give it no qualifier); `plan roast
+# skipped` / `code roast skipped` (flags); then the codeBuckets ones: missing-bucket qualifiers,
+# `code findings parked` (parked non-empty), `tasks pending retry` (pendingRetry non-empty),
+# `final review: <review>` (review not `CLEAN` or `ready`, so the `<verdict> (<N> confirmed)` and
+# `not ready (<summary>)` forms; `none recorded` when empty), then the sweep:
+#   `sweep: <sweep>`              it is not a pass: it carries a failing signal (a non-zero failed
+#                                 or errors count, FAIL, DEFERRED, INVALID, UNAVAILABLE) or lacks
+#                                 the pass form `<P> passed, 0 failed, 0 errors`;
+#   `sweep: unstamped — <sweep>`  a pass with no ` @ <sha>` stamp;
+#   `sweep: not at tip — <sweep>` a pass whose stamp is not --tip and differs from it outside the
+#                                 run directory.
+#
+# Prints the status line, then one `qualifier: <text>` line per qualifier, in the order above.
+# Bash and awk, plus git only to compare a sweep stamp with --tip: needs no jq, so it never prints
+# JQ_UNAVAILABLE.
+# Ordinary status: exit 0 ok, 2 bad input; legacy records require only Bash/awk.
+# Additive finding/collection records use Node for the shared projection; unavailability
+# is an explicit qualifier. --collect is the settled-bundle write mode (usage below):
+# exit 0 preserved, 3 evidence gaps, 2 bad input, 4 Node unavailable.
+set -euo pipefail
+
+# This is a read-only root-close gate. Requirements and producer facts live in the
+# existing approvals block; neither completed leaves nor the latest verdict supplies them.
+if [ "${1:-}" = --acceptance ]; then
+  command -v node >/dev/null 2>&1 || { echo 'NODE_UNAVAILABLE: caller root acceptance unverified' >&2; exit 4; }
+  script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+  node - "$script_dir" "$@" <<'ACCEPTANCE'
+const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
+const [scripts,,run,...args]=process.argv.slice(2);
+if(!run || (args.length && (args.length!==2 || args[0]!=='--tree'))){console.error('usage: report-status --acceptance RUN_MD [--tree FULL_GIT_TREE]');process.exit(2)}
+const tree=args[1],pending=[],gaps=[],requirements=new Map(),snapshots=[],nonblockingFindings=[];
+const text=v=>typeof v==='string'&&v.trim()!=='',hash=v=>typeof v==='string'&&/^(?:[0-9a-f]{40}|[0-9a-f]{64})$/.test(v);
+const object=v=>v&&typeof v==='object'&&!Array.isArray(v);
+const gap=s=>gaps.push(s),wait=s=>pending.push(s);
+let input;try{input=fs.readFileSync(run,'utf8')}catch(e){console.error(e.message);process.exit(2)}
+let approvals=false;
+for(const line of input.split(/\r?\n/)){
+ if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))approvals=line==='approvals:';
+ if(!line.startsWith('- root-acceptance'))continue;
+ try{
+  if(!approvals||!line.startsWith('- root-acceptance · '))throw Error('outside approvals or malformed record');
+  const r=JSON.parse(line.slice('- root-acceptance · '.length));
+  if(!object(r)||r.version!==1||r.owner!=='super-auto'||!hash(r.sourceTree))throw Error('invalid source/owner/version');
+  if(!Array.isArray(r.requirements)||!r.requirements.length)throw Error('missing acceptance requirements');
+  for(const q of r.requirements){
+   if(!object(q)||!text(q.id)||!text(q.owner)||!['review','measurement','human'].includes(q.kind))throw Error('invalid acceptance requirements');
+   if(q.kind==='measurement'&&(!text(q.command)||!text(q.configuration)||typeof q.requiredLive!=='boolean'))throw Error('invalid measurement requirements');
+   requirements.set(q.id,q);
+  }
+  for(const k of ['evidence','reviews','decisions','runFailures'])if(!Array.isArray(r[k]))throw Error('missing '+k);
+  if(r.findingAcceptance!==undefined&&!Array.isArray(r.findingAcceptance))throw Error('invalid finding acceptance judgments');
+  if(!object(r.recovery)||!Array.isArray(r.recovery.obligations)||!Array.isArray(r.recovery.gaps)||!object(r.checkEvidence)||!['records','gaps','requiredLiveChecks'].every(k=>Array.isArray(r.checkEvidence[k])))throw Error('missing producer obligations/check evidence');
+  snapshots.push(r);
+ }catch(e){gap('root acceptance record: '+e.message)}
+}
+const current=snapshots.at(-1);
+// Review source is immutable provenance carried by Recovery's deferred transport,
+// not a deferred measurement. Validate history as well as the current snapshot.
+const reviewSources=new Map();
+const isReviewSource=r=>object(r)&&(typeof r.id==='string'&&r.id.startsWith('review-source:')||object(r.data)&&Object.hasOwn(r.data,'reviewSource'));
+for(const snapshot of snapshots)for(const r of snapshot.recovery.obligations.filter(isReviewSource)){
+ const source=r.data?.reviewSource;
+ if(r.version!==1||r.kind!=='deferred'||r.operation!=='record'||!text(r.reason)||!Array.isArray(r.evidence)||!r.evidence.length||!r.evidence.every(text)||
+    !object(r.data)||Object.keys(r.data).length!==1||!object(source)||!text(source.invocationId)||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(source.invocationId)||
+    r.id!=='review-source:'+source.invocationId||!hash(source.base)||!hash(source.head)){
+  gap('invalid review-source provenance: '+(r.id||'unknown'));continue;
+ }
+ const old=reviewSources.get(source.invocationId);
+ if(old&&(old.base!==source.base||old.head!==source.head))gap('conflicting review-source provenance: '+source.invocationId);
+ else reviewSources.set(source.invocationId,source);
+}
+if(!current)gap('caller acceptance requirements unavailable');
+else{
+ if(tree!==undefined&&!hash(tree)){console.error('not a full Git tree identity');process.exit(2)}
+ if(tree!==undefined&&tree!==current.sourceTree)gap('acceptance source differs from requested source tree');
+ const records=snapshots.flatMap(r=>[...r.evidence,...r.checkEvidence.records]);
+ const identity=r=>object(r)&&hash(r.sourceTree)&&text(r.command)&&text(r.configuration);
+ const valid=r=>identity(r)&&text(r.location)&&['live','simulated','fallback'].includes(r.kind)&&['pass','fail','unavailable'].includes(r.outcome);
+ for(const r of records)if(!valid(r))gap('invalid source-bound measurement evidence');
+ function measure(q,label){
+  if(!identity(q)){gap(label+': measurement identity unavailable');return false}
+  const matches=records.filter(r=>valid(r)&&r.sourceTree===q.sourceTree&&r.command===q.command&&r.configuration===q.configuration&&(!q.id||!q.taskCheck||r.id===q.id)&&(!q.requiredLive||r.kind==='live'));
+  // Contradictory outcomes at an immutable source do not silently turn into a pass.
+  if(matches.some(r=>r.outcome==='pass')&&!matches.some(r=>r.outcome==='fail'))return true;
+  const result=matches.some(r=>r.outcome==='fail')?'fail':matches.some(r=>r.outcome==='unavailable')?'unavailable':'unavailable'+(q.requiredLive?' (live required)':'');
+  wait(label+': '+result+'; owner: '+(q.owner||'caller'));return false;
+ }
+ for(const kind of ['review','measurement','human'])if(![...requirements.values()].some(q=>q.kind===kind))gap('missing '+kind+' acceptance requirements');
+ for(const q of requirements.values()){
+  if(q.kind==='measurement')measure({...q,sourceTree:q.sourceTree||current.sourceTree},q.id);
+  else if(q.kind==='review'){
+   const review=current.reviews.filter(r=>r&&r.id===q.id).at(-1);
+   if(!review||review.sourceTree!==current.sourceTree||review.outcome!=='pass'||!text(review.location))wait(q.id+': review pending; owner: '+q.owner);
+  }else{
+   const decision=current.decisions.filter(r=>r&&r.id===q.id).at(-1);
+   if(!decision||decision.authority!=='human'||decision.decision!=='accept'||!Array.isArray(decision.evidence)||!decision.evidence.length||!decision.evidence.every(text))wait(q.id+': human decision pending; owner: '+q.owner);
+  }
+ }
+ for(const r of snapshots)for(const q of r.checkEvidence.requiredLiveChecks)measure({...q,requiredLive:true,taskCheck:true},'required live check '+(q?.command||'unknown'));
+ for(const g of [...current.recovery.gaps,...current.checkEvidence.gaps])gap(typeof g==='string'?g:JSON.stringify(g));
+ const failures=new Map();
+ for(const f of current.runFailures){
+  if(!object(f)||!text(f.id)||!['run-introduced','pre-run','gap'].includes(f.classification)||!['open','verified'].includes(f.state)){gap('invalid run failure classification');continue}
+  failures.set(f.id,f);
+  for(const g of f.gaps||[])gap(f.id+': '+(typeof g==='string'?g:JSON.stringify(g)));
+  if(f.classification==='pre-run')continue; // diagnostic repair status cannot erase attribution gaps
+  if(f.classification==='gap'||f.state!=='verified')wait(f.id+': '+f.classification+' '+f.state+'; owner: '+(f.owner||'caller'));
+ }
+ for(const r of current.recovery.obligations){
+  if(!object(r)||r.version!==1||!text(r.id)||!['hold','pending-closure','deferred'].includes(r.kind)||r.operation!=='record'||!text(r.reason)||!Array.isArray(r.evidence)||!r.evidence.length||!r.evidence.every(text)||!object(r.data)){gap('invalid recovery obligation');continue}
+  if(isReviewSource(r))continue; // validated above, never invent command/configuration work
+  if(r.data.runFailure){if(!failures.has(r.id))gap(r.id+': run failure classification unavailable');continue}
+  if(r.kind==='deferred'){
+   const binding=[...requirements.values()].find(q=>q.kind==='measurement'&&Array.isArray(q.obligations)&&q.obligations.includes(r.id));
+   // Deferred final-suite records predate any tested tree. The caller explicitly binds
+   // their exact IDs to the final measurement; a pass cannot clear another obligation.
+   if(binding && (!r.data.command||r.data.command===binding.command) && (!r.data.configuration||r.data.configuration===binding.configuration) && (!r.data.sourceTree||r.data.sourceTree===(binding.sourceTree||current.sourceTree)))measure({...binding,sourceTree:binding.sourceTree||current.sourceTree,requiredLive:true},r.id);
+   else measure({...r.data,requiredLive:true},r.id);
+  }
+  else wait(r.id+': '+r.kind+' '+r.reason+'; owner: '+(r.data.owner||'caller'));
+ }
+}
+// The outer caller collects settled reports. The read-only gate reconciles known
+// producer pointers with complete retained extraction, never ledger display keys.
+const runDir=path.dirname(path.resolve(run)),sources=[],declared=new Map(),ledgers=[],correspondences=[];
+const roastInputs={design:new Set(),code:new Set()};
+const artifactPath=value=>{const resolved=path.resolve(runDir,value);try{return fs.realpathSync(resolved)}catch{return resolved}};
+// This recognizes the keys transport grammar only; occurrence identity still requires
+// the hash-bound retained source and exact line correspondence below.
+function keysInput(artifact){
+ const lines=fs.readFileSync(artifact,'utf8').split(/\r?\n/),header=/^review: (ready|not ready|none)$/.exec(lines[0]);
+ const keys=[];
+ for(const [i,line] of lines.entries()){
+  if(i===0&&header)continue;if(!line.trim())continue;
+  if(!/^(?:r[0-9]+ )?\[Must-fix\] .+/.test(line))throw Error('malformed keys input');
+  keys.push({line:i+1,key:line.replace(/^r[0-9]+ /,'')});
+ }
+ if(!header&&!keys.length)throw Error('untyped empty input');
+ if(header?.[1]==='none'&&keys.length)throw Error('no-review input contains keys');
+ return keys;
+}
+function declaredKind(artifact){try{keysInput(artifact);return 'keys'}catch{return 'roast'}}
+let inApprovals=false,fenced=false;
+for(const line of input.split(/\r?\n/)){
+ if(/^\s*(```|~~~)/.test(line)){fenced=!fenced;continue}if(fenced)continue;
+ if(/^[A-Za-z][A-Za-z0-9-]*:/.test(line))inApprovals=line==='approvals:';
+ if(inApprovals&&line.startsWith('- finding-source · ')){
+  try{const s=JSON.parse(line.slice('- finding-source · '.length));if(object(s)&&text(s.source)&&text(s.artifact))sources.push(s)}catch{}
+ }
+ if(line.startsWith('- source-correspondence')){
+  try{
+   if(!inApprovals||!line.startsWith('- source-correspondence · '))throw Error();
+   correspondences.push(JSON.parse(line.slice('- source-correspondence · '.length)));
+  }catch{gap('source coverage: malformed source-correspondence record')}
+ }
+ const report=line.match(/^(roast-design|roast-code):\s*(.*)$/);
+ if(report)for(const artifact of report[2].split(',').map(s=>s.trim())){
+  if(!artifact)gap('source coverage: empty '+report[1]+' report pointer');
+  else{const original=artifactPath(artifact);declared.set(original,declaredKind(original));roastInputs[report[1].slice(6)].add(original)}
+ }
+ const ledger=line.match(/^(findingsLedgerDesign|findingsLedger):\s*(.*)$/);
+ if(ledger)ledgers.push({artifact:ledger[2].trim(),loop:ledger[1]==='findingsLedgerDesign'?'design':'code'});
+}
+const repo=cp.spawnSync('git',['-C',runDir,'rev-parse','--show-toplevel'],{encoding:'utf8'});
+const repoDir=repo.status===0?repo.stdout.trim():null;
+const ledgerKeys=new Map();
+for(const {artifact,loop} of ledgers){
+ try{
+  if(!artifact)throw Error('empty ledger pointer');
+  const lines=fs.readFileSync(path.resolve(runDir,artifact),'utf8').trimEnd().split(/\r?\n/);
+  if(!new RegExp('^# findings ledger — '+loop+' — through r[0-9]+$').test(lines[0])||!/^triggers: .+/.test(lines[1]||'')||
+     !/^blocking: .+/.test(lines[2]||'')||!/^ignored-overrides: [0-9]+$/.test(lines[3]||''))throw Error('malformed ledger header');
+  // Headers contain no total finding count/input manifest: zero rows can mean
+  // truncation even with zero Blocking. Only the caller declares the input set.
+  if(!roastInputs[loop].size)gap('source coverage: ledger input population unavailable: '+artifact+'; declare all roast-'+loop+' producer inputs');
+  if(!lines.slice(4).some(line=>line.trim())&&/\br[0-9]+=[1-9][0-9]*(?:\s|$)/.test(lines[2]))gap('source coverage: ledger header contradicts missing finding rows: '+artifact);
+  const rowKeys=new Set();
+  for(const [index,line] of lines.slice(4).entries()){
+   if(!line.trim())continue;
+   const row=line.match(/^- (\[[^\]]+\] .+) · raised r[0-9]+@(?:[a-f0-9]+|-) · .+ · source (roast|final-review) · text (.+)$/);
+   if(!row){gap('source coverage: malformed ledger row '+artifact+':'+(index+5));continue}
+   rowKeys.add(row[1]);
+   // The producer preserves its input path. Accept a run-relative or repo-relative
+   // path only when it selects one unambiguous original file, never by basename/key.
+   const candidates=[...new Set([artifactPath(row[3]),...(repoDir?[artifactPath(path.resolve(repoDir,row[3]))]:[])])].filter(p=>fs.existsSync(p));
+   if(candidates.length!==1){gap('source coverage: unavailable or ambiguous ledger report '+artifact+':'+(index+5)+' '+row[3]);continue}
+   const kind=row[2]==='final-review'?'keys':'roast';
+   if(!roastInputs[loop].has(candidates[0]))gap('source coverage: undeclared ledger input population: '+artifact+'; '+candidates[0]);
+   const cacheKey=JSON.stringify([candidates[0],kind]);
+   if(!ledgerKeys.has(cacheKey)){
+    if(kind==='keys')ledgerKeys.set(cacheKey,keysInput(candidates[0]).map(k=>k.key));
+    else{
+     const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',candidates[0]],{encoding:'utf8'});
+     ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\r?\n/):null);
+    }
+   }
+   // Key membership checks the ledger producer's pointer transport only. It never
+   // identifies, links or resolves occurrences; complete source/ref checks follow.
+   if(!ledgerKeys.get(cacheKey)?.includes(row[1]))gap('source coverage: inconsistent ledger key/report pointer '+artifact+':'+(index+5));
+   if(declared.has(candidates[0])&&declared.get(candidates[0])!==kind)gap('source coverage: conflicting report kind '+candidates[0]);
+   else declared.set(candidates[0],kind);
+  }
+  // Reverse transport check catches missing rows of every severity. Equal keys
+  // still do not identify occurrences: all declared original reports are separately
+  // extracted and their immutable refs retain independent relevance/dispositions.
+  for(const original of roastInputs[loop]){
+   const kind=declared.get(original),cacheKey=JSON.stringify([original,kind]);
+   if(!ledgerKeys.has(cacheKey)){
+    if(kind==='keys')ledgerKeys.set(cacheKey,keysInput(original).map(k=>k.key));
+    else{const keys=cp.spawnSync('bash',[path.resolve(scripts,'../../super-code/scripts/report-verdict'),'--keys',original],{encoding:'utf8'});
+    ledgerKeys.set(cacheKey,keys.status===0?keys.stdout.split(/\r?\n/):null);}
+   }
+   const keys=ledgerKeys.get(cacheKey);
+   if(keys===null)gap('source coverage: ledger declared input population unavailable: '+artifact+'; '+original);
+   else if(keys.some(key=>key.trim()&&!rowKeys.has(key)))gap('source coverage: ledger population incomplete for declared report: '+artifact+'; '+original);
+  }
+ }catch(e){gap('source coverage: declared ledger '+artifact+': '+e.message)}
+}
+const extractor=path.resolve(scripts,'../../super-code/scripts/report-verdict');
+const content=r=>JSON.stringify([r.version,r.source,r.kind,r.verdict,r.occurrences]);
+const extract=(artifact,source)=>cp.spawnSync('bash',[extractor,'--complete','--source',source,artifact],{encoding:'utf8'});
+const sha=artifact=>crypto.createHash('sha256').update(fs.readFileSync(artifact)).digest('hex');
+const refId=r=>JSON.stringify([r?.source,r?.section,r?.position]);
+const associated=new Map();
+for(const association of correspondences){
+ try{
+  const a=association;
+  if(!object(a)||a.version!==1||!text(a.artifact)||!text(a.source)||!text(a.retainedArtifact)||!(/^[a-f0-9]{64}$/).test(a.sha256)||!(/^[a-f0-9]{64}$/).test(a.retainedSha256)||
+     a.judgment!=='supported'||!text(a.basis)||!Array.isArray(a.evidence)||!a.evidence.length||!a.evidence.every(text))throw Error('unsupported or malformed association');
+  const original=artifactPath(a.artifact),retained=artifactPath(a.retainedArtifact),kind=declared.get(original);
+  if(!kind)throw Error('association does not name a declared original input');
+  if(sha(original)!==a.sha256||sha(retained)!==a.retainedSha256)throw Error('original or retained hash mismatch');
+  const matches=sources.filter(s=>s.source===a.source&&artifactPath(s.artifact)===retained);
+  const result=extract(retained,a.source);
+  if(!matches.length||result.status!==0)throw Error('retained source extraction unavailable');
+  const actual=JSON.parse(result.stdout);
+  if(matches.some(s=>content(s)!==content(actual)))throw Error('retained source differs from complete extraction');
+  if(kind==='keys'){
+   if(actual.kind!=='final-review'||!Array.isArray(a.lines))throw Error('keys input needs final-review source and complete line correspondence');
+   const keyLines=keysInput(original).map(k=>k.line);
+   const known=new Set(actual.occurrences.map(o=>refId({source:a.source,...o}))),seen=new Set();
+   for(const mapping of a.lines){
+    if(!object(mapping)||!Number.isSafeInteger(mapping.line)||!keyLines.includes(mapping.line)||seen.has(mapping.line)||
+       !Array.isArray(mapping.refs)||!mapping.refs.length||mapping.refs.some(r=>!object(r)||r.source!==a.source||!known.has(refId(r))))throw Error('invalid keys line occurrence correspondence');
+    seen.add(mapping.line);
+   }
+   if(seen.size!==keyLines.length)throw Error('incomplete keys line correspondence');
+  }else{
+   if(actual.kind!==kind)throw Error('retained report kind differs from declaration');
+   const raw=extract(original,a.source);
+   if(a.sha256===a.retainedSha256){if(raw.status!==0||content(JSON.parse(raw.stdout))!==content(actual))throw Error('original report extraction mismatch')}
+   else{
+    // Adapters are reviewed interpretations of malformed historical reports. Never
+    // convert an ordinary valid source or restamp the original historical verdict.
+    const interpretation=a.interpretation;
+    if(raw.status===0||!object(interpretation)||interpretation.kind!=='legacy-adapter'||!text(interpretation.originalVerdict)||
+       !Array.isArray(interpretation.limitations)||!interpretation.limitations.length||!interpretation.limitations.every(text))throw Error('legacy adapter requires retained interpretation limitations and original extraction failure');
+    const compact=cp.spawnSync('bash',[extractor,original],{encoding:'utf8'});
+    const verdict=compact.stdout?.split('\n').find(l=>l.startsWith('verdict: '))?.slice(9),originalKind=compact.stdout?.split('\n').find(l=>l.startsWith('kind: '))?.slice(6);
+    if(compact.status!==0||originalKind!==actual.kind||verdict!==actual.verdict||interpretation.originalVerdict!==verdict)throw Error('adapter changes or lacks original historical kind/verdict');
+   }
+  }
+  const binding=JSON.stringify([a.sha256,a.source,a.retainedSha256,a.lines||null]);
+  if(associated.has(original)&&associated.get(original)!==binding)throw Error('conflicting immutable source correspondence');
+  associated.set(original,binding);
+ }catch(e){gap('source coverage: source-correspondence '+(association?.artifact||'unknown')+': '+e.message)}
+}
+for(const [artifact,kind] of declared){
+ if(associated.has(artifact))continue;
+ if(kind==='keys'){gap('source coverage: keys-only ledger input needs supported original-source correspondence: '+artifact);continue}
+ const matches=sources.filter(s=>artifactPath(s.artifact)===artifact);
+ if(!matches.length){gap('source coverage: declared report has no retained source extraction: '+artifact);continue}
+ for(const s of matches){
+  const extracted=extract(artifact,s.source);
+  try{
+   if(extracted.status!==0)throw Error('original report unavailable or malformed');
+   const actual=JSON.parse(extracted.stdout);
+   if(actual.kind!==kind||content(actual)!==content(s))throw Error('retained extraction differs from complete original report');
+  }catch(e){gap('source coverage: '+artifact+' ('+s.source+'): '+e.message)}
+ }
+}
+// Use the same validated projection as Remaining and resume. Valid empty is distinct
+// from a missing extraction or an empty --keys stream carrying gaps.
+const projection=cp.spawnSync('bash',[path.join(scripts,'scope-dispositions'),'--project',run],{encoding:'utf8'});
+try{
+ if(![0,3].includes(projection.status))throw Error('unavailable');
+ const p=JSON.parse(projection.stdout);if(!Array.isArray(p.findings)||!Array.isArray(p.gaps))throw Error('malformed');
+ for(const g of p.gaps)gap('finding evidence: '+JSON.stringify(g));
+ const sameRef=(a,b)=>a&&b&&a.source===b.source&&a.section===b.section&&a.position===b.position;
+ for(const f of p.findings.filter(f=>f.outstanding)){
+  const refs=f.occurrences.map(o=>({source:o.source,section:o.section,position:o.position}));
+  // Explicit projection links establish one finding group. Assess it once through
+  // any exact member ref, retaining every original source occurrence in the result.
+  const judgment=(current?.findingAcceptance||[]).filter(j=>refs.some(ref=>sameRef(j?.ref,ref))).at(-1);
+  if(!judgment||judgment.judgment!=='supported'||!text(judgment.basis)||!Array.isArray(judgment.evidence)||!judgment.evidence.length||!judgment.evidence.every(text)||!['required','nonblocking'].includes(judgment.effect))gap('finding acceptance relevance unproven: '+JSON.stringify(refs));
+  else if(judgment.effect==='required'){
+   if(!text(judgment.requirement)||!requirements.has(judgment.requirement))gap('finding acceptance requirement unavailable: '+JSON.stringify(refs));
+   wait('finding '+JSON.stringify(refs)+' remains required for '+(judgment.requirement||'unknown acceptance'));
+  }else nonblockingFindings.push(...refs); // still outstanding in the shared punch-list projection
+ }
+}catch{gap('finding projection unavailable')}
+// Reuse ordinary status collection validation without recursively running this gate.
+const status=cp.spawnSync('bash',[path.join(scripts,'report-status'),run],{encoding:'utf8',env:{...process.env,RS_SKIP_ACCEPTANCE:'1'}});
+if(status.status!==0)gap('run status unavailable');
+else for(const line of status.stdout.split('\n'))if(/^qualifier: (review collection|review collections|finding evidence|finding projection)/.test(line))gap(line.slice(11));
+const result={owner:'super-auto',sourceTree:current?.sourceTree||null,eligible:pending.length===0&&gaps.length===0,pending:[...new Set(pending)],gaps:[...new Set(gaps)],nonblockingFindings};
+// Keep the event loop alive until stdout drains; failed output is not acceptance.
+process.exitCode=result.eligible?0:3;
+process.stdout.on('error',error=>{
+ console.error('acceptance output failed: '+error.message);
+ process.exitCode=1;
+});
+console.log(JSON.stringify(result));
+ACCEPTANCE
+  exit $?
+fi
+
+# Collection writes only after the caller has confirmed this invocation settled. Launch
+# intent records (settled:false) remain visible until that confirmation; file presence alone
+# cannot establish settlement. Ordinary status mode below remains read-only.
+if [ "${1:-}" = --collect ]; then
+  command -v node >/dev/null 2>&1 || { echo 'NODE_UNAVAILABLE: retain source bundles; collection is unverified' >&2; exit 4; }
+  script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+  node - "$script_dir" "$@" <<'COLLECT'
+const fs=require('node:fs'), path=require('node:path'), crypto=require('node:crypto'), cp=require('node:child_process');
+const [scriptDir,,run,...args]=process.argv.slice(2);
+const usage=()=>{console.error('usage: report-status --collect RUN_MD [--invocation ID --workspace DIR --review FILE|none --verdict TEXT [--required RELATIVE_FILE]... [--recover-null]]');process.exit(2)};
+if(!run)usage();
+const o={},required=[];let recoverNull=false;
+for(let i=0;i<args.length;i++){
+ if(args[i]==='--recover-null'){if(recoverNull)usage();recoverNull=true;continue}
+ const key=args[i],value=args[++i];if(!value)usage();
+ if(key==='--required')required.push(value);else if(['--invocation','--workspace','--review','--verdict'].includes(key)&&!o[key])o[key]=value;else usage();
+}
+let text;try{text=fs.readFileSync(run,'utf8')}catch(e){console.error(e.message);process.exit(2)}
+const dir=path.dirname(path.resolve(run));
+function append(type,data){const line='- '+type+' · '+JSON.stringify(data);const prior=text.split('\n');if(type==='review-collection'){const previous=prior.filter(l=>{try{return l.startsWith('- review-collection · ')&&JSON.parse(l.slice('- review-collection · '.length)).invocationId===data.invocationId}catch{return false}}).at(-1);if(previous===line)return}else if(prior.includes(line))return;const lines=text.trimEnd().split('\n');let start=lines.indexOf('approvals:');if(start<0){lines.push('approvals:');start=lines.length-1}let end=start+1;while(end<lines.length&&!/^[A-Za-z][A-Za-z0-9-]*:/.test(lines[end]))end++;lines.splice(end,0,line);text=lines.join('\n')+'\n';const pending=run+'.collection-tmp-'+process.pid;fs.writeFileSync(pending,text);fs.renameSync(pending,run);}
+const {validCollection,recordHash,sameBundle,collectionHistory}=require(path.join(scriptDir,'collection-records.cjs'));
+const {latest,errors}=collectionHistory(text),malformed=errors>0;
+// Reject every source symlink component before reading a recovered report or bundle.
+function sourcePath(workspace,relative){
+ if(typeof relative!=='string'||relative===''||path.isAbsolute(relative)||relative.split(/[\\/]/).includes('..'))throw Error('unsafe bundle path');
+ let full=workspace;if(fs.lstatSync(full).isSymbolicLink())throw Error('unsafe bundle path');
+ for(const component of relative.split(path.sep)){full=path.join(full,component);if(fs.lstatSync(full).isSymbolicLink())throw Error('unsafe bundle path')}
+ const resolved=path.relative(fs.realpathSync(workspace),fs.realpathSync(full));
+ if(path.isAbsolute(resolved)||resolved==='..'||resolved.startsWith('..'+path.sep))throw Error('unsafe bundle path');
+ return full;
+}
+if(args.length){
+ if(Object.keys(o).length!==4||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(o['--invocation']))usage();
+ const r={invocationId:o['--invocation'],workspace:path.resolve(o['--workspace']),reviewPath:o['--review']==='none'?null:path.resolve(o['--review']),review:o['--verdict'],required,settled:true};
+ if(!validCollection(r))usage();
+ const old=latest.get(r.invocationId),deny=message=>{console.error('COLLECTION_GAP: '+message);process.exit(3)};
+ if(recoverNull){
+  // Caller-confirmed recovery is the sole supported settled-null transition. Its
+  // digest links the exact retained null event; replay cannot relabel another source.
+  const expected=path.join(r.workspace,'final-review-'+r.invocationId+'.md');
+  if(malformed||!old||!old.settled||!sameBundle(old,r)||r.reviewPath!==expected)deny('null recovery identity or required bundle changed; retain original result');
+  if(old.reviewPath!==null){
+   if(!old.recovery||old.reviewPath!==r.reviewPath||old.review!==r.review)deny('null recovery cannot replace a settled non-null result');
+  }else{
+   try{
+    const report=sourcePath(r.workspace,'final-review-'+r.invocationId+'.md');if(!fs.lstatSync(report).isFile())throw Error();
+    const result=cp.spawnSync('bash',[path.resolve(scriptDir,'../../super-code/scripts/report-verdict'),'--complete','--source',r.invocationId+'/final',report],{encoding:'utf8'});
+    if(result.status!==0)throw Error();const extracted=JSON.parse(result.stdout);
+    if(extracted.kind!=='final-review'||extracted.verdict!==r.review)throw Error();
+   }catch{deny('null recovery report unavailable, unsafe, incomplete or verdict mismatch; retain original result')}
+   r.recovery={kind:'settled-null',recordSha256:recordHash(old),review:old.review};
+   if(old.files)r.files=old.files;
+   append('review-collection',r);latest.set(r.invocationId,r);
+  }
+ }else{
+  if(old&&(!sameBundle(old,r)||(old.reviewPath!==r.reviewPath&&(old.settled||r.reviewPath!==null)))){append('review-collection',{...old,complete:false,gaps:['invocation identity or required bundle changed; retain both sources']});deny('invocation identity or required bundle changed; retain both sources')}
+  if(!old||!old.settled){append('review-collection',r);latest.set(r.invocationId,r)}
+ }
+}
+const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
+const hasBundle=(r,id)=>{const p='final-review-'+id;try{return fs.readdirSync(r.workspace).some(n=>n===p+'.md'||n===p+'.md.diff'||n.startsWith(p+'.cluster-'))||fs.existsSync(path.join(r.workspace,'assembled',p+'-final'))}catch{return false}};
+let gaps=malformed?1:0;if(malformed)console.error('COLLECTION_GAP: malformed collection record; retain sources');
+for(const previous of latest.values()){
+ const r={...previous},id=r.invocationId,prefix='final-review-'+id,archive=path.join(dir,'reviews',id), problems=[];
+ const gap=m=>{if(!problems.includes(m))problems.push(m)};
+ // lstat on a leaf alone follows earlier directory symlinks. Validate the full
+ // source path before enumeration, manifest reads, hashing or extraction.
+ function source(relative){
+  try{return sourcePath(r.workspace,relative)}catch(e){if(e.message==='unsafe bundle path')gap('unsafe bundle path: '+relative);throw e}
+ }
+ // Destination parents belong to this archive too. Never hash, trust or copy a
+ // leaf through a symlink, even if the outside bytes happen to match the source.
+ function destination(relative){
+  const full=path.join(archive,relative);let current=dir;
+  for(const component of ['reviews',id,...relative.split(path.sep)]){
+   current=path.join(current,component);
+   try{if(fs.lstatSync(current).isSymbolicLink())throw Error('unsafe archive path')}
+   catch(e){if(e.code==='ENOENT')continue;gap('unsafe archive path: '+relative);throw e}
+  }
+  return full;
+ }
+ if(!r.settled){gap('invocation settlement unverified; inspect Launch and completion before collection')}
+ else if(r.reviewPath===null&&!hasBundle(r,id)){if(r.review!=='no work landed')gap('required review is null; owner: orchestrator; recover whole-epic review')}
+ else{
+  const expected=path.join(r.workspace,prefix+'.md');
+  if(r.reviewPath===null)gap('null review has recoverable bundle artifacts; reconcile returned result');
+  else if(path.resolve(r.reviewPath)!==path.resolve(expected))gap('reviewPath does not match persisted invocation');
+  const files=new Set(r.required);
+  function walk(relative){try{const full=source(relative),st=fs.lstatSync(full);if(st.isSymbolicLink())throw Error('symlink');if(st.isDirectory())for(const name of fs.readdirSync(full).sort())walk(path.join(relative,name));else if(st.isFile())files.add(relative);else throw Error('not a regular file')}catch(e){gap('bundle unavailable: '+relative)}}
+  files.add(prefix+'.md');
+  try{for(const name of fs.readdirSync(source('.')).sort())if(name===prefix+'.md.diff'||(name.startsWith(prefix+'.cluster-')&&/^\d+\.md$/.test(name.slice((prefix+'.cluster-').length))))files.add(name)}catch{if(!previous.complete)gap('workspace unavailable: '+r.workspace)}
+  const assembled=path.join('assembled',prefix+'-final');
+  try{source(assembled);walk(assembled)}catch{}
+  const clusters=[...files].filter(f=>f.startsWith(prefix+'.cluster-'));
+  if(clusters.length){try{const m=JSON.parse(fs.readFileSync(source(path.join(assembled,'clusters.json')),'utf8'));if(!Array.isArray(m.clusters)||!m.clusters.length)throw Error();for(const [n,c]of m.clusters.entries()){files.add(prefix+'.cluster-'+(n+1)+'.md');if(!Array.isArray(c.slices))throw Error();for(const slice of c.slices)files.add(path.join(assembled,slice))}}catch{gap('split bundle manifest unavailable or incomplete')}}
+  // A completed archive remains usable after the source worktree is intentionally removed.
+  if(previous.complete&&Array.isArray(previous.files))for(const f of previous.files)files.add(f.path);
+  const manifests=[];
+  for(const rel of [...files].sort()){
+   if(typeof rel!=='string'||path.isAbsolute(rel)||rel.split(/[\\/]/).some(p=>p==='..')||rel===''){gap('unsafe bundle path');continue}
+   let dst;try{dst=destination(rel)}catch{continue}
+   const src=path.join(r.workspace,rel),saved=previous.files?.find(f=>f.path===rel);
+   let srcHash=null,dstHash=null;try{if(!fs.lstatSync(source(rel)).isFile())throw Error();srcHash=hash(src)}catch{}
+   try{if(!fs.lstatSync(dst).isFile()||fs.lstatSync(dst).isSymbolicLink())throw Error();dstHash=hash(dst)}catch{}
+   if((rel===prefix+'.md'||clusters.includes(rel)||/^final-review-.*\.cluster-\d+\.md$/.test(rel))&&srcHash){
+    const logical=rel===prefix+'.md'?'final':rel.slice(prefix.length+1,-3);
+    const result=cp.spawnSync('bash',[path.resolve(scriptDir,'../../super-code/scripts/report-verdict'),'--complete','--source',id+'/'+logical,src],{encoding:'utf8'});
+    try{if(result.status!==0)throw Error();const source=JSON.parse(result.stdout);source.artifact=path.relative(dir,dst);append('finding-source',source)}catch{gap('complete extraction unavailable: '+rel)}
+   }
+   if(srcHash&&dstHash&&srcHash!==dstHash){gap('archive conflict: '+rel);continue}
+   if(saved&&dstHash&&saved.sha256!==dstHash){gap('archive integrity mismatch: '+rel);continue}
+   if(!dstHash&&srcHash){try{fs.mkdirSync(path.dirname(dst),{recursive:true});destination(rel);fs.copyFileSync(src,dst,fs.constants.COPYFILE_EXCL);dstHash=hash(destination(rel))}catch{gap('archive copy failed: '+rel)}}
+   if(!dstHash||(!srcHash&&(!previous.complete||!saved))){gap('bundle unavailable: '+rel);continue}
+   manifests.push({path:rel,sha256:dstHash});
+  }
+  r.files=manifests;
+ }
+ r.complete=problems.length===0;r.gaps=problems;
+ append('review-collection',r);
+ if(problems.length){gaps+=problems.length;for(const p of problems)console.error('COLLECTION_GAP: '+id+': '+p+'; keep source workspace and archive; owner: orchestrator')}
+}
+console.log(gaps?'collection: gaps — retain sources; block later invocation and cleanup':'collection: complete');process.exit(gaps?3:0);
+COLLECT
+  exit $?
+fi
+
+usage() { echo "usage: report-status RUN_MD [--tip SHA] [--stalled PHASE]" >&2; exit 2; }
+run='' stalled='' tip=''
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --stalled) [ $# -ge 2 ] || usage; stalled=$2; shift 2 ;;
+    --tip) [ $# -ge 2 ] || usage; tip=$2; shift 2 ;;
+    -*) usage ;;
+    *) [ -z "$run" ] || usage; run=$1; shift ;;
+  esac
+done
+[ -n "$run" ] || usage
+[ -f "$run" ] || { echo "run.md not found: $run" >&2; exit 2; }
+case "$stalled" in
+  ''|design|roast-design|capped-blocking|code|roast-code|fix-loop|report|finish) ;;
+  *) echo "not a stallable phase: $stalled" >&2; exit 2 ;;
+esac
+[ -z "$tip" ] || [[ "$tip" =~ ^[0-9a-f]{7,40}$ ]] || { echo "not a commit SHA: $tip" >&2; exit 2; }
+rundir=$(CDPATH= cd -- "$(dirname -- "$run")" && pwd)
+
+continuity=''
+if awk '/^- (finding-|review-collection)/ { found=1; exit } END { exit !found }' "$run"; then
+  if command -v node >/dev/null 2>&1; then
+    script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+    continuity=$(node - "$script_dir" "$run" <<'STATUS'
+const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
+const [scripts,run]=process.argv.slice(2),text=fs.readFileSync(run,'utf8');
+const {collectionHistory}=require(path.join(scripts,'collection-records.cjs'));
+const history=collectionHistory(text),latest=history.latest;let errors=history.errors;
+// Collection metadata describes the last preservation attempt. Recheck retained bytes
+// on every read; status and acceptance must never repair or recollect an archive.
+let pending=0;const integrityGaps=[];
+for(const r of latest.values()){
+ let invalid=false;
+ for(const f of r.files||[]){
+  const file=path.join(path.dirname(path.resolve(run)),'reviews',r.invocationId,f.path);
+  let actual;
+  try{if(!fs.lstatSync(file).isFile())throw Error();actual=crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')}
+  catch{integrityGaps.push(r.invocationId+': archive unavailable: '+f.path);invalid=true;continue}
+  if(actual!==f.sha256){integrityGaps.push(r.invocationId+': archive integrity mismatch: '+f.path);invalid=true}
+ }
+ if(!r.complete||invalid)pending++;
+ errors+=(r.gaps||[]).length;
+}
+errors+=integrityGaps.length;
+for(const g of integrityGaps)console.log('review collection gap: '+g);
+if(pending)console.log('review collections pending: '+pending);
+if(errors)console.log('review collection gaps: '+errors);
+if(/^- finding-/m.test(text)){
+ const p=cp.spawnSync('bash',[path.join(scripts,'scope-dispositions'),'--project',run],{encoding:'utf8'});
+ try{if(![0,3].includes(p.status))throw Error();const d=JSON.parse(p.stdout),n=d.findings.filter(f=>f.outstanding).length;if(n)console.log('outstanding findings: '+n);if(d.gaps.length)console.log('finding evidence gaps: '+d.gaps.length)}catch{console.log('finding projection unavailable — retain known findings')}
+}else if([...latest.values()].some(r=>r.reviewPath!==null))console.log('finding evidence gaps: source extraction unavailable');
+STATUS
+)
+  else
+    continuity='finding projection unavailable — retain known findings; review collection unverified'
+  fi
+fi
+
+if [ "${RS_SKIP_ACCEPTANCE:-}" != 1 ] && awk '/^- root-acceptance/ { found=1; exit } END { exit !found }' "$run"; then
+  if command -v node >/dev/null 2>&1; then
+    set +e
+    acceptance=$(bash "$0" --acceptance "$run")
+    acceptance_exit=$?
+    set -e
+    if [ "$acceptance_exit" = 3 ]; then
+      qualifier=$(node -e 'const d=JSON.parse(process.argv[1]); console.log([...d.pending,...d.gaps].join("; "))' "$acceptance")
+      continuity="${continuity}${continuity:+
+}root acceptance pending: $qualifier"
+    elif [ "$acceptance_exit" != 0 ]; then
+      continuity="${continuity}${continuity:+
+}root acceptance unverified"
+    fi
+  else
+    continuity="${continuity}${continuity:+
+}root acceptance unverified: Node unavailable"
+  fi
+fi
+
+RS_CONTINUITY=$continuity RS_RUNDIR=$rundir awk -v stalled="$stalled" -v tip="$tip" '
+  function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
+  function truthy(v) { v = tolower(trim(v)); return v == "true" || v == "t" || v == "yes" || v == "1" }
+  function isempty(v) { v = tolower(trim(v)); return v == "" || v == "none" || v == "-" }
+  function after(s, label) { return trim(substr(s, length(label) + 1)) }
+  function countids(v,   n, p, i, c) {
+    if (isempty(v)) return 0
+    n = split(v, p, ","); c = 0
+    for (i = 1; i <= n; i++) if (trim(p[i]) != "") c++
+    return c
+  }
+  # Adds each finding key of a capped list to the unresolved set. Keys (`[SEV] <loc>` or
+  # `rN [SEV] <loc>`) may hold commas, so they split only on `, [` / `, rN [`.
+  # A list without brackets holds bare ids, each its own entry.
+  function addkeys(v,   s, k, n, ids, j) {
+    v = trim(v)
+    if (isempty(v)) return
+    if (index(v, "[") == 0) { n = split(v, ids, ","); for (j = 1; j <= n; j++) if (trim(ids[j]) != "") unres["id:" trim(ids[j])] = 1; return }
+    s = v
+    sub(/^(r[0-9]+ )?/, "", s)
+    while (match(s, /,[ \t]*(r[0-9]+ )?\[/)) {
+      k = trim(substr(s, 1, RSTART - 1)); if (k != "") unres[k] = 1
+      s = substr(s, RSTART + RLENGTH - 1)
+    }
+    s = trim(s); if (s != "") unres[s] = 1
+  }
+  # Adds the key of every Blocking ledger row whose status is disputed. Fields split on ` · `; the
+  # key is everything before the `raised r<M>` field, so a ` · ` inside a key cannot shift it.
+  function readledger(path,   f, line, n, p, i, r, key) {
+    f = path
+    if (f !~ /^\//) f = ENVIRON["RS_RUNDIR"] "/" f
+    if ((getline line < f) < 0) { addq("findings ledger not found: " path); return }
+    do {
+      sub(/\r$/, "", line)
+      if (line !~ /^- \[Blocking\] /) continue
+      n = split(substr(line, 3), p, / · /); r = 0
+      for (i = 2; i <= n; i++) if (p[i] ~ /^raised r[0-9]+/) { r = i; break }
+      if (!r || r == n) continue
+      if (trim(p[r + 1]) !~ /^disputed/) continue
+      key = p[1]; for (i = 2; i < r; i++) key = key " · " p[i]
+      unres[trim(key)] = 1
+    } while ((getline line < f) > 0)
+    close(f)
+  }
+  function addq(q) { q = trim(q); if (q != "" && !(q in seenq)) { seenq[q] = 1; qs[++nq] = q } }
+  # The qualifier sits in the part before ` — `; the free-text tail may hold brackets of its own.
+  function verdictq(t,   i) {
+    t = trim(t); sub(/^"/, "", t); sub(/"$/, "", t)
+    i = index(t, " — "); if (i) t = substr(t, 1, i - 1)
+    if (match(t, /\[[^]]*\]/)) return substr(t, RSTART + 1, RLENGTH - 2)
+    return t
+  }
+  # True when commits a and b differ only inside the run directory (RS_RUNDIR, the directory
+  # holding RUN_MD). Any git failure, such as a SHA that does not resolve, counts as a difference.
+  function codesame(a, b) {
+    return system("git -C \"$RS_RUNDIR\" diff --quiet " a " " b " -- \":/\" \":(exclude).\" > /dev/null 2>&1") == 0
+  }
+  function sweepq(s,   sha) {
+    if (s == "") return "sweep: none recorded"
+    if (s ~ /(^|[^0-9])0*[1-9][0-9]* (failed|errors)/ || s ~ /FAIL|DEFERRED|INVALID|UNAVAILABLE/) return "sweep: " s
+    if (s !~ /(^|[^0-9])[0-9]+ passed, 0+ failed, 0+ errors/) return "sweep: " s
+    if (!match(s, /@[ \t]*[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]+/)) return "sweep: unstamped — " s
+    sha = substr(s, RSTART + 1, RLENGTH - 1); sub(/^[ \t]+/, "", sha)
+    if (tip != "" && index(tip, sha) != 1 && index(sha, tip) != 1 && !codesame(sha, tip)) return "sweep: not at tip — " s
+    return ""
+  }
+  { sub(/\r$/, "") }
+  /^[^ \t-]/ { block = "" }
+  /^flags:/ {
+    haveflags = 1
+    n = split(after($0, "flags:"), f, /[ \t]+/)
+    for (i = 1; i <= n; i++) if (split(f[i], kv, "=") == 2) flag[kv[1]] = kv[2]
+    next
+  }
+  /^phase:/ { phase = after($0, "phase:"); sub(/[ \t]*\(skipped\)$/, "", phase); next }
+  /^parked:/ { block = "parked"; next }
+  /^codeBuckets:/ { block = "cb"; havecb = 1; next }
+  /^roastDesignCapped:/ {
+    n = split(after($0, "roastDesignCapped:"), p, / · /)
+    if (n < 2 || trim(p[n]) !~ /^stopped/) { dcapped = 1; capd = p[1] }
+    next
+  }
+  /^roastCodeCapped:/ { split(after($0, "roastCodeCapped:"), p, / · /); capc = p[1]; next }
+  /^findingsLedger:/ { ledc = after($0, "findingsLedger:"); next }
+  /^findingsLedgerDesign:/ { ledd = after($0, "findingsLedgerDesign:"); next }
+  block == "parked" && /^[ \t]*- / {
+    n = split($0, p, / · /)
+    res = (n > 3 && trim(p[n]) ~ /^resolves-on:[ \t]*sweep$/)
+    if (res) n--
+    kind = trim(p[2]); text = p[3]
+    for (i = 4; i <= n; i++) text = text " · " p[i]
+    if (kind == "escalation") esc++
+    else if (kind == "degraded-verdict") { dv[++ndv] = verdictq(text); dvsweep[ndv] = res }
+    next
+  }
+  block == "cb" && /^[ \t]+[A-Za-z]+:/ {
+    line = trim($0); k = substr(line, 1, index(line, ":") - 1)
+    cb[k] = after(line, k ":"); hascb[k] = 1
+    next
+  }
+  END {
+    if (!haveflags || phase == "") { print "run.md has no flags: or phase: line" > "/dev/stderr"; exit 2 }
+    if (!("skipPlanRoast" in flag) || !("skipCodeRoast" in flag)) { print "flags: line lacks skipPlanRoast= or skipCodeRoast=" > "/dev/stderr"; exit 2 }
+    if (phase !~ /^(design|roast-design|capped-blocking|code|roast-code|fix-loop|report|finish|done)$/) { print "not a phase token: " phase > "/dev/stderr"; exit 2 }
+    if (dcapped) addq("design roast capped-blocking")
+    addkeys(capc); addkeys(capd)
+    if (ledc != "") readledger(ledc)
+    if (ledd != "") readledger(ledd)
+    blocking = 0; for (k in unres) blocking++
+    sweepok = tip != "" && havecb && trim(cb["sweep"]) != "" && sweepq(trim(cb["sweep"])) == ""
+    for (i = 1; i <= ndv; i++) if (!(dvsweep[i] && sweepok)) addq(dv[i])
+    if (truthy(flag["skipPlanRoast"])) addq("plan roast skipped")
+    if (truthy(flag["skipCodeRoast"])) addq("code roast skipped")
+    if (havecb) {
+      split("escalated pendingRetry parked stalled", need, " ")
+      for (i = 1; i <= 4; i++) if (!(need[i] in hascb)) addq(need[i] " bucket: none recorded")
+      if (!isempty(cb["parked"])) addq("code findings parked")
+      pending = countids(cb["pendingRetry"])
+      if (pending) addq("tasks pending retry")
+      esc += countids(cb["escalated"])
+      review = trim(cb["review"])
+      if (review != "CLEAN" && review !~ /^ready( |$)/) addq("final review: " (review == "" ? "none recorded" : review))
+      addq(sweepq(trim(cb["sweep"])))
+      codestalled = truthy(cb["stalled"])
+    } else if (phase == "report" || phase == "finish" || phase == "done") {
+      addq("final review: none recorded")
+      addq("sweep: none recorded")
+    }
+    nc = split(ENVIRON["RS_CONTINUITY"], cq, "\n")
+    for (i = 1; i <= nc; i++) addq(cq[i])
+    suffix = ""
+    for (i = 1; i <= nq; i++) suffix = suffix (i == 1 ? " [degraded: " : ", ") qs[i]
+    if (nq) suffix = suffix "]"
+    if (stalled != "") print "status: stalled at phase " stalled
+    else if (phase == "capped-blocking") print "status: stalled at phase capped-blocking"
+    else if (codestalled) print "status: stalled at phase code"
+    else if (blocking || esc || pending) print "status: completed with " (blocking + 0) " unresolved Blocking, " (esc + 0) " escalations" suffix
+    else print "status: clean" suffix
+    for (i = 1; i <= nq; i++) print "qualifier: " qs[i]
+  }
+' "$run"

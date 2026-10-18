@@ -1,0 +1,16 @@
+test_absent_branch_discovery_failure_is_unknown (__main__.Cleanup.test_absent_branch_discovery_failure_is_unknown) ... ok
+test_absent_worktree_branch_delete_failure (__main__.Cleanup.test_absent_worktree_branch_delete_failure) ... ok
+test_already_absent_resources_succeed (__main__.Cleanup.test_already_absent_resources_succeed) ... ok
+test_branch_delete_failure_is_not_success (__main__.Cleanup.test_branch_delete_failure_is_not_success) ... ok
+test_default_cleanup_retains_dirty_worktree (__main__.Cleanup.test_default_cleanup_retains_dirty_worktree) ... ok
+test_default_cleanup_retains_unmerged_branch (__main__.Cleanup.test_default_cleanup_retains_unmerged_branch) ... ok
+test_default_cleanup_uses_no_force_commands (__main__.Cleanup.test_default_cleanup_uses_no_force_commands) ... ok
+test_generated_setup_uses_guarded_cleanup (__main__.Cleanup.test_generated_setup_uses_guarded_cleanup) ... ok
+test_normal_discard (__main__.Cleanup.test_normal_discard) ... ok
+test_stop_unknown_or_survivor_retains_resources (__main__.Cleanup.test_stop_unknown_or_survivor_retains_resources) ... ok
+test_worktree_remove_failure_retains_branch (__main__.Cleanup.test_worktree_remove_failure_retains_branch) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 3.875s
+
+OK

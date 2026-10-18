@@ -1,0 +1,457 @@
+# Review package: 7b18b0c26b9f19d531c558e112d490743901a13b..2091eb4910e73273f06586bb653eddc750639e23
+
+## Commits
+2091eb49 fix(super-code): profile confirmed verification settlement
+
+## Files changed
+ skills/super-code/coordinator.js                   | 31 ++++++--
+ skills/super-code/scripts/run-profile.mjs          | 23 +++---
+ tests/super-code/replay-harness.mjs                | 21 +++++-
+ .../test-verification-completion-metrics.sh        |  5 +-
+ .../test-verification-settlement-profile.mjs       | 88 ++++++++++++++++++++++
+ 5 files changed, 148 insertions(+), 20 deletions(-)
+
+## Diff
+diff --git a/skills/super-code/coordinator.js b/skills/super-code/coordinator.js
+index bcfbdba6..603bbe58 100644
+--- a/skills/super-code/coordinator.js
++++ b/skills/super-code/coordinator.js
+@@ -292,27 +292,27 @@ async function drainLedger() {
+   const e = ledgerFailure
+   ledgerFailure = null
+   if (dryRun) throw e
+   log(`ledger append threw and was swallowed (live run): ${e && e.stack ? e.stack : String(e)}`)
+ }
+ const ledgerBuf = new Map()   // id -> [{ line, elided }]
+ function noteLedger(id, line, elided) {
+   if (!ledgerBuf.has(id)) ledgerBuf.set(id, [])
+   ledgerBuf.get(id).push({ line, elided })
+ }
+-function flushLedger(id, phase, confirm = false) {
++function flushLedger(id, phase, confirm = false, suffix = '') {
+   const entries = ledgerBuf.get(id)
+   ledgerBuf.delete(id)
+   if (!entries || !entries.length) return
+   const lines = entries.flatMap(e => flatLines(e.line))
+   const elided = entries.some(e => e.elided !== undefined) ? entries.flatMap(e => flatLines(e.elided ?? e.line)) : undefined
+-  return queueLedger(lines, `ledger:${id}`, phase, elided, confirm)
++  return queueLedger(lines, `ledger:${id}` + suffix, phase, elided, confirm)
+ }
+ function flushAllLedger(phase) { for (const id of [...ledgerBuf.keys()]) flushLedger(id, phase) }
+ 
+ // `reviews`: ready review beads (a task split at implementation-done whose merge has not landed),
+ // each with the task it reviews — re-entered at the review stage, never planned or implemented.
+ const DEP_OBSERVATION = { type: 'object', properties: { id: {type:'string'}, status: {type:'string'}, kind: {type:'string'}, error: {type:'string'} }, required: ['id'] }
+ const READY   = { type: 'object', properties: { observations: { type:'array', items: DEP_OBSERVATION }, ids: { type: 'array', items: { type: 'string' } }, reviews: { type: 'array', items: { type: 'object', properties: { id: {type:'string'}, task: {type:'string'} }, required: ['id','task'] } }, scriptError: {type:'string'} }, required: ['ids'] }
+ // mapping: ordinal (for task-brief) <-> bead id (for bd) <-> declared files (for the hot-file cap).
+ // It is the full cumulative table every round, because `planned` is replaced wholesale.
+ // `unplanned`: beads left out for a missing decision; each gets a blocker bead.
+@@ -901,22 +901,23 @@ for (const record of [...recoveryObligations.values()].filter(r => r.kind === 'p
+   completed.delete(id); parked.delete(id)
+   const allClosed = required.every(bead => observed.closed.includes(bead))
+   const ownHold = recoveryObligations.get('hold:resume:' + id)
+   const clears = [...(ownHold ? [ownHold] : []), ...(allClosed ? [record] : [])].map(r =>
+     'Recovery: ' + JSON.stringify({ ...r, operation: 'clear', reason: allClosed ? 'tracker closure confirmed' : 'exact landing and tracker observations available',
+       evidence: ['git:' + source.head, ...required.map(bead => 'bead:' + bead)], data: {} }))
+   const lines = [...clears, ...(allClosed ? [ledgerLine('?', id, verification ? 'complete (verification-only, reviewed acceptance evidence; tracker closure reconciled on resume)' : 'complete (' + (data.range ? 'commits ' + data.range + ', ' : '') + 'already merged into ' + integrationBranch + ' — tracker closure reconciled on resume)')] : [])]
+   if (lines.length) {
+     // Append completion and its clears together; only confirmed writes update in-memory
+     // obligations. An unavailable append retains recovery for the next restart.
+-    const written = await queueLedger(lines, 'ledger-append:recovery:pending-closure:' + id, 'Resume', lines).catch(() => null)
+-    if (!written || written.appended === false) {
++    const settlement = !!verification && allClosed
++    const written = await queueLedger(lines, settlement ? 'ledger:' + id + ':verification-settlement' : 'ledger-append:recovery:pending-closure:' + id, 'Resume', lines, settlement).catch(() => null)
++    if (!written || (settlement ? written.appended !== true : written.appended === false)) {
+       resumeHolds.set(id, 'recovery reconciliation append unavailable')
+       log(id + ': recovery held — reconciliation append unavailable; original obligation retained')
+       continue
+     }
+     for (const clear of clears) readRecovery(clear)
+   }
+   if (allClosed) { settle(id, completed); if (landedParked.has(id)) parked.add(id) }
+ }
+ await drainLedger()
+ const recoveryAdmissionReason = id => {
+@@ -1412,21 +1413,21 @@ while (true) {
+     warnRejectedAppend(mergeEvidenceBad ? null : m)
+     noteLedger(r.id, `Merge: ${r.id} — rebase ${rebaseText} · seam-review ${seamOutcome} · check ${checkText} → blocker`)
+     return () => handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead, finding: blockerFinding }, planned.planPath, onResolve)
+   }
+   // Already-merged re-entry: close the task bead (and its RESOLVEd blocker bead), settle completed,
+   // and mark the completion line as a re-entry close. Runs outside the queue.
+   const confirmClosure = async (r, closeFirst = false, deferClear = false) => {
+     const required = [r.id, reviewBeadOf.get(r.id), blockerBeadOf.get(r.id)].filter(Boolean)
+     const repair = async () => {
+       const closed = await dispatch(() => verificationCompletions.has(r.id) ? verificationClosePrompt(r.id, verificationCompletions.get(r.id)) : closeOnlyPrompt(r.id, integrationWorktree, integrationBranch, blockerBeadOf.get(r.id), landed.get(r.id)), `close-only:${r.id}`,
+-        { label: `close-only:${r.id}`, phase: 'Integrate', ...tier('mechanical'), schema: RESULT })
++        { label: `close-only:${r.id}` + (verificationCompletions.has(r.id) ? ':verification' : ':landed'), phase: 'Integrate', ...tier('mechanical'), schema: RESULT })
+       if (verificationCompletions.has(r.id) && closed) {
+         const basis = verificationCompletions.get(r.id)
+         basis.cleanup = closed.finding || 'cleanup outcome unavailable'
+         const existing = recoveryObligations.get('pending-closure:' + r.id)
+         noteRecovery(r.id, 'pending-closure', 'record', 'verification-only closure observation',
+           [...new Set([...(existing?.evidence ?? []), basis.reportPath, basis.reviewPath])], { ...existing?.data, verification: basis }, r.id, 'Integrate', existing)
+       }
+       if (closed?.status === 'BLOCKED_AUTH') await handleAuthRefusal({ ...closed, id: r.id, n: r.n }, closed.finding)
+       if (!closed || closed.status !== 'CLOSED') { log('close-only for ' + r.id + ': re-check did not confirm closure: ' + (closed?.finding ?? closed?.status ?? 'null dispatch') + ' — closure unconfirmed'); return false }
+       return true
+@@ -1457,21 +1458,21 @@ while (true) {
+       { ...existing?.data, ...(head ? { head } : {}), ...(range ? { range } : {}), ...(reviewBead ? { reviewBead } : {}), ...(blockerBead ? { blockerBead } : {}) }, r.id, 'Integrate', existing)
+   }
+   const completeVerification = async r => {
+     completed.delete(r.id)
+     if (!await confirmClosure(r, true, true)) return // durable basis already recorded; resume retries closure only
+     const pending = recoveryObligations.get('pending-closure:' + r.id)
+     const clear = 'Recovery: ' + JSON.stringify({ ...pending, operation: 'clear', reason: 'tracker closure confirmed',
+       evidence: [artifacts(r.id).report, ...[r.id, reviewBeadOf.get(r.id), blockerBeadOf.get(r.id)].filter(Boolean).map(id => 'bead:' + id)], data: {} })
+     noteLedger(r.id, clear, clear)
+     noteLedger(r.id, ledgerLine(r.n, r.id, 'complete (verification-only, reviewed acceptance evidence; no Git landing)'))
+-    const written = await flushLedger(r.id, 'Integrate', true).catch(() => null)
++    const written = await flushLedger(r.id, 'Integrate', true, ':verification-settlement').catch(() => null)
+     if (written?.appended !== true) {
+       resumeHolds.set(r.id, 'verification closure append unavailable')
+       log(r.id + ': recovery held — verification closure append unavailable; reviewed basis retained')
+       return
+     }
+     readRecovery(clear)
+     settle(r.id, completed)
+     blockerBeadOf.delete(r.id)
+     if (r.att && !r.att.ended) {
+       r.att.ended = true
+@@ -2167,20 +2168,38 @@ const unsettledIds = [...new Set([...[...escalated, ...pendingRetry].filter(id =
+ let trackerReconciliationGap = null
+ if (unsettledIds.length) {
+   const rec = await dispatch(() => reconcileBucketsPrompt(unsettledIds, unsettledIds.filter(id => reviewBeadOf.has(id)).map(id => [id, reviewBeadOf.get(id)]),
+     landedOpen.filter(id => blockerBeadOf.has(id)).map(id => [id, blockerBeadOf.get(id)])), 'reconcile-buckets',
+     { label: 'reconcile-buckets', phase: 'Finish', ...tier('mechanical'), schema: RECONCILE })
+   if (!rec) trackerReconciliationGap = 'tracker reconciliation unavailable for [' + unsettledIds.join(', ') + ']'
+   if (!rec) log(`bucket reconciliation unavailable (null dispatch) — returning the in-memory buckets unreconciled; ${unsettledIds.length} escalated/pendingRetry/landed id(s) were NOT checked against the tracker`)
+   else for (const id of (rec.closed ?? [])) {
+     if (!unsettledIds.includes(id)) continue  // never admit an id this run did not ask about
+     if (verificationCandidates.has(id) && !verificationCompletions.has(id)) { log('tracker closure for ' + id + ' does not replace its missing verification acceptance'); continue }
++    if (verificationCompletions.has(id)) {
++      // The typed receipt is emitted only after tracker confirmation; its acknowledged
++      // append is the settlement evidence for resumed and freshly reviewed verification.
++      const pending = recoveryObligations.get('pending-closure:' + id)
++      const clear = 'Recovery: ' + JSON.stringify({ ...pending, operation: 'clear', reason: 'tracker closure confirmed at Finish reconciliation',
++        evidence: ['bead:' + id, ...[reviewBeadOf.get(id), blockerBeadOf.get(id)].filter(Boolean).map(bead => 'bead:' + bead)], data: {} })
++      const lines = [clear, ledgerLine(lastPlanned?.mapping.find(m => m.id === id)?.n, id, 'complete (verification-only, reviewed acceptance evidence; tracker reports closed)')]
++      const written = await queueLedger(lines, 'ledger:' + id + ':verification-settlement', 'Finish', lines, true).catch(() => null)
++      if (written?.appended !== true) {
++        resumeHolds.set(id, 'verification closure append unavailable')
++        log(id + ': recovery held — verification closure append unavailable; reviewed basis retained')
++        continue
++      }
++      readRecovery(clear)
++      settle(id, completed)
++      blockerBeadOf.delete(id)
++      continue
++    }
+     log(`reconciled ${id}: tracker reports closed — moved from ${landedOpen.includes(id) ? 'unconfirmed closure' : escalated.has(id) ? 'escalated' : 'pendingRetry'} to completed`)
+     settle(id, completed)
+     if (!landedOpen.includes(id)) continue
+     clearPendingClosure(id, ['bead:' + id, ...[reviewBeadOf.get(id), blockerBeadOf.get(id)].filter(Boolean).map(bead => 'bead:' + bead)], null)
+     if (landedParked.has(id)) parked.add(id)
+     blockerBeadOf.delete(id)
+     // The completion line a resume reads, so the next launch does not re-check this closure.
+     queueLedger(ledgerLine(lastPlanned?.mapping.find(m => m.id === id)?.n, id, verificationCompletions.has(id) ? 'complete (verification-only, reviewed acceptance evidence; tracker reports closed)' : `complete (already merged into ${integrationBranch} — tracker reports closed at Finish reconciliation${landedParked.has(id) ? ', 1 parked' : ''})`),
+       `ledger-append:reconciled:${id}`, 'Finish')
+   }
+diff --git a/skills/super-code/scripts/run-profile.mjs b/skills/super-code/scripts/run-profile.mjs
+index f4779727..9e44725a 100644
+--- a/skills/super-code/scripts/run-profile.mjs
++++ b/skills/super-code/scripts/run-profile.mjs
+@@ -1159,44 +1159,47 @@ for (const b of beads.values()) {
+     a.attempt = cur
+   }
+   for (const at of b.attempts) {
+     const by = st => at.agents.filter(a => a.stage === st)
+     const head = at.agents[0]
+     at.start = head.start
+     at.run = head.run
+     const implHead = at.agents.find(a => a.kind === 'impl')
+     at.status = implHead ? (implHead.result?.status ?? (implHead.failed ? 'FAILED' : null)) : null
+     at.impl = by('implement'); at.review = by('review'); at.fix = by('fix'); at.lane = at.agents.filter(a => LANE.has(a.stage))
+-    // Workflow verification uses the existing close-only label. Its CLOSED result
+-    // settles tracker bookkeeping, not a previously merged branch.
+-    at.verificationOnly = implHead?.result?.completionKind === 'verification-only'
+-      || at.agents.some(a => a.result?.completionKind === 'verification-only')
+-    at.verificationCompleted = at.status === 'VERIFIED' || (at.verificationOnly
+-      && at.review.some(a => a.result?.status === 'CLEAN' && a.result?.completionKind === 'verification-only')
+-      && at.agents.some(a => a.kind === 'close-only' && a.result?.status === 'CLOSED'))
+-    if (at.verificationOnly && at.status === 'IMPLEMENTED') at.status = at.verificationCompleted ? 'VERIFIED' : 'VERIFICATION_PENDING'
++    // Coordinator-owned labels retain verification identity on closure-only resume.
++    // CLOSED is repair output; only the acknowledged, post-check settlement append
++    // confirms completion. Legacy untyped closure cannot establish a Git landing.
++    at.verificationOnly = at.agents.some(a => a.result?.completionKind === 'verification-only'
++      || (a.kind === 'close-only' && a.suffix === 'verification')
++      || (a.kind === 'ledger' && /^verification-settlement(?::retry)?$/.test(a.suffix)))
++    at.verificationCompleted = at.status === 'VERIFIED' || at.agents.some(a => a.kind === 'ledger'
++      && /^verification-settlement(?::retry)?$/.test(a.suffix) && a.result?.appended === true)
++    if (at.verificationOnly) at.status = at.verificationCompleted ? 'VERIFIED' : 'VERIFICATION_PENDING'
++    at.unknownClosure = !at.verificationOnly && at.status !== 'ALREADY_MERGED'
++      && at.agents.some(a => a.kind === 'close-only' && !a.suffix)
+     at.split = by('split')[0] ?? null
+     at.blocker = by('blocker')
+     // The slot is held to the chain's end before integration; a failed merge's blocker path takes one
+     // again after the lane turn.
+     const laneStart = at.lane.length ? at.lane[0].start : Infinity
+     const inSlot = at.agents.filter(a => IN_SLOT.has(a.stage))
+     at.chainEndAgent = latest(inSlot.filter(a => a.end <= laneStart + EPS))
+     at.afterLane = inSlot.filter(a => a.start >= laneStart)
+     // Usable by dependents (early unblock): the end of an implementation that committed.
+     at.implEndAgent = at.status === 'IMPLEMENTED' || (!hasJournal(head.run) && at.impl.length) ? latest(at.impl) : null
+     // The landing: the last merge that reported merged (no journal: the last merge), or a close-only
+     // step that confirmed the branch had already merged.
+     const merges = at.agents.filter(a => a.kind === 'merge')
+     at.landing = merges.filter(a => a.result?.merged === true).at(-1)
+       ?? (merges.length && !hasJournal(merges.at(-1).run) ? merges.at(-1) : null)
+-      ?? at.agents.filter(a => !at.verificationOnly && a.kind === 'close-only' && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null
++      ?? at.agents.filter(a => !at.verificationOnly && a.kind === 'close-only' && (a.suffix === 'landed' || at.status === 'ALREADY_MERGED') && (a.result?.status === 'CLOSED' || !hasJournal(a.run))).at(-1) ?? null
+   }
+   // The landing is the real merge. A later close-only of an already-merged branch (its bead close was
+   // lost) is bookkeeping, counted apart as a re-entry close.
+   b.final = b.attempts.filter(at => at.landing?.kind === 'merge').at(-1) ?? b.attempts.filter(at => at.landing).at(-1) ?? b.attempts.at(-1)
+   b.reentryCloses = b.attempts.filter(at => at.start > b.final.start && at.landing && at.landing.kind !== 'merge')
+   // A prior ledger landing remains a fact even when this invocation only verifies it.
+   // Without a timed merge, do not place that old landing at the verification chain end.
+   b.landed = !!b.final.landing || !!ledger?.landed.has(b.id)
+   b.verificationOnlyCompleted = !!ledger?.verified.has(b.id) || b.attempts.some(at => at.verificationCompleted)
+ }
+@@ -1753,20 +1756,22 @@ if (bottleneck) {
+   if (parts.length) lines.push(`Profile: redo — on the critical path, up to ${parts.map(([k, name]) => `${name} ${fmtDur(redo[k].ms)} (${redo[k].beads.join(', ')})`).join(' · ')} — from a bead's first attempt to its final one; the what-ifs model the real saving`)
+ }
+ lines.push(`Profile: merge lane — busy ${fmtDur(lane.busyMs)} of ${fmtDur(lane.spanMs)} (${pct(lane.busyMs, lane.spanMs)}%) · seam reviews and fixes ${fmtDur(lane.seamMs)} (${pct(lane.seamMs, lane.busyMs)}% of busy) · ${lane.merges} merge dispatches, first try not merged for ${lane.firstTryKnown ? `${lane.firstTryFailed} of ${lane.firstTryKnown}` : 'unknown (no merge results)'} · queue wait ${fmtDur(lane.queueWaitMs)} total, peak ${lane.peakQueue} waiting · stack-parent wait ${fmtDur(lane.stackWaitMs)}`)
+ if (hotConflicts.length) lines.push(`Profile: conflicts — ${hotConflicts.slice(0, 4).map(c => `${c.file} (stack conflicts ${c.stackConflicts}, seam overlaps ${c.seamOverlaps}, declared by ${c.declaredBy})`).join(' · ')}`)
+ if (runLevel) lines.push(...runLevel.lines)
+ lines.push(`Profile: runtime — peak ${runtime.peak} agents at once${runtimeSlots ? ` of ${runtimeSlots} runtime slots · full ${pct(runtime.fullMs, runEnd - windowStart)}% of the run` : ''} · slot cap ${Number.isFinite(cap) ? cap : 'unknown'}`)
+ lines.push(`Profile: concurrency scope — all-agent concurrency peak ${runtime.peak} · task-slot concurrency peak ${taskSlots.peak}, cap ${Number.isFinite(cap) ? cap : 'unknown'} (ordinary chains retain a slot through merge)`)
+ for (const w of sim?.whatIfs.slice(0, 6) ?? []) lines.push(`Profile: what-if estimate — ${w.target} → ${fmtDur(w.ms)} (−${fmtDur(w.savingMs)}, ${pct(w.savingMs, sim.asRunMs)}%) — ${w.note}; ${modelWindow}, planning retained`)
+ if (sim && !sim.failed && !sim.whatIfs.length) lines.push(`Profile: what-if estimate — none saves more than 1% of the modelled ${fmtDur(sim.asRunMs)}; ${modelWindow}, planning retained`)
+ const unmeasured = []
++const unknownClosures = [...beads.values()].filter(b => !b.landed && b.attempts.some(at => at.unknownClosure))
++if (unknownClosures.length) unmeasured.push(`closure kind unknown for ${unknownClosures.length} bead(s): untyped close-only output proves neither a Git landing nor verification settlement`)
+ const unknownReady = [...beads.values()].filter(b => b.readyAt === null)
+ if (unknownReady.length) unmeasured.push(`availability/readiness timing unknown for ${unknownReady.length} bead(s): waits unmeasured; schedule estimates retain dispatch as the release boundary`)
+ if (untimed.length) unmeasured.push(`${untimed.length} agent(s) without a transcript (cached on resume, or cleaned up)`)
+ const noJournal = invocations.filter(v => !v.journal && v.source === 'workflow')
+ if (noJournal.length) unmeasured.push(`${noJournal.length} invocation(s) without journal.jsonl: no planner graph or merge results there`)
+ if (ordinary.length && !ledger) unmeasured.push('no ledger (--ledger): outcomes not read, so every merge the coordinator ran counts as landed')
+ if (knownLandings.length > landed.length) unmeasured.push(`${knownLandings.length - landed.length} ledger-recorded landing(s) without timing; retained as facts, excluded from the schedule model`)
+ if (noLaneTiming) unmeasured.push(`${noLaneTiming} landed bead(s) with no merge in the coordinator's log: lane time 0`)
+ if (runLevel?.unmapped) unmeasured.push(`${runLevel.unmapped} dispatch(es) not named for a bead of ${epic}, in the run-level lines only (${RULE})`)
+ if (!rows.size) unmeasured.push(ordinary.length ? 'no dependency graph (bd gave none; pass --beads): dependency waits and what-ifs are missing' : 'no planner rows: the graph is unknown, so dependency waits and what-ifs are missing')
+diff --git a/tests/super-code/replay-harness.mjs b/tests/super-code/replay-harness.mjs
+index ccdbacae..e472e16b 100644
+--- a/tests/super-code/replay-harness.mjs
++++ b/tests/super-code/replay-harness.mjs
+@@ -100,21 +100,25 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
+   const maxOpen = {}
+   const seen = new Set()
+   const waiters = []
+   let error = null
+ 
+   const waitFor = label => seen.has(label)
+     ? Promise.resolve()
+     : new Promise(res => waiters.push({ label, res }))
+ 
+   async function agent(prompt, opts = {}) {
+-    const label = opts.label ?? '<unlabelled>'
++    // Existing scenarios address logical operations; preserve the actual producer label
++    // in opts and records for journal/profile contract tests.
++    const label = (opts.label ?? '<unlabelled>')
++      .replace(/^(close-only:[^:]+):(verification|landed)$/, '$1')
++      .replace(/^(ledger:[^:]+):verification-settlement(?=:|$)/, '$1')
+     const kind = label.split(':')[0]
+     trace.push({ label, phase: opts.phase, prompt, opts })
+     counts[label] = (counts[label] ?? 0) + 1
+     seen.add(label)
+     for (let i = waiters.length - 1; i >= 0; i--) {
+       if (waiters[i].label === label) { waiters[i].res(); waiters.splice(i, 1) }
+     }
+     open[kind] = (open[kind] ?? 0) + 1
+     maxOpen[kind] = Math.max(maxOpen[kind] ?? 0, open[kind])
+     try {
+@@ -168,34 +172,42 @@ async function run({ args, canned = {}, nullLabels = new Set(), nullAll = false,
+     }))
+   }
+ 
+   async function parallel(thunks) {
+     return Promise.all(thunks.map(t => Promise.resolve().then(t).catch(() => null)))
+   }
+ 
+   const budget = { total: null, spent: () => 0, remaining: () => Infinity }
+   const workflow = () => { throw new Error('workflow() not available in replay') }
+ 
++  const records = []
++  let tick = 0
++  const observedAgent = async (prompt, opts) => {
++    const record = { label: opts.label, phase: opts.phase, start: ++tick, prompt }
++    records.push(record)
++    try { return record.result = await agent(prompt, opts) }
++    finally { record.end = ++tick }
++  }
+   let result = null
+   let timer = null
+   try {
+     result = await Promise.race([
+-      scriptFn(args, agent, m => logs.push(m), () => {}, pipeline, parallel, budget, workflow, readinessTimers.setTimeout, readinessTimers.clearTimeout),
++      scriptFn(args, observedAgent, m => logs.push(m), () => {}, pipeline, parallel, budget, workflow, readinessTimers.setTimeout, readinessTimers.clearTimeout),
+       new Promise((_, rej) => { timer = setTimeout(() => rej(new Error(`HARNESS TIMEOUT after ${timeoutMs}ms — an unsatisfied waitFor usually means a dispatch/merge barrier was reintroduced`)), timeoutMs) }),
+     ])
+   } catch (e) {
+     error = e
+   } finally {
+     if (timer) clearTimeout(timer)
+     for (const w of waiters) w.res()  // release stranded waiters so node can exit
+   }
+-  return { result, trace, logs, counts, maxOpen, error }
++  return { result, trace, records, logs, counts, maxOpen, error }
+ }
+ 
+ // ---------- assertion plumbing ----------
+ 
+ let failures = 0
+ let passes = 0
+ let currentScenario = ''
+ 
+ function scenario(name) {
+   currentScenario = name
+@@ -5100,11 +5112,12 @@ esac
+         rmSync(dir, { recursive: true, force: true })
+       }
+     }
+   }
+ 
+   // ===== summary =====
+   console.log(`\n${passes} passed, ${failures} failed`)
+   process.exit(failures ? 1 : 0)
+ }
+ 
+-main().catch(e => { console.error(e); process.exit(1) })
++export { run, liveArgs, oneTaskCanned, extractLedgerLines }
++if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main().catch(e => { console.error(e); process.exit(1) })
+diff --git a/tests/super-code/test-verification-completion-metrics.sh b/tests/super-code/test-verification-completion-metrics.sh
+index b6019685..86041b37 100644
+--- a/tests/super-code/test-verification-completion-metrics.sh
++++ b/tests/super-code/test-verification-completion-metrics.sh
+@@ -62,21 +62,24 @@ class WorkflowMetrics(unittest.TestCase):
+         with tempfile.TemporaryDirectory() as tmp:
+             d=pathlib.Path(tmp)
+             agents=[dict(label='ledger-append:launch',start=0,end=1),
+                     dict(label='plan',start=1,end=2,result=dict(mapping=[dict(id='verify.1',n=1,deps=[])]))]
+             prior=kind=='prior-merge'
+             if prior:
+                 agents += [dict(label='impl:verify.1',start=3,end=8,result=dict(status='IMPLEMENTED')),
+                            dict(label='merge:verify.1',start=8,end=10,result=dict(merged=True))]
+             agents += [dict(label='impl:verify.1',start=20,end=30,result=dict(status='IMPLEMENTED',completionKind='verification-only')),
+                        dict(label='review:verify.1',start=31,end=40,result=dict(status='CLEAN',completionKind='verification-only')),
+-                       dict(label='close-only:verify.1',start=41,end=42,result=dict(status='BLOCKED' if kind=='pending' else 'CLOSED'))]
++                       dict(label='close-only:verify.1:verification',start=41,end=42,result=dict(status='BLOCKED' if kind=='pending' else 'CLOSED'))]
++            if kind!='pending':
++                agents += [dict(label='close-check:verify.1',start=43,end=44,result=dict(closed=['verify.1'])),
++                           dict(label='ledger:verify.1:verification-settlement',start=45,end=46,result=dict(appended=True))]
+             sc=dict(t0='2026-10-01T00:00:00Z',launch=dict(epicId='verify',config=dict(concurrency=1)),agents=agents)
+             scenario=d/'scenario.json'; scenario.write_text(json.dumps(sc))
+             subprocess.run(['node',str(ROOT/'tests/super-code/run-profile-fixture.mjs'),str(scenario),str(d/'workflow')],check=True,capture_output=True)
+             p=subprocess.run(['node',str(ROOT/'skills/super-code/scripts/run-profile.mjs'),'--workflow',str(d/'workflow'),'--out',str(d/'profile')],check=True,capture_output=True,text=True)
+             data=json.loads((d/'profile.json').read_text()); bead=data['beads'][0]
+             self.assertEqual(bead['landed'],prior,'verification close-only is tracker completion, not a Git landing')
+             self.assertEqual(bead['verificationOnlyCompleted'],kind!='pending')
+             self.assertEqual(data['lane']['merges'],int(prior))
+             self.assertEqual(bead['landedAt'],'2026-10-01T00:00:10.000Z' if prior else None)
+             if kind!='pending': self.assertIn('verification-only 1',p.stdout)
+diff --git a/tests/super-code/test-verification-settlement-profile.mjs b/tests/super-code/test-verification-settlement-profile.mjs
+new file mode 100644
+index 00000000..b3b33bd1
+--- /dev/null
++++ b/tests/super-code/test-verification-settlement-profile.mjs
+@@ -0,0 +1,88 @@
++#!/usr/bin/env node
++// Execute the actual coordinator, preserve its dispatch labels/results in Workflow journals,
++// then consume them with the real profiler. Timestamps are bounded fixture ticks, not live timings.
++import assert from 'node:assert/strict'
++import { readFileSync, writeFileSync, mkdtempSync, rmSync, mkdirSync } from 'node:fs'
++import { join, dirname, resolve } from 'node:path'
++import { fileURLToPath } from 'node:url'
++import { spawnSync } from 'node:child_process'
++import { run, liveArgs, oneTaskCanned, extractLedgerLines } from './replay-harness.mjs'
++const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
++const tmp = mkdtempSync('/private/tmp/verification-settlement-')
++const sha = x => x.repeat(40)
++const identity = { sourceTree:sha('d'), command:'node smoke.mjs', configuration:'target=fixture' }
++const basis = { completionKind:'verification-only', base:sha('a'), head:sha('a'), files:[],
++  sourceTree:identity.sourceTree, evidence:[{...identity,kind:'live',outcome:'pass',location:'evidence/live.log'}], requiredLiveChecks:[identity] }
++const canned = extra => oneTaskCanned({
++  'impl:bd-101':{...basis,status:'IMPLEMENTED'}, 'review:bd-101':{...basis,status:'CLEAN'},
++  'close-only:bd-101':{id:'bd-101',status:'CLOSED'}, 'close-check:bd-101':{closed:['bd-101']},
++  'missing-blocker:bd-101':null, ...extra,
++})
++const args = liveArgs({rootAcceptance:'caller',deferSweep:true})
++const replay = async extra => {
++  const out = await run({args,canned:canned(extra)})
++  assert.equal(out.error,null,out.error?.stack)
++  return out
++}
++function profile(name,out, prior=false) {
++  const dir=join(tmp,name);mkdirSync(dir)
++  const agents=out.records.map(r=>({label:r.label,phase:r.phase,start:r.start,end:r.end,result:r.result}))
++  if(prior) agents.unshift({label:'impl:bd-101',start:-10,end:-5,result:{status:'IMPLEMENTED'}},
++                          {label:'merge:bd-101',start:-4,end:-2,result:{merged:true}})
++  const scenario={t0:'2026-10-01T00:00:00Z',launch:{epicId:'bd',config:{concurrency:1}},agents}
++  const file=join(dir,'scenario.json');writeFileSync(file,JSON.stringify(scenario))
++  let p=spawnSync(process.execPath,[join(root,'tests/super-code/run-profile-fixture.mjs'),file,join(dir,'wf')],{encoding:'utf8'})
++  assert.equal(p.status,0,p.stderr)
++  p=spawnSync(process.execPath,[join(root,'skills/super-code/scripts/run-profile.mjs'),'--workflow',join(dir,'wf'),'--out',join(dir,'profile')],{encoding:'utf8'})
++  assert.equal(p.status,0,p.stderr)
++  return {data:JSON.parse(readFileSync(join(dir,'profile.json'),'utf8')),text:p.stdout}
++}
++let failures=0, passed=0
++function check(name,fn){try{fn();console.log('PASS '+name);passed++}catch(e){failures++;console.error('FAIL '+name+'\n'+e.stack)}}
++try {
++  const pending=await replay({'close-only:bd-101':null})
++  const retained=pending.trace.filter(t=>/^ledger/.test(t.label)).flatMap(t=>extractLedgerLines(t.prompt)).join('\n')
++  assert(retained.includes('reviewed verification-only'))
++  const resume={ 'read-ledger':{text:retained},'bd-ready':{ids:[]},
++    'resume-check:bd-101':{landed:false,sourceVerified:true,closed:[],open:['bd-101']} }
++  const cases=[
++    ['fresh-success',{},true],
++    ['resume-success',resume,true],
++    ['close-check-failed',{'close-check:bd-101':{closed:[]}},false],
++    ['close-check-unavailable',{'close-check:bd-101':null},false],
++    ['finish-reconciled',{'close-check:bd-101':{closed:[]},'reconcile-buckets':{closed:['bd-101']}},true],
++    ['finish-append-false',{'close-check:bd-101':{closed:[]},'reconcile-buckets':{closed:['bd-101']},'ledger:bd-101':{appended:false}},false],
++    ['resume-already-closed-append-false',{...resume,'resume-check:bd-101':{landed:false,sourceVerified:true,closed:['bd-101'],open:[]},'ledger:bd-101':{appended:false}},false],
++    ['append-unacknowledged',{'ledger:bd-101':{}},false],
++    ['append-retry-success',{'ledger:bd-101':null,'ledger:bd-101:retry':{appended:true}},true],
++    ['resume-already-closed-unacknowledged',{...resume,'resume-check:bd-101':{landed:false,sourceVerified:true,closed:['bd-101'],open:[]},'ledger:bd-101':{}},false],
++    ['append-false',{'ledger:bd-101':{appended:false}},false],
++    ['append-unavailable',{'ledger:bd-101':null,'ledger:bd-101:retry':null},false],
++    ['resume-append-false',{...resume,'ledger:bd-101':{appended:false}},false],
++    ['resume-already-closed',{...resume,'resume-check:bd-101':{landed:false,sourceVerified:true,closed:['bd-101'],open:[]}},true],
++  ]
++  for(const [name,extra,expected] of cases){
++    const out=await replay(extra)
++    check(name,()=>{
++      assert.equal(out.result.completed.includes('bd-101'),expected,'coordinator settlement')
++      if(name.startsWith('resume'))assert(!out.counts['impl:bd-101']&&!out.counts['review:bd-101'],'resume must exercise closure-only producer path')
++      const {data,text}=profile(name,out), b=data.beads?.find(b=>b.id==='bd-101')
++      assert(b,'task identity must survive the resumed settlement journal')
++      assert.equal(b.landed,false,'verification is never a Git landing')
++      assert.equal(b.landedAt,null)
++      assert.equal(data.lane.merges,0)
++      assert.equal(b.verificationOnlyCompleted,expected,'only durable coordinator settlement completes verification')
++      assert.equal(text.includes('verification-only 1'),expected)
++      const receipts=out.records.filter(r=>/^ledger:bd-101:verification-settlement(?::retry)?$/.test(r.label))
++      if(expected)assert(receipts.some(r=>r.result?.appended===true),'completion requires typed acknowledged settlement')
++      if(name.includes('close-check-'))assert.equal(receipts.length,0,'failed observation must not dispatch settlement')
++    })
++  }
++  const done=await replay(resume)
++  check('earlier-real-merge-preserved',()=>{const {data}=profile('prior',done,true),b=data.beads.find(b=>b.id==='bd-101');assert.equal(b.landed,true);assert.equal(b.landedAt,'2026-09-30T23:59:58.000Z');assert.equal(data.lane.merges,1);assert.equal(b.verificationOnlyCompleted,true)})
++  const real=await replay({'impl:bd-101':{status:'ALREADY_MERGED',base:sha('a'),head:sha('b')}})
++  check('real-already-merged-closure',()=>{const {data}=profile('landed',real),b=data.beads.find(b=>b.id==='bd-101');assert.equal(b.landed,true);assert.equal(b.verificationOnlyCompleted,false)})
++  check('legacy-untyped-close-remains-unknown',()=>{const {data}=profile('legacy',{records:[{label:'plan',start:0,end:1,result:{mapping:[{id:'bd-101',n:1,deps:[]}]}},{label:'close-only:bd-101',start:2,end:3,result:{status:'CLOSED'}}]}),b=data.beads.find(b=>b.id==='bd-101');assert.equal(b.landed,false);assert.equal(b.verificationOnlyCompleted,false);assert(data.unmeasured.some(x=>x.includes('closure kind unknown')))})
++} finally {rmSync(tmp,{recursive:true,force:true})}
++console.log(`${passed} passed, ${failures} failed`)
++process.exitCode=failures?1:0

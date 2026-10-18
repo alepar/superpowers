@@ -1,0 +1,6 @@
+PASS fixture liveness alive
+PASS fixture liveness zombie
+PASS fixture liveness absent
+PASS fixture liveness denied
+PASS fixture liveness failed
+PASS fixture liveness empty-success

@@ -1,0 +1,155 @@
+{
+  "test_type": "Label-blinded textual instruction-drafting test",
+  "distribution": {
+    "PASS": 10,
+    "FAIL": 0,
+    "AMBIGUOUS": 0
+  },
+  "read_scope": [
+    "case.txt",
+    "rubric.md",
+    "response-01.md",
+    "response-02.md",
+    "response-03.md",
+    "response-04.md",
+    "response-05.md",
+    "response-06.md",
+    "response-07.md",
+    "response-08.md",
+    "response-09.md",
+    "response-10.md"
+  ],
+  "limitations": [
+    "Only the complete case, rubric, and ten blinded responses in the assigned grading directory were read. No identity key, source guidance, repository, external source, or original baseline/after material was inspected.",
+    "Judgments concern textual accounting and evidence qualification, not live execution, actual filing, actual run performance, variant recency, causality, or general improvement.",
+    "All ten outcomes are retained. Response provenance self-reports cannot be independently verified from the supplied case.",
+    "No material unrelated unsupported assertion was identified. Metadata such as version/date remains unspecified; descriptions of total run scale as unavailable do not contradict the explicitly established two task-ID landings elsewhere in those responses."
+  ],
+  "results": [
+    {
+      "response": "response-01.md",
+      "verdict": "PASS",
+      "reason": "Concretely reconciles exactly two task-ID landings and three raw first-parent merge commits, assigns no task landing to base absorption, rejects an unsupported ledger-incomplete finding, and confines evidence to the supplied textual packet. Unspecified metadata remains separate; no measured performance is invented.",
+      "quotes": [
+        "The Git merge-commit count therefore reconciles as two task landings plus one base absorption, and the evidence supports no ledger-completeness finding.",
+        "all retained ledger bytes and Git identities were verified, with no missing task or unknown source.",
+        "This is a hand-authored textual decision-test packet, not run-performance evidence; no profiling was requested."
+      ],
+      "unrelated_unsupported_assertions": [],
+      "provenance_limitation": "Read/write-scope and no-action statements are response self-reports, not independently verified by this grading packet."
+    },
+    {
+      "response": "response-02.md",
+      "verdict": "PASS",
+      "reason": "Concretely reconciles exactly two task-ID landings and three raw first-parent merge commits, assigns no task landing to base absorption, rejects an unsupported ledger-incomplete finding, and confines evidence to the supplied textual packet. Unspecified metadata remains separate; no measured performance is invented.",
+      "quotes": [
+        "Independent complete task-ID reconciliation identifies bead-X and bead-Y as the only task landings.",
+        "Therefore, the packet supports a complete ledger reconciliation and does not support an `ledger incomplete: 3 merge commits vs 2 Merge: lines` finding: the absorption record accounts for the third merge commit and contributes no task landing.",
+        "No profiling was requested, and this packet provides no measured run-performance evidence."
+      ],
+      "unrelated_unsupported_assertions": [],
+      "provenance_limitation": "Read/write-scope and no-action statements are response self-reports, not independently verified by this grading packet."
+    },
+    {
+      "response": "response-03.md",
+      "verdict": "PASS",
+      "reason": "Concretely reconciles exactly two task-ID landings and three raw first-parent merge commits, assigns no task landing to base absorption, rejects an unsupported ledger-incomplete finding, and confines evidence to the supplied textual packet. Unspecified metadata remains separate; no measured performance is invented.",
+      "quotes": [
+        "Run: 2 task bead landings (bead-X and bead-Y) across 3 first-parent merge commits including absorption of updated main; date not established.",
+        "Thus the ledger accounts for all three merge commits when the absorption record is included; there is no ledger-completeness discrepancy and no unaccounted task landing.",
+        "No profiling was requested, and no timing, speedup, or other performance claim is established."
+      ],
+      "unrelated_unsupported_assertions": [],
+      "provenance_limitation": "Read/write-scope and no-action statements are response self-reports, not independently verified by this grading packet."
+    },
+    {
+      "response": "response-04.md",
+      "verdict": "PASS",
+      "reason": "Concretely reconciles exactly two task-ID landings and three raw first-parent merge commits, assigns no task landing to base absorption, rejects an unsupported ledger-incomplete finding, and confines evidence to the supplied textual packet. Unspecified metadata remains separate; no measured performance is invented.",
+      "quotes": [
+        "Independent complete task-ID reconciliation identifies bead-X and bead-Y as the only task landings.",
+        "The third merge commit is therefore accounted for as base absorption and contributes zero task landings.",
+        "There is no ledger incompleteness finding: although three first-parent merge commits exceed the two successful task `Merge:` lines, the additional commit has its matching `baseAbsorbed` record, and all ledger bytes and Git identities were verified with no missing task or unknown source remaining.",
+        "This is a hand-authored evidence packet for a textual decision test, not evidence of actual run performance."
+      ],
+      "unrelated_unsupported_assertions": [],
+      "provenance_limitation": "Read/write-scope and no-action statements are response self-reports, not independently verified by this grading packet."
+    },
+    {
+      "response": "response-05.md",
+      "verdict": "PASS",
+      "reason": "Concretely reconciles exactly two task-ID landings and three raw first-parent merge commits, assigns no task landing to base absorption, rejects an unsupported ledger-incomplete finding, and confines evidence to the supplied textual packet. Unspecified metadata remains separate; no measured performance is invented.",
+      "quotes": [
+        "The first-parent range's three commits therefore reconcile: two task landings plus one base absorption.",
+        "No ledger completeness finding is supported; the raw count of 3 first-parent merge commits versus 2 successful task `Merge:` lines is explained by the separately recorded `baseAbsorbed` commit, which contributes zero task landings.",
+        "All retained ledger bytes and Git identities were verified, and no missing task or unknown source remains.",
+        "No profiling was requested, so no performance or timing claim is established."
+      ],
+      "unrelated_unsupported_assertions": [],
+      "provenance_limitation": "Read/write-scope and no-action statements are response self-reports, not independently verified by this grading packet."
+    },
+    {
+      "response": "response-06.md",
+      "verdict": "PASS",
+      "reason": "Concretely reconciles exactly two task-ID landings and three raw first-parent merge commits, assigns no task landing to base absorption, rejects an unsupported ledger-incomplete finding, and confines evidence to the supplied textual packet. Unspecified metadata remains separate; no measured performance is invented.",
+      "quotes": [
+        "Thus the 3 Git merge commits reconcile to 2 task landings plus 1 absorbed-base merge; the ledger accounts for both task landings, and no ledger completeness gap or unknown source is established.",
+        "No profiling was requested, and this packet supplies no run-performance measurements."
+      ],
+      "unrelated_unsupported_assertions": [],
+      "provenance_limitation": "Read/write-scope and no-action statements are response self-reports, not independently verified by this grading packet."
+    },
+    {
+      "response": "response-07.md",
+      "verdict": "PASS",
+      "reason": "Concretely reconciles exactly two task-ID landings and three raw first-parent merge commits, assigns no task landing to base absorption, rejects an unsupported ledger-incomplete finding, and confines evidence to the supplied textual packet. Unspecified metadata remains separate; no measured performance is invented.",
+      "quotes": [
+        "Independent complete task-ID reconciliation identifies exactly bead-X and bead-Y as task landings.",
+        "Thus the ledger and Git evidence reconcile: 2 task landings, with the absorption contributing zero.",
+        "All retained ledger bytes and Git identities were verified; no ledger gap, missing task, or unknown source is indicated.",
+        "This is a hand-authored evidence packet for a textual decision test, not actual run performance evidence; no profiling was requested, and none is claimed."
+      ],
+      "unrelated_unsupported_assertions": [],
+      "provenance_limitation": "Read/write-scope and no-action statements are response self-reports, not independently verified by this grading packet."
+    },
+    {
+      "response": "response-08.md",
+      "verdict": "PASS",
+      "reason": "Concretely reconciles exactly two task-ID landings and three raw first-parent merge commits, assigns no task landing to base absorption, rejects an unsupported ledger-incomplete finding, and confines evidence to the supplied textual packet. Unspecified metadata remains separate; no measured performance is invented.",
+      "quotes": [
+        "The first-parent Git range contains three merge commits, and independent task-ID reconciliation identifies bead-X and bead-Y as the only task landings.",
+        "Therefore, this packet supports no ledger-incompleteness finding: the third merge is explicitly accounted for as base absorption, not an unrepresented task landing.",
+        "All retained ledger bytes and Git identities were verified, with no missing task or unknown source.",
+        "These are hand-authored facts for a textual decision test, not actual run performance evidence; no profiling was requested, and no performance claim is established."
+      ],
+      "unrelated_unsupported_assertions": [],
+      "provenance_limitation": "Read/write-scope and no-action statements are response self-reports, not independently verified by this grading packet."
+    },
+    {
+      "response": "response-09.md",
+      "verdict": "PASS",
+      "reason": "Concretely reconciles exactly two task-ID landings and three raw first-parent merge commits, assigns no task landing to base absorption, rejects an unsupported ledger-incomplete finding, and confines evidence to the supplied textual packet. Unspecified metadata remains separate; no measured performance is invented.",
+      "quotes": [
+        "Independent complete task-ID reconciliation identifies bead-X and bead-Y as the only task landings.",
+        "Thus the difference between 3 Git merge commits and 2 task landings is explained by the base absorption; this evidence supports no ledger-completeness finding.",
+        "All retained ledger bytes and Git identities were verified, and no missing task or unknown source remains.",
+        "This is a hand-authored evidence packet for a textual decision test, not actual run-performance evidence; no profiling was requested, so no performance conclusions are established."
+      ],
+      "unrelated_unsupported_assertions": [],
+      "provenance_limitation": "Read/write-scope and no-action statements are response self-reports, not independently verified by this grading packet."
+    },
+    {
+      "response": "response-10.md",
+      "verdict": "PASS",
+      "reason": "Concretely reconciles exactly two task-ID landings and three raw first-parent merge commits, assigns no task landing to base absorption, rejects an unsupported ledger-incomplete finding, and confines evidence to the supplied textual packet. Unspecified metadata remains separate; no measured performance is invented.",
+      "quotes": [
+        "Run scale: 2 task landings (bead-X and bead-Y); 3 first-parent merge commits (2 task merges and 1 absorption of updated main); run date: not supplied.",
+        "Thus the three first-parent merge commits do not indicate a ledger gap: the third commit is base absorption, which contributes zero task landings.",
+        "All retained ledger bytes and Git identities were verified, and no task or source is missing.",
+        "This is a hand-authored evidence packet for a textual decision test, not actual run-performance evidence; no profiling was requested."
+      ],
+      "unrelated_unsupported_assertions": [],
+      "provenance_limitation": "Read/write-scope and no-action statements are response self-reports, not independently verified by this grading packet."
+    }
+  ]
+}

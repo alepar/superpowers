@@ -1,0 +1,24 @@
+implementation identities: {"head":"fd52ffc7a8de0c4412c517adec2d4979d06906ff","dispatchSha256":"f669b649ed115d8f92fac6cd46c025722c1b206841df084f4a3a633ad4ffe087","coordinatorSha256":"154bd1069d2e20eaeb24c460c09360c7e281de6a1f8ff74824db089bb53dafa1"}
+PASS real recovered collector history grants only validated omission authority
+PASS reject all markers
+PASS reject last marker
+PASS reject forged predecessor
+PASS reject changed recovered verdict
+PASS reject changed required
+PASS reject changed path
+PASS reject hash-linked but invalid complete null predecessor
+PASS nested historical provenance retains source availability without omission or whole-range readiness
+PASS bounded report forces incomplete verdict and survives extraction and collection
+PASS bounded writer preserves existing report
+PASS bounded writer rejects source mismatch
+PASS bounded writer rejects claimed omission
+PASS bounded writer rejects incomplete inventory
+PASS bounded writer rejects source unavailable
+PASS bounded writer rejects missing gaps
+PASS bounded writer rejects wrong captured source
+PASS bounded writer rejects invented inspected hunk
+PASS bounded writer refuses missing captured commit object
+PASS ordinary prompt exposes bounded source route
+large range fixture: {"argMax":1048576,"files":1507,"pathPrefixBytes":723}
+PASS large captured range does not lose source to redundant diffstat argv
+{"passed":21,"failed":0,"tmp":"/private/tmp/ufz-correction-final-suite-fd52ffc7/case-40/tmp/selection-correction-kKfzTo","base":"7b8a973f0f3a19a9032abe19096d009b99f50a89","head":"d685e3b8da06c56ad3b7911d317b2e844367b687","sourceHead":"e53e0ce02d38148712a8a1403479cdf805456935"}

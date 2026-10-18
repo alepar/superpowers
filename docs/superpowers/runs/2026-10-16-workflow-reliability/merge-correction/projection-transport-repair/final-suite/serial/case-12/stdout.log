@@ -1,0 +1,40 @@
+contract lint: live tree
+  [PASS] skills/super-auto has no contract problems
+
+contract lint: mutations are caught
+  [PASS] a broken § pointer fails
+  [PASS] a mislabelled run-state item pointer fails
+  [PASS] an unknown worked-example field fails
+  [PASS] a worked example missing a codeBuckets bucket fails
+  [PASS] a numeric list count fails
+  [PASS] a renamed field-table field fails the baseline
+  [PASS] I8 without projection fails
+  [PASS] I8 without --keys fails
+  [PASS] report-prompt without the null reviewPath rule fails
+  [PASS] unapproved added field still fails
+  [PASS] changed legacy line format fails
+  [PASS] dropping an approved added field fails
+  [PASS] changed approved added format fails
+  [PASS] a redesign record row missing the beads-filed state fails the baseline
+  [PASS] a step-back decision vocabulary without local fails the baseline
+  [PASS] a disputed route that drops roastDesignCapped fails
+  [PASS] a disputed route that stops counting disputed ledger rows fails
+  [PASS] a Remaining row that drops redesign incomplete fails
+  [PASS] a Gotchas row that drops designRoast fails
+  [PASS] a super-auto config.iterationCap that is a bare 3 fails
+  [PASS] swapping two Step 1 items fails
+  [PASS] deleting the interactive-decline item fails
+  [PASS] a bare 3 + redesignCycles in super-auto fails
+  [PASS] a redesign budget compare other than < 2 fails
+  [PASS] a branch item that loses its thrash outcome fails
+  [PASS] a missing Amend Mode step 3 fails
+  [PASS] an Amend Mode step 4 that no longer reopens first fails
+  [PASS] a super-design budget compare other than < 2 fails
+  [PASS] a super-auto Redesign cycle item 2 without the removal fails
+  [PASS] a resume amend-checked bullet without the removal fails
+  [PASS] a super-design aborted bullet without the removal fails
+  [PASS] a resume aborted bullet without the park fails
+  [PASS] a resume amend-checked bullet that re-checks against HEAD fails
+  [PASS] a super-auto abort that removes before it rewrites the state fails
+
+All super-auto contract lint tests passed

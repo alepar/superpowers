@@ -1,0 +1,35 @@
+test_corrupt_git_metadata_is_unknown (__main__.Inventory.test_corrupt_git_metadata_is_unknown) ... FAIL
+test_denied_repository_inventory (__main__.Inventory.test_denied_repository_inventory) ... FAIL
+test_git_unavailable_is_unknown (__main__.Inventory.test_git_unavailable_is_unknown) ... FAIL
+test_nested_worktree_refused (__main__.Inventory.test_nested_worktree_refused) ... ok
+test_valid_leaf_repository (__main__.Inventory.test_valid_leaf_repository) ... ok
+test_verified_nonrepository_temp (__main__.Inventory.test_verified_nonrepository_temp) ... ok
+
+======================================================================
+FAIL: test_corrupt_git_metadata_is_unknown (__main__.Inventory.test_corrupt_git_metadata_is_unknown)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 66, in test_corrupt_git_metadata_is_unknown
+  File "<stdin>", line 41, in run_helper
+AssertionError: 0 != 4 : 
+
+======================================================================
+FAIL: test_denied_repository_inventory (__main__.Inventory.test_denied_repository_inventory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 48, in test_denied_repository_inventory
+  File "<stdin>", line 41, in run_helper
+AssertionError: 0 != 4 : 
+
+======================================================================
+FAIL: test_git_unavailable_is_unknown (__main__.Inventory.test_git_unavailable_is_unknown)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 70, in test_git_unavailable_is_unknown
+  File "<stdin>", line 41, in run_helper
+AssertionError: 0 != 4 : 
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.967s
+
+FAILED (failures=3)

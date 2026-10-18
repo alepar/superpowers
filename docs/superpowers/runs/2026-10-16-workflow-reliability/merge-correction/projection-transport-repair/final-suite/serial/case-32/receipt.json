@@ -1,0 +1,218 @@
+{
+  "actualArgv": [
+    "/bin/bash",
+    "tests/super-auto/outer-cleanup-r1.sh"
+  ],
+  "afterSource": {
+    "clean": true,
+    "environment": {
+      "CI": "1",
+      "CODEX_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/codex-home",
+      "GIT_CONFIG_GLOBAL": "/dev/null",
+      "GIT_CONFIG_NOSYSTEM": "1",
+      "GIT_CONFIG_SYSTEM": "/dev/null",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/home",
+      "LANG": "C",
+      "LC_ALL": "C",
+      "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "TMPDIR": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/tmp",
+      "TZ": "UTC",
+      "XDG_CACHE_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-cache",
+      "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-config",
+      "XDG_DATA_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-data",
+      "XDG_STATE_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-state"
+    },
+    "head": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+    "probes": {
+      "head": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-fd52ffc7",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "ZmQ1MmZmYzdhOGRlMGM0NDEyYzUxN2FkZWMyZDQ5NzlkMDY5MDZmZgo="
+      },
+      "status": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-fd52ffc7",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all",
+          "--ignore-submodules=none"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": ""
+      },
+      "tree": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-fd52ffc7",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD^{tree}"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "ZTlmYjVlMWI3NjY5NzI2NGVmN2FkZTI5ZGM1ZmM3OWVhNTc4OThjMgo="
+      }
+    },
+    "probesSucceeded": true,
+    "rawStatusBase64": "",
+    "tree": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2"
+  },
+  "beforeSource": {
+    "clean": true,
+    "environment": {
+      "CI": "1",
+      "CODEX_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/codex-home",
+      "GIT_CONFIG_GLOBAL": "/dev/null",
+      "GIT_CONFIG_NOSYSTEM": "1",
+      "GIT_CONFIG_SYSTEM": "/dev/null",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/home",
+      "LANG": "C",
+      "LC_ALL": "C",
+      "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "TMPDIR": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/tmp",
+      "TZ": "UTC",
+      "XDG_CACHE_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-cache",
+      "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-config",
+      "XDG_DATA_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-data",
+      "XDG_STATE_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/control/xdg-state"
+    },
+    "head": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+    "probes": {
+      "head": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-fd52ffc7",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "ZmQ1MmZmYzdhOGRlMGM0NDEyYzUxN2FkZWMyZDQ5NzlkMDY5MDZmZgo="
+      },
+      "status": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-fd52ffc7",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "status",
+          "--porcelain=v1",
+          "-z",
+          "--untracked-files=all",
+          "--ignore-submodules=none"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": ""
+      },
+      "tree": {
+        "actualArgv": [
+          "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+          "-C",
+          "/private/tmp/ufz-correction-final-source-fd52ffc7",
+          "-c",
+          "core.fsmonitor=false",
+          "-c",
+          "core.untrackedCache=false",
+          "rev-parse",
+          "HEAD^{tree}"
+        ],
+        "exitCode": 0,
+        "stderrBase64": "",
+        "stdoutBase64": "ZTlmYjVlMWI3NjY5NzI2NGVmN2FkZTI5ZGM1ZmM3OWVhNTc4OThjMgo="
+      }
+    },
+    "probesSucceeded": true,
+    "rawStatusBase64": "",
+    "tree": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2"
+  },
+  "cause": null,
+  "configurationSha256": "404556bb231ab04078471ab36fc883d2fe7babed6d5e717658b912cb92876f38",
+  "cwd": "/private/tmp/ufz-correction-final-source-fd52ffc7",
+  "durationSeconds": 4.71,
+  "endUtc": "2026-10-17T23:46:07Z",
+  "entrypointSha256": "41277da48b5000b487ac63ec6b39ec6eb449d2f982a835537c8c82a1e81e9ee4",
+  "environment": {
+    "CI": "1",
+    "CODEX_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-32/codex-home",
+    "GIT_CONFIG_GLOBAL": "/dev/null",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_CONFIG_SYSTEM": "/dev/null",
+    "GIT_OPTIONAL_LOCKS": "0",
+    "HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-32/home",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "TMPDIR": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-32/tmp",
+    "TZ": "UTC",
+    "XDG_CACHE_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-32/xdg-cache",
+    "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-32/xdg-config",
+    "XDG_DATA_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-32/xdg-data",
+    "XDG_STATE_HOME": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-32/xdg-state"
+  },
+  "executable": {
+    "bytes": 1290128,
+    "name": "bash",
+    "path": "/bin/bash",
+    "sha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+    "versionArgv": [
+      "/bin/bash",
+      "--version"
+    ],
+    "versionExitCode": 0,
+    "versionStderr": "",
+    "versionStdout": "GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)\nCopyright (C) 2007 Free Software Foundation, Inc.\n"
+  },
+  "exitCode": 0,
+  "id": "32",
+  "planCommand": "bash tests/super-auto/outer-cleanup-r1.sh",
+  "planSha256": "849eecb5c549c07fc59ce98e95e529a1a551a104a4e4f9e210ea0989ab7174bc",
+  "requirementIds": [
+    "combined-suite-case-32"
+  ],
+  "runnerSha256": "7e34ddc54f52dc193ed84d07b44bf4e0fda1fa978fbc6e1c7aad053367e0d41d",
+  "sourceHead": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+  "sourceTree": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2",
+  "startUtc": "2026-10-17T23:46:02Z",
+  "status": "passed",
+  "stderrBytes": 0,
+  "stderrPath": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-32/stderr.log",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdoutBytes": 882,
+  "stdoutPath": "/private/tmp/ufz-correction-final-suite-fd52ffc7/case-32/stdout.log",
+  "stdoutSha256": "7035b663ecc84b2cc593fb755895ebe5fb8779f5d6e1d5535438c4afe37e45fa",
+  "timeout": false
+}

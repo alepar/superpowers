@@ -1,0 +1,101 @@
+FAIL fresh-success
+AssertionError [ERR_ASSERTION]: completion requires typed acknowledged settlement
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:74:19
+    at check (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:41:29)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:63:5
+FAIL resume-success
+AssertionError [ERR_ASSERTION]: verification is never a Git landing
+
+true !== false
+
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:68:14
+    at check (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:41:29)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:63:5
+FAIL close-check-failed
+AssertionError [ERR_ASSERTION]: only durable coordinator settlement completes verification
+
+true !== false
+
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:71:14
+    at check (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:41:29)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:63:5
+FAIL close-check-unavailable
+AssertionError [ERR_ASSERTION]: only durable coordinator settlement completes verification
+
+true !== false
+
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:71:14
+    at check (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:41:29)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:63:5
+FAIL finish-reconciled
+AssertionError [ERR_ASSERTION]: completion requires typed acknowledged settlement
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:74:19
+    at check (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:41:29)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:63:5
+FAIL finish-append-false
+AssertionError [ERR_ASSERTION]: coordinator settlement
+
+true !== false
+
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:64:14
+    at check (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:41:29)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:63:5
+FAIL resume-already-closed-append-false
+AssertionError [ERR_ASSERTION]: coordinator settlement
+
+true !== false
+
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:64:14
+    at check (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:41:29)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:63:5
+FAIL append-false
+AssertionError [ERR_ASSERTION]: only durable coordinator settlement completes verification
+
+true !== false
+
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:71:14
+    at check (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:41:29)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:63:5
+FAIL append-unavailable
+AssertionError [ERR_ASSERTION]: only durable coordinator settlement completes verification
+
+true !== false
+
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:71:14
+    at check (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:41:29)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:63:5
+FAIL resume-append-false
+AssertionError [ERR_ASSERTION]: verification is never a Git landing
+
+true !== false
+
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:68:14
+    at check (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:41:29)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:63:5
+FAIL resume-already-closed
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+3 !== 0
+
+    at profile (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:37:10)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:66:25
+    at check (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:41:29)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:63:5
+FAIL earlier-real-merge-preserved
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+false !== true
+
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:79:243
+    at check (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:41:29)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:79:3
+PASS real-already-merged-closure
+FAIL legacy-untyped-close-remains-unknown
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+true !== false
+
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:82:282
+    at check (file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:41:29)
+    at file:///Users/alepar/.aisw/profiles/codex/codex-3/worktrees/02a7/superpowers/tests/super-code/test-verification-settlement-profile.mjs:82:3
+1 passed, 13 failed

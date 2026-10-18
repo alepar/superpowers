@@ -1,0 +1,13 @@
+{
+  "authority": "human",
+  "source": "direct user message in this conversation",
+  "verbatim": "approved",
+  "context": "The reviewed fix passed all49checks; assistant asked permission to apply it and complete localmerge, no push/release; user explicitly approved.",
+  "scope": [
+    "apply exact reviewed fd52 repair",
+    "adopt verified evidence",
+    "complete canonical root acceptance and local merge"
+  ],
+  "recordedUtc": "2026-10-18T00:32:01.079380+00:00",
+  "permissionBoundary": "resolves prior automatic approval rejection; no bypass or inferred ACK authority"
+}

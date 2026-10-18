@@ -1,0 +1,86 @@
+{
+  "argv": [
+    "git",
+    "-c",
+    "user.name=Controlled Fixture Caller",
+    "-c",
+    "user.email=fixture@example.invalid",
+    "commit",
+    "-m",
+    "fix: clamp negative fixture counts to zero",
+    "--",
+    "counter.mjs"
+  ],
+  "actualArgv": [
+    "/opt/homebrew/bin/git",
+    "-c",
+    "user.name=Controlled Fixture Caller",
+    "-c",
+    "user.email=fixture@example.invalid",
+    "commit",
+    "-m",
+    "fix: clamp negative fixture counts to zero",
+    "--",
+    "counter.mjs"
+  ],
+  "environment": {
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "HOME": "/private/tmp/ufz-correction-actual-continuity-4911223a/caller-home",
+    "TMPDIR": "/private/tmp/ufz-correction-actual-continuity-4911223a/tmp",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "LANG": "C",
+    "LC_ALL": "C"
+  },
+  "cwd": "/private/tmp/ufz-correction-actual-continuity-4911223a/product",
+  "startedUtc": "2026-10-17T22:52:16.561828+00:00",
+  "finishedUtc": "2026-10-17T22:52:16.578295+00:00",
+  "durationSeconds": 0.016480415943078697,
+  "exitCode": 0,
+  "stdout": "/private/tmp/ufz-correction-actual-continuity-4911223a/phase2-receipts/commit-fixture-fix.stdout",
+  "stdoutSha256": "aa6dd468f95c3b5b400e67786431828a115fbed662076f835c715fe2ea85bf3a",
+  "stderr": "/private/tmp/ufz-correction-actual-continuity-4911223a/phase2-receipts/commit-fixture-fix.stderr",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "executableIdentity": {
+    "path": "/opt/homebrew/bin/git",
+    "realpath": "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+    "sha256": "9048038886ac36210fbb616b49b0707465f63683cb04e33a2013baf95f746938"
+  },
+  "helperSourceHead": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+  "helperSourceTree": "9d74c04d6a465e02439dc08e2076395d8e791583",
+  "helperIdentities": [
+    {
+      "path": "skills/super-auto/scripts/report-status",
+      "sha256": "16995ba49a018edde1387c597bd08c0916fba2011d8693e073fa57ce15ea8963",
+      "actualSha256": "16995ba49a018edde1387c597bd08c0916fba2011d8693e073fa57ce15ea8963"
+    },
+    {
+      "path": "skills/super-auto/scripts/collection-records.cjs",
+      "sha256": "fa444c243485404d761eb59ab53ca6b4bd7c97218dfc5521cc527fe5414def4f",
+      "actualSha256": "fa444c243485404d761eb59ab53ca6b4bd7c97218dfc5521cc527fe5414def4f"
+    },
+    {
+      "path": "skills/super-auto/scripts/scope-dispositions",
+      "sha256": "2007aabe7f3d9531850b4e4aebd694eb7b9e640c2906680f50655b4849d29eb0",
+      "actualSha256": "2007aabe7f3d9531850b4e4aebd694eb7b9e640c2906680f50655b4849d29eb0"
+    },
+    {
+      "path": "skills/super-code/scripts/report-verdict",
+      "sha256": "3e7b3d48eb5678ae97e76c17f13497e6009de7960a310538ba5bb90adb758661",
+      "actualSha256": "3e7b3d48eb5678ae97e76c17f13497e6009de7960a310538ba5bb90adb758661"
+    }
+  ],
+  "stateBefore": {
+    "run.md": "5d524ff65a90e16d72aff39901c12eecd9eb6dd5ecbb8aa1d7018650b1b1a4f2",
+    "reviews/continuity-i1/final-review-continuity-i1.md": "89c2e3ef37ab52b167bbd19f381649bf8f4f74978c33f2ab5d9692fdcfe272f2",
+    "reviews/continuity-i1/inputs/counter.mjs": "3cc3b5575bbd274bfd58e62f01d33cd55a31f955b9e805686cc74445e894ca06",
+    "reviews/continuity-i2/final-review-continuity-i2.md": "065ede00d6015fcfc67cba1d45a63351d074c47428452725fc8906ef8ee8f390",
+    "reviews/continuity-i2/inputs/counter.mjs": "3cc3b5575bbd274bfd58e62f01d33cd55a31f955b9e805686cc74445e894ca06"
+  },
+  "stateAfter": {
+    "run.md": "5d524ff65a90e16d72aff39901c12eecd9eb6dd5ecbb8aa1d7018650b1b1a4f2",
+    "reviews/continuity-i1/final-review-continuity-i1.md": "89c2e3ef37ab52b167bbd19f381649bf8f4f74978c33f2ab5d9692fdcfe272f2",
+    "reviews/continuity-i1/inputs/counter.mjs": "3cc3b5575bbd274bfd58e62f01d33cd55a31f955b9e805686cc74445e894ca06",
+    "reviews/continuity-i2/final-review-continuity-i2.md": "065ede00d6015fcfc67cba1d45a63351d074c47428452725fc8906ef8ee8f390",
+    "reviews/continuity-i2/inputs/counter.mjs": "3cc3b5575bbd274bfd58e62f01d33cd55a31f955b9e805686cc74445e894ca06"
+  }
+}

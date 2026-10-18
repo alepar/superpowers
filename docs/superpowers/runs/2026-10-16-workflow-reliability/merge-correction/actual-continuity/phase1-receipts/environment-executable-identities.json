@@ -1,0 +1,42 @@
+{
+  "bash": {
+    "path": "/bin/bash",
+    "realpath": "/bin/bash",
+    "sha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b"
+  },
+  "node": {
+    "path": "/opt/homebrew/bin/node",
+    "realpath": "/opt/homebrew/Cellar/node/26.9.0/bin/node",
+    "sha256": "28f0fc07e2b86fc0eae5f9751f34ab14d63bd0132882f89cc4a5b4a44965592e"
+  },
+  "git": {
+    "path": "/opt/homebrew/bin/git",
+    "realpath": "/opt/homebrew/Cellar/git/2.55.0/bin/git",
+    "sha256": "9048038886ac36210fbb616b49b0707465f63683cb04e33a2013baf95f746938"
+  },
+  "awk": {
+    "path": "/usr/bin/awk",
+    "realpath": "/usr/bin/awk",
+    "sha256": "74eca1b2aa59d4af94ad0ba8294ddb544f7db9f1a68d4b0ade2a70ea6c533940"
+  },
+  "dirname": {
+    "path": "/usr/bin/dirname",
+    "realpath": "/usr/bin/dirname",
+    "sha256": "35b5b949264a6ca55a7d8dc6de11a450e1c433b71a27c52543ee85a409735e8b"
+  },
+  "cp": {
+    "path": "/bin/cp",
+    "realpath": "/bin/cp",
+    "sha256": "f0629f462c6535f7b1a19f559b7093638e714961bea9228cfb2ae7896f8557f4"
+  },
+  "mkdir": {
+    "path": "/bin/mkdir",
+    "realpath": "/bin/mkdir",
+    "sha256": "a84382b7827e7bfb285321413f9a89b7d2805fa6afd0369a8f32f4f0241e18cd"
+  },
+  "python3": {
+    "path": "/opt/homebrew/bin/python3",
+    "realpath": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+    "sha256": "87d4df53fd91304be5bac391fb204643c36b7df2023c04a0953bcbc7d4fdf634"
+  }
+}

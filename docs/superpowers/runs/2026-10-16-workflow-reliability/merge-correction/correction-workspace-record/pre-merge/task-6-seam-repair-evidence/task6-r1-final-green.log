@@ -1,0 +1,18 @@
+PASS fresh-success
+PASS resume-success
+PASS close-check-failed
+PASS close-check-unavailable
+PASS finish-reconciled
+PASS finish-append-false
+PASS resume-already-closed-append-false
+PASS append-unacknowledged
+PASS append-retry-success
+PASS resume-already-closed-unacknowledged
+PASS append-false
+PASS append-unavailable
+PASS resume-append-false
+PASS resume-already-closed
+PASS earlier-real-merge-preserved
+PASS real-already-merged-closure
+PASS legacy-untyped-close-remains-unknown
+17 passed, 0 failed

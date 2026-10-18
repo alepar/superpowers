@@ -1,0 +1,81 @@
+{
+  "requirementId": "current-live-tmpdir-inherited",
+  "variant": "inherited",
+  "argv": [
+    "/bin/bash",
+    "tests/super-code/test-dispatch-text.sh"
+  ],
+  "cwd": "/private/tmp/ufz-correction-final-source-fd52ffc7",
+  "environment": {
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "CI": "1",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_CONFIG_GLOBAL": "/dev/null",
+    "GIT_CONFIG_SYSTEM": "/dev/null",
+    "GIT_OPTIONAL_LOCKS": "0",
+    "HOME": "/private/tmp/ufz-correction-final-tmpdir-variants-fd52ffc7/inherited/home",
+    "TMPDIR": "/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/",
+    "CODEX_HOME": "/private/tmp/ufz-correction-final-tmpdir-variants-fd52ffc7/inherited/codex-home",
+    "XDG_CONFIG_HOME": "/private/tmp/ufz-correction-final-tmpdir-variants-fd52ffc7/inherited/xdg-config",
+    "XDG_CACHE_HOME": "/private/tmp/ufz-correction-final-tmpdir-variants-fd52ffc7/inherited/xdg-cache",
+    "XDG_DATA_HOME": "/private/tmp/ufz-correction-final-tmpdir-variants-fd52ffc7/inherited/xdg-data",
+    "XDG_STATE_HOME": "/private/tmp/ufz-correction-final-tmpdir-variants-fd52ffc7/inherited/xdg-state"
+  },
+  "sourceHead": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+  "sourceTree": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2",
+  "beforeSource": {
+    "head": {
+      "exitCode": 0,
+      "stdout": "fd52ffc7a8de0c4412c517adec2d4979d06906ff\n",
+      "stderr": ""
+    },
+    "tree": {
+      "exitCode": 0,
+      "stdout": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2\n",
+      "stderr": ""
+    },
+    "status": {
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  },
+  "executableSha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+  "entrypointSha256": "d48e7c7bc404b09ee053e45a9056c02b7912ef08b0d8ed48b4384539495e72b7",
+  "inheritedTMPDIRObservation": "/var/folders/d3/rsgv6zk54y5dd7137_cmcc100000gn/T/",
+  "startUtc": "2026-10-17T23:48:31.287838+00:00",
+  "limits": "Two actual targeted commands with distinct declared TMPDIR configurations; no historical same-config or causal speedup/global absence claim.",
+  "exitCode": 0,
+  "durationSeconds": 11.357,
+  "endUtc": "2026-10-17T23:48:42.645117+00:00",
+  "afterSource": {
+    "head": {
+      "exitCode": 0,
+      "stdout": "fd52ffc7a8de0c4412c517adec2d4979d06906ff\n",
+      "stderr": ""
+    },
+    "tree": {
+      "exitCode": 0,
+      "stdout": "e9fb5e1b76697264ef7ade29dc5fc79ea57898c2\n",
+      "stderr": ""
+    },
+    "status": {
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  },
+  "stdout": {
+    "path": "/private/tmp/ufz-correction-final-tmpdir-variants-fd52ffc7/inherited/stdout.log",
+    "bytes": 12900,
+    "sha256": "b1e9b3f4976fd23c6753615fc2e393e4663cde446beaf617096cfbdac98f8e07"
+  },
+  "stderr": {
+    "path": "/private/tmp/ufz-correction-final-tmpdir-variants-fd52ffc7/inherited/stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

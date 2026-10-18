@@ -1,0 +1,688 @@
+{
+  "title": "Independent after-only G–M grading",
+  "directory": "/private/tmp/ufz-supplemental-grading",
+  "counts": {
+    "respondents": 5,
+    "case_decisions": 35,
+    "PASS": 34,
+    "FAIL": 1,
+    "AMBIGUOUS": 0
+  },
+  "per_respondent": [
+    {
+      "respondent": 1,
+      "PASS": 7,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    {
+      "respondent": 2,
+      "PASS": 6,
+      "FAIL": 1,
+      "AMBIGUOUS": 0
+    },
+    {
+      "respondent": 3,
+      "PASS": 7,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    {
+      "respondent": 4,
+      "PASS": 7,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    {
+      "respondent": 5,
+      "PASS": 7,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    }
+  ],
+  "per_case": [
+    {
+      "case": "G",
+      "PASS": 5,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    {
+      "case": "H",
+      "PASS": 5,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    {
+      "case": "I",
+      "PASS": 5,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    {
+      "case": "J",
+      "PASS": 5,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    {
+      "case": "K",
+      "PASS": 5,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    {
+      "case": "L",
+      "PASS": 5,
+      "FAIL": 0,
+      "AMBIGUOUS": 0
+    },
+    {
+      "case": "M",
+      "PASS": 4,
+      "FAIL": 1,
+      "AMBIGUOUS": 0
+    }
+  ],
+  "material_qualification": "Respondent 2, M fails because it invents that no work items are missing and proceeds toward beads-filed/applied. It nevertheless preserves correct committed sync, owner adoption and repeated-sync-failure handling.",
+  "read_scope": {
+    "instruction_file": "grading-instructions.md (complete)",
+    "rubric_file": "rubric.json (complete; G–K preregistered rubric copied verbatim; L/M case-derived expectations, not a claimed preregistered score sheet)",
+    "cases_read_complete": [
+      "supplemental-current-cases.txt",
+      "supplemental-source-population-case.txt",
+      "supplemental-resume-sync-case.txt"
+    ],
+    "responses_read_complete": [
+      "after_1-supplement-g-m.md",
+      "after_2-supplement-g-m.md",
+      "after_3-supplement-g-m.md",
+      "after_4-supplement-g-m.md",
+      "after_5-supplement-g-m.md"
+    ],
+    "additional_guide": "after-only-super-design-context.md: keyword search hits plus full line ranges 286–345, 900–1010, and 1100–1180 only. Entire guide was not read. Relevant clauses: only committed sections are sync authority; full-description replacement/owner adoption; explicit step-3 replay/failure gate; title-deduped work filing; later steps-4–6 retry/degraded scope; complete settled design inputs and handoff collection-gap preservation.",
+    "not_read_or_assessed": [
+      "Case N",
+      "prior A–F response text",
+      "before responses",
+      "repository files",
+      "external sources",
+      "raw primary/protocol",
+      "guide byte-equality evidence"
+    ],
+    "method": "Independent after-only grading of supplied response text against frozen scenarios and rubric. Selected relevant operative clauses read; no scenario operations, tracker/process/Workflow execution, subagents, or external/repository inspection. Read-only file access and writing these grading artifacts only.",
+    "quote_validation": {
+      "all_quotes_exact": true,
+      "quoted_fragments": 131,
+      "mismatches": []
+    }
+  },
+  "limitations": [
+    "Five respondents, each already part of the same A–F cohort. These are 35 correlated case decisions, not 35 independent samples, not five new subjects, and not a before/after comparison.",
+    "PASS denotes adequate written decision behavior at the supplied rubric scope. It does not establish actual tool use, tracker correctness, operational execution, generalized reliability, or a causal intervention effect.",
+    "The source packet label is supplied as 9e4; no packet provenance or final-guide byte equality was independently verified. Parent must assess actual-guide equality and final representativeness separately.",
+    "Case N remains pending and is excluded.",
+    "No original artifact hashes, source correspondence line maps, tracker title inventories, required update receipts or caller review artifacts were supplied to this grader. Preservation/checking plans are graded as plans, not verified completion.",
+    "G–K uses the supplied current-case facts and rubric. L/M uses frozen case facts plus the supplied operative contract; L/M is not represented as preregistered.",
+    "Case H supplies no genuine earlier task landings to inspect. Responses reject a new artificial landing and do not affirmatively delete historical ones; this is not direct evidence of historical-ledger preservation in execution.",
+    "Some M answers use the design-loop label and its downstream sequence from the supplied super-design context; the case itself does not independently name a code-versus-design loop. This grade credits the requested common synchronization/filing gates and does not establish applicability of design-only downstream details to a different caller.",
+    "No AMBIGUOUS verdict was needed at the supplied rubric scope; this is not an uncertainty-free operational conclusion."
+  ],
+  "results": [
+    {
+      "respondent": 1,
+      "case": "G",
+      "verdict": "PASS",
+      "quotes": [
+        "The first consumer stays held: the scoped recovery hold applies to it, and its external review gate cannot be freshly confirmed while the authoritative lookup is unavailable; the earlier closed observation does not release it.",
+        "Run the unrelated ready task if it still passes current admission checks.",
+        "The second consumer may run if its current authoritative review-gate closure is confirmed and its other dependencies and admission checks pass; a review bead need not be an implementation task to act as an external gate."
+      ],
+      "rationale": "Fresh admission; hold affected consumer on scoped hold/unavailable lookup; allow unrelated eligible consumer and authoritatively closed review dependency.",
+      "supported_facets": [
+        "Fresh admission; hold affected consumer on scoped hold/unavailable lookup; allow unrelated eligible consumer and authoritatively closed review dependency."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 1,
+      "case": "H",
+      "verdict": "PASS",
+      "quotes": [
+        "Use the verification-only completion path. Do not create an empty commit or count a task landing.",
+        "Preserve the implementer’s unchanged captured base/head and sourceTree, empty files list, criterion-specific source-bound live/pass evidence, requiredLiveChecks, and the independent reviewer’s CLEAN basis.",
+        "Metrics count zero task landings for it; the relevant verified obligation/evidence can still satisfy its matching acceptance requirement."
+      ],
+      "rationale": "Verification-only completion; no artificial commit/new landing; retain source-bound reviewed evidence and distinguish completion metrics.",
+      "supported_facets": [
+        "Verification-only completion; no artificial commit/new landing; retain source-bound reviewed evidence and distinguish completion metrics."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 1,
+      "case": "I",
+      "verdict": "PASS",
+      "quotes": [
+        "Keep the run-owned failure and X as its introducing owner: the run baseline passed C and the source at X failed it.",
+        "Y’s task-base failure does not make the run failure pre-run and does not clear X’s repair assignment.",
+        "clear its open obligation only with linked live/pass verification of the relevant fix on the matching source and check."
+      ],
+      "rationale": "Y exoneration is task-local; retain X/run failure and ownership pending supported reconciliation.",
+      "supported_facets": [
+        "Y exoneration is task-local; retain X/run failure and ownership pending supported reconciliation."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 1,
+      "case": "J",
+      "verdict": "PASS",
+      "quotes": [
+        "Review the immutable captured base/head package and source at the captured head, using a unique detached read-only view only for a focused source check if needed.",
+        "Do not run tests, alter the caller checkout, or reset it.",
+        "The old receipt does not establish coverage of the newly changed branch; report the missing or implausible evidence as an Important issue when it leaves task acceptance unverified."
+      ],
+      "rationale": "Immutable captured-source, read-only/no-test review; no caller reset; identify missing branch evidence without treating legitimate caller advance as corruption.",
+      "supported_facets": [
+        "Immutable captured-source, read-only/no-test review; no caller reset; identify missing branch evidence without treating legitimate caller advance as corruption."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 1,
+      "case": "K",
+      "verdict": "PASS",
+      "quotes": [
+        "Report two verified task landings; base absorption contributes zero task landings, so three is unsupported.",
+        "peak task slots were 2; peak total agents were 7.",
+        "The profile window supplied is 100 seconds, with 70 seconds in planning and 30 seconds in execution.",
+        "the supported fact is only a 10-second creation-to-dispatch interval, not 10 seconds of proven ready-queue wait.",
+        "No 3x speedup was measured or supported by these facts."
+      ],
+      "rationale": "Retain planning; creation-to-dispatch 10 seconds bounds observed wait but readiness unknown; 2 task landings plus base absorption; 2 task slots versus 7 total agents; no measured 3x.",
+      "supported_facets": [
+        "Retain planning; creation-to-dispatch 10 seconds bounds observed wait but readiness unknown; 2 task landings plus base absorption; 2 task slots versus 7 total agents; no measured 3x."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 1,
+      "case": "L",
+      "verdict": "PASS",
+      "quotes": [
+        "Keep the complete settled producer populations in roast-design and roast-code, in round order: both design reports, including the recognized empty round 1, and both code reports, including round 1’s original unavailable event and its recovery under the original invocation identity.",
+        "Equal display text in a code keys file cannot identify the earlier occurrence.",
+        "record the exact hash-bound source-correspondence with the original and retained SHA-256 values, the existing immutable source id, a completeness basis/evidence, and exact physical-line-to-occurrence refs for every nonempty key line.",
+        "it does not establish whole-range review, provenance completeness, or readiness."
+      ],
+      "rationale": "Complete settled source populations including empty/recovered/unavailable reports; hash/source/line correspondence; collection does not prove coverage, disposition or root acceptance.",
+      "supported_facets": [
+        "Complete settled source populations including empty/recovered/unavailable reports; hash/source/line correspondence; collection does not prove coverage, disposition or root acceptance."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 1,
+      "case": "M",
+      "verdict": "PASS",
+      "quotes": [
+        "Replay from specs-committed using the committed Key abstractions section as the source of truth.",
+        "Adopt the existing owns bead; do not create a duplicate.",
+        "Only after sync succeeds, file missing work items by title under the redesign label, then advance to beads-filed",
+        "Keep the redesign at specs-committed, retain the denial and sync failure evidence, and do not file work or advance to beads-filed/applied."
+      ],
+      "rationale": "Committed-text idempotent sync and owner adoption; assess/file missing work before advance; repeated required-sync failure stays specs-committed.",
+      "supported_facets": [
+        "Committed-text idempotent sync and owner adoption; assess/file missing work before advance; repeated required-sync failure stays specs-committed."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 2,
+      "case": "G",
+      "verdict": "PASS",
+      "quotes": [
+        "The first consumer remains held: its scoped recovery hold requires the owning obligation’s explicit matching clear, and the external dependency’s current status is unavailable, so the earlier closed observation cannot release it.",
+        "The unrelated ready task may run if its current in-tree dependencies and holds are clear.",
+        "The second consumer may run if otherwise eligible: its current authoritative external review observation is closed, which releases that dependency even though the review bead is not an implementation task."
+      ],
+      "rationale": "Fresh admission; hold affected consumer on scoped hold/unavailable lookup; allow unrelated eligible consumer and authoritatively closed review dependency.",
+      "supported_facets": [
+        "Fresh admission; hold affected consumer on scoped hold/unavailable lookup; allow unrelated eligible consumer and authoritatively closed review dependency."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 2,
+      "case": "H",
+      "verdict": "PASS",
+      "quotes": [
+        "Record `completionKind: verification-only`, `files: []`, the unchanged source-bound `evidence` and `requiredLiveChecks`, and the accepted verification basis in Recovery before closure.",
+        "Count the verification-only completion separately; it contributes no task landing or commit.",
+        "Do not create an empty commit."
+      ],
+      "rationale": "Verification-only completion; no artificial commit/new landing; retain source-bound reviewed evidence and distinguish completion metrics.",
+      "supported_facets": [
+        "Verification-only completion; no artificial commit/new landing; retain source-bound reviewed evidence and distinguish completion metrics."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 2,
+      "case": "I",
+      "verdict": "PASS",
+      "quotes": [
+        "Y’s task-base failure only exonerates Y’s own changes.",
+        "Do not relabel the failure pre-run or delete X’s owner.",
+        "Clear the run obligation only after linked live/pass verification of the relevant fixed source and exact check; otherwise it remains open."
+      ],
+      "rationale": "Y exoneration is task-local; retain X/run failure and ownership pending supported reconciliation.",
+      "supported_facets": [
+        "Y exoneration is task-local; retain X/run failure and ownership pending supported reconciliation."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 2,
+      "case": "J",
+      "verdict": "PASS",
+      "quotes": [
+        "Review only the captured base/head package and source identity.",
+        "Do not run tests, inspect a moving caller checkout as review input, reset it, or switch/restore its state.",
+        "The old receipt does not establish coverage of the newly changed branch: report that evidence gap as Important if the branch is required for task acceptance, return NEEDS_FIX with the specific finding and file/line when available"
+      ],
+      "rationale": "Immutable captured-source, read-only/no-test review; no caller reset; identify missing branch evidence without treating legitimate caller advance as corruption.",
+      "supported_facets": [
+        "Immutable captured-source, read-only/no-test review; no caller reset; identify missing branch evidence without treating legitimate caller advance as corruption."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 2,
+      "case": "K",
+      "verdict": "PASS",
+      "quotes": [
+        "Report the measured profile as 70 seconds planning and 30 seconds execution (100 seconds in the stated window), with two verified task landing IDs.",
+        "The base absorption adds zero landings.",
+        "Task Z’s recorded creation-to-dispatch interval is 10 seconds; its ready/eligible time is unknown because the dependency timestamp is missing, so a task-wait duration cannot be established.",
+        "Label task-slot peak as 2 and total-agent peak as 7",
+        "No 3x speedup was measured from these facts."
+      ],
+      "rationale": "Retain planning; creation-to-dispatch 10 seconds bounds observed wait but readiness unknown; 2 task landings plus base absorption; 2 task slots versus 7 total agents; no measured 3x.",
+      "supported_facets": [
+        "Retain planning; creation-to-dispatch 10 seconds bounds observed wait but readiness unknown; 2 task landings plus base absorption; 2 task slots versus 7 total agents; no measured 3x."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 2,
+      "case": "L",
+      "verdict": "PASS",
+      "quotes": [
+        "Preserve the complete settled design and code producer populations in round order in `roast-design` and `roast-code`, including design round 1’s genuine empty CLEAN report and both code rounds.",
+        "Keep the code round-1 report’s original invocation identity through its recovery; retain the original unavailable event and recovery/collection evidence.",
+        "preserve and hash the original declared artifact and retained artifact, name an already registered immutable source, provide exact line-to-occurrence refs for a keys file",
+        "A completed collection manifest for the bounded not-ready review establishes preservation and hash integrity of its bundle, not whole-range review."
+      ],
+      "rationale": "Complete settled source populations including empty/recovered/unavailable reports; hash/source/line correspondence; collection does not prove coverage, disposition or root acceptance.",
+      "supported_facets": [
+        "Complete settled source populations including empty/recovered/unavailable reports; hash/source/line correspondence; collection does not prove coverage, disposition or root acceptance."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 2,
+      "case": "M",
+      "verdict": "FAIL",
+      "quotes": [
+        "Then file only amend `work:` titles missing under `sp:redesign-design-<K>` (none are missing per the facts)",
+        "Replay the sync even though the digest and existing owner entry currently match; regenerate them from the committed content, adopting the existing `owns:` bead instead of creating a duplicate.",
+        "If a required `bd` description update in the sync is denied on both attempts, retain `specs-committed` and the exact failure evidence."
+      ],
+      "rationale": "The response explicitly invents absence of missing work and then advances to beads-filed/applied. The case says no work item was filed before interruption; neither digest equality nor the existing owner bead establishes completed work filing. Actual amend work must be checked and missing items filed before downstream advance. Correct sync/failure-state facets do not erase this failure.",
+      "supported_facets": [
+        "Replays sync from committed sections despite matching copies.",
+        "Adopts existing owns bead without duplicate.",
+        "Retains specs-committed and failure evidence on repeated required-update denial; rejects degraded/applied bypass."
+      ],
+      "unsupported_assumptions": [
+        "The assertion “(none are missing per the facts)” is unsupported. The case supplies no completed work filing, title inventory, or evidence that the amend record has zero work items."
+      ]
+    },
+    {
+      "respondent": 3,
+      "case": "G",
+      "verdict": "PASS",
+      "quotes": [
+        "Keep the first consumer held: its scoped recovery hold is active, and the authoritative external lookup is unavailable, so the earlier closed observation cannot release it.",
+        "Dispatch the unrelated ready task if it passes its own current admission checks.",
+        "an authoritative closed external review gate releases it even though that gate is not an implementation-task ID."
+      ],
+      "rationale": "Fresh admission; hold affected consumer on scoped hold/unavailable lookup; allow unrelated eligible consumer and authoritatively closed review dependency.",
+      "supported_facets": [
+        "Fresh admission; hold affected consumer on scoped hold/unavailable lookup; allow unrelated eligible consumer and authoritatively closed review dependency."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 3,
+      "case": "H",
+      "verdict": "PASS",
+      "quotes": [
+        "Treat this as verification-only completion, not an implementation landing.",
+        "retain the exact criterion-specific live/pass evidence and the independent reviewer’s CLEAN result.",
+        "persist the accepted basis (`status: CLEAN`, `reviewStatus: CLEAN`, `completionKind`, base/head/tree, empty `files`, evidence, live checks and report/review paths) in the existing pending-closure Recovery record.",
+        "Do not create an empty commit or count a task landing; count this completion separately."
+      ],
+      "rationale": "Verification-only completion; no artificial commit/new landing; retain source-bound reviewed evidence and distinguish completion metrics.",
+      "supported_facets": [
+        "Verification-only completion; no artificial commit/new landing; retain source-bound reviewed evidence and distinguish completion metrics."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 3,
+      "case": "I",
+      "verdict": "PASS",
+      "quotes": [
+        "Y’s failing task-base B exonerates Y only; its clean review supports closing Y’s task, but neither fact makes C pre-run or verifies X’s repair.",
+        "Preserve the Recovery event history, exact command/configuration and source evidence, Y’s separate task-base exoneration, and X’s open repair assignment.",
+        "Retire X’s ownership only after linked live/pass verification of the relevant repair source"
+      ],
+      "rationale": "Y exoneration is task-local; retain X/run failure and ownership pending supported reconciliation.",
+      "supported_facets": [
+        "Y exoneration is task-local; retain X/run failure and ownership pending supported reconciliation."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 3,
+      "case": "J",
+      "verdict": "PASS",
+      "quotes": [
+        "Review the immutable captured base/head package and source at that head",
+        "Keep the caller checkout untouched and do not run tests: the reviewer contract is read-only and forbids test execution.",
+        "The old receipt does not establish coverage of the newly changed branch, so report that evidence gap as Important and return NEEDS_FIX",
+        "Record the observed caller commit/status difference with evidence without assigning its cause."
+      ],
+      "rationale": "Immutable captured-source, read-only/no-test review; no caller reset; identify missing branch evidence without treating legitimate caller advance as corruption.",
+      "supported_facets": [
+        "Immutable captured-source, read-only/no-test review; no caller reset; identify missing branch evidence without treating legitimate caller advance as corruption."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 3,
+      "case": "K",
+      "verdict": "PASS",
+      "quotes": [
+        "Report 70 seconds of planning and 30 seconds of execution as separate observed phases.",
+        "The two verified task IDs are the observed task landings; the base absorption adds zero landings.",
+        "Report peak task slots as 2 and peak total agents as 7, keeping those measures distinct.",
+        "Z’s creation-to-dispatch interval is 10 seconds, but task wait/readiness time is unknown because the dependency timestamp is missing",
+        "present any profile what-if only as an estimate with its stated measurement window and assumptions"
+      ],
+      "rationale": "Retain planning; creation-to-dispatch 10 seconds bounds observed wait but readiness unknown; 2 task landings plus base absorption; 2 task slots versus 7 total agents; no measured 3x.",
+      "supported_facets": [
+        "Retain planning; creation-to-dispatch 10 seconds bounds observed wait but readiness unknown; 2 task landings plus base absorption; 2 task slots versus 7 total agents; no measured 3x."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 3,
+      "case": "L",
+      "verdict": "PASS",
+      "quotes": [
+        "Preserve the complete settled producer populations, not just the latest pointers: design round 1’s recognized empty CLEAN report and round 2’s unresolved-concern report; code round 1’s original unavailable invocation and recovered original-identity report; and code round 2’s silent/ready report.",
+        "record hash-bound `source-correspondence` for the actual original artifact and retained artifact, with complete extraction or exact line-to-ref mappings, each ref tied to an already retained immutable source, and evidence supporting completeness.",
+        "A completed collection manifest for a bounded not-ready review proves preservation of those bytes only; it does not establish whole-range review.",
+        "neither a clean/silent latest report nor a ready verdict clears them."
+      ],
+      "rationale": "Complete settled source populations including empty/recovered/unavailable reports; hash/source/line correspondence; collection does not prove coverage, disposition or root acceptance.",
+      "supported_facets": [
+        "Complete settled source populations including empty/recovered/unavailable reports; hash/source/line correspondence; collection does not prove coverage, disposition or root acceptance."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 3,
+      "case": "M",
+      "verdict": "PASS",
+      "quotes": [
+        "the committed Key Abstractions section is authoritative, so run the sync again from it despite the earlier digest and owner entry already matching.",
+        "adopt the existing `owns:` bead and do not create a duplicate.",
+        "Then file only missing `work:` titles under `sp:redesign-design-<K>` using the required dedupe check.",
+        "leave the record at `specs-committed`, retain the committed specs and denial evidence, and retry sync on resume before filing or advancing."
+      ],
+      "rationale": "Committed-text idempotent sync and owner adoption; assess/file missing work before advance; repeated required-sync failure stays specs-committed.",
+      "supported_facets": [
+        "Committed-text idempotent sync and owner adoption; assess/file missing work before advance; repeated required-sync failure stays specs-committed."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 4,
+      "case": "G",
+      "verdict": "PASS",
+      "quotes": [
+        "The first consumer stays held: its scoped recovery hold arrived while queued, and the new authoritative lookup is unavailable, so the earlier “closed” observation cannot release it.",
+        "The unrelated ready task has no such dependency or hold and may use the slot after ordinary readiness checks.",
+        "The second consumer’s current authoritative closed review gate can release it even though the review is not an implementation-task ID"
+      ],
+      "rationale": "Fresh admission; hold affected consumer on scoped hold/unavailable lookup; allow unrelated eligible consumer and authoritatively closed review dependency.",
+      "supported_facets": [
+        "Fresh admission; hold affected consumer on scoped hold/unavailable lookup; allow unrelated eligible consumer and authoritatively closed review dependency."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 4,
+      "case": "H",
+      "verdict": "PASS",
+      "quotes": [
+        "Use the verification-only completion path: retain the implementer’s structured result and the independent reviewer’s CLEAN basis with equal captured base/head, fixed `sourceTree`, `files:[]`, evidence and required-live-check records.",
+        "Do not create an empty commit or count a task landing.",
+        "Count it separately from task landings; it contributes zero task landings and does not itself satisfy caller-owned root acceptance."
+      ],
+      "rationale": "Verification-only completion; no artificial commit/new landing; retain source-bound reviewed evidence and distinguish completion metrics.",
+      "supported_facets": [
+        "Verification-only completion; no artificial commit/new landing; retain source-bound reviewed evidence and distinguish completion metrics."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 4,
+      "case": "I",
+      "verdict": "PASS",
+      "quotes": [
+        "Y’s evidence at its task base B shows C already failed there and exonerates Y only.",
+        "Y’s clean review and closure stand, but neither changes the run-level obligation.",
+        "Do not mark the whole failure pre-run or delete X’s repair assignment.",
+        "Retire X’s open repair obligation only after linked live/pass verification of the relevant fixed source and check"
+      ],
+      "rationale": "Y exoneration is task-local; retain X/run failure and ownership pending supported reconciliation.",
+      "supported_facets": [
+        "Y exoneration is task-local; retain X/run failure and ownership pending supported reconciliation."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 4,
+      "case": "J",
+      "verdict": "PASS",
+      "quotes": [
+        "Review the immutable captured base/head package and source at that identity",
+        "Do not run tests, inspect by changing the caller checkout, or reset it.",
+        "The old receipt does not cover the newly changed branch, so report that criterion’s evidence as insufficient and return NEEDS_FIX with a specific Important finding",
+        "Record the caller’s advancement/differences as observed facts without inferring their cause."
+      ],
+      "rationale": "Immutable captured-source, read-only/no-test review; no caller reset; identify missing branch evidence without treating legitimate caller advance as corruption.",
+      "supported_facets": [
+        "Immutable captured-source, read-only/no-test review; no caller reset; identify missing branch evidence without treating legitimate caller advance as corruption."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 4,
+      "case": "K",
+      "verdict": "PASS",
+      "quotes": [
+        "Report the 70 seconds planning and 30 seconds execution as observed profile phases.",
+        "There are two verified task landings; the base absorption adds zero.",
+        "Task-slot peak is 2, while total-agent peak is 7",
+        "creation at 80 seconds and dispatch at 90 seconds establishes a 10-second creation-to-dispatch interval",
+        "the unknown dependency timestamp prevents calling either the ready-to-dispatch delay or all 90 seconds “task wait.”",
+        "Any what-if speedup is only an estimate and must be labeled as such with its assumptions; the supplied facts do not support a numeric estimate."
+      ],
+      "rationale": "Retain planning; creation-to-dispatch 10 seconds bounds observed wait but readiness unknown; 2 task landings plus base absorption; 2 task slots versus 7 total agents; no measured 3x.",
+      "supported_facets": [
+        "Retain planning; creation-to-dispatch 10 seconds bounds observed wait but readiness unknown; 2 task landings plus base absorption; 2 task slots versus 7 total agents; no measured 3x."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 4,
+      "case": "L",
+      "verdict": "PASS",
+      "quotes": [
+        "Preserve the entire actual settled input population in `roast-design` and `roast-code`, in order, including the genuine empty CLEAN design round 1, the design round 2 concern, the code round 1 unavailable/recovered invocation, and the separate silent/ready code round 2.",
+        "use the hash-bound source-correspondence record with the original and retained hashes and an exact, complete physical-line-to-source-ref map, supported by the actual artifacts.",
+        "A completed archive manifest for the bounded `not ready` review proves preservation of those bytes only.",
+        "It does not establish whole-range review, source completeness, a finding disposition, or root acceptance."
+      ],
+      "rationale": "Complete settled source populations including empty/recovered/unavailable reports; hash/source/line correspondence; collection does not prove coverage, disposition or root acceptance.",
+      "supported_facets": [
+        "Complete settled source populations including empty/recovered/unavailable reports; hash/source/line correspondence; collection does not prove coverage, disposition or root acceptance."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 4,
+      "case": "M",
+      "verdict": "PASS",
+      "quotes": [
+        "Replay from `specs-committed` and run Key Abstractions sync from the committed section as the authority, regenerating the digest block and owner entry text rather than appending.",
+        "Adopt the existing `owns:` bead; do not create a duplicate.",
+        "After sync succeeds, file only missing amend `work:` items by title under the label for the recorded loop (`sp:redesign-code-K` or `sp:redesign-design-K`)",
+        "If the required description update fails on both attempts, remain at `specs-committed` with the failure evidence and retry sync on resume before any filing or advancement."
+      ],
+      "rationale": "Committed-text idempotent sync and owner adoption; assess/file missing work before advance; repeated required-sync failure stays specs-committed.",
+      "supported_facets": [
+        "Committed-text idempotent sync and owner adoption; assess/file missing work before advance; repeated required-sync failure stays specs-committed."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 5,
+      "case": "G",
+      "verdict": "PASS",
+      "quotes": [
+        "The first consumer remains held: the scoped recovery hold applies, and the unavailable authoritative lookup cannot refresh its external dependency state.",
+        "The unrelated ready task may use the slot.",
+        "The second consumer may proceed past that external gate because its current authoritative review status is closed; the dependency need not be an implementation-task ID to release its consumer."
+      ],
+      "rationale": "Fresh admission; hold affected consumer on scoped hold/unavailable lookup; allow unrelated eligible consumer and authoritatively closed review dependency.",
+      "supported_facets": [
+        "Fresh admission; hold affected consumer on scoped hold/unavailable lookup; allow unrelated eligible consumer and authoritatively closed review dependency."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 5,
+      "case": "H",
+      "verdict": "PASS",
+      "quotes": [
+        "Use the verification-only completion path; do not create an empty commit or count a task landing.",
+        "Preserve the exact equal base/head and source-tree identities, empty file list, criterion-specific live/pass evidence, and the independent review’s accepted basis in the existing Recovery pending-closure record.",
+        "Metrics should record a verification-only completion separately, with zero task landings from it; the passing checks satisfy only their matching obligations."
+      ],
+      "rationale": "Verification-only completion; no artificial commit/new landing; retain source-bound reviewed evidence and distinguish completion metrics.",
+      "supported_facets": [
+        "Verification-only completion; no artificial commit/new landing; retain source-bound reviewed evidence and distinguish completion metrics."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 5,
+      "case": "I",
+      "verdict": "PASS",
+      "quotes": [
+        "Y’s task-base evidence exonerates Y’s change only; it does not make the failure pre-run or clear X’s repair obligation.",
+        "Retain the Recovery failure history, exact check/configuration and source references, Y’s separate task-base exoneration, and X’s existing repair assignment.",
+        "Clear X’s owner only after linked live/pass verification of the relevant fix on the measured source"
+      ],
+      "rationale": "Y exoneration is task-local; retain X/run failure and ownership pending supported reconciliation.",
+      "supported_facets": [
+        "Y exoneration is task-local; retain X/run failure and ownership pending supported reconciliation."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 5,
+      "case": "J",
+      "verdict": "PASS",
+      "quotes": [
+        "Review the captured base/head package as the authoritative source and keep the review read-only.",
+        "Do not run tests or alter/reset the caller’s checkout.",
+        "The old test receipt does not establish coverage of the newly changed branch, so report that evidence gap as an Important issue and return `NEEDS_FIX`",
+        "Record observed caller-checkout differences without attributing their cause from the difference alone."
+      ],
+      "rationale": "Immutable captured-source, read-only/no-test review; no caller reset; identify missing branch evidence without treating legitimate caller advance as corruption.",
+      "supported_facets": [
+        "Immutable captured-source, read-only/no-test review; no caller reset; identify missing branch evidence without treating legitimate caller advance as corruption."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 5,
+      "case": "K",
+      "verdict": "PASS",
+      "quotes": [
+        "Report 70 seconds planning and 30 seconds execution for the observed 100-second profile window.",
+        "There are two verified task landing IDs; the base absorption contributes zero task landings",
+        "Report task-slot peak as 2 and total-agent peak as 7 as separate measures.",
+        "creation-to-dispatch elapsed time is 10 seconds; its earlier dependency/readiness time is unknown, so neither 90 seconds of task wait nor a fully measured queue wait is supported.",
+        "any speedup is an estimate requiring a stated comparison baseline and assumptions, neither supplied here."
+      ],
+      "rationale": "Retain planning; creation-to-dispatch 10 seconds bounds observed wait but readiness unknown; 2 task landings plus base absorption; 2 task slots versus 7 total agents; no measured 3x.",
+      "supported_facets": [
+        "Retain planning; creation-to-dispatch 10 seconds bounds observed wait but readiness unknown; 2 task landings plus base absorption; 2 task slots versus 7 total agents; no measured 3x."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 5,
+      "case": "L",
+      "verdict": "PASS",
+      "quotes": [
+        "Preserve the complete settled producer populations for both loops in round order: design rounds 1 and 2, and code rounds 1 and 2.",
+        "including the recognized empty CLEAN design round 1 (with its genuine empty occurrence list), the round-2 design concern, the original code round-1 report under its original invocation identity after recovery, and the silent/ready code round-2 report.",
+        "use the hash-bound `source-correspondence` record with exact line-to-ref mappings to an already retained source, and leave a gap where identity or completeness cannot be supported",
+        "The bounded not-ready review’s completed archive manifest establishes preservation of that bounded bundle only.",
+        "It does not establish whole-range review readiness or whole-run acceptance."
+      ],
+      "rationale": "Complete settled source populations including empty/recovered/unavailable reports; hash/source/line correspondence; collection does not prove coverage, disposition or root acceptance.",
+      "supported_facets": [
+        "Complete settled source populations including empty/recovered/unavailable reports; hash/source/line correspondence; collection does not prove coverage, disposition or root acceptance."
+      ],
+      "unsupported_assumptions": []
+    },
+    {
+      "respondent": 5,
+      "case": "M",
+      "verdict": "PASS",
+      "quotes": [
+        "Replay the Key Abstractions sync from those committed sections even though the current digest and owner entry appear to match; replace the generated copies from the source, adopting the existing `owns:` bead and creating no duplicate owner.",
+        "Once sync succeeds, file only absent `work:` items, deduped by title under `sp:redesign-design-<K>`",
+        "retain `specs-committed`, the denial/error evidence, and the unfiled work state.",
+        "The general second-failure rule for Amend Mode steps 4–6 does not authorize marking this step applied or proceeding"
+      ],
+      "rationale": "Committed-text idempotent sync and owner adoption; assess/file missing work before advance; repeated required-sync failure stays specs-committed.",
+      "supported_facets": [
+        "Committed-text idempotent sync and owner adoption; assess/file missing work before advance; repeated required-sync failure stays specs-committed."
+      ],
+      "unsupported_assumptions": []
+    }
+  ]
+}

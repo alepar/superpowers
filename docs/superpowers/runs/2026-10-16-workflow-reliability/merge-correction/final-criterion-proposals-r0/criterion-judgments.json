@@ -1,0 +1,427 @@
+{
+  "schemaVersion": 1,
+  "proposalOnly": true,
+  "inspectionSource": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+  "finalDocsSource": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+  "criteria": [
+    {
+      "id": "R1",
+      "originalRequirement": "Reviews use stable source revisions and isolated mutable outputs without modifying the caller checkout.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Captured source bounds and guarded immutable outputs remain; unavailable omission provenance grants zero omissions and only separately bound incomplete review. The final null-seam stub now survives strict extraction without granting readiness.",
+      "currentCodeOrReviewedEvidence": [
+        "current-stub",
+        "final-wave-review",
+        "task4-review",
+        "wave-sr1-h1"
+      ],
+      "representativeCases": [
+        "A",
+        "B",
+        "phase1",
+        "phase2"
+      ],
+      "limits": "Actual process-isolated review evidence remains bounded: controlled assembler failure, no arbitrary detached-process absence or exhaustive no-test-review execution.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R2",
+      "originalRequirement": "Cleanup reports verified stopped, surviving, unknown and deliberate preservation accurately, retaining resources still needed by owned processes.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Inventory failure remains unknown/exit4; discard/setup preserves worktrees/branches on exits3/4; four result arrays and dependent resources are explicit. N confirms current supplied-fact SETUP_FAILED decisions.",
+      "currentCodeOrReviewedEvidence": [
+        "current-four-cleanup-arrays",
+        "task6-report",
+        "final-wave-review",
+        "wave-h2"
+      ],
+      "representativeCases": [
+        "D",
+        "N"
+      ],
+      "limits": "Native Linux /proc and actual final parent teardown were not demonstrated. No zero-process claim is inferred; retained caller resources require fresh observation before deletion.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R3",
+      "originalRequirement": "Dispatch rechecks admission after capacity waits and observes external dependency closure without blocking unrelated eligible work on failed lookups.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Mapped dispatch, verification reacquisition and newly initiated unplanned routing recheck admission after actual capacity acquisition. Failed external observations invalidate stale success; already-owned settlement is allowed to finish.",
+      "currentCodeOrReviewedEvidence": [
+        "current-newwork-admission",
+        "current-capacity-verification",
+        "task1-review",
+        "wave-r2"
+      ],
+      "representativeCases": [
+        "G"
+      ],
+      "limits": "The during-wait case injects a real producer hold at a test boundary; no live external-arrival or hosted tracker transaction claim.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R4",
+      "originalRequirement": "Durable recovery facts preserve holds, pending closure, deferred obligations and fix history; resume reconciles Git/tracker evidence and reuses valid work.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Invalid compact Recovery constrains identifiable tasks/global unknown scope without becoming clearable valid obligations. Resume preserves original history, requires full observations and acknowledged durable settlement, and reruns committed Key Abstractions sync before filing.",
+      "currentCodeOrReviewedEvidence": [
+        "current-recovery-admission",
+        "current-resume",
+        "current-settlement",
+        "current-sync-resume",
+        "current-sync-design",
+        "task5-review",
+        "task6-round2-review",
+        "wave-r1"
+      ],
+      "representativeCases": [
+        "G",
+        "H",
+        "M"
+      ],
+      "limits": "M after_2 material missing-work FAIL remains; no source-instruction defect established. Textual sync/adoption/failure-hold evidence does not establish actual tracker effects.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs.",
+        "Material M failure retained; independent representativeness judgment must explicitly address it."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R5",
+      "originalRequirement": "Source-bound evidence preserves command/configuration, outcome and location, distinguishing live/simulated/fallback and failed/unavailable checks.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Command/configuration/source/outcome/kind validation and gate evidence binding distinguish live, simulated, fallback, failed and unavailable. Reviewed source chronology remains an owning-agent semantic judgment.",
+      "currentCodeOrReviewedEvidence": [
+        "current-attribution-gate",
+        "task3-review",
+        "final-wave-review"
+      ],
+      "representativeCases": [
+        "E",
+        "I"
+      ],
+      "limits": "Synthetic live-kind fixture records are not real live product measurements; missing original baselines are never reconstructed.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R6",
+      "originalRequirement": "Reviewed verification-only tasks may finish without artificial commits while implementation tasks retain delivery requirements.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Reviewed unchanged verification releases capacity before waiting on parents and reacquires with fresh admission. Typed close and acknowledged post-check settlement complete without a fake commit/landing; implementation requirements remain.",
+      "currentCodeOrReviewedEvidence": [
+        "current-capacity-verification",
+        "current-settlement",
+        "current-profile-history",
+        "task1-review",
+        "task6-round2-review"
+      ],
+      "representativeCases": [
+        "H"
+      ],
+      "limits": "Historical strict B4 AFTER0PASS2FAIL3AMB remains unchanged. Current H5/5 is a distinct after-only five-response study, not a retrospective B4 repair or universal agent guarantee.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R7",
+      "originalRequirement": "Caller-owned measurement and acceptance remain explicit; completed leaves cannot close a super-auto root with outstanding required obligations.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Caller gate independently retains actual requirements, complete source populations, producer obligations, source-bound measurements/reviews and reserved human decisions. Read-only status now validates recovered collection history using the same validator as collection.",
+      "currentCodeOrReviewedEvidence": [
+        "current-finding-contract",
+        "current-population",
+        "current-attribution-gate",
+        "current-status-history",
+        "current-shared-history",
+        "wave-a1",
+        "wave-a2"
+      ],
+      "representativeCases": [
+        "E",
+        "F",
+        "L",
+        "phase1",
+        "phase2"
+      ],
+      "limits": "Actual controlled fixture still refuses acceptance after one fixed criterion. No actual root eligibility, human decision, or branch-choice authorization is supplied.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R8",
+      "originalRequirement": "Task-base exoneration cannot erase ownership of a regression introduced earlier in the run; missing run-baseline evidence remains a gap.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Retained run-introduced ownership and conflicting source history survive task-base/pre-run diagnosis; gate imports gaps before diagnostic classification. Missing baseline stays a gap.",
+      "currentCodeOrReviewedEvidence": [
+        "current-attribution-gate",
+        "task3-review"
+      ],
+      "representativeCases": [
+        "I"
+      ],
+      "limits": "No historical run baseline, introducing owner or previously unobserved measurement is invented from empty returned arrays.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R9",
+      "originalRequirement": "Immutable invocation reviews and explicit finding identities retain unresolved findings across retries until supported disposition.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Original invocation/ref identities survive null recovery, ready silent retry and idempotent replay. Typed key population is transport only; complete registered extractions/correspondence bind actual original source appearances.",
+      "currentCodeOrReviewedEvidence": [
+        "current-population",
+        "current-collection",
+        "current-shared-history",
+        "wave-a1",
+        "wave-a2",
+        "history-registration"
+      ],
+      "representativeCases": [
+        "C",
+        "L",
+        "phase1",
+        "phase2"
+      ],
+      "limits": "79 retained source representations and486appearances/469groups0structuralgaps establish the registered population, not original missing-wrapper verdicts or root acceptance.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R10",
+      "originalRequirement": "Deferred findings fixed elsewhere resolve only after verification; uncertain matches remain separate and rejection retains reasoning/evidence.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Supported explicit original-ref disposition, concrete repair/rejection basis and verification alone remove an item; uncertain equal-key/text appearances remain separate. Phase2 actually repairs one while preserving three others.",
+      "currentCodeOrReviewedEvidence": [
+        "current-finding-contract",
+        "phase2",
+        "phase2-receipts"
+      ],
+      "representativeCases": [
+        "C",
+        "phase1",
+        "phase2"
+      ],
+      "limits": "This proposal applies no dispositions/links. Original rejection reasons remain; successful tasks or a passing criterion alone do not dispose every related occurrence.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R11",
+      "originalRequirement": "Narrow process-class aliases preserve original text and distinguish defect identity, severity and scope.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Exact process-class aliases retain original spelling/provenance and separate defect identity, severity and scope; recurrence emits a grouped observation for reassessment, not automatic shared fix authority.",
+      "currentCodeOrReviewedEvidence": [
+        "current-process-aliases",
+        "task6-round2-review"
+      ],
+      "representativeCases": [],
+      "limits": "No dedicated new process-alias behavior case was run. Representative evaluation is a selected changed-instruction sample, not exhaustive per-sentence certification; original raw history and exact alias fixtures remain named evidence.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R12",
+      "originalRequirement": "Deterministic metrics distinguish transport gaps and valid-empty data, incorporate reconciliation, and report supported partial results with observed ID discrepancies.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Independent Finish source observations, valid-empty vs unavailable transport and explicit ID discrepancies remain distinct. Task6 output drains large JSON; unavailable sources never become zero run totals.",
+      "currentCodeOrReviewedEvidence": [
+        "current-metrics",
+        "task6-report",
+        "task6-round2-review"
+      ],
+      "representativeCases": [
+        "K",
+        "feedback"
+      ],
+      "limits": "Metrics fixtures are deterministic observations. They do not establish complete historical totals or improve agent performance.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R13",
+      "originalRequirement": "Metrics separate latest attempt/run history, repaired/deferred/rejected findings, task landings/base absorption and execution metadata/friction.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Verification completion, latest attempt, historical implementation release and genuine landing remain separate. Acknowledged settlement controls verification completion; earlier timed/untimed landing evidence survives and base absorption adds zero task landings.",
+      "currentCodeOrReviewedEvidence": [
+        "current-profile-history",
+        "current-settlement",
+        "task6-round2-review",
+        "feedback-grade"
+      ],
+      "representativeCases": [
+        "K",
+        "feedback"
+      ],
+      "limits": "Readiness20s/wait5000ms, earlier landing22s/40s and44%model-fit remain original observations, not newly inferred timing or measured improvement.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R14",
+      "originalRequirement": "Profiler timing respects task existence and evidenced readiness, preserves unknowns, labels observed graph/concurrency scope and includes planning in diagnosis with estimates identified.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Timing is bounded by task existence, evidenced mapping/dependency readiness and observed graph scope; null waits and planning are preserved. Historical graph interpretations are qualified, not retroactively reconstructed.",
+      "currentCodeOrReviewedEvidence": [
+        "current-readiness-profile",
+        "current-planning-profile",
+        "task6-round2-review"
+      ],
+      "representativeCases": [
+        "K"
+      ],
+      "limits": "Historical64,688,059ms modeled vs63,785,002ms observed, creation contradiction and residual graph limitations remain; no causal3x/remedy claim.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "R15",
+      "originalRequirement": "Existing execution paths and caller/standalone boundaries remain covered by focused mechanics fixtures, representative agent behavior evaluations and a root integration sweep.",
+      "judgment": "current source contract and bounded evidence support the named behavior; final criterion acceptance remains parent-owned",
+      "currentBehaviorBasis": "Focused source-pinned mechanics, representative real model decisions, actual controlled helper continuity and independent source review are separate evidence classes; final integrated suite and global composition remain independently required.",
+      "currentCodeOrReviewedEvidence": [
+        "final-wave-review",
+        "task6-round2-review",
+        "phase1",
+        "phase2",
+        "primary-grade",
+        "supplemental-grade",
+        "m-assessment",
+        "n-grade",
+        "feedback-grade",
+        "final-suite-plan"
+      ],
+      "representativeCases": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "phase1",
+        "phase2"
+      ],
+      "limits": "47distinct final entrypoints plus2TMPDIR configurations are prospective here. No combined-source pass or root eligible assertion. M4/5 remains material, no total-behavior pass or general improvement inferred.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs.",
+        "Material M failure retained; independent representativeness judgment must explicitly address it."
+      ],
+      "proposedRootReviewRecord": null,
+      "finalPassClaimed": false
+    },
+    {
+      "id": "finding-continuity-fresh-agent-assessment",
+      "judgment": "Supported bounded actual-helper and fresh-agent evidence; final global assessment pending",
+      "basis": "C textual cases5/5 plus actual phases1/2 exercise settled-null explicit recovery, immutable collection/replay, ready silent retry, retained unrelated/deferred/untested findings, original criterion RED, exact committed repair and one supported original-ref disposition. The actual gate stays ineligible before and after the scoped repair.",
+      "evidence": [
+        "primary-grade",
+        "phase1",
+        "phase2",
+        "phase1-receipts",
+        "phase2-receipts"
+      ],
+      "limits": "Controlled fixture caller uses complete four-helper closure491 and real shell/Git/check executions. It is not hosted Workflow, production root acceptance, actual human decision, or exhaustive both-mechanism agent execution.",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "finalPassClaimed": false
+    },
+    {
+      "id": "changed-instruction-representativeness-assessment",
+      "judgment": "Representative source-bound instruction decisions support the declared structural contracts with explicit material M qualification; no perfect-compliance or improvement claim",
+      "basis": "Full guides supplied and byte-bound to current product. A–F after30/30, before28PASS1FAIL1AMB; G–M34/35 after-only with M4/5; N5/5 after-only same five after respondents; feedback before5/5 andafter5/5. These cover amendment sync, captured review/provenance, findings, resource retention, required live gate, local finish choice, fresh admission, verification completion, attribution, no-test/missing-evidence review, timing/metrics, full source populations, committed sync/owner adoption and denied setup.",
+      "evidence": [
+        "primary-grade",
+        "supplemental-grade",
+        "m-assessment",
+        "n-grade",
+        "n-parent-verification",
+        "feedback-grade",
+        "guide-equality",
+        "n-guide-identity"
+      ],
+      "limits": "M after_2 invented no missing work and advanced filing; keep FAIL. Four sync facets have5/5 evidence and source sufficient, but actual filing/tracker execution unobserved. Same respondents produce correlated decisions, L/Mcase-derived, Nafter-only, no dedicated alias case. Old B policy differs; historical B4 remains unchanged. No pooled40independent/respondent claim or improvement inference.",
+      "remainingDependencies": [
+        "Independent global composition must decide representative sufficiency with retained M FAIL and explicit coverage limits; no new unapproved universal zero-error requirement.",
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "finalPassClaimed": false
+    }
+  ],
+  "globalRemainingDependencies": [
+    "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+    "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs.",
+    "Preserve all original missing wrappers, five unknown historical verdicts, original failed/unavailable observations and absence of pre-code root snapshot.",
+    "Actual caller Recovery/checkEvidence/runFailures reconciliation and exact finding adoption; no fabricated empty history.",
+    "Reserved phase7 human decision remains independently pending; no agent-provided accept decision.",
+    "Actual caller/review parent cleanup remains unknown until fresh resource observation; retain resources and evidence."
+  ]
+}

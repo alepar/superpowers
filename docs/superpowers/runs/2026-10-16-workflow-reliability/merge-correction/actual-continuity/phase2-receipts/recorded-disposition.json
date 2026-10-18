@@ -1,0 +1,17 @@
+{
+  "ref": {
+    "source": "continuity-i1/final",
+    "section": "Must fix before landing",
+    "position": 1
+  },
+  "disposition": "resolved",
+  "judgment": "supported",
+  "basis": "The exact counter.mjs:1 identity-return defect returned -1 for input -1 in the retained baseline and re-confirmed RED run. The sole committed source change clamps through Math.max(0, value); the same original criterion now passes at the fixed tree, and direct controls observe -1 -> 0, 3 -> 3 and 0 -> 0. decodeSnapshot is byte-unchanged. This evidence addresses only this original counter occurrence.",
+  "evidence": [
+    "/private/tmp/ufz-correction-actual-continuity-4911223a/phase2-receipts/criterion-RED-confirmed.json @ 7bbc73a84e449537a879f97da684a079df85e674",
+    "/private/tmp/ufz-correction-actual-continuity-4911223a/phase2-receipts/committed-exact-diff.json @ ccf312e408173acd57fe48d9d24d0bfaee88f12d",
+    "/private/tmp/ufz-correction-actual-continuity-4911223a/phase2-receipts/criterion-GREEN-committed.json @ 636e4a1220850b829660d7c36e35afd12fd16521",
+    "/private/tmp/ufz-correction-actual-continuity-4911223a/phase2-receipts/positive-and-negative-control.json"
+  ],
+  "verification": "node check.mjs, configuration controlled-fixture: actual live/pass at fixed tree 636e4a1220850b829660d7c36e35afd12fd16521; direct negative/positive/zero control observed {negative:0,positive:3,zero:0}. The baseline assertion had actual -1, expected 0."
+}

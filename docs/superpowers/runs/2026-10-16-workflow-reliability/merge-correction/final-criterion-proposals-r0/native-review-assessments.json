@@ -1,0 +1,228 @@
+{
+  "proposalOnly": true,
+  "nativeFinalWaveCount": 8,
+  "observations": [
+    {
+      "id": "runtime-R1",
+      "title": "Invalid compact Recovery loses admission constraint",
+      "originalNativeReport": "/private/tmp/ufz-correction-final-source-review/runtime-review.md",
+      "originalNativeSection": "R1",
+      "judgment": "supported addressed within reviewed eleven-path final-wave scope",
+      "basis": "Concrete correction and retained actual focused result assessed in independent complete final-wave re-review; original finding severity/source remains unchanged.",
+      "evidence": [
+        "current-recovery-admission",
+        "current-hold-enforcement",
+        "wave-r1",
+        "final-wave-report",
+        "final-wave-review"
+      ],
+      "source": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "canonicalLegacyRefCreated": false,
+      "legacyPopulationAdded": false
+    },
+    {
+      "id": "runtime-R2",
+      "title": "Unplanned routing bypasses fresh admission",
+      "originalNativeReport": "/private/tmp/ufz-correction-final-source-review/runtime-review.md",
+      "originalNativeSection": "R2",
+      "judgment": "supported addressed within reviewed eleven-path final-wave scope",
+      "basis": "Concrete correction and retained actual focused result assessed in independent complete final-wave re-review; original finding severity/source remains unchanged.",
+      "evidence": [
+        "current-newwork-admission",
+        "current-capacity-verification",
+        "wave-r2",
+        "final-wave-report",
+        "final-wave-review"
+      ],
+      "source": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "canonicalLegacyRefCreated": false,
+      "legacyPopulationAdded": false
+    },
+    {
+      "id": "SR1",
+      "title": "Null-seam generated report rejected by strict extraction",
+      "originalNativeReport": "/private/tmp/ufz-correction-final-source-review/source-review-report.md",
+      "originalNativeSection": "Important / SR-1",
+      "judgment": "supported addressed within reviewed eleven-path final-wave scope",
+      "basis": "Concrete correction and retained actual focused result assessed in independent complete final-wave re-review; original finding severity/source remains unchanged.",
+      "evidence": [
+        "current-stub",
+        "wave-sr1-h1",
+        "final-wave-report",
+        "final-wave-review"
+      ],
+      "source": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "canonicalLegacyRefCreated": false,
+      "legacyPopulationAdded": false
+    },
+    {
+      "id": "A1",
+      "title": "Complete declared final-review keys population falsely rejected",
+      "originalNativeReport": "/private/tmp/ufz-correction-final-source-review/acceptance-review.md",
+      "originalNativeSection": "A1",
+      "judgment": "supported addressed within reviewed eleven-path final-wave scope",
+      "basis": "Concrete correction and retained actual focused result assessed in independent complete final-wave re-review; original finding severity/source remains unchanged.",
+      "evidence": [
+        "current-population",
+        "wave-a1",
+        "final-wave-report",
+        "final-wave-review"
+      ],
+      "source": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "canonicalLegacyRefCreated": false,
+      "legacyPopulationAdded": false
+    },
+    {
+      "id": "A2",
+      "title": "Read-only status/acceptance skip recovery history validation",
+      "originalNativeReport": "/private/tmp/ufz-correction-final-source-review/acceptance-review.md",
+      "originalNativeSection": "A2",
+      "judgment": "supported addressed within reviewed eleven-path final-wave scope",
+      "basis": "Concrete correction and retained actual focused result assessed in independent complete final-wave re-review; original finding severity/source remains unchanged.",
+      "evidence": [
+        "current-shared-history",
+        "current-status-history",
+        "wave-a2",
+        "final-wave-report",
+        "final-wave-review"
+      ],
+      "source": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "canonicalLegacyRefCreated": false,
+      "legacyPopulationAdded": false
+    },
+    {
+      "id": "runtime-R3",
+      "title": "Top-level cleanup contract only describes2arrays",
+      "originalNativeReport": "/private/tmp/ufz-correction-final-source-review/runtime-review.md",
+      "originalNativeSection": "R3",
+      "judgment": "supported addressed within reviewed eleven-path final-wave scope",
+      "basis": "Concrete correction and retained actual focused result assessed in independent complete final-wave re-review; original finding severity/source remains unchanged.",
+      "evidence": [
+        "current-four-cleanup-arrays",
+        "n-grade",
+        "n-parent-verification",
+        "final-wave-report",
+        "final-wave-review"
+      ],
+      "source": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "canonicalLegacyRefCreated": false,
+      "legacyPopulationAdded": false
+    },
+    {
+      "id": "H1",
+      "title": "Optional writer guard test permits unexecuted guard",
+      "originalNativeReport": "/private/tmp/ufz-correction-final-source-review/harness-review.md",
+      "originalNativeSection": "Minor / writer guard execution",
+      "judgment": "supported addressed within reviewed eleven-path final-wave scope",
+      "basis": "Concrete correction and retained actual focused result assessed in independent complete final-wave re-review; original finding severity/source remains unchanged.",
+      "evidence": [
+        "wave-sr1-h1",
+        "final-wave-identities",
+        "final-wave-report",
+        "final-wave-review"
+      ],
+      "source": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "canonicalLegacyRefCreated": false,
+      "legacyPopulationAdded": false
+    },
+    {
+      "id": "H2",
+      "title": "Liveness observer treats diagnostic denial as absence",
+      "originalNativeReport": "/private/tmp/ufz-correction-final-source-review/harness-review.md",
+      "originalNativeSection": "Minor / liveness observer",
+      "judgment": "supported addressed within reviewed eleven-path final-wave scope",
+      "basis": "Concrete correction and retained actual focused result assessed in independent complete final-wave re-review; original finding severity/source remains unchanged.",
+      "evidence": [
+        "wave-h2",
+        "wave-replay",
+        "final-wave-report",
+        "final-wave-review"
+      ],
+      "source": "4911223a98c2abd1ac1060e644053bf99ed7da0d",
+      "remainingDependencies": [
+        "Parent independent final composition against exact final source/product equality; no whole-branch READY verdict in this proposal.",
+        "Actual final47 distinct command receipts plus2targeted TMPDIR configurations, source/command/configuration/outcome/streams matched to final requirements; not inferred from focused logs."
+      ],
+      "canonicalLegacyRefCreated": false,
+      "legacyPopulationAdded": false
+    }
+  ],
+  "correctiveTaskChains": [
+    {
+      "task": 1,
+      "reports": [
+        "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/task1-report.md",
+        "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/task1-review.md"
+      ],
+      "scope": "Source-pinned native corrective report/review chain, not formal new roast invocation population or legacy adapter."
+    },
+    {
+      "task": 2,
+      "reports": [
+        "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/task2-report.md",
+        "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/task2-review.md"
+      ],
+      "scope": "Source-pinned native corrective report/review chain, not formal new roast invocation population or legacy adapter."
+    },
+    {
+      "task": 3,
+      "reports": [
+        "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/task3-report.md",
+        "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/task3-review.md"
+      ],
+      "scope": "Source-pinned native corrective report/review chain, not formal new roast invocation population or legacy adapter."
+    },
+    {
+      "task": 4,
+      "reports": [
+        "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/task4-report.md",
+        "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/task4-review.md"
+      ],
+      "scope": "Source-pinned native corrective report/review chain, not formal new roast invocation population or legacy adapter."
+    },
+    {
+      "task": 5,
+      "reports": [
+        "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/task5-report.md",
+        "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/task5-review.md"
+      ],
+      "scope": "Source-pinned native corrective report/review chain, not formal new roast invocation population or legacy adapter."
+    },
+    {
+      "task": 6,
+      "reports": [
+        "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/task6-report.md",
+        "/private/tmp/ufz-correction-final-criterion-proposals/retained-evidence/task6-round2-review.md"
+      ],
+      "scope": "Original7b18R1/R2repair2091andnewR3repair9e4; history and failed draft retained. No new legacy refs."
+    }
+  ]
+}

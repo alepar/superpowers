@@ -1,0 +1,7 @@
+{
+  "predecessorInventoryUnchanged": true,
+  "phase1ArtifactsUnchangedExceptMutableRunAndIntendedProductSource": true,
+  "phase1RunSha256": "5d524ff65a90e16d72aff39901c12eecd9eb6dd5ecbb8aa1d7018650b1b1a4f2",
+  "phase2RunSha256": "b80271f7f37c8649c75e0d00440810e233c530b3e473732f697a64c53b83f272",
+  "runEqualsPhase2Snapshot": true
+}

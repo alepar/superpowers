@@ -1,0 +1,99 @@
+assemble-args: shape
+  [PASS] pr round 1 exits 0
+  [PASS] report path carries mode and round
+  [PASS] pr core lanes from triage-prompt.md
+  [PASS] pr round 1: 13 lane prompts, no regression
+  [PASS] round 1: empty prior report, numeric iteration
+  [PASS] seatsSafe only on request
+  [PASS] pr round 2 exits 0
+  [PASS] round 2 adds the regression lane
+  [PASS] round 2: every scout carries one policy, the materiality bar
+  [PASS] seatsSafe for all three seats
+  [PASS] --punch-listed keys reach args.punchListed, blank lines dropped
+  [PASS] reporter prompt keeps the {{PUNCH_LISTED}} slot for the engine
+  [PASS] no --punch-listed: empty punchListed
+  [PASS] independence names the Workflow rung with --script
+  [PASS] pr with a stated intent exits 0
+  [PASS] stated intent appended to --artifact reaches every scout and judge-seat prompt
+  [PASS] design round 1 exits 0
+  [PASS] design lens rosters from SKILL.md
+  [PASS] domain template keeps {{DOMAIN}} and carries caller context
+  [PASS] without --script, independence names the manual fan-out rung
+assemble-args: literal replacement metacharacters
+  [PASS] prior: generator accepts literal input
+  [PASS] prior report keeps all replacement metacharacters in args
+  [PASS] caller diff stat keeps all replacement metacharacters in triage
+  [PASS] caller artifact keeps all replacement metacharacters in every scout
+  [PASS] generated script parses with replacement metacharacters
+  [PASS] generated script embeds args verbatim
+  [PASS] generated literal-input script executes against existing mocks
+  [PASS] inputs: generator accepts literal input
+  [PASS] prior report keeps all replacement metacharacters in args
+  [PASS] caller diff stat keeps all replacement metacharacters in triage
+  [PASS] caller artifact keeps all replacement metacharacters in every scout
+  [PASS] generated script parses with replacement metacharacters
+  [PASS] generated script embeds args verbatim
+  [PASS] generated literal-input script executes against existing mocks
+  [PASS] independence: generator accepts literal input
+  [PASS] prior report keeps all replacement metacharacters in args
+  [PASS] caller diff stat keeps all replacement metacharacters in triage
+  [PASS] caller artifact keeps all replacement metacharacters in every scout
+  [PASS] caller independence stays literal in both reporter insertions
+  [PASS] generated script parses with replacement metacharacters
+  [PASS] generated script embeds args verbatim
+assemble-args: pinned PR sources and isolated reproductions
+  [PASS] captured PR inputs survive caller advancement; independent mutable reproductions preserve caller and sibling
+assemble-args: validation
+  [PASS] round 2 without a prior report exits 2
+  [PASS] round 1 with a prior report exits 2
+  [PASS] design without --spec exits 2
+  [PASS] pr without a diff source exits 2
+  [PASS] unknown option exits 2
+  [PASS] --punch-listed without a prior report exits 2
+  [PASS] missing --punch-listed file exits 2
+  [PASS] a Blocking key in --punch-listed exits 2 (punch-listed is sub-Blocking)
+  [PASS] a --punch-listed line without [SEV] exits 2
+assemble-args: no node
+  [PASS] missing node exits 4
+  [PASS] missing node prints the manual-assembly line
+engine run of the assembled script (mock agents)
+  [PASS] pr-r1: no unfilled assembly markers reach any agent
+  [PASS] pr-r1: triage lane enum built from the assembled conditional lanes
+  [PASS] pr-r1: every seat prompt carries the finding, without lanes
+  [PASS] pr-r1: round 1: high recall, no regression scout
+  [PASS] pr-r1: triage-activated lane dispatched
+  [PASS] pr-r1: no fix-regression tag on round 1
+  [PASS] pr-r1: confirmed entries tagged with every lane that found their location
+  [PASS] pr-r1: lane-yield header line and coverage.laneYield
+  [PASS] pr-r1: independence header rendered from the assembled roster
+  [PASS] pr-r1-yield: no unfilled assembly markers reach any agent
+  [PASS] pr-r1-yield: triage lane enum built from the assembled conditional lanes
+  [PASS] pr-r1-yield: every seat prompt carries the finding, without lanes
+  [PASS] pr-r1-yield: agent count unchanged: 7 scouts + triage + dedupe + 2 panels + 2 reporter tries
+  [PASS] pr-r1-yield: merged finding: shared lanes count confirmed, not unique; dead scout and refuted lane shown
+  [PASS] pr-r1-yield: fallback report tags confirmed entries with lanes, not rejected ones
+  [PASS] pr-r1-yield: independence header rendered from the assembled roster
+  [PASS] pr-r2: no unfilled assembly markers reach any agent
+  [PASS] pr-r2: triage lane enum built from the assembled conditional lanes
+  [PASS] pr-r2: every seat prompt carries the finding, without lanes
+  [PASS] pr-r2: round 2: materiality bar and the prior report reach every scout
+  [PASS] pr-r2: regression scout dispatched as a core lane
+  [PASS] pr-r2: regression finding tagged [fix-regression]; core finding not
+  [PASS] pr-r2: fixRegressions return field names the regression finding
+  [PASS] pr-r2: iteration label rendered N of cap
+  [PASS] pr-r2: punch-listed keys reach the reporter
+  [PASS] pr-r2: independence header rendered from the assembled roster
+  [PASS] pr-r2-empty: no unfilled assembly markers reach any agent
+  [PASS] pr-r2-empty: triage lane enum built from the assembled conditional lanes
+  [PASS] pr-r2-empty: every seat prompt carries the finding, without lanes
+  [PASS] pr-r2-empty: empty late round with every scout alive converges
+  [PASS] pr-r2-empty: independence header rendered from the assembled roster
+  [PASS] design-r1: no unfilled assembly markers reach any agent
+  [PASS] design-r1: triage lane enum built from the assembled conditional lanes
+  [PASS] design-r1: every seat prompt carries the finding, without lanes
+  [PASS] design-r1: domain scout dispatched from the template
+  [PASS] design-r1: widen lenses not added when triage named a domain
+  [PASS] design-r1: spec path reaches scouts and seats
+  [PASS] design-r1: independence header rendered from the assembled roster
+
+All super-roast assemble-args tests passed

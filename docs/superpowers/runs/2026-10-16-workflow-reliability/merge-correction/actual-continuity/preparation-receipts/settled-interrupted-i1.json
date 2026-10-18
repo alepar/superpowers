@@ -1,0 +1,49 @@
+{
+  "argv": [
+    "bash",
+    "/private/tmp/ufz-correction-actual-continuity-4911223a/frozen-helpers/skills/super-auto/scripts/report-status",
+    "--collect",
+    "/private/tmp/ufz-correction-actual-continuity-4911223a/run.md",
+    "--invocation",
+    "continuity-i1",
+    "--workspace",
+    "/private/tmp/ufz-correction-actual-continuity-4911223a/caller-workspace",
+    "--review",
+    "none",
+    "--verdict",
+    "UNAVAILABLE",
+    "--required",
+    "inputs/counter.mjs"
+  ],
+  "actualArgv": [
+    "/bin/bash",
+    "/private/tmp/ufz-correction-actual-continuity-4911223a/frozen-helpers/skills/super-auto/scripts/report-status",
+    "--collect",
+    "/private/tmp/ufz-correction-actual-continuity-4911223a/run.md",
+    "--invocation",
+    "continuity-i1",
+    "--workspace",
+    "/private/tmp/ufz-correction-actual-continuity-4911223a/caller-workspace",
+    "--review",
+    "none",
+    "--verdict",
+    "UNAVAILABLE",
+    "--required",
+    "inputs/counter.mjs"
+  ],
+  "environment": {
+    "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "HOME": "/private/tmp/ufz-correction-actual-continuity-4911223a/caller-home",
+    "TMPDIR": "/private/tmp/ufz-correction-actual-continuity-4911223a/tmp",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "LANG": "C",
+    "LC_ALL": "C"
+  },
+  "executableSha256": "16303dedab719ddb63efd9dd68092a0da37b397bfd4fcb856d5f1c86c5ee414b",
+  "cwd": "/private/tmp/ufz-correction-actual-continuity-4911223a",
+  "exitCode": 3,
+  "stdout": "/private/tmp/ufz-correction-actual-continuity-4911223a/preparation-receipts/settled-interrupted-i1.stdout",
+  "stdoutSha256": "8911331fd5b86a5d494820308de23c9b7832542471aed0edefb50b7c10ef6a72",
+  "stderr": "/private/tmp/ufz-correction-actual-continuity-4911223a/preparation-receipts/settled-interrupted-i1.stderr",
+  "stderrSha256": "529d85d90f6f97954e8f52842d4abc1dcb6aa0aa94746a363d14ed5c6d4da22c"
+}

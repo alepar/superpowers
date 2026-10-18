@@ -1,0 +1,29 @@
+{
+  "base": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+  "head": "fd52ffc7a8de0c4412c517adec2d4979d06906ff",
+  "recordedUtc": "2026-10-17T23:34:23.714417+00:00",
+  "prior11767PathPopulationExactlyPreserved": true,
+  "onlyChangedBlobPaths": [
+    {
+      "path": "skills/super-auto/scripts/report-status",
+      "baseBytes": 50113,
+      "baseSha256": "16995ba49a018edde1387c597bd08c0916fba2011d8693e073fa57ce15ea8963",
+      "headBytes": 50151,
+      "headSha256": "c99c1052114eb32883bfd0d102b5e8efd5ca062d7c99a63c311f58259b619517"
+    },
+    {
+      "path": "tests/super-auto/projection-output-r1.sh",
+      "baseBytes": 10822,
+      "baseSha256": "514f03a926217fc2ac6b3dfae8fc15a8a70ff45bcf36b4cac88dc3758fce12ff",
+      "headBytes": 20635,
+      "headSha256": "8d90a77a8c2184bc6adac4cba06f1304bf8f5532b5e3173982f0832b91975db0"
+    }
+  ],
+  "allOtherTrackedBlobsIdentical": true,
+  "canonicalRunUnmodifiedSha256": "a557583c44f6e3a9c6a5d581ecff4dfafce0072575bcb57d431fbe94087e8f06",
+  "scopedReview": "/private/tmp/ufz-correction-projection-repair-review.md",
+  "guideRebinding": "/private/tmp/ufz-correction-projection-guidance-byte-equality.json",
+  "historicalActualFixture": "/private/tmp/ufz-correction-actual-continuity-4911223a",
+  "fixtureReuse": "threehelpersbyteequal/report-status2options semanticdelta independently assessed; no freshfixture/allfourbyteequal claim",
+  "state": "source/guidance applicability verified; actual new47+2 and finalglobal evidenceaddendum pending; external application blocked"
+}

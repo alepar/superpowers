@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "cwd": "/private/tmp/ufz-correction-projection-repair-source",
+  "source": {
+    "head": "c21681200aac20fb0223b6b0e83e953b1bc75cde",
+    "tree": "294ee3186698a29c112b7ed7daded506288a52f1",
+    "status": "M skills/super-auto/scripts/report-status\n M tests/super-auto/projection-output-r1.sh",
+    "ownedSha256": {
+      "skills/super-auto/scripts/report-status": "c99c1052114eb32883bfd0d102b5e8efd5ca062d7c99a63c311f58259b619517",
+      "tests/super-auto/projection-output-r1.sh": "8d90a77a8c2184bc6adac4cba06f1304bf8f5532b5e3173982f0832b91975db0"
+    }
+  }
+}

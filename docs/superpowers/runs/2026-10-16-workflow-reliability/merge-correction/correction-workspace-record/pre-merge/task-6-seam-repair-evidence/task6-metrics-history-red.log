@@ -1,0 +1,22 @@
+test_earlier_complete_survives_verification (__main__.Metrics.test_earlier_complete_survives_verification) ... ok
+test_earlier_real_merge_survives_verification (__main__.Metrics.test_earlier_real_merge_survives_verification) ... ok
+test_normal_implementation (__main__.Metrics.test_normal_implementation) ... ok
+test_prior_landing_without_timing_is_not_synthesized_at_verification (__main__.Metrics.test_prior_landing_without_timing_is_not_synthesized_at_verification) ... FAIL
+test_verification_only (__main__.Metrics.test_verification_only) ... ok
+
+======================================================================
+FAIL: test_prior_landing_without_timing_is_not_synthesized_at_verification (__main__.Metrics.test_prior_landing_without_timing_is_not_synthesized_at_verification)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<stdin>", line 50, in test_prior_landing_without_timing_is_not_synthesized_at_verification
+  File "<stdin>", line 35, in check_case
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.566s
+
+FAILED (failures=1)
+earlier-complete: landing=True, merges=1
+earlier-merge: landing=True, merges=1
+implementation: landing=True, merges=1
+verification: landing=False, merges=0
