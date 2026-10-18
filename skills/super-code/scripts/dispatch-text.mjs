@@ -45,7 +45,7 @@ kinds and options:
                     classification, retaining source/check provenance and evidence gaps)
   assemble          --consumer final-review|roast-code|history|assess --instance I
                     [--threshold N] [--base SHA] [--head SHA] [--spec P1,P2]
-  review-inputs     --base SHA --head SHA --out-dir DIR
+  review-inputs     --base SHA --head SHA --out-dir DIR [--review-run-file captured/run.md]
                     (captured-Git selection, slices and generated-input provenance; exit 3 unavailable)
   bounded-review   --base SHA --head SHA --selection FILE --draft FILE --coverage FILE --out FILE
                     (preserve bounded draft and coverage; write a forced incomplete final report)
@@ -90,7 +90,7 @@ function launchFrom(ledgerText) {
   if (line.startsWith('args ')) {
     try {
       const a = JSON.parse(line.slice(5))
-      return { epic: a.epicId, branch: a.integrationBranch, worktree: a.integrationWorktree, runTag: a.runTag, invocationId: a.invocationId, sweep: a.deferSweep ? 'deferred' : undefined, mergeCheck: a.config?.mergeCheck, testPaths: a.config?.testPaths, reviewBase: a.reviewBase, reviewHead: a.reviewHead }
+      return { epic: a.epicId, branch: a.integrationBranch, worktree: a.integrationWorktree, runTag: a.runTag, invocationId: a.invocationId, sweep: a.deferSweep ? 'deferred' : undefined, mergeCheck: a.config?.mergeCheck, testPaths: a.config?.testPaths, reviewBase: a.reviewBase, reviewHead: a.reviewHead, reviewRunFile: a.reviewRunFile }
     } catch { return {} }
   }
   const f = {}
@@ -98,7 +98,7 @@ function launchFrom(ledgerText) {
     const m = part.match(/^(\S+)\s+(.*)$/)
     if (m) f[m[1]] = m[2].trim()
   }
-  return { epic: f.epic, branch: f.branch, worktree: f.integrationWorktree, runTag: f.runTag, invocationId: f.invocationId, mergeCheck: f.mergeCheck, sweep: f.sweep, reviewBase: f.reviewBase, reviewHead: f.reviewHead }
+  return { epic: f.epic, branch: f.branch, worktree: f.integrationWorktree, runTag: f.runTag, invocationId: f.invocationId, mergeCheck: f.mergeCheck, sweep: f.sweep, reviewBase: f.reviewBase, reviewHead: f.reviewHead, reviewRunFile: f.reviewRunFile }
 }
 
 // The ledger's last `Sweep: ` line (text after the prefix) and the last four `Metrics: ` lines (the
@@ -124,7 +124,7 @@ function loadBuilders(cfg) {
 
 // Mechanical captured-Git selection only. This path exits before loading Workflow builders.
 // Collection metadata remains the authority; directory names alone never grant an exemption.
-function reviewInputs(repo, base, head, out) {
+function reviewInputs(repo, base, head, out, current = null) {
   const git = (...args) => execFileSync('git', ['--literal-pathspecs', ...args], { cwd: repo, maxBuffer: 64 * 1024 * 1024 })
   const hash = bytes => createHash('sha256').update(bytes).digest('hex')
   const safe = p => typeof p === 'string' && p !== '' && !p.includes('\\') && !p.includes('\0') && !posix.isAbsolute(p) && p.split('/').every(s => s && s !== '.' && s !== '..')
@@ -142,6 +142,7 @@ function reviewInputs(repo, base, head, out) {
   } catch (e) { if (e.code !== 'ENOENT') fail(e.message) }
   mkdirSync(out, { recursive: true })
   const changed = git('diff', '--no-renames', '--name-only', '-z', base + '..' + head).toString().split('\0').filter(Boolean)
+  let currentIdentity = null
   function snapshot(revision) {
     const tree = new Map(git('ls-tree', '-r', '-z', revision).toString().split('\0').filter(Boolean).map(entry => {
       const tab = entry.indexOf('\t'), [mode, type, oid] = entry.slice(0, tab).split(' ')
@@ -204,6 +205,19 @@ function reviewInputs(repo, base, head, out) {
         const archive = posix.join(posix.dirname(run), 'reviews', r.invocationId)
         const files = new Map((r.files || []).map(f => [f.path, f.sha256]))
         const context = revision + ':' + run + ':' + r.line + ' ' + r.invocationId
+        if (current && run === current.run && r.invocationId === current.invocationId) {
+          const identity = JSON.stringify([r.workspace, r.required])
+          if (currentIdentity !== null && currentIdentity !== identity) gap(context + ': conflicting current collection identity across captured endpoints')
+          currentIdentity = identity
+        }
+        // A caller-bound prelaunch intent promises future artifacts; it grants no
+        // archive/omission authority. Validate all history first and accept no claims.
+        const pristine = record => Object.keys(record).every(k => ['invocationId', 'workspace', 'reviewPath', 'review', 'required', 'settled'].includes(k)) &&
+          record.invocationId === current?.invocationId && record.workspace === current?.workspace &&
+          record.reviewPath === current?.reviewPath && record.review === 'pending' && record.settled === false
+        if (current && run === current.run && pristine(r.record) &&
+            [...history.values()].filter(record => record.invocationId === r.invocationId).every(pristine) &&
+            ![...tree.keys()].some(p => p.startsWith(archive + '/'))) continue
         if (!r.complete || !r.settled || !Array.isArray(r.gaps) || r.gaps.length) gap(context + ': incomplete claimed collection')
         if (r.reviewPath === null) {
           if (r.review !== 'no work landed' || files.size) gap(context + ': invalid null-review bundle')
@@ -351,7 +365,14 @@ if (reviewOutput) {
 }
 if (kind === 'review-inputs') {
   if (!o.base || !o.head || !o['out-dir']) fail('review-inputs needs --base, --head and --out-dir')
-  reviewInputs(worktree, o.base, o.head, resolve(o['out-dir']))
+  // No inferred run path or command-line identity can replace persisted caller context.
+  const run = o['review-run-file']
+  const current = typeof run === 'string' && run === L.reviewRunFile &&
+    run !== '' && !run.includes('\\') && !posix.isAbsolute(run) && run.split('/').every(s => s && s !== '.' && s !== '..') &&
+    posix.basename(run) === 'run.md' && L.worktree === worktree &&
+    typeof invocationId === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId)
+    ? { run, invocationId, workspace: ws, reviewPath: join(ws, 'final-review-' + invocationId + '.md') } : null
+  reviewInputs(worktree, o.base, o.head, resolve(o['out-dir']), current)
 }
 // A bounded artifact is a new report, never a rewrite of an unavailable invocation.
 // The writer rechecks captured source and inventory; sidecar claims alone grant no authority.
@@ -401,7 +422,7 @@ if (kind === 'bounded-review') {
 const planPath = o.plan || join(ws, `${epic}-plan.md`)
 
 const B = await loadBuilders({
-  epicId: epic, integrationBranch: branch, integrationWorktree: worktree, skillsRoot, runTag, ...(typeof invocationId === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId) ? { invocationId } : {}), dryRun: false,
+  epicId: epic, integrationBranch: branch, integrationWorktree: worktree, skillsRoot, runTag, reviewRunFile: L.reviewRunFile, ...(typeof invocationId === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId) ? { invocationId } : {}), dryRun: false,
   config: { mergeCheck: mergeCheck && !/^none\b/.test(mergeCheck) ? mergeCheck : 'none', ...(testPaths ? { testPaths } : {}) },
 })
 

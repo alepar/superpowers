@@ -769,7 +769,7 @@ if (invocationId === undefined) {
 }
 // The resolved launch args go to the ledger as a `Launch:` line so a relaunch can copy them back
 // (dryRun stub tables omitted).
-const launchIdentity = await queueLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, runTag, invocationId, deferSweep, rootAcceptance, mergeCheck: mergeCheckCommand ?? 'none (no build/typecheck step declared)', config, dryRun: !!dryRun })}`,
+const launchIdentity = await queueLedger(`Launch: args ${JSON.stringify({ epicId, integrationBranch, integrationWorktree, skillsRoot, runTag, invocationId, reviewRunFile: A.reviewRunFile, deferSweep, rootAcceptance, mergeCheck: mergeCheckCommand ?? 'none (no build/typecheck step declared)', config, dryRun: !!dryRun })}`,
   'ledger-append:launch', 'Resume')
 const invocationPersisted = launchIdentity?.appended === true
 if (!invocationPersisted) log('invocation identity persistence unavailable — review artifacts will not be created')
@@ -2588,7 +2588,7 @@ function assemblePrompt(consumer, instance, { threshold = 80000, base = null, he
   const baseText = base || `the output of \`git merge-base ${integrationBranch} <the repository's default branch>\``
   const outDir = workspaceAbs + '/assembled/' + consumer + '-' + (consumer === 'final-review' ? invocationId : runTag) + '-' + instance
   const quote = v => "'" + String(v).replace(/'/g, "'\"'\"'") + "'"
-  const selection = ['final-review', 'roast-code'].includes(consumer) ? ['node', quote(codeSkill + '/scripts/dispatch-text.mjs'), 'review-inputs', '--ledger', quote(workspaceAbs + '/progress.md'), '--base', quote(base), '--head', quote(head), '--out-dir', quote(outDir)].join(' ') : 'none'
+  const selection = ['final-review', 'roast-code'].includes(consumer) ? ['node', quote(codeSkill + '/scripts/dispatch-text.mjs'), 'review-inputs', '--ledger', quote(workspaceAbs + '/progress.md'), '--base', quote(base), '--head', quote(head), '--out-dir', quote(outDir), ...(consumer === 'final-review' && A.reviewRunFile ? ['--review-run-file', quote(A.reviewRunFile)] : [])].join(' ') : 'none'
   return (consumer === 'final-review' ? reviewWriteGuard(base, head, outDir) : '') + `Read ${codeSkill}/assembler-prompt.md and follow it, with these parameter values: [CONSUMER] = ${consumer}; [INSTANCE] = ${instance}; [OUT_DIR] = ${workspaceAbs}/assembled/${consumer}-${consumer === 'final-review' ? invocationId : runTag}-${instance}; [WORKTREE] = ${integrationWorktree}; [BASE] = ${baseText}; [HEAD] = ${head}; [SECTIONS] =\n${sections}\n; [CLUSTERS] = ${profile.clusters ? 'yes' : 'no'}; [THRESHOLD] = ${threshold}; [ASSEMBLED_SIZE] = bash ${codeSkill}/scripts/assembled-size; [REVIEW_INPUTS] = ${selection}; [LEDGER] = ${workspaceAbs}/progress.md; [WORKSPACE] = ${workspaceAbs}; [SPEC_PATHS] = ${specPaths.length ? specPaths.join(', ') : 'none'}. Return dir, exit, fits, clusterFits, clusters (the number of clusters, 0 when none) and cause (only when you could not finish). ${authRefusalRule()} ${finalAnswerRule(true)}`
 }
 

@@ -28,6 +28,7 @@ args = {
   skillsRoot,            // required — see below
   runTag,                // optional — enclosing run identity
   invocationId,          // one invocation; reuse only on explicit unsettled resume
+  reviewRunFile,         // optional captured Git-relative caller run.md; persisted with Launch
   deferSweep,            // optional — see below
   rootAcceptance,        // optional 'caller' or default 'coordinator', independent of deferSweep
   processRoots,          // optional — see below
@@ -134,6 +135,14 @@ never a shared location.
 `deferSweep` is **optional**: `true` means the caller runs the full-suite sweep itself (super-auto
 runs one after its fix loop exits). Finish then skips the sweep, tells the final reviewer it was
 deferred, and returns `sweep: "SWEEP DEFERRED (caller-owned)"`.
+
+`reviewRunFile` is **optional**: the exact Git-relative caller `run.md` path. Pass it when
+that caller commits the current pending review-collection intent before assembly. It is
+persisted in Launch and forwarded to `review-inputs --review-run-file`; ordinary-subagent
+Launch records use the same field. Only the matching current invocation, workspace and
+expected report path may defer future collection completeness. No archive claim, omission,
+readiness or caller acceptance follows from a pending intent. Omitting the context retains
+conservative collection validation.
 
 `rootAcceptance` is **optional**: `"caller"` reserves root closure for the enclosing caller
 (super-auto always supplies it). The default `"coordinator"` preserves standalone acceptance
