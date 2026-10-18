@@ -158,14 +158,18 @@ Three things keep the run measurable and resumable:
   or omit it so the existing Resume `read-ledger` mechanical dispatch mints externally and
   returns structured `invocationId`; the script validates and persists it. Retain the token
   across an explicit unsettled resume only (pass it in Workflow args); neither path mints on
-  that resume. A settled return (including blocked) followed by another invocation
+  that resume. When the caller commits a pending review-collection intent, also retain its
+  exact Git-relative `run.md` path as `reviewRunFile` on that unsettled resume. A settled return (including blocked)
+  followed by another invocation
   gets a fresh token even with the same runTag. Use 1–128 ASCII letters, digits, `_` or `-`,
   starting with a letter or digit. Do not copy the latest Launch identity just because runTag matches.
   Register only when `run-marker get … --cwd` finds no live marker; under super-auto neither register
   nor clear. Before the first task dispatch, append `Launch: mechanism ordinary-subagents ·
-  epic <id> · runTag <tag> · invocationId <token> · branch <branch> · integrationWorktree <absolute path> · concurrency <N> ·
+  epic <id> · runTag <tag> · invocationId <token> · reviewRunFile <Git-relative path> · branch <branch> · integrationWorktree <absolute path> · concurrency <N> ·
   earlyUnblock <on or off> · sweep <command or deferred> · mergeCheck <build-only command or none>`
-  to the ledger and confirm it was written before any review bundle output. Append another one
+  to the ledger and confirm it was written before any review bundle output. Include
+  `reviewRunFile` when the caller committed a pending review-collection intent; omit that
+  parameter for a standalone invocation without a caller run file. Append another one
   with the same identity on explicit unsettled resume. A failed write is an evidence gap: no review
   assembly/writer dispatch; report review unavailable and `reviewPath: null`. `dispatch-text` reads
   this persisted field for final assembly and single/cluster/seam/stub review modes; it refuses

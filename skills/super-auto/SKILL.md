@@ -474,7 +474,7 @@ Throughout all phases, append friction events to `<run-dir>/friction.md` the mom
 
 ### Review collection
 
-Before each phase-3 launch or fix-loop re-entry, mint a fresh filesystem-safe `invocationId` and pass it through Workflow args or the ordinary launch protocol, together with the unchanged `runTag`. Commit a `review-collection` intent in `approvals:` before launch: run-state.md §Review collection records gives its JSON. This records the expected workspace and invocation review path with `settled:false`. Leave tracked run files alone while the coordinator is running.
+Before each phase-3 launch or fix-loop re-entry, mint a fresh filesystem-safe `invocationId` and pass it through Workflow args or the ordinary launch protocol, together with the unchanged `runTag`. Commit a `review-collection` intent in `approvals:` before launch: run-state.md §Review collection records gives its JSON. This records the expected workspace and invocation review path with `settled:false`. Pass the exact Git-relative `run.md` path as `reviewRunFile` in Workflow args or as `· reviewRunFile <Git-relative path>` in the ordinary Launch line. Preserve that path and invocation ID across an explicit unsettled resume; after settlement the next invocation gets a fresh ID. Leave tracked run files alone while the coordinator is running.
 
 After the invocation settles, at the existing friction/profile collection boundary, run:
 

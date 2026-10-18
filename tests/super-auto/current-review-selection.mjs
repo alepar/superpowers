@@ -14,12 +14,22 @@ const collect=(id,report,...extra)=>cp.spawnSync('bash',[rs,'--collect',run,'--i
 let n=0,passed=0,failed=0;
 const commit=()=>{git('add','.');git('commit','--allow-empty','-qm','fixture '+n++);return git('rev-parse','HEAD')};
 const launch=(id,extra={})=>write(ledger,'Launch: args '+JSON.stringify({epicId:'fixture',integrationBranch:'fixture',integrationWorktree:repo,invocationId:id,reviewRunFile:runFile,...extra})+'\n');
+// Execute the ordinary Launch protocol printed in the caller instructions. Removing
+// its run context must make real selection fail, not merely trip a text assertion.
+const documentedLaunch=id=>{
+ const doc=fs.readFileSync(path.join(root,'skills/super-code/coordinator-subagents.md'),'utf8');
+ const template=doc.match(/append `(Launch: mechanism ordinary-subagents[\s\S]*?)`/)[1].replace(/\s+/g,' ');
+ const values={'<id>':'fixture','<tag>':'fixture-run','<token>':id,'<branch>':'fixture','<absolute path>':repo,'<N>':'2','<on or off>':'off','<command or deferred>':'deferred','<build-only command or none>':'none','<Git-relative path>':runFile};
+ write(ledger,template.replace(/<[^>]+>/g,key=>{assert(key in values,'known documented Launch parameter '+key);return values[key]})+'\n');
+};
 const intent=(id,extra={})=>({invocationId:id,workspace:ws,reviewPath:path.join(ws,'final-review-'+id+'.md'),review:'pending',required:[],settled:false,...extra});
 const record=r=>'- review-collection · '+JSON.stringify(r)+'\n';
 const select=(base,head,extra=[])=>{const out=path.join(ws,'selection-'+n++),r=cli('review-inputs','--base',base,'--head',head,'--out-dir',out,'--review-run-file',runFile,...extra);return {...r,out,data:fs.existsSync(path.join(out,'review-inputs.json'))?JSON.parse(fs.readFileSync(path.join(out,'review-inputs.json'))):null}};
 const good=s=>{assert.equal(s.status,0,s.stderr+s.stdout);assert.deepEqual(s.data.gaps,[]);assert.equal(s.data.wholeRangeReady,false);assert(s.data.changed.includes('product.txt'));assert(s.data.slices.some(x=>x.path==='product.txt'))};
 const bad=s=>{assert.notEqual(s.status,0,s.stdout);if(s.data){assert.equal(s.data.omitted.length,0);assert(s.data.gaps.length)}};
 const check=(name,f)=>{try{f();passed++;console.log('PASS '+name)}catch(e){failed++;console.error('FAIL '+name+' '+e.stack)}};
+const commandFrom=text=>{const m=text.match(/\[REVIEW_INPUTS\] = (.*?); \[LEDGER\]/);assert(m,'actual assembler selection command');return m[1]};
+const runCommand=command=>cp.spawnSync('sh',['-c',command],{cwd:repo,encoding:'utf8'});
 fs.mkdirSync(repo,{recursive:true});git('init','-q');git('config','user.email','fixture@example.test');git('config','user.name','Fixture');write(path.join(repo,'.gitignore'),'.superpowers/\n');write(run,'phase: code\napprovals:\n');write(path.join(repo,'product.txt'),'before\n');const base=commit();write(path.join(repo,'product.txt'),'after\n');
 const pending=intent('current',{required:['plan.md']});write(path.join(ws,'plan.md'),'required exact plan\n');const text='phase: code\napprovals:\n'+record(pending);write(run,text);const head=commit();launch('current');
 check('ordinary authenticated pending intent selects real source without acceptance',()=>good(select(base,head)));
@@ -36,11 +46,23 @@ check('selection alone cannot grant caller acceptance',()=>{
  assert.equal(gate.status,3,gate.stdout+gate.stderr);assert.equal(JSON.parse(gate.stdout).eligible,false);
 });
 // Caller construction must propagate the same context in ordinary and actual Workflow builders.
-const commandFrom=text=>{const m=text.match(/\[REVIEW_INPUTS\] = (.*?); \[LEDGER\]/);assert(m,'actual assembler selection command');return m[1]};
-const runCommand=command=>cp.spawnSync('sh',['-c',command],{cwd:repo,encoding:'utf8'});
 check('source guard binds current captured source before assembly',()=>{
  const r=cli('bind-review-source','--base',base,'--head',head);assert.equal(r.status,0,r.stderr);
  const changed=cli('assemble','--consumer','final-review','--instance','wrong','--base',head,'--head',head,'--stdout');assert.equal(changed.status,2,changed.stdout+changed.stderr);
+});
+check('documented ordinary text Launch binds the committed intent for assembly',()=>{
+ documentedLaunch('current');
+ try {
+ const p=cli('assemble','--consumer','final-review','--instance','documented','--base',base,'--head',head,'--stdout');assert.equal(p.status,0,p.stderr);
+ const s=runCommand(commandFrom(p.stdout));assert.equal(s.status,0,s.stdout+s.stderr);
+ } finally { launch('current'); }
+});
+check('documented unsettled resume preserves invocation and run context',()=>{
+ documentedLaunch('current');
+ const original=fs.readFileSync(ledger,'utf8');fs.appendFileSync(ledger,original);
+ const p=cli('assemble','--consumer','final-review','--instance','resumed','--base',base,'--head',head,'--stdout');assert.equal(p.status,0,p.stderr);
+ const s=runCommand(commandFrom(p.stdout));assert.equal(s.status,0,s.stdout+s.stderr);
+ launch('current');
 });
 check('ordinary assembler supplies authenticated current context to selector',()=>{const p=cli('assemble','--consumer','final-review','--instance','ordinary','--base',base,'--head',head,'--stdout');assert.equal(p.status,0,p.stderr);const s=runCommand(commandFrom(p.stdout));assert.equal(s.status,0,s.stdout+s.stderr)});
 // Execute the real Workflow builder with only its external runtime entry stubbed, as dispatch-text does.
@@ -64,9 +86,13 @@ check('captured endpoint change cannot erase required commitments',()=>{
 check('explicit worktree override cannot authenticate foreign source',()=>{
  launch('current',{integrationWorktree:tmp});bad(select(base,head,['--worktree',repo]));launch('current');
 });
+check('settled-null base cannot resurrect the same invocation as pending at head',()=>{
+ write(run,'phase: code\napprovals:\n'+record({...pending,reviewPath:null,review:'no work landed',settled:true,complete:true,gaps:[],files:[]}));const b=commit();
+ write(run,text);bad(select(b,commit()));
+});
 check('current pristine intent at both captured endpoints works',()=>{const b=commit();write(path.join(repo,'product.txt'),'third\n');good(select(b,commit()))});
 check('actual settlement then fresh reentry retains history and enforces required inputs',()=>{
- const cycle=intent('cycle',{required:['plan.md']});write(run,'phase: code\napprovals:\n'+record(cycle));const h=commit();launch('cycle');
+ const cycle=intent('cycle',{required:['plan.md']});write(run,'phase: code\napprovals:\n'+record(cycle));const h=commit();documentedLaunch('cycle');
  assert.equal(cli('bind-review-source','--base',base,'--head',h).status,0);
  const prompt=cli('assemble','--consumer','final-review','--instance','final','--base',base,'--head',h,'--stdout');assert.equal(prompt.status,0,prompt.stderr);
  const assembly=runCommand(commandFrom(prompt.stdout));assert.equal(assembly.status,0,assembly.stdout+assembly.stderr);
@@ -76,7 +102,7 @@ check('actual settlement then fresh reentry retains history and enforces require
  const report=cycle.reviewPath;write(report,'## Verdict\nnot ready\n## Must fix before landing\n- product.txt:1 — retained fixture finding\n## Untested scope\nnone\n');
  assert.equal(collect('cycle',report,'--required','plan.md').status,0);
  const collected=fs.readFileSync(run,'utf8');assert.match(collected,/"complete":true/);assert.match(collected,/"required":\["plan.md"\]/);
- fs.appendFileSync(run,record(intent('next')));const h2=commit();launch('next');good(select(base,h2));
+ fs.appendFileSync(run,record(intent('next')));const h2=commit();documentedLaunch('next');good(select(base,h2));
  const archived=path.join(repo,'docs/run/reviews/cycle/plan.md');assert.equal(fs.readFileSync(archived,'utf8'),'required exact plan\n');
  fs.unlinkSync(archived);bad(select(base,commit()));write(archived,'corrupt\n');bad(select(base,commit()));
 });

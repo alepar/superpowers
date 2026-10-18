@@ -136,10 +136,13 @@ never a shared location.
 runs one after its fix loop exits). Finish then skips the sweep, tells the final reviewer it was
 deferred, and returns `sweep: "SWEEP DEFERRED (caller-owned)"`.
 
-`reviewRunFile` is **optional**: the exact Git-relative caller `run.md` path. Pass it when
-that caller commits the current pending review-collection intent before assembly. It is
-persisted in Launch and forwarded to `review-inputs --review-run-file`; ordinary-subagent
-Launch records use the same field. Only the matching current invocation, workspace and
+`reviewRunFile` is **optional for standalone invocations**: the exact Git-relative caller
+`run.md` path. When the caller commits a current pending review-collection intent before
+assembly, it must pass that path in Workflow args as `reviewRunFile`. It is persisted in
+Launch and forwarded to `review-inputs --review-run-file`; ordinary-subagent Launch records
+use `· reviewRunFile <Git-relative path>`. On an explicit unsettled resume, preserve both
+`invocationId` and `reviewRunFile`; after settlement use a fresh invocation ID. Only the matching current invocation,
+workspace and
 expected report path may defer future collection completeness. No archive claim, omission,
 readiness or caller acceptance follows from a pending intent. Omitting the context retains
 conservative collection validation.

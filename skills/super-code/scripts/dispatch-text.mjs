@@ -142,7 +142,10 @@ function reviewInputs(repo, base, head, out, current = null) {
   } catch (e) { if (e.code !== 'ENOENT') fail(e.message) }
   mkdirSync(out, { recursive: true })
   const changed = git('diff', '--no-renames', '--name-only', '-z', base + '..' + head).toString().split('\0').filter(Boolean)
-  let currentIdentity = null
+  let currentIdentity = null, currentHistoryPristine = true
+  const pristine = record => Object.keys(record).every(k => ['invocationId', 'workspace', 'reviewPath', 'review', 'required', 'settled'].includes(k)) &&
+    record.invocationId === current?.invocationId && record.workspace === current?.workspace &&
+    record.reviewPath === current?.reviewPath && record.review === 'pending' && record.settled === false
   function snapshot(revision) {
     const tree = new Map(git('ls-tree', '-r', '-z', revision).toString().split('\0').filter(Boolean).map(entry => {
       const tab = entry.indexOf('\t'), [mode, type, oid] = entry.slice(0, tab).split(' ')
@@ -153,7 +156,7 @@ function reviewInputs(repo, base, head, out, current = null) {
       if (!entry || entry.type !== 'blob' || !['100644', '100755'].includes(entry.mode)) throw Error('missing or non-regular captured file: ' + p)
       return git('cat-file', 'blob', entry.oid)
     }
-    const archives = [], claims = new Map()
+    const archives = [], claims = new Map(), collections = []
     for (const run of tree.keys()) {
       if (posix.basename(run) !== 'run.md') continue
       let text
@@ -200,23 +203,29 @@ function reviewInputs(repo, base, head, out, current = null) {
           history.set(hash(JSON.stringify(r)), r)
         } catch (e) { gap(revision + ':' + run + ':' + (lineNumber + 1) + ': malformed collection record: ' + e.message) }
       }
+      collections.push({ run, latest })
+      if (current && run === current.run) for (const r of history.values()) {
+        if (r.invocationId !== current.invocationId) continue
+        const identity = JSON.stringify([r.workspace, r.required])
+        if (currentIdentity !== null && currentIdentity !== identity) gap(revision + ':' + run + ': conflicting current collection identity across captured endpoints')
+        currentIdentity = identity
+        if (!pristine(r)) currentHistoryPristine = false
+      }
+    }
+    return { tree, blob, archives, claims, collections }
+  }
+  function validateCollections(snapshot, revision) {
+    const { tree, blob, archives, claims } = snapshot
+    for (const { run, latest } of snapshot.collections) {
       for (const r of latest.values()) {
         const prefix = 'final-review-' + r.invocationId, assembled = 'assembled/' + prefix + '-final/'
         const archive = posix.join(posix.dirname(run), 'reviews', r.invocationId)
         const files = new Map((r.files || []).map(f => [f.path, f.sha256]))
         const context = revision + ':' + run + ':' + r.line + ' ' + r.invocationId
-        if (current && run === current.run && r.invocationId === current.invocationId) {
-          const identity = JSON.stringify([r.workspace, r.required])
-          if (currentIdentity !== null && currentIdentity !== identity) gap(context + ': conflicting current collection identity across captured endpoints')
-          currentIdentity = identity
-        }
         // A caller-bound prelaunch intent promises future artifacts; it grants no
         // archive/omission authority. Validate all history first and accept no claims.
-        const pristine = record => Object.keys(record).every(k => ['invocationId', 'workspace', 'reviewPath', 'review', 'required', 'settled'].includes(k)) &&
-          record.invocationId === current?.invocationId && record.workspace === current?.workspace &&
-          record.reviewPath === current?.reviewPath && record.review === 'pending' && record.settled === false
         if (current && run === current.run && pristine(r.record) &&
-            [...history.values()].filter(record => record.invocationId === r.invocationId).every(pristine) &&
+            currentHistoryPristine &&
             ![...tree.keys()].some(p => p.startsWith(archive + '/'))) continue
         if (!r.complete || !r.settled || !Array.isArray(r.gaps) || r.gaps.length) gap(context + ': incomplete claimed collection')
         if (r.reviewPath === null) {
@@ -252,11 +261,14 @@ function reviewInputs(repo, base, head, out, current = null) {
         archives.push({ revision, run, recordLine: r.line, invocationId: r.invocationId, archive, report: r.reviewPath === null ? null : archive + '/' + prefix + '.md', files: r.files || [] })
       }
     }
-    return { tree, blob, archives, claims }
   }
   let selected = changed, omitted = [], archives = [], slices = [], sourceAvailable = false
   try {
+    // Capture and validate current identity history at BOTH endpoints before any
+    // pending-intent deferral; a settled identity cannot become fresh by replacement.
     const before = snapshot(base), after = snapshot(head)
+    validateCollections(before, base)
+    validateCollections(after, head)
     archives = after.archives
     // Previously claimed payload deletion/corruption stays reviewable even if its record was removed.
     for (const [p, claim] of before.claims) {
