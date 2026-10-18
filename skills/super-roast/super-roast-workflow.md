@@ -220,8 +220,10 @@ not supply this evidence. Manual/reconstructed args use the same gate.
 The engine returns this object as `coverage.reviewReadiness`, includes it in `{{COVERAGE_JSON}}`,
 and writes its status and basis on the `coverage:` line. Nonready or unknown readiness adds
 `[review readiness incomplete]` to the verdict and prevents `[converged]`, without changing
-stage counts or `lowCoverage`. A reporter's `[low coverage]` on its verdict or report header is
-also preserved. Bounded-source prose and historical/native holds remain in the report; no
+stage counts or `lowCoverage`. A reporter's `[low coverage]` or `[review readiness incomplete]`
+on either verdict path is preserved and vetoes convergence, including with affirmative caller
+readiness. A differing reporter `coverage:` header is retained as `reporter coverage:` alongside
+the authoritative stage metrics. Bounded-source prose and historical/native holds remain in the report; no
 inspection counts or clearance are inferred from this object.
 
 **`config.effort`** (optional, `{role: effort}`) sets the reasoning effort per stage, for the
@@ -575,12 +577,13 @@ const coverageLine = [
 
 // Verdict qualifiers are re-applied to whatever the reporter returns, so a missed or spurious
 // qualifier can't make a degraded round read clean or converged.
-function qualify(verdict, allowConverged, forceLow = false) {
+function qualify(verdict, allowConverged, forceLow = false, forceReadinessIncomplete = false) {
   const v = String(verdict ?? '').replace(/^super-roast verdict:\s*/, '')
   const base = v.replace(/\s*\[(low coverage|panel-capped[^\]]*|review readiness incomplete|converged)\]/g, '').trim()
   const low = forceLow || lowCoverage || v.includes('[low coverage]')
-  const converged = allowConverged && coverage.convergenceEligible && !low && !/^Blocking\b/.test(base) && (emptyLateRound || v.includes('[converged]'))
-  return [base, low && '[low coverage]', panelCappedTag, readinessTag, converged && '[converged]'].filter(Boolean).join(' ')
+  const readinessIncomplete = !!readinessTag || forceReadinessIncomplete || v.includes('[review readiness incomplete]')
+  const converged = allowConverged && coverage.convergenceEligible && !low && !readinessIncomplete && !/^Blocking\b/.test(base) && (emptyLateRound || v.includes('[converged]'))
+  return [base, low && '[low coverage]', panelCappedTag, readinessIncomplete && '[review readiness incomplete]', converged && '[converged]'].filter(Boolean).join(' ')
 }
 
 // Reporter — final placement, env-aware severity, report markdown. Re-dispatched once on failure.
@@ -646,7 +649,11 @@ function enforce(rep) {
   // Preserve a coverage limitation supplied on either reporter verdict path before overwriting.
   const headerVerdict = lines.find(l => l.startsWith('super-roast verdict:')) ?? ''
   const reporterLow = headerVerdict.includes('[low coverage]')
-  let verdict = qualify(rep.verdict, true, reporterLow)
+  const reporterReadinessIncomplete = headerVerdict.includes('[review readiness incomplete]')
+  const firstSection = lines.findIndex(l => l.startsWith('## '))
+  const reporterCoverage = lines.slice(0, firstSection < 0 ? undefined : firstSection)
+    .filter(l => l.startsWith('coverage:') && l !== coverageLine).map(l => l.slice('coverage:'.length).trimStart())
+  let verdict = qualify(rep.verdict, true, reporterLow, reporterReadinessIncomplete)
   // preExisting → FYI, matched on the `- [SEV] <location> — ` entry line.
   let rewrote = 0
   for (const p of packets.filter(p => p.preExisting)) {
@@ -693,6 +700,8 @@ function enforce(rep) {
   }
   put('super-roast verdict:', `super-roast verdict: ${verdict}`, [])
   put('coverage:', coverageLine, ['super-roast verdict:', 'mode:', 'profile (assumed):', 'inputs:', 'delta vs prior:'])
+  // Keep reporter source limitations attributed separately from the authoritative stage metrics.
+  if (reporterCoverage.length) put('reporter coverage:', `reporter coverage: ${reporterCoverage.join(' | ')}`, ['coverage:'])
   if (indep) put('independence:', `independence: ${indep}`, ['coverage:'])
   put('seat-agreement:', seatAgreement || null, ['independence:', 'coverage:'])
   put('lane-yield', laneYieldLine, ['seat-agreement:', 'independence:', 'coverage:'])

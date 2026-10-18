@@ -101,6 +101,31 @@ test('reportMarkdown-only coverage qualifier survives header enforcement', async
   noConvergence(result)
   assert.ok(result.verdict.includes('[low coverage]'))
 })
+for (const tagPath of ['verdict-only', 'header-only', 'verdict-and-header']) test(`reporter readiness veto survives optimistic caller readiness: ${tagPath}`, async () => {
+  const tag = ' [review readiness incomplete]'
+  const rep = report('clean (0 nits)', 'Native qualification remains outstanding.')
+  if (tagPath !== 'header-only') rep.verdict += tag
+  if (tagPath !== 'verdict-only') rep.reportMarkdown = rep.reportMarkdown.replace('super-roast verdict: clean (0 nits)', 'super-roast verdict: clean (0 nits)' + tag)
+  const { result } = await execute({ readiness: ready, report: rep })
+  noConvergence(result)
+  assert.ok(result.verdict.includes('[review readiness incomplete]'))
+  assert.ok(result.reportMarkdown.startsWith(`super-roast verdict: ${result.verdict}`))
+  assert.deepEqual(result.coverage.reviewReadiness, ready, 'caller evidence remains attributed to caller')
+  assert.equal(result.coverage.lowCoverage, false)
+  assert.ok(result.reportMarkdown.includes('Native qualification remains outstanding.'))
+})
+test('reporter source limitation header survives alongside authoritative execution metrics', async () => {
+  const limitation = 'bounded source inspection; provenance unavailable'
+  const rep = report('clean (0 nits) [review readiness incomplete]', 'Historical native qualification hold remains outstanding.')
+  rep.reportMarkdown = rep.reportMarkdown.replace('coverage: reporter supplied', `coverage: ${limitation}`)
+  const { result } = await execute({ readiness: ready, report: rep })
+  assert.ok(result.reportMarkdown.includes(limitation), result.reportMarkdown)
+  assert.ok(result.reportMarkdown.includes('coverage: scouts 9/9'))
+  assert.ok(result.reportMarkdown.includes('review readiness: coverage complete, provenance available'))
+  assert.ok(result.reportMarkdown.includes('Historical native qualification hold remains outstanding.'))
+  noConvergence(result)
+})
+
 test('dead scout, panel cap and reporter failure retain independent stage guards', async () => {
   for (const options of [{ deadScout: true }, { args: { config: { coreLanes: ['core1'], panelCap: 0 } }, findings: [finding()] }, { reporterFailed: true }]) {
     const { result } = await execute({ readiness: ready, report: report('clean (0 nits) [converged]'), ...options })
