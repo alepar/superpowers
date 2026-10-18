@@ -382,8 +382,9 @@ for(let i=0;i<args.length;i++){
 let text;try{text=fs.readFileSync(run,'utf8')}catch(e){console.error(e.message);process.exit(2)}
 const dir=path.dirname(path.resolve(run));
 function append(type,data){const line='- '+type+' · '+JSON.stringify(data);const prior=text.split('\n');if(type==='review-collection'){const previous=prior.filter(l=>{try{return l.startsWith('- review-collection · ')&&JSON.parse(l.slice('- review-collection · '.length)).invocationId===data.invocationId}catch{return false}}).at(-1);if(previous===line)return}else if(prior.includes(line))return;const lines=text.trimEnd().split('\n');let start=lines.indexOf('approvals:');if(start<0){lines.push('approvals:');start=lines.length-1}let end=start+1;while(end<lines.length&&!/^[A-Za-z][A-Za-z0-9-]*:/.test(lines[end]))end++;lines.splice(end,0,line);text=lines.join('\n')+'\n';const pending=run+'.collection-tmp-'+process.pid;fs.writeFileSync(pending,text);fs.renameSync(pending,run);}
-const {validCollection,recordHash,sameBundle,collectionHistory}=require(path.join(scriptDir,'collection-records.cjs'));
-const {latest,errors}=collectionHistory(text),malformed=errors>0;
+const {validCollection,recordHash,sameBundle,sameResult,collectionHistory}=require(path.join(scriptDir,'collection-records.cjs'));
+const {TYPE,validateFailedAssembly}=require(path.resolve(scriptDir,'../../super-code/scripts/assembly-archive.cjs'));
+const {latest,completed,errors}=collectionHistory(text),malformed=errors>0;
 // Reject every source symlink component before reading a recovered report or bundle.
 function sourcePath(workspace,relative){
  if(typeof relative!=='string'||relative===''||path.isAbsolute(relative)||relative.split(/[\\/]/).includes('..'))throw Error('unsafe bundle path');
@@ -426,6 +427,8 @@ const hasBundle=(r,id)=>{const p='final-review-'+id;try{return fs.readdirSync(r.
 let gaps=malformed?1:0;if(malformed)console.error('COLLECTION_GAP: malformed collection record; retain sources');
 for(const previous of latest.values()){
  const r={...previous},id=r.invocationId,prefix='final-review-'+id,archive=path.join(dir,'reviews',id), problems=[];
+ const basis=completed.get(id),priorComplete=basis&&sameResult(basis,r)?basis:null;
+ const completedFiles=new Map((priorComplete?.files||[]).map(f=>[f.path,f.sha256]));
  const gap=m=>{if(!problems.includes(m))problems.push(m)};
  // lstat on a leaf alone follows earlier directory symlinks. Validate the full
  // source path before enumeration, manifest reads, hashing or extraction.
@@ -452,14 +455,16 @@ for(const previous of latest.values()){
   const files=new Set(r.required);
   function walk(relative){try{const full=source(relative),st=fs.lstatSync(full);if(st.isSymbolicLink())throw Error('symlink');if(st.isDirectory())for(const name of fs.readdirSync(full).sort())walk(path.join(relative,name));else if(st.isFile())files.add(relative);else throw Error('not a regular file')}catch(e){gap('bundle unavailable: '+relative)}}
   files.add(prefix+'.md');
-  try{for(const name of fs.readdirSync(source('.')).sort())if(name===prefix+'.md.diff'||(name.startsWith(prefix+'.cluster-')&&/^\d+\.md$/.test(name.slice((prefix+'.cluster-').length))))files.add(name)}catch{if(!previous.complete)gap('workspace unavailable: '+r.workspace)}
+  try{for(const name of fs.readdirSync(source('.')).sort())if(name===prefix+'.md.diff'||(name.startsWith(prefix+'.cluster-')&&/^\d+\.md$/.test(name.slice((prefix+'.cluster-').length))))files.add(name)}catch{if(!priorComplete)gap('workspace unavailable: '+r.workspace)}
   const assembled=path.join('assembled',prefix+'-final');
   try{source(assembled);walk(assembled)}catch{}
   const clusters=[...files].filter(f=>f.startsWith(prefix+'.cluster-'));
   if(clusters.length){try{const m=JSON.parse(fs.readFileSync(source(path.join(assembled,'clusters.json')),'utf8'));if(!Array.isArray(m.clusters)||!m.clusters.length)throw Error();for(const [n,c]of m.clusters.entries()){files.add(prefix+'.cluster-'+(n+1)+'.md');if(!Array.isArray(c.slices))throw Error();for(const slice of c.slices)files.add(path.join(assembled,slice))}}catch{gap('split bundle manifest unavailable or incomplete')}}
   // A completed archive remains usable after the source worktree is intentionally removed.
-  if(previous.complete&&Array.isArray(previous.files))for(const f of previous.files)files.add(f.path);
-  const manifests=[];
+  if(Array.isArray(previous.files))for(const f of previous.files)files.add(f.path);
+  // Failed retries retain every saved hash commitment. Only validated additions
+  // enter the manifest; unavailable or conflicting bytes remain explicit gaps.
+  const manifests=new Map((previous.files||[]).map(f=>[f.path,f]));
   for(const rel of [...files].sort()){
    if(typeof rel!=='string'||path.isAbsolute(rel)||rel.split(/[\\/]/).some(p=>p==='..')||rel===''){gap('unsafe bundle path');continue}
    let dst;try{dst=destination(rel)}catch{continue}
@@ -473,11 +478,26 @@ for(const previous of latest.values()){
    }
    if(srcHash&&dstHash&&srcHash!==dstHash){gap('archive conflict: '+rel);continue}
    if(saved&&dstHash&&saved.sha256!==dstHash){gap('archive integrity mismatch: '+rel);continue}
+   if(saved&&!dstHash&&srcHash&&saved.sha256!==srcHash){gap('source integrity mismatch: '+rel);continue}
    if(!dstHash&&srcHash){try{fs.mkdirSync(path.dirname(dst),{recursive:true});destination(rel);fs.copyFileSync(src,dst,fs.constants.COPYFILE_EXCL);dstHash=hash(destination(rel))}catch{gap('archive copy failed: '+rel)}}
-   if(!dstHash||(!srcHash&&(!previous.complete||!saved))){gap('bundle unavailable: '+rel);continue}
-   manifests.push({path:rel,sha256:dstHash});
+   if(!dstHash||(!srcHash&&(!saved||completedFiles.get(rel)!==saved.sha256))){gap('bundle unavailable: '+rel);continue}
+   manifests.set(rel,{path:rel,sha256:dstHash});
   }
-  r.files=manifests;
+  r.files=[...manifests.keys()].sort().map(rel=>manifests.get(rel));
+ }
+ // A persisted type is a validation claim even when no report bundle was found.
+ let boundedReportPresent=false;
+ try{boundedReportPresent=fs.readFileSync(destination(prefix+'.md'),'utf8').startsWith('# Bounded captured-source review\n')}catch{}
+ if(r.assemblyArchive!==undefined||boundedReportPresent){
+  try{
+   const repo=cp.execFileSync('git',['rev-parse','--show-toplevel'],{cwd:dir,encoding:'utf8'}).trim();
+   const git=(...args)=>cp.execFileSync('git',['--literal-pathspecs',...args],{cwd:repo,maxBuffer:64*1024*1024}).toString();
+   validateFailedAssembly({record:r,read:p=>fs.readFileSync(destination(p)),capturedSource:(base,head)=>{
+    for(const sha of [base,head])if(git('rev-parse','--verify',sha+'^{commit}').trim()!==sha)throw Error('captured commit unavailable');
+    return {changed:git('diff','--no-renames','--name-only','-z',base+'..'+head).split('\0').filter(Boolean),diff:p=>git('diff','--no-renames',base+'..'+head,'--',p)};
+   }});
+   r.assemblyArchive=TYPE;
+  }catch(e){gap('invalid failed assembly archive: '+e.message)}
  }
  r.complete=problems.length===0;r.gaps=problems;
  append('review-collection',r);

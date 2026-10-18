@@ -15,6 +15,8 @@ import { dirname, join, resolve, posix } from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { fileURLToPath } from 'node:url'
+import assemblyArchive from './assembly-archive.cjs'
+const { validateFailedAssembly, boundedReport } = assemblyArchive
 
 const here = dirname(fileURLToPath(import.meta.url))
 const codeSkill = resolve(here, '..')
@@ -156,7 +158,7 @@ function reviewInputs(repo, base, head, out, current = null) {
       if (!entry || entry.type !== 'blob' || !['100644', '100755'].includes(entry.mode)) throw Error('missing or non-regular captured file: ' + p)
       return git('cat-file', 'blob', entry.oid)
     }
-    const archives = [], claims = new Map(), collections = []
+    const archives = [], claims = new Map(), saved = new Map(), collections = []
     for (const run of tree.keys()) {
       if (posix.basename(run) !== 'run.md') continue
       let text
@@ -203,7 +205,7 @@ function reviewInputs(repo, base, head, out, current = null) {
           history.set(hash(JSON.stringify(r)), r)
         } catch (e) { gap(revision + ':' + run + ':' + (lineNumber + 1) + ': malformed collection record: ' + e.message) }
       }
-      collections.push({ run, latest })
+      collections.push({ run, latest, savedHashes })
       if (current && run === current.run) for (const r of history.values()) {
         if (r.invocationId !== current.invocationId) continue
         const identity = JSON.stringify([r.workspace, r.required])
@@ -212,11 +214,11 @@ function reviewInputs(repo, base, head, out, current = null) {
         if (!pristine(r)) currentHistoryPristine = false
       }
     }
-    return { tree, blob, archives, claims, collections }
+    return { tree, blob, archives, claims, saved, collections }
   }
   function validateCollections(snapshot, revision) {
-    const { tree, blob, archives, claims } = snapshot
-    for (const { run, latest } of snapshot.collections) {
+    const { tree, blob, archives, claims, saved } = snapshot
+    for (const { run, latest, savedHashes } of snapshot.collections) {
       for (const r of latest.values()) {
         const prefix = 'final-review-' + r.invocationId, assembled = 'assembled/' + prefix + '-final/'
         const archive = posix.join(posix.dirname(run), 'reviews', r.invocationId)
@@ -235,8 +237,24 @@ function reviewInputs(repo, base, head, out, current = null) {
           for (const required of r.required) if (!files.has(required)) gap(context + ': incomplete required bundle: ' + required)
         }
         if ((r.files || []).length !== files.size) gap(context + ': conflicting duplicate manifest paths')
+        for (const [key, sha256] of savedHashes) if (key.startsWith(r.invocationId + '/')) {
+          const relative = key.slice(r.invocationId.length + 1)
+          if (files.get(relative) !== sha256) gap(context + ': previously saved claim lost: ' + relative)
+        }
         const inputs = [...files.keys()].filter(p => p.startsWith(assembled))
-        if (inputs.length) for (const name of ['diffstat.txt', 'digest.md']) if (!files.has(assembled + name)) gap(context + ': incomplete assembled bundle: ' + name)
+        let bounded = false
+        let boundedReportPresent = false
+        try { boundedReportPresent = blob(posix.join(archive, prefix + '.md')).toString().startsWith('# Bounded captured-source review\n') } catch {}
+        if (r.assemblyArchive !== undefined || boundedReportPresent || (inputs.length && !files.has(assembled + 'digest.md'))) {
+          try {
+            validateFailedAssembly({ record: r, read: p => blob(posix.join(archive, p)), capturedSource: (b, h) => {
+              for (const sha of [b, h]) if (git('rev-parse', '--verify', sha + '^{commit}').toString().trim() !== sha) throw Error('captured commit unavailable')
+              return { changed: git('diff', '--no-renames', '--name-only', '-z', b + '..' + h).toString().split('\0').filter(Boolean), diff: p => git('diff', '--no-renames', b + '..' + h, '--', p).toString() }
+            } })
+            bounded = true
+          } catch (e) { gap(context + ': invalid failed assembly archive: ' + e.message) }
+        }
+        if (inputs.length && !bounded) for (const name of ['diffstat.txt', 'digest.md']) if (!files.has(assembled + name)) gap(context + ': incomplete assembled bundle: ' + name)
         const clusters = [...files.keys()].filter(p => p.startsWith(prefix + '.cluster-') && /\.cluster-\d+\.md$/.test(p))
         if (clusters.length || files.has(assembled + 'clusters.json')) {
           try {
@@ -252,7 +270,8 @@ function reviewInputs(repo, base, head, out, current = null) {
           const p = posix.join(archive, relative)
           try { if (hash(blob(p)) !== sha256) gap(context + ': saved hash mismatch: ' + p) }
           catch (e) { gap(context + ': ' + e.message) }
-          if (relative.startsWith(assembled) || relative === prefix + '.md.diff') {
+          saved.set(p, { sha256 })
+          if (!bounded && (relative.startsWith(assembled) || relative === prefix + '.md.diff')) {
             const claim = { path: p, sha256, revision, run, recordLine: r.line, invocationId: r.invocationId, archive, report: archive + '/' + prefix + '.md' }
             if (claims.has(p) && claims.get(p).sha256 !== sha256) gap(context + ': conflicting payload claim: ' + p)
             claims.set(p, claim)
@@ -271,7 +290,7 @@ function reviewInputs(repo, base, head, out, current = null) {
     validateCollections(after, head)
     archives = after.archives
     // Previously claimed payload deletion/corruption stays reviewable even if its record was removed.
-    for (const [p, claim] of before.claims) {
+    for (const [p, claim] of before.saved) {
       try { if (hash(after.blob(p)) !== claim.sha256) gap(head + ': previously claimed payload hash changed: ' + p) }
       catch (e) { gap(head + ': previously claimed payload unavailable: ' + p) }
     }
@@ -421,11 +440,7 @@ if (kind === 'bounded-review') {
     const verdict = 'not ready (unreviewed: whole-epic coverage and omission provenance remain incomplete)'
     const hash = b => createHash('sha256').update(b).digest('hex')
     const evidence = { base, head, selection: resolve(o.selection), selectionSha256: hash(bytes), draft: resolve(o.draft), draftSha256: hash(draft), coverage: resolve(o.coverage), coverageSha256: hash(readFileSync(o.coverage)), inspected: coverage.inspected, changed, unreviewedPaths: changed.filter(p => !seen.has(p)), gaps: selection.gaps, wholeRangeReady: false }
-    // Preserve every draft finding/section verbatim. Only the verdict changes; coverage
-    // becomes an explicit untested occurrence that existing extraction/collection retains.
-    const body = draft.replace(/(^## Verdict\r?\n)([\s\S]*?)(?=^## |$(?![\s\S]))/m, '$1' + verdict + '\n')
-      .replace(/^## Untested scope\r?$/m, '## Untested scope\n- whole-epic review incomplete; bounded inspected hunks only; all remaining hunks and provenance gaps remain unreviewed')
-    const result = '# Bounded captured-source review\n\nCoverage record: ' + JSON.stringify(evidence) + '\n\n' + body
+    const result = boundedReport(draft, evidence)
     writeFileSync(output, result, { flag: 'wx' })
     console.log(JSON.stringify({ verdict, path: output, wholeRangeReady: false }))
   } catch (e) { fail('bounded review unavailable: ' + e.message) }
