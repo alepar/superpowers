@@ -273,6 +273,22 @@ only exit 0 with `eligible:true` permits this caller to close the root explicitl
 root open with named pending/gap owners; exit 2/4 establishes no acceptance. No agent answers or
 closes an unresolved human gate. The checker itself is read-only.
 
+### Who required each check
+
+Every acceptance requirement, validation step, eval, harness or proof the run records has one source:
+
+- `user`: a sentence from the human's messages or the repo's instruction files (AGENTS.md, CLAUDE.md). Quote it.
+- `skill`: a step this skill or a sibling skill mandates — the roasts and fix loop, the final whole-epic review, the full-suite measurement, the phase-7 human choice.
+- `agent`: everything else, including criteria a design, coverage or roast pass wrote into the spec, and checks you, a child or a coordinator message proposed. "Fully autonomous", "iterate until clean", "finish the run" and goal objectives authorize persistence; they are not a `user` source for any specific check.
+
+Classify a recorded check that has no source by these rules the next time you act on it.
+
+An `agent` check is advisory. Run it only when an existing command or test already performs it. When the human's request names that validation ("make validation pass"), a broken existing runner for it may also be repaired and run once. Never build a new harness, runner, oracle, eval corpus, cohort or staged proof protocol for it, and never repeat a run or prepare a new variant to turn its failure into a pass. It is never a root-acceptance requirement (run-state.md §Caller-owned root acceptance). Record it under `agentChecks:` with its result or `unmet`, then continue toward hand-back.
+
+A confirmed product defect is not a check, whoever found it: it goes through the fix loop or is parked like any finding. A repo test that the run's branch makes fail is a confirmed defect.
+
+**Product done.** When every element of the user's request has a landed change and a passing behavioural check, write `productDone:` to `run.md` and name it in your next status note. After that, start new work only for a `user` or `skill` source or a confirmed defect.
+
 ### Gates, final-SHA evidence and base drift
 
 **Gates.** A hold that someone outside `super-code` releases is a gate bead: `bd create --type task

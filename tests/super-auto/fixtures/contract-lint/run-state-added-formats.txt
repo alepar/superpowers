@@ -4,3 +4,5 @@
 - finding-disposition · <JSON ref and supported disposition/basis>
 - review-collection · <JSON invocation/workspace/review/required/settlement/archive facts>
 - root-acceptance · <JSON requirements/evidence/recovery/checkEvidence/runFailures/decisions>
+productDone: <sha> — <each element of the user's request: its landed change and passing check>
+agentChecks:

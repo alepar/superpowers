@@ -21,6 +21,13 @@ when handing work to a new Superpowers tab, including worktrees created before t
 instruction was added. Never leave unless the user explicitly asks. This membership
 is in addition to the mandatory system-wide `psa-global` subscription.
 
+### Coordinating delegated runs
+
+- When research or a proposal becomes implementation, give your human partner two options before launch: the smallest change covering every element of their literal request, and the full proposal. Give each its files, rough size and new abstractions. In every brief, quote their literal request separately from your own elaborations.
+- Every condition you attach to a delegated run names its source: your human partner's request, a project instruction, or a concrete risk to work you own. A condition with no such source is not attached.
+- When a delegated run's updates report no decision needed for about two hours with no change to product files, ask it which user-visible deliverable changed and which of its open checks your human partner asked for.
+- A goal-mode objective (Codex goal, a long-running loop) names the deliverable and an exit, e.g. "hand off branch X, or stop and report when only checks nobody asked for remain".
+
 ## If You Are an AI Agent
 
 Stop. Read this section before doing anything.

@@ -55,6 +55,8 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 | `codeBuckets.worktreesKept` | `  worktreesKept: <worktree-or-temp-root — reason>, …` (empty after verified resource cleanup; unavailable cleanup names unchecked roots) | 6 | super-auto |
 | `codeBuckets.processSweep` | `  processSweep: stopped <N> · survived <M> · unknown <U> · kept <K>[ — survived: <fact>; unknown: <root-or-pid — failed inspection>; kept: <pid command — reason>; …]` (preserve stopped/survived/unknown/kept facts; unavailable sweep or missing output is unknown) | 6 | super-auto |
 | `sweepFix` | `sweepFix: <N> failing → <fix bead ids> · re-run <result> @ <sha>`, then ` · regression <K> failing → <fix bead id> · re-run <result> @ <sha>` when the regression-only bead ran; `<result>` in the `codeBuckets.sweep` form | 6 | super-auto |
+| `productDone` | `productDone: <sha> — <each element of the user's request: its landed change and passing check>` | 6 | super-auto (SKILL.md §Who required each check) |
+| `agentChecks` | `agentChecks:` then one `- <check> · <proposed by> · <result \| unmet>` line per `agent`-sourced check | 6 | super-auto (SKILL.md §Who required each check) |
 | `approvals` | `approvals:` then one `- <record>` line per decision below | 7 | super-design; super-auto (`design-review`) |
 | `approvals · top-split` | `- top-split · human \| auto · <child id> LEAF \| PROMOTE, …` | 7 | super-design |
 | `approvals · design-review` | `- design-review · pending \| approved` | 7 | super-auto |
@@ -268,7 +270,7 @@ requiredLiveChecks/gaps, and runFailures classification/state, using the exact p
 contracts. Carry still-open facts forward on bucket replacement; reconcile them from their durable
 ledger before removing them from a later snapshot. Earlier snapshots stay as evidence history.
 
-Each requirement has `id`, `kind` (`review`, `measurement`, `human`), and `owner`. Include the final
+Each requirement has `id`, `kind` (`review`, `measurement`, `human`), `owner`, and `source` (`user` with a `quote`, or `skill`; SKILL.md §Who required each check). Include the final
 whole-epic review, final full-suite measurement, existing phase-7 human choice, and every additional
 acceptance criterion or reserved human gate the run actually requires. This record describes those
 existing obligations; it introduces no additional approval ceremony. Measurement requirements add

@@ -37,6 +37,7 @@ Every dispatch you write ends with the final-answer line: one verdict line plus 
 ## When you are unsure
 
 - In an unattended run nobody answers questions. Choose the reading the ledger, bead and brief best support, record it as an assumption in the ledger or report, and continue.
+- Under super-auto, before building anything to satisfy a check, name its source (`user` with a quote, `skill`, or `agent`; super-auto SKILL.md §Who required each check). An `agent` check runs only through an existing command (a broken one only when the human's request names that validation, repaired and run once), never through a new harness, runner, oracle or eval, and never repeatedly until it passes: record it under `agentChecks:` and keep moving toward hand-back. A confirmed product defect is not a check.
 - First question: is the answer in the state block above? If not, which script in the next section answers it? Run that, read its few lines, and act.
 - Second question: does the answer need a child? Plans, specs, code and diffs are judged by a reviewer or roast child handed the paths, not by you. Your job is routing: who runs next, what merges next, what to wait for.
 - After a long wait or a compaction, re-derive nothing from memory: the ledger tail and the in-flight lines above are the truth, and `run.md`'s `phase` says where the run is. A claim you cannot trace to one of those is a guess; check it with a script before acting on it.
