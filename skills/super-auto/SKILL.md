@@ -277,17 +277,17 @@ closes an unresolved human gate. The checker itself is read-only.
 
 Every acceptance requirement, validation step, eval, harness or proof the run records has one source:
 
-- `user`: a sentence from the human's messages or the repo's instruction files (AGENTS.md, CLAUDE.md). Quote it.
-- `skill`: a step this skill or a sibling skill mandates — the roasts and fix loop, the final whole-epic review, the full-suite measurement, the phase-7 human choice.
-- `agent`: everything else, including criteria a design, coverage or roast pass wrote into the spec, and checks you, a child or a coordinator message proposed. "Fully autonomous", "iterate until clean", "finish the run" and goal objectives authorize persistence; they are not a `user` source for any specific check.
+- `user`: a sentence from the human's messages or the repo's instruction files (AGENTS.md, CLAUDE.md), or a spec criterion the human approved at a design gate (`top-split · human`, `design-review · approved`). Quote it.
+- `skill`: anything this skill or a sibling skill mandates, such as the roasts and fix loop, the final whole-epic review, the full-suite measurement, the phase-7 human choice and other reserved human gates, Recovery obligations and required live checks a producer returned, and the tests its implementers' TDD requires.
+- `agent`: everything else, including spec criteria no human approved, and checks you, a child or a coordinator message proposed. "Fully autonomous", "iterate until clean", "finish the run" and goal objectives authorize persistence; they are not a `user` source for any check they do not name.
 
-Classify a recorded check that has no source by these rules the next time you act on it.
+Label a recorded check that has no source by these rules the next time you act on it. A requirement already in a root-acceptance snapshot stays there (never erase one by omission); list it under `agentChecks:` as well, and the caller decides at hand-back whether to waive it.
 
-An `agent` check is advisory. Run it only when an existing command or test already performs it. When the human's request names that validation ("make validation pass"), a broken existing runner for it may also be repaired and run once. Never build a new harness, runner, oracle, eval corpus, cohort or staged proof protocol for it, and never repeat a run or prepare a new variant to turn its failure into a pass. It is never a root-acceptance requirement (run-state.md §Caller-owned root acceptance). Record it under `agentChecks:` with its result or `unmet`, then continue toward hand-back.
+An `agent` check is advisory. Run it only when an existing command or test already performs it. When the human's request names that specific validation, a broken existing runner for it may also be repaired and run once. Never build a new harness, runner, oracle, eval corpus, cohort or staged proof protocol for it, and never repeat a run or prepare a new variant to turn its failure into a pass. Do not add it to root acceptance (run-state.md §Caller-owned root acceptance). Record it under `agentChecks:` with its result or `unmet`, then continue toward hand-back.
 
 A confirmed product defect is not a check, whoever found it: it goes through the fix loop or is parked like any finding. A repo test that the run's branch makes fail is a confirmed defect.
 
-**Product done.** When every element of the user's request has a landed change and a passing behavioural check, write `productDone:` to `run.md` and name it in your next status note. After that, start new work only for a `user` or `skill` source or a confirmed defect.
+**Product done.** When every element of the user's request, each quoted from their words, has a landed change and a passing behavioural check, write `productDone:` to `run.md` and name it in your next status note. After that, start new work only for a `user` or `skill` source, a confirmed defect, or a remaining task of the approved tree.
 
 ### Gates, final-SHA evidence and base drift
 
