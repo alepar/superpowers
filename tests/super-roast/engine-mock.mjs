@@ -19,7 +19,7 @@ const seen = []
 const agent = async (prompt, o) => {
   seen.push({ label: o.label, prompt, o })
   const pre = scenario.startsWith('pr-r1-preexisting')
-  if (o.label === 'triage') return { lanes: pre ? ['testing', 'test-suite-cost'] : scenario.startsWith('pr') ? ['testing'] : [], domains: scenario.startsWith('design') ? ['queueing'] : [] }
+  if (o.label === 'triage') return { lanes: pre ? ['testing', 'test-suite-cost', 'test-isolation-environment'] : scenario.startsWith('pr') ? ['testing'] : [], domains: scenario.startsWith('design') ? ['queueing'] : [] }
   if (scenario === 'pr-r2-empty' && o.label.startsWith('scout:')) return { findings: [] }
   if (scenario === 'pr-r1-yield') {
     if (o.label === 'scout:security') return null
@@ -29,7 +29,17 @@ const agent = async (prompt, o) => {
     if (o.label === 'reporter') return null
   }
   if (pre) {
-    if (o.label === 'scout:test-suite-cost') return { findings: [F('rebuilds deps per test', 'slow.js:3', 'test-suite-cost')] }
+    // Mislabelled category: the engine must attribute by dispatching lane, not this string.
+    if (o.label === 'scout:test-suite-cost') return { findings: [F('rebuilds deps per test', 'slow.js:3', 'testing')] }
+    if (o.label === 'scout:testing') return { findings: [F('cleanup skipped on failure', 'merge.js:7', 'testing')] }
+    if (o.label === 'scout:test-isolation-environment') return { findings: [F('cleanup skipped on failure', 'merge.js:7', 'test-isolation-environment')] }
+    if (o.label === 'dedupe') {
+      // slow.js:3 suggested Nit → spot check; the spot seat's Should-fix must promote it despite preExisting.
+      // merge.js:7 merges a testing and a test-lane member.
+      const raw = JSON.parse(prompt.match(/<findings>\n([\s\S]*?)\n<\/findings>/)[1])
+      const ids = loc => raw.filter(f => f.location === loc).map(f => f.id)
+      return { groups: [...new Set(raw.map(f => f.location))].map((loc, i) => ({ ids: ids(loc), suggestedSeverity: loc === 'slow.js:3' ? 'Nit' : 'Should-fix', rank: i + 1 })) }
+    }
     if (o.label.startsWith('judge:') || o.label.startsWith('spot#')) return { ...V('CONFIRM', 'Should-fix'), preExisting: true }
     if (o.label === 'reporter' && scenario.endsWith('-fallback')) return null
   }
@@ -106,6 +116,15 @@ if (scenario.startsWith('pr-r1-preexisting')) {
     assert.ok(lines.some(l => /^- \[FYI\] c\.js:1 — /.test(l)), r.reportMarkdown)
     assert.ok(lines.some(l => /^- \[Should-fix\] slow\.js:3 — /.test(l)), r.reportMarkdown)
     assert.ok(!lines.some(l => /^- \[FYI\] slow\.js:3 — /.test(l)))
+    assert.ok(lines.some(l => /^- \[Should-fix\] merge\.js:7 — /.test(l)), 'merged testing + test-lane finding keeps severity')
+  })
+  check('pre-existing test-lane spot check promotes to a full panel', () => {
+    assert.ok(seen.some(s => s.label.startsWith('spot#')), 'slow.js:3 went to a spot check')
+    assert.ok(seen.some(s => s.label.startsWith('judge:') && s.prompt.includes('slow.js:3')), 'promoted panel ran on slow.js:3')
+  })
+  check('all three test lanes are in the triage enum', () => {
+    const items = by('triage')[0].o.schema.properties.lanes.items.enum
+    for (const l of ['test-causality-lifecycle', 'test-isolation-environment', 'test-suite-cost']) assert.ok(items.includes(l), l)
   })
   check('verdict severity reflects the kept test-lane finding', () => assert.ok(r.verdict.startsWith('Should-fix'), r.verdict))
 }

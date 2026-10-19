@@ -77,9 +77,10 @@ category; design mode keeps GAP | UNVERIFIED-ASSUMPTION kinds + spike recommenda
   from roast unchanged.
 - **PR roster:** 6 always-on lanes — Correctness & edge cases; Security; Premortem /
   incident blast radius; Simplicity + clean design (OOP/testability/abstraction placement);
-  Hot-path performance (GC churn + I/O, N+1, caching); Concurrency & async — plus 7
+  Hot-path performance (GC churn + I/O, N+1, caching); Concurrency & async — plus 10
   conditional lanes activated by triage: Data & migrations; Deploy/rollout safety;
-  API contract; Observability; Testing strategy; Dependency/supply-chain; Hygiene+Docs
+  API contract; Observability; Testing strategy; Test causality/lifecycle; Test
+  isolation/environment; Test-suite cost; Dependency/supply-chain; Hygiene+Docs
   (+cost/privacy). Lane content sourced from the super-review taxonomy (each lane carries
   its heuristics + pragmatism filter).
 

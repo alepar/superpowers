@@ -359,7 +359,9 @@ const scoutNames = [...coreNames, ...extraNames]
 const scoutResults = [...coreResults, ...extraResults]
 const deadScouts = scoutNames.filter((_, i) => !scoutResults[i])
 const scoutsDead = deadScouts.length
-const raw = scoutResults.filter(Boolean).flatMap(r => r.findings ?? [])
+// category is stamped with the dispatching scout's name: lane attribution and keepsSeverity
+// must not rest on a model-reported string.
+const raw = scoutResults.flatMap((r, i) => (r?.findings ?? []).map(f => ({ ...f, category: scoutNames[i] })))
 log(`scouts: ${scoutNames.length - scoutsDead}/${scoutNames.length} returned · raw findings ${raw.length}`)
 
 // Dedupe — groups raw findings by id, suggests a severity, ranks. Skipped when there is nothing to
