@@ -2,14 +2,13 @@
 
 Superpowers has two distinct kinds of tests, each in its own directory:
 
-- **`tests/`** — does the plugin's non-LLM code work? Bash + node + python integration tests for brainstorm-server JS, OpenCode plugin loading, codex-plugin sync, and analysis utilities.
+- **`tests/`** — does the plugin's non-LLM code work? Bash + node + python integration tests for OpenCode plugin loading, codex-plugin sync, and analysis utilities.
 - **`evals/`** — do agents behave correctly on real LLM sessions? Python harness driving real tmux sessions of Claude Code / Codex / Gemini CLI, with an LLM actor and verifier judging skill compliance.
 
 ## Plugin tests
 
 Live in `tests/`. Currently:
 
-- `tests/brainstorm-server/` — node test suite for the brainstorm server JS code.
 - `tests/opencode/` — bash tests for OpenCode plugin loading, bootstrap caching, and tool registration.
 - `tests/codex-plugin-sync/` — bash sync verification.
 - `tests/kimi/` — bash/Python checks for Kimi plugin manifest wiring.
