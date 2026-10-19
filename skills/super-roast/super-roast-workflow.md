@@ -74,7 +74,7 @@ with a friction log invoked the roast, is appended to that log.
   5. Dispatch one reporter subagent (fable) with the packets, the profile, the coverage values,
      the prior report and the punch-listed keys (if any); re-dispatch once on failure, then fall
      back to the engine's `fallbackReport` rendering. Apply the engine's `enforce` step to a live report (header
-     lines, omitted escalations, preExisting → FYI).
+     lines, omitted escalations, preExisting → FYI except test-lane findings).
 
   When the scouts ran as subagents but the seats could not be dispatched and verification ran
   inline, the independence label is `partial (subagent scouts, inline verification)`.
@@ -432,6 +432,11 @@ const blind = f => omit(f, 'suggestedSeverity', 'previouslyRejected', 'lanes')
 // previous round's fixes did. The engine tags its report entries `[fix-regression]` so a caller's
 // fix loop can tell it apart mechanically.
 const lanesOf = f => f.lanes ?? [f.category]
+// A pre-existing test reliability/cost defect in the reviewed surface's verification keeps its
+// seat severity: flaky or needlessly expensive tests tax every later change, so FYI would bury them.
+const TEST_LANES = ['test-causality-lifecycle', 'test-isolation-environment', 'test-suite-cost']
+const keepsSeverity = f => lanesOf(f).some(l => TEST_LANES.includes(l))
+const demoted = p => p.preExisting && !keepsSeverity(p.finding)
 const isFixRegression = f => lanesOf(f).includes('regression')
 
 // site: 'panel' | 'spot' — stub keys are call-site qualified (seat:<name>:<site>) so one canned
@@ -459,7 +464,7 @@ async function panel(f, idx, refuteVote) {
 }
 async function spotCheck(f, idx) {
   const v = await seat(f, 'refute', 'spot', idx)
-  if (v?.verdict === 'CONFIRM' && SEVERE.includes(v.severity) && !v.preExisting) return panel(f, idx, v)  // under-graded nit → full panel
+  if (v?.verdict === 'CONFIRM' && SEVERE.includes(v.severity) && (!v.preExisting || keepsSeverity(f))) return panel(f, idx, v)  // under-graded nit → full panel
   return { f, votes: [v], tier: 'spot' }
 }
 const toJudge = [...severe.map(f => ({ f, kind: 'panel' })), ...rest.map(f => ({ f, kind: 'spot' }))]
@@ -489,7 +494,8 @@ function defaultRoute(p) {
 }
 // Judged packets drop suggestedSeverity (the reporter starts from seat severities); unjudged
 // packets keep it, since it is the only severity they have. preExisting marks a defect a seat
-// found already on the base branch: its final severity is FYI, so it never drives a fix round.
+// found already on the base branch: its final severity is FYI, so it never drives a fix round —
+// except a test-lane finding (keepsSeverity), which keeps its seat severity.
 const unjudged = (f, tier) => ({ finding: f, votes: [], tier, valid: 0 })
 const packets = [
   ...judged.map(j => j.tier === 'judge-lost' ? unjudged(j.f, 'judge-lost')
@@ -617,7 +623,7 @@ const pipelineLossLine = p => `- [${p.finding.suggestedSeverity ? `suggested ${p
 // returning an empty one. Always [low coverage]; seat severities, no profile conditioning.
 function fallbackReport() {
   const of = r => packets.filter(p => p.defaultRoute === r)
-  const seatSev = p => p.preExisting ? 'FYI' : SEV[Math.min(...p.votes.filter(v => v?.verdict === 'CONFIRM').map(v => SEV.indexOf(v.severity)))]
+  const seatSev = p => demoted(p) ? 'FYI' : SEV[Math.min(...p.votes.filter(v => v?.verdict === 'CONFIRM').map(v => SEV.indexOf(v.severity)))]
   const confirmed = of('confirmed'), nits = of('unverified-nit'), lostSpots = of('not-verified:dead-spot')
   const top = confirmed.length ? SEV[Math.min(...confirmed.map(p => SEV.indexOf(seatSev(p))))] : null
   const verdict = qualify(`${top ? `${top} (${confirmed.length} confirmed)` : `clean (${nits.length} nits)`} [low coverage]`, false, true)
@@ -646,7 +652,7 @@ function fallbackReport() {
 
 // Live reporter output: the engine's facts win. Header lines are overwritten with engine values,
 // escalate routes the reporter left out are added back, and a preExisting finding placed above
-// FYI is rewritten to FYI (with the verdict's severity recomputed from the Confirmed section).
+// FYI is rewritten to FYI unless it keeps its severity (test lanes) (with the verdict's severity recomputed from the Confirmed section).
 const enforcement = []
 function enforce(rep) {
   let lines = String(rep.reportMarkdown ?? '').split('\n')
@@ -660,7 +666,7 @@ function enforce(rep) {
   let verdict = qualify(rep.verdict, true, reporterLow, reporterReadinessIncomplete)
   // preExisting → FYI, matched on the `- [SEV] <location> — ` entry line.
   let rewrote = 0
-  for (const p of packets.filter(p => p.preExisting)) {
+  for (const p of packets.filter(demoted)) {
     const re = new RegExp(`^(\\s*- )\\[(Blocking|Should-fix|Nit)\\] (${p.finding.location.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} — )`)
     lines = lines.map(l => re.test(l) ? (rewrote++, l.replace(re, '$1[FYI] $3')) : l)
   }

@@ -1,6 +1,6 @@
 // Runs a super-roast engine script produced by `assemble-args --script` against a mock agent()
 // and checks how the assembled prompts reach each stage. Usage: node engine-mock.mjs <script> <scenario>
-// Scenarios: pr-r1, pr-r1-yield, pr-r2, pr-r2-empty, design-r1. Prints PASS/FAIL lines; exits 1 on any failure.
+// Scenarios: pr-r1, pr-r1-yield, pr-r1-preexisting[-fallback], pr-r2, pr-r2-empty, design-r1. Prints PASS/FAIL lines; exits 1 on any failure.
 import { readFileSync } from 'node:fs'
 import assert from 'node:assert/strict'
 
@@ -18,7 +18,8 @@ const V = (verdict, severity) => ({ verdict, severity, evidence: 'ev' })
 const seen = []
 const agent = async (prompt, o) => {
   seen.push({ label: o.label, prompt, o })
-  if (o.label === 'triage') return { lanes: scenario.startsWith('pr') ? ['testing'] : [], domains: scenario.startsWith('design') ? ['queueing'] : [] }
+  const pre = scenario.startsWith('pr-r1-preexisting')
+  if (o.label === 'triage') return { lanes: pre ? ['testing', 'test-suite-cost'] : scenario.startsWith('pr') ? ['testing'] : [], domains: scenario.startsWith('design') ? ['queueing'] : [] }
   if (scenario === 'pr-r2-empty' && o.label.startsWith('scout:')) return { findings: [] }
   if (scenario === 'pr-r1-yield') {
     if (o.label === 'scout:security') return null
@@ -26,6 +27,11 @@ const agent = async (prompt, o) => {
     if (o.label === 'dedupe') return { groups: [{ ids: [0, 1], suggestedSeverity: 'Should-fix', rank: 1 }, { ids: [2], suggestedSeverity: 'Should-fix', rank: 2 }] }
     if (o.label.startsWith('judge:')) return V(prompt.includes('t.js:9') ? 'REJECT' : 'CONFIRM', 'Should-fix')
     if (o.label === 'reporter') return null
+  }
+  if (pre) {
+    if (o.label === 'scout:test-suite-cost') return { findings: [F('rebuilds deps per test', 'slow.js:3', 'test-suite-cost')] }
+    if (o.label.startsWith('judge:') || o.label.startsWith('spot#')) return { ...V('CONFIRM', 'Should-fix'), preExisting: true }
+    if (o.label === 'reporter' && scenario.endsWith('-fallback')) return null
   }
   if (scenario === 'pr-r2-empty' && o.label === 'reporter') return { verdict: 'clean (0 nits) [low coverage]', reportMarkdown: 'super-roast verdict: x', confirmedCount: 0, escalations: [] }
   if (o.label === 'scout:correctness' || o.label === 'scout:premortem') return { findings: [F('core defect', 'c.js:1', o.label.slice(6))] }
@@ -93,6 +99,15 @@ if (scenario === 'pr-r1-yield') {
     assert.ok(lines.some(l => l.startsWith('- [Should-fix] c.js:1 — core defect [lanes: correctness, premortem]')))
     assert.ok(lines.some(l => l.includes('t.js:9') && !l.includes('[lanes: ')))
   })
+}
+if (scenario.startsWith('pr-r1-preexisting')) {
+  check('pre-existing: generic finding demoted to FYI, test-lane finding keeps its seat severity', () => {
+    const lines = r.reportMarkdown.split('\n')
+    assert.ok(lines.some(l => /^- \[FYI\] c\.js:1 — /.test(l)), r.reportMarkdown)
+    assert.ok(lines.some(l => /^- \[Should-fix\] slow\.js:3 — /.test(l)), r.reportMarkdown)
+    assert.ok(!lines.some(l => /^- \[FYI\] slow\.js:3 — /.test(l)))
+  })
+  check('verdict severity reflects the kept test-lane finding', () => assert.ok(r.verdict.startsWith('Should-fix'), r.verdict))
 }
 if (scenario === 'pr-r2') {
   check('round 2: materiality bar and the prior report reach every scout', () => {

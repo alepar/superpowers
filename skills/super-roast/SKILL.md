@@ -159,7 +159,9 @@ appear anywhere in this pipeline — those are `roast`'s vocabulary, not this sk
 Any of these → **Blocking**, regardless of what the environment profile would otherwise permit.
 A profile may soften everything else; it may never soften a floor. Floors apply to what the
 change introduces or worsens: in PR mode a defect already present on the base branch is
-confirmed at **FYI** (flagged `preExisting`) — reported, never a fix-round driver.
+confirmed at **FYI** (flagged `preExisting`) — reported, never a fix-round driver. Exception:
+a pre-existing finding from a test lane (`test-causality-lifecycle`, `test-isolation-environment`,
+`test-suite-cost`) keeps its seat severity.
 
 ### Tiered verification (replaces `roast`'s shallow/medium/deep depth levels)
 
@@ -177,7 +179,8 @@ budget:
   2+ REJECT rejected; a dead seat, an external claim with an UNVERIFIED vote, or a panel whose
   UNVERIFIED votes leave no 2-vote majority escalates to a human. The reporter may overrule
   confirmed/rejected only by citing seat evidence, and never un-escalates; the engine re-adds
-  any escalation the reporter omits and keeps a pre-existing defect at FYI.
+  any escalation the reporter omits and keeps a pre-existing defect at FYI (test-lane findings
+  excepted).
 
 ### Report format
 

@@ -21,7 +21,8 @@ orchestrator-rendered token, `{{INDEPENDENCE}}`, filled before the engine runs (
 re-applies the coverage-derived verdict qualifiers, overwrites the verdict, `coverage:`,
 `independence:` and `seat-agreement:` header lines with its own values, inserts a `lane-yield:`
 line and `[lanes: …]` tags on Confirmed entries, appends any escalate
-route the reporter left out, and rewrites a `preExisting` entry placed above FYI to FYI; if the
+route the reporter left out, and rewrites a `preExisting` entry placed above FYI to FYI (test-lane
+findings excepted); if the
 reporter fails twice, the engine renders a minimal report from the default routes instead.
 
 ```
@@ -122,6 +123,10 @@ A packet with `preExisting: true` gets final severity **FYI**, whatever the othe
 severities: it is real but was not introduced by this change, so it is reported and never
 drives a fix round. Say so in its entry (`pre-existing on base: <base-branch location>`). The
 floors below do not lift it — they apply to what the change introduces or worsens.
+Exception: a finding whose `lanes` (or `category`) include `test-causality-lifecycle`,
+`test-isolation-environment` or `test-suite-cost` keeps its seat severity even when
+`preExisting` — flaky or needlessly expensive verification taxes every later change. Still
+note `pre-existing on base: <location>` in its entry.
 
 Otherwise, start from the seat severities on the confirming votes. Then condition on the
 environment profile: the profile moves the Should-fix ↔ Nit boundary, and down-weights

@@ -158,10 +158,10 @@ just the diff hunk.
 Additional REFUTE checks (e) and (f):
 (e) **Pre-existing** — does the defect exist on the base branch rather than being
     introduced or materially worsened by this change? Check the base version of the
-    file. If the defect is real but already present on the base branch, CONFIRM with
-    severity FYI, cite the base-branch location in `evidence`, and add
-    `"preExisting": true` to your output object — it is reported, but it is not this
-    change's gap. (This is the one CONFIRM that does not require surviving every check.)
+    file. If the defect is real but already present on the base branch, CONFIRM at the
+    severity the defect itself warrants, cite the base-branch location in `evidence`, and
+    add `"preExisting": true` to your output object — provenance decides the final
+    severity downstream, not you. (This is the one CONFIRM that does not require surviving every check.)
 (f) **Linter territory** — is this pure style/formatting a linter or formatter
     enforces? If so, the refutation lands: REJECT.
 
