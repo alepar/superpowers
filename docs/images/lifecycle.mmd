@@ -1,0 +1,15 @@
+flowchart TB
+  goal([Goal or vision doc])
+  subgraph design [super-design]
+    bs[Brainstorm a spec] --> ka[Name key abstractions] --> dec[Decompose into tasks]
+    dec -. task too big .-> bs
+    dec --> cov[Check tree against goal]
+  end
+  goal --> bs
+  cov --> rd{{super-roast: design}}
+  rd -- findings --> sb1[Step back or fix] --> rd
+  rd -- clean --> code[super-code: parallel tasks<br/>plan → implement → review → merge]
+  code --> rc{{super-roast: code}}
+  rc -- findings --> sb2[Step back or fix] --> code
+  rc -- clean --> rep[Report]
+  rep --> fin([You choose: merge, PR or keep])
