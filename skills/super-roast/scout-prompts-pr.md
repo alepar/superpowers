@@ -4,7 +4,7 @@ Sourced from the vendored taxonomy at `docs/superpowers/specs/references/pr-revi
 condensed to a scout's checklist rather than a literature review. Scouts surface findings, they
 do not rate them: no scout assigns severity — the dedup-and-rank role suggests it, judges rate
 it provisionally, and the reporter makes the final call. **Model: opus.** One scout per lane (6
-core lanes always run; the conditional lanes activated by triage from the remaining 7 join them).
+core lanes always run; the conditional lanes activated by triage from the remaining 10 join them).
 The scout works in isolated context with diff + repo access, and never authored the PR.
 
 Build each scout's full prompt as: **shared preamble** below, with the `[LANE]` marker replaced
@@ -536,6 +536,92 @@ don't frame it as a demand; you may report its absence, and if you do, put why t
 low-risk in `evidence`. Tests are code too; don't accept complexity in
 them you wouldn't accept elsewhere. A test refactor documented in the PR description is not a
 finding.
+```
+
+## Lane: test-causality-lifecycle
+
+```
+**Scope:** Can an affected test pass or fail without the ordering, readiness or resource
+lifetime its assertion depends on? Production races stay with correctness/concurrency-async;
+whether the assertion checks the right thing stays with testing.
+
+**Hunt list:**
+1. Trace happens-before from setup through observation to cleanup. A wait that can be
+   satisfied by something other than the asserted state (an earlier event, a stale value, a
+   different success path) makes the test pass for the wrong reason.
+2. Observer readiness: the test acts before its listener, subscriber, server or watcher is
+   ready, or treats delivery/enqueue as the recipient having applied the change.
+3. Timer origin: a deadline or timeout measured from the wrong point (test start instead of
+   the operation, before a slow setup step).
+4. Lifetime: a lock, handle, subscription, temp dir or lease released before the operation it
+   protects finishes; teardown that is skipped when an assertion throws.
+5. Fixed sleeps standing in for a condition the test could wait on directly.
+
+**Evidence must include:** the property the test is meant to detect, the feasible
+interleaving that breaks it, and whether this is a reproduced failure, a proved missing
+prerequisite, or source risk only — say which. A missing ordering edge proves the defect,
+not that a particular historical CI failure happened this way.
+
+**Pragmatism filter:** analyze actual causality, not suspicious `sleep`/`timeout` syntax. An
+upper-bound timeout that returns early on success is not a paid delay. Keep expiry and
+negative-observation windows (proving something does NOT happen needs a wait). The repair must
+fix synchronization or ownership while keeping the original assertion — never suggest retries,
+skip/quarantine, weaker assertions or a blanket longer timeout.
+```
+
+## Lane: test-isolation-environment
+
+```
+**Scope:** Can affected tests interfere with each other or depend on uncontrolled state under
+the runner, process and resource boundaries they actually run with?
+
+**Hunt list:**
+1. Find the real runner topology: parallel workers or files, threads vs process-per-test,
+   child processes, fixture scope, who tears down what. Process isolation does not isolate
+   ports, files, databases, accounts or other shared external resources.
+2. Shared state: fixed ports/paths/temp names, a shared DB or account, global/module state
+   mutated without restore, env vars or cwd changed and not restored.
+3. Ambient dependence: wall clock, timezone, locale, unseeded RNG, test order, platform or
+   shell differences, real network or external services.
+4. Failure-path cleanup: a resource leaked when a test fails, which then breaks the next test
+   or the next run.
+
+**Evidence must include:** the shared resource or ambient input, the owner of each side, and
+the concrete overlap or ordering that causes interference. Say whether the collision was
+observed or is source risk only.
+
+**Pragmatism filter:** prove the dependency reaches this test — a global or real clock is not
+itself a defect. Keep real integration/process coverage and deliberate concurrency limits on
+scarce resources. Prefer unique or ephemeral resources and explicit seeding over mocking out a
+required integration, serializing the whole suite, or retrying to hide interference.
+```
+
+## Lane: test-suite-cost
+
+```
+**Scope:** Does affected verification pay for avoidable work that a cheaper test would avoid
+while still detecting the same thing?
+
+**Hunt list:**
+1. Paid idle time: fixed sleeps on the passing path, slow polling intervals, retry loops that
+   always run.
+2. Repeated work: per-test builds, process launches, container/DB setup or large generation
+   that could be shared at a wider fixture scope without coupling tests.
+3. Unnecessary serialization: tests forced to run one at a time with no shared resource that
+   requires it.
+4. Leaked work: background processes, timers or servers left running and slowing later tests.
+5. Oversized fixtures: large files or datasets where the tested behavior has no size-dependent
+   branch and a small input detects the same defect.
+
+**Evidence must include:** the operation that is actually reached, how many times it runs, a
+measurement or conservative bound from source, and the cheaper equivalent with why it keeps
+the property under test. Do not present aggregate CPU time as wall-clock savings, or a
+configured timeout as a delay that is actually paid.
+
+**Pragmatism filter:** necessary expense is not waste. Keep large-file boundaries, offset
+crossings, streaming chunk behavior, throughput/load and resource-limit tests where size is
+the property; keep expiry/negative-observation windows, real latency, process isolation and
+statistical repetition where they are the point. No speculative micro-optimization.
 ```
 
 ## Lane: dependency

@@ -40,6 +40,12 @@ activate:
 - `observability` — new failure paths introduced, or logging/metrics/tracing changed.
 - `testing` — production code changed with no corresponding test changes, or the diff is
   test-heavy.
+- `test-causality-lifecycle` — tests, fixtures or test helpers changed, or production code
+  whose tests wait on events, async completion, timers or background work changed.
+- `test-isolation-environment` — tests, fixtures, runner/CI configuration or test-shared
+  resources (ports, temp paths, DBs, env vars, global state) changed.
+- `test-suite-cost` — tests, fixtures, test data or runner/CI/build setup changed, or the diff
+  adds setup, waits, process launches or large fixture files.
 - `dependency` — lockfile or manifest changes.
 - `hygiene-docs` — docs/README changes, or the diff mixes unrelated concerns.
 
