@@ -92,8 +92,8 @@ Another skill can invoke brainstorming — on a raw goal, or on a promoted subep
 - **The hand-off is the caller's, not yours. Stop at the committed spec and return it.** Do **not** invoke `writing-plans` or any other skill — this overrides the terminal-state rule below, which governs only a direct user invocation. A caller that asked for a spec is mid-way through its own sequence; chaining into planning strands that sequence and produces a plan for one slice of a design that is not finished being designed.
 - **Inherit the session's design mode** (Mode A caller → Mode A here; Mode B → Mode B). The user may override per-invocation with an explicit request.
 - **Context is handed in by the invoking caller**: for a subepic, the parent spec, the chain of ancestor goals, and the specs of already-designed siblings. Open the new spec's `## Goal` with this invocation's local goal, seeded from the caller's rationale.
-- Do **not** re-offer the visual companion, and do **not** offer adversarial review — that is the caller's concern at its own root, not this invocation's.
-- **Skip Mode B's user-review gate** (step 10 / "User Review Gate" below) — the caller owns the Mode B human checkpoints for a tree, and the HARD-GATE above is satisfied at the caller's own approval gate, not skipped.
+- Do **not** offer adversarial review — that is the caller's concern at its own root, not this invocation's.
+- **Skip Mode B's user-review gate** (step 9 / "User Review Gate" below) — the caller owns the Mode B human checkpoints for a tree, and the HARD-GATE above is satisfied at the caller's own approval gate, not skipped.
 - **A caller may hand in a spec-location override** — a directory that replaces the default
   `docs/superpowers/specs/` for the spec file. The `INDEX.md` row still goes to the canonical
   `docs/superpowers/specs/INDEX.md`, linking into the override directory **by its full directory
@@ -123,15 +123,14 @@ your path and complete them in order.
 1. **Start an isolated worktree** — before writing the spec or any files, ensure an isolated worktree via `superpowers:using-git-worktrees`. The spec and all work live there.
 2. **Explore project context** — check files, docs, recent commits; read `docs/superpowers/specs/INDEX.md` and open the adjacent prior designs it points to (see "Understanding the idea")
 3. **Select design mode** — Mode A (collaborative, default) or Mode B (one-shot); see Design Modes above
-4. **Offer the visual companion just-in-time** — NOT upfront. The first time a question would genuinely be clearer shown than described, offer it then (its own message); on approval its browser tab opens for you. If no visual question ever arises, never offer it. See the Visual Companion section below.
-5. **Ask clarifying questions** *(Mode A only)* — one at a time, scaled to complexity, covering every ambiguous/contentious part
-6. **Propose 2-3 approaches** — with trade-offs and your recommendation *(Mode A presents these to the user; Mode B decides alone)*
-7. **Present design** *(Mode A only)* — in sections scaled to their complexity, get user approval after each section
-8. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` (opening with a `## Goal` section, ending with a `## Post-Implementation Notes` section), add an INDEX.md row, and commit (Mode B uses the one-shot spec structure)
-9. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-10. **User reviews written spec** *(Mode B only)* — ask the user to review the spec file before proceeding. Mode A skips this: you reviewed section by section as you went
-11. **Offer adversarial review** *(optional)* — offer to run `superpowers:super-roast` on the spec before implementation; on a confirmed-findings verdict (Blocking/Should-fix) loop back to revise the spec; on a **clean** verdict with no qualifier, or if declined, continue; on a **clean** verdict carrying `[low coverage]` or `[panel-capped: N unverified]`, surface the qualifier and let the user decide whether to proceed or dig further (see "Adversarial Review" below)
-12. **Transition to implementation** — invoke `superpowers:writing-plans` to create an implementation plan (a caller-invoked run stops at step 11 and returns the spec — see "Invocation By Another Skill")
+4. **Ask clarifying questions** *(Mode A only)* — one at a time, scaled to complexity, covering every ambiguous/contentious part
+5. **Propose 2-3 approaches** — with trade-offs and your recommendation *(Mode A presents these to the user; Mode B decides alone)*
+6. **Present design** *(Mode A only)* — in sections scaled to their complexity, get user approval after each section
+7. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` (opening with a `## Goal` section, ending with a `## Post-Implementation Notes` section), add an INDEX.md row, and commit (Mode B uses the one-shot spec structure)
+8. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
+9. **User reviews written spec** *(Mode B only)* — ask the user to review the spec file before proceeding. Mode A skips this: you reviewed section by section as you went
+10. **Offer adversarial review** *(optional)* — offer to run `superpowers:super-roast` on the spec before implementation; on a confirmed-findings verdict (Blocking/Should-fix) loop back to revise the spec; on a **clean** verdict with no qualifier, or if declined, continue; on a **clean** verdict carrying `[low coverage]` or `[panel-capped: N unverified]`, surface the qualifier and let the user decide whether to proceed or dig further (see "Adversarial Review" below)
+11. **Transition to implementation** — invoke `superpowers:writing-plans` to create an implementation plan (a caller-invoked run stops at step 10 and returns the spec — see "Invocation By Another Skill")
 
 ## Process Flow
 
@@ -295,22 +294,3 @@ This is opt-in — the inline self-review already happened; `super-roast` is the
 - If another skill invoked you, stop here: return the committed spec and invoke nothing. The rest of this section applies only to a direct user invocation.
 - Invoke the writing-plans skill to create a detailed implementation plan
 - Do NOT invoke any other skill. writing-plans is the next step.
-
-## Visual Companion
-
-A browser-based companion for showing mockups, diagrams, and visual options during brainstorming. Available as a tool — not a mode. Accepting the companion means it's available for questions that benefit from visual treatment; it does NOT mean every question goes through the browser.
-
-**Offering the companion (just-in-time):** Do NOT offer it upfront. Wait until a question would genuinely be clearer shown than told — a real mockup / layout / diagram question, not merely a UI *topic*. The first time that happens, offer it then, as its own message:
-> "This next part might be easier if I show you — I can put together mockups, diagrams, and comparisons in a browser tab as we go. It's still new and can be token-intensive. Want me to? I'll open it for you."
-
-**This offer MUST be its own message.** Only the offer — no clarifying question, summary, or other content. Wait for the user's response. If they accept, start the server with `--open` so their browser opens to the first screen automatically. If they decline, continue text-only and don't offer again unless they raise it.
-
-**Per-question decision:** Even after the user accepts, decide FOR EACH QUESTION whether to use the browser or the terminal. The test: **would the user understand this better by seeing it than reading it?**
-
-- **Use the browser** for content that IS visual — mockups, wireframes, layout comparisons, architecture diagrams, side-by-side visual designs
-- **Use the terminal** for content that is text — requirements questions, conceptual choices, tradeoff lists, A/B/C/D text options, scope decisions
-
-A question about a UI topic is not automatically a visual question. "What does personality mean in this context?" is a conceptual question — use the terminal. "Which wizard layout works better?" is a visual question — use the browser.
-
-If they agree to the companion, read the detailed guide before proceeding:
-`skills/brainstorming/visual-companion.md`

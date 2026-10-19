@@ -493,7 +493,7 @@ Run in the main session (interactive Mode A can't run in a subagent). Context ha
 - Inherits the session's design mode (always Mode B under `autonomous`); in an interactive run the user can override per-subepic with an explicit request.
 - Opens with its own local `## Goal`, seeded from the promotion rationale.
 - Builds within the ancestors' `## Key abstractions` sections: they are the frame the nested design extends and never redefines. An explicit decision of the nested spec that goes against one wins at that level, and that level's own section notes it (§Key Abstractions).
-- Does not re-offer the visual companion or super-roast (super-roast is offered once, at the root, after coverage passes) and skips Mode B's per-spec review gate — a Mode B tree's human checkpoint is the design-ready stop (§Gates by Mode). Coverage disposes automatically in every mode, and in Mode B even its `ORPHAN` escalation applies without asking (§Coverage).
+- Does not re-offer super-roast (it is offered once, at the root, after coverage passes) and skips Mode B's per-spec review gate — a Mode B tree's human checkpoint is the design-ready stop (§Gates by Mode). Coverage disposes automatically in every mode, and in Mode B even its `ORPHAN` escalation applies without asking (§Coverage).
 - Does not create a new worktree; `using-git-worktrees` idempotently verifies the existing one.
 - Once it returns with a written, committed spec, invoke `superpowers:super-design` on that spec — §The Process, step 7; that is the recursion. The nested invocation runs step 2 on that spec itself.
 
