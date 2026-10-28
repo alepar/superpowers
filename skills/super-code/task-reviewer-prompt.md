@@ -72,6 +72,8 @@ return INVALID, as for an empty package.
 - The diff, [DIFF_FILE], once. Its context lines are the changed code. Read code outside the diff
   only to check a concrete risk you can name, one focused check per risk, and name the risk and the
   check in your review.
+- The commit rules in the repository's instruction files (AGENTS.md, CLAUDE.md, CONTRIBUTING), and the full commit
+  messages, `git log --format=%B [BASE]..[HEAD]`: check them against those rules and the brief's Global Constraints.
 
 Read source with `git show [HEAD]:<path>`. If a filesystem view is necessary, use a unique
 review-owned detached worktree at [HEAD], with its path recorded in [REVIEW_FILE]. This resource
@@ -157,6 +159,7 @@ baseline/owner histories remain explicit gaps for reconciliation rather than rep
   ignored or skipped because the product behaves wrongly. If the plan or brief
   explicitly mandates something this rubric calls a defect, report it as Important and label it
   plan-mandated.
+  A violation of an explicit project or brief constraint, commit-message policy included, is a missed requirement: Important, not style.
 - **Minor:** everything else, including polish, naming, broader coverage, and style. Minor findings
   are not fixed in this pass; they go to the ledger for the final review.
 

@@ -132,7 +132,10 @@ and the Commit steps below. Passing existing checks alone does not supply delive
 
 ## Commit
 
-COMMIT IS THE LAST STEP. Commit on `[BRANCH]` in [WORKTREE]. Then, unless step 0 reported stacked,
+COMMIT IS THE LAST STEP. Commit on `[BRANCH]` in [WORKTREE].
+Commit messages follow the commit rules in the repository's instruction files (AGENTS.md, CLAUDE.md, CONTRIBUTING)
+and the brief's Global Constraints; where they conflict with a harness's default attribution or trailer
+instruction, the project rule wins. Then, unless step 0 reported stacked,
 rebase onto the current integration tip, `git rebase [INTEGRATION_BRANCH]` in [WORKTREE], so the
 branch merges cleanly and tasks that build on it start from current code. Resolve any conflicts
 keeping both sides' intent; if you can't, `git rebase --abort` and say so under "Concerns". If
@@ -209,6 +212,9 @@ the task gets; it merges after you, without another review.
 - Append a section to [REPORT_FILE], headed "## Fix pass", or the heading your dispatch names
   ("## Seam fix", "## Merge-check fix"): what you changed for each finding, declined findings with their
   reasons, and the test command and output.
+- If a finding is about a commit message already on the branch, reword only this task's own unmerged commits in BASE..HEAD
+  (never a `stack:` merge or anything already on the integration branch), changing messages only, with each commit's
+  tree unchanged; this is the only history rewrite allowed.
 - Commit as in "Commit", without its rebase. If you only declined findings or resolved them in the
   report, there is nothing to commit.
 
