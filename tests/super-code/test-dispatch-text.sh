@@ -140,6 +140,31 @@ assert_has "$out" "A \`consumes <id>\` entry" "a consumes entry gets the compose
 run bash "$D" --ledger "$L" --stdout check-fix-review --id ep.2 --n 2 --head "$PIN_HEAD" --pre-fix-head abc1234 --errors-file "$T/err.txt"
 assert_has "$out" "READ-ONLY review of a merge-check fix" "check-fix review"
 
+echo "dispatch-text: commit policy"
+IMPL_T="$REPO_ROOT/skills/super-code/implementer-prompt.md"
+REV_T="$REPO_ROOT/skills/super-code/task-reviewer-prompt.md"
+impl_text=$(cat "$IMPL_T"); rev_text=$(cat "$REV_T")
+# The rendered dispatch points the agent at its template; the rule text lives in the template.
+run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2
+assert_has "$out" "skills/super-code/implementer-prompt.md" "implement dispatch points at the implementer template"
+run bash "$D" --ledger "$L" --stdout fix --id ep.2 --n 2 --base abc1234 --kind review --finding-file "$T/f-review.txt"
+assert_has "$out" "skills/super-code/implementer-prompt.md" "fix dispatch points at the implementer template"
+run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base "$PIN_BASE" --head "$PIN_HEAD"
+assert_has "$out" "skills/super-code/task-reviewer-prompt.md" "review dispatch points at the reviewer template"
+assert_has "$impl_text" "commit rules in the repository's instruction files (AGENTS.md, CLAUDE.md, CONTRIBUTING)" "implementer Commit step names the repository commit rules"
+assert_has "$impl_text" "Global Constraints" "implementer Commit step names the brief's Global Constraints"
+assert_has "$impl_text" "the project rule wins" "project rule wins over a harness default attribution or trailer"
+assert_has "$impl_text" "reword only this task's own unmerged commits in BASE..HEAD" "fix pass: reword only the task's own commits"
+assert_has "$impl_text" 'never a `stack:` merge' "fix pass: never a stack merge"
+assert_has "$impl_text" "tree unchanged" "fix pass: each commit's tree unchanged"
+assert_has "$rev_text" 'git log --format=%B' "reviewer reads full commit messages"
+assert_has "$rev_text" "AGENTS.md, CLAUDE.md, CONTRIBUTING" "reviewer reads the repository commit rules"
+assert_has "$rev_text" "A violation of an explicit project or brief constraint, commit-message policy included, is a missed requirement: Important, not style." "reviewer grades constraint violations Important"
+for name in impl rev; do
+  eval "body=\$${name}_text"
+  assert_lacks "$body" "Co-Authored-By" "$name template names no trailer"
+done
+
 echo "dispatch-text: merge"
 run bash "$D" --ledger "$L" --stdout merge --id ep.2 --n 2 --base abc1234
 assert_has "$out" "rebase \`task-ep.2\` onto feat/x" "an unstacked merge rebases the whole branch"
