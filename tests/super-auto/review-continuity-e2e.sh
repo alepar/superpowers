@@ -19,14 +19,17 @@ FIX="$REPO_ROOT/tests/super-code/fixtures/report-verdict"
 T=$(mktemp -d)
 trap 'rm -rf "$T"' EXIT
 FAILURES=0
+export GIT_AUTHOR_NAME=fixture GIT_AUTHOR_EMAIL=fixture@example.test GIT_COMMITTER_NAME=fixture GIT_COMMITTER_EMAIL=fixture@example.test
 
 pass() { echo "  [PASS] $1"; }
 fail() { echo "  [FAIL] $1"; FAILURES=$((FAILURES + 1)); }
 assert_eq() { if [ "$1" = "$2" ]; then pass "$3"; else fail "$3"; echo "    expected: $2"; echo "    got:      $1"; fi; }
 # run CMD...: sets code, out (stdout) and err (stderr) without tripping set -e.
 run() { set +e; out=$("$@" 2>"$T/err"); code=$?; set -e; err=$(cat "$T/err"); }
-g() { git -c user.name=fixture -c user.email=fixture@example.test "$@"; }
+g() { git -c commit.gpgsign=false -c core.hooksPath=/dev/null "$@"; }
 sha() { shasum -a 256 "$1" | cut -d' ' -f1; }
+# Pin check: a bare git write call would use the ambient identity, signing and hooks.
+if grep -nE '(^|[^[:alnum:]_./-])git[[:space:]]+(-C[[:space:]]+[^[:space:]]+[[:space:]]+)?(commit|merge|rebase|cherry-pick|checkout|switch|init|add|rm|tag|branch|worktree|reset|revert|am)([[:space:]]|$)' "$0"; then fail "a bare git write call bypasses g"; else pass "every git write call goes through g"; fi
 q() { node -e 'const d=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));console.log(new Function("d","return "+process.argv[2])(d))' "$1" "$2"; }
 rec() { printf -- '- %s · %s\n' "$1" "$2"; } # rec TYPE JSON-or-text
 
@@ -131,8 +134,8 @@ echo zero >product.txt; g add -A; g commit -qm zero
 mkdir -p docs/prior/reviews/old-inv
 printf '# Prior run\napprovals:\n%s\n' "$REC" >docs/prior/run.md
 echo old >docs/prior/reviews/old-inv/final-review-old-inv.md
-echo one >product.txt; g add -A; g commit -qm prior; B=$(git rev-parse HEAD)
-echo two >product.txt; g commit -qam product; H=$(git rev-parse HEAD)
+echo one >product.txt; g add -A; g commit -qm prior; B=$(g rev-parse HEAD)
+echo two >product.txt; g commit -qam product; H=$(g rev-parse HEAD)
 run node "$DT" --ledger "$T/ledger.md" review-inputs --base "$B" --head "$H" --out-dir "$T/s3out"
 assert_eq "$code" 0 "S3 product-only range exits 0 despite the untouched incomplete run"
 J="$T/s3out/review-inputs.json"
