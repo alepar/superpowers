@@ -447,5 +447,77 @@ assert_eq "$code" 2 "missing --source exits 2"
 run bash "$R" --complete --source identity
 assert_eq "$code" 2 "missing artifact exits 2"
 
+echo "report-verdict --complete: sub-headings, fences and exit codes"
+SUBTAIL='## Untested scope\n- none\n'
+printf "## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n### detail\n- b\n$SUBTAIL" > "$T/sub-after-items.md"
+printf "## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n**Note**\n- b\n$SUBTAIL" > "$T/bold-after-items.md"
+printf '## Verdict\nready\n**Findings**\n- a\n**Note** text\n- b\n' > "$T/bold-opened-subbold.md"
+printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n## Untested scope\n- u\n### Deferred OK\n- d\n' > "$T/back-to-back.md"
+printf '## Verdict\nnot ready (x)\n## Findings\n- f1\n## Analysis\nnarrative prose here\n' > "$T/findings-then-analysis.md"
+printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- first\n```\n# reproduce\n```\n- second\n## Untested scope\n- none\n' > "$T/fenced.md"
+printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- first\n   ~~~\n# reproduce\n   ~~~\n- second\n## Untested scope\n- none\n' > "$T/fenced-tilde.md"
+
+for f in sub-after-items bold-after-items bold-opened-subbold; do
+  run bash "$R" --complete --source 'invocation/sub' "$T/$f.md"
+  assert_eq "$code" 4 "$f: exits 4"
+  assert_eq "$out" "" "$f: no success JSON"
+  case "$(cat "$T/err")" in "report-verdict: --complete: sub-heading inside "*) pass "$f: grammar prefix and message";; *) fail "$f: grammar prefix and message"; cat "$T/err";; esac
+done
+run bash "$R" --complete --source 'invocation/sub' "$T/sub-after-items.md"
+assert_has "$(cat "$T/err")" "report-verdict: --complete: sub-heading inside Must fix before landing: ### detail" "sub-heading error names the section and line"
+
+occ() { node --input-type=module - "$1" <<'NODE'
+const j = JSON.parse(process.argv[2]);
+console.log(j.occurrences.map(o => `${o.section}|${o.position}|${o.key}`).join('\n'));
+NODE
+}
+run bash "$R" --complete --source 'invocation/b2b' "$T/back-to-back.md"
+assert_eq "$code" 0 "back-to-back recognized sections: exits 0"
+assert_eq "$(occ "$out")" "Must fix before landing|1|a
+Untested scope|1|u
+Deferred OK|1|d" "recognized deeper label is a sibling, not a sub-heading"
+run bash "$R" --complete --source 'invocation/fta' "$T/findings-then-analysis.md"
+assert_eq "$code" 0 "Findings then Analysis: exits 0"
+assert_eq "$(occ "$out")" "Findings|1|f1" "same-level unrecognized heading is a sibling; its prose is ignored"
+for f in fenced fenced-tilde; do
+  run bash "$R" --complete --source 'invocation/fence' "$T/$f.md"
+  assert_eq "$code" 0 "$f: exits 0"
+  assert_eq "$(occ "$out")" "Must fix before landing|1|first
+Must fix before landing|2|second" "$f: fence line is not a heading; both items extracted"
+done
+
+# strictDraft copy: same bytes, driven through the exported boundedReport.
+cat > "$T/strict.cjs" <<'NODE'
+const fs = require('node:fs');
+const {boundedReport} = require(process.argv[2]);
+try { boundedReport(fs.readFileSync(process.argv[3], 'utf8'), {}); console.log('ok'); }
+catch (e) { console.log('throws: ' + e.message); }
+NODE
+AA="$REPO_ROOT/skills/super-code/scripts/assembly-archive.cjs"
+for f in sub-after-items bold-after-items; do
+  run node "$T/strict.cjs" "$AA" "$T/$f.md"
+  assert_eq "$out" "throws: draft sub-heading inside a finding section" "$f: strictDraft rejects"
+done
+for f in fenced fenced-tilde back-to-back; do
+  run node "$T/strict.cjs" "$AA" "$T/$f.md"
+  assert_eq "$out" "ok" "$f: strictDraft accepts"
+done
+printf '## Verdict\nnot ready (x)\n## Findings\n- f1\n## Analysis\nnarrative prose here\n## Untested scope\n- none\n' > "$T/fta-strict.md"
+run node "$T/strict.cjs" "$AA" "$T/fta-strict.md"
+assert_eq "$out" "ok" "Findings then Analysis: strictDraft accepts"
+
+printf '\xff\xfe' > "$T/bad-utf8.md"
+for g in "$FX/unknown.md" "$T/no-verdict.md" "$T/no-sections.md" "$T/malformed-section.md" "$T/empty-roast-verdict.md" "$T/truncated-section.md"; do
+  run bash "$R" --complete --source 'invocation/grammar' "$g"
+  assert_eq "$code" 4 "$(basename "$g"): grammar failure exits 4"
+done
+for g in "$T/nope.md" "$T" "$T/bad-utf8.md"; do
+  run bash "$R" --complete --source 'invocation/io' "$g"
+  assert_eq "$code" 2 "$(basename "$g"): unreadable artifact exits 2"
+  case "$(cat "$T/err")" in "report-verdict: --complete: "*) pass "$(basename "$g"): stderr prefix";; *) fail "$(basename "$g"): stderr prefix";; esac
+done
+run bash "$R" --complete --source '' "$T/explicit-empty.md"
+assert_eq "$code" 2 "empty source id exits 2 (grammar block)"
+
 if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
 echo "report-verdict: all tests passed"
