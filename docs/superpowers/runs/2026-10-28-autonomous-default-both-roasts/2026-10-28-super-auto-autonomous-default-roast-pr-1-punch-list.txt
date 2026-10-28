@@ -7,3 +7,25 @@ Behavioral effect of the new defaults on a live run (actual absence of a launch 
 docs/superpowers/specs/INDEX.md new row status is `draft` though implemented on this branch.
 run.md parked degraded verdicts (coverage round 2 widening; design roast r1 `[low coverage] [review readiness incomplete]` from an empty readiness basis with full stage coverage).
 Design roast r1 rejected FYI with Should-fix dissent on model-initiated entry (no `disable-model-invocation`): follow-up decision for the human, not a regression introduced here.
+skills/super-auto/resume.md:13
+skills/super-auto/SKILL.md:160
+skills/super-auto/SKILL.md:110; skills/super-auto/SKILL.md:151
+skills/super-auto/SKILL.md:102
+skills/super-auto/SKILL.md:620
+docs/superpowers/specs/INDEX.md:11
+skills/super-auto/SKILL.md:3
+skills/super-auto/SKILL.md:567
+skills/super-auto/SKILL.md:151
+skills/super-auto/SKILL.md:1
+skills/super-auto/SKILL.md:97
+docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/reviews/inv-8369280e-3786-4bc9-ad92-69dc296989b6/assembled/final-review-inv-8369280e-3786-4bc9-ad92-69dc296989b6-final/review-inputs.json:1
+Caller-deferred full-suite sweep: no full-suite measurement of d9e65f79 exists; only tests/super-auto/test-contract-lint.sh and tests/super-auto/test-scripts.sh were run by this review (both pass).
+Whole-range review incomplete: bounded review of captured Git only; review-inputs.json status unavailable with 2115 provenance gaps (missing captured payloads of archived invocation inv-mvc60k41-xt8p35rk04d under docs/superpowers/runs/2026-10-16-workflow-reliability/).
+Run-dir artifacts not inspected hunk by hunk: design roast reports and keys, coverage rounds and ledger, findings ledgers, profile JSON/MD, run.md, friction.md, probes/before-summary.md, probes/probe.md, roast-pr-1 keys/scope files, and the archived inv-8369280e bounded review bundle.
+Behavioral probes ran against b4c1fb9e (before z1k.2 fixed the contradiction's recorded planOneShot value); no probe session ran against d9e65f79, and the probes are subagent micro-tests, not drill evals of live runs.
+Integration with the parallel readiness/continuity branch editing skills/super-auto is not visible here; the epic's hand-back item (re-run super-plan-z1k.1's sweep grep on the integrated result) is still owed by the main coordinator.
+Ledger/Git identity gap: Metrics git-only lists beads of earlier epics (super-plan-998.*, super-plan-goq.*, super-plan-ufz.*), not reconciled here.
+skills/super-design/SKILL.md:684 "the caller's user already answered it once" is stale wording for a defaulted run; behavior unaffected and outside this epic's owned hunks.
+skills/super-auto/MAINTENANCE.md bullet omits the autonomous+design-review-stop contradiction exception; SKILL.md §Inputs is canonical and correct.
+docs/superpowers/specs/INDEX.md new row status `draft`; flipped to implemented by finishing-a-development-branch per INDEX convention.
+Code roast r1 rejected FYIs (no launch-time checkpoint, closed opt-out phrase list, model-initiated entry without disable-model-invocation) are spec-mandated by the literal request; model-initiated entry remains a human follow-up decision, not a regression.
