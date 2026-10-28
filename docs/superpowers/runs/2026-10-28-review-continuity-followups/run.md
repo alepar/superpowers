@@ -1,7 +1,7 @@
 # super-auto run — 2026-10-28-review-continuity-followups
 
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=t
-phase: design
+phase: roast-design
 codeMechanism: Workflow
 runTag: review-continuity-followups-20261028T151257
 context: Context: claude · planner=200K/167K · implementer=200K/167K · reviewer=200K/167K · finalReview=200K/167K · assembler=200K/167K · warn: planner, finalReview on a 200K model → set ANTHROPIC_DEFAULT_OPUS_MODEL=<model>[1m] or config.models.<role> to a 1M model · warn: implementer, reviewer, assembler on a 200K model → set ANTHROPIC_DEFAULT_SONNET_MODEL=<model>[1m] or config.models.<role> to a 1M model
@@ -11,6 +11,7 @@ branch: super-auto/review-continuity-followups
 base: main
 spec: 2026-10-28-review-continuity-followups-design.md
 epic: super-plan-mlr
+roastDesignRound: 1
 
 approvals:
 - top-split · auto · super-plan-2s3 LEAF, super-plan-mlr.1 LEAF, super-plan-mlr.2 LEAF, super-plan-rsc LEAF, super-plan-tco LEAF, super-plan-row LEAF, super-plan-mlr.3 LEAF, super-plan-v94 LEAF, super-plan-1s3 LEAF, super-plan-zhk LEAF
