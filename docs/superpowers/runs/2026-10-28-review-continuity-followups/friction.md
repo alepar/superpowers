@@ -13,3 +13,4 @@
 - [2026-10-28T19:59Z] super-roast · code round 2 rung: Workflow (wf_71190575-424)
 - [2026-10-28T20:13Z] super-auto · code step-back r2 remains: field trimmed to canonical keys (agent appended resolved/untested prose that is not key-only)
 - [2026-10-28T20:14Z] super-design findings-ledger · round-1 findings the round-2 roast reports as resolved (delta: 8 resolved, listed with fixing commits) still read 'open' in the code ledger; Amend Mode's code coverage rule then demands work: lines or disputes for already-fixed keys
+- [2026-10-28T23:46Z] super-auto · roast-code r3 assembler: provenance unavailable; captured source available (same 2115 historical gaps); bounded direct review of 444f86b266b2208b612e0e91b0f54762576ff95a..b9918d23297c693a59dea0df28c3d90929b1564c
