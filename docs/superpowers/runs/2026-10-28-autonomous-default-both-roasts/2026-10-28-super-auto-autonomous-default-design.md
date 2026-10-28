@@ -52,7 +52,7 @@ since a launch question is exactly the stop "fully autonomous" removes. Consider
 ("default mode") — rejected as a new abstraction the four flags already express.
 
 **§Inputs — opt-outs.** Recommended: one sentence mapping plain requests to flag values:
-"interactive" / "not autonomous" / "ask me" → `autonomous=false`; "stop for design review" (or
+"interactive" / "not autonomous" / a bare "ask me" → `autonomous=false` ("ask me only about X" is a reserved topic, §Autonomous mode Reserved decisions, and keeps `autonomous=true`); "stop for design review" (or
 `planOneShot` stated without `autonomous`) → `planOneShot=true, autonomous=false`; "skip the
 plan/design roast" → `skipPlanRoast=true`; "skip the code roast" → `skipCodeRoast=true`. An
 invocation that states both `autonomous` and a design-review stop is contradictory; take the
@@ -88,10 +88,13 @@ they need fresh agents), each giving a fresh subagent the SKILL.md text (pre-cha
 post-change from the branch) and an invocation, asking for the `flags:` line it would write and
 whether it would ask anything before phase 1, and whether it would stop anywhere before the phase-7 hand-back (the existing §Autonomous mode answers the design- and code-roast pauses; the probe checks that they still do under the default): (1) unqualified idea; (2) "…, interactive"; (3) "…,
 skip the code roast"; (4) "…, one-shot, stop for design review"; (5) a resume whose `run.md` records
-`autonomous=f`; (6) "…, autonomous" — and whether the default run would merge into `base` without
+`autonomous=f`; (6) "…, autonomous"; (7) "…, autonomous, stop for design review"; (8) "…, one-shot" with no
+`autonomous` stated; (9) "…, ask me only about the database schema"; (10) "…, skip the design roast" — and whether the default run would merge into `base` without
 the human. Expected after: (1) `autonomous=t`, both skips `f`, no question; (2) `autonomous=f`;
 (3) `skipCodeRoast=t, autonomous=t`; (4) `planOneShot=t, autonomous=f`; (5) recorded flags kept;
-(6) unchanged; no unattended merge; and (1), (3), (6) stop nowhere before the phase-7 hand-back. Run each probe in at least two fresh sessions. The project's
+(6) unchanged; (7) `autonomous=t` with the contradiction named in the status note; (8) `planOneShot=t,
+autonomous=f`; (9) `autonomous=t` with the reserved topic recorded under `approvals:`; (10) `skipPlanRoast=t,
+autonomous=t`; no unattended merge; and (1), (3), (6), (9), (10) stop nowhere before the phase-7 hand-back. Run each probe in at least two fresh sessions. The project's
 drill harness (`evals/`) is not checked out here; the probes are the evidence and are labeled as
 subagent micro-tests, not drill evals. Mechanical: the existing `tests/super-auto` suites stay green.
 
