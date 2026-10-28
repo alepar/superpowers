@@ -688,7 +688,7 @@ Inputs table: the artifact-directory override as its report-location override (s
 beside the specs it is about), **the iteration number from the round count** (without it a later
 round's report overwrites an earlier one's file), **`autonomous` when the run is unattended**
 (§Unattended Runs; without it super-roast pauses for a human at its loop exits), and on rounds ≥2 the prior
-report. The report file is the only cross-iteration state. **Three of its sections drive this loop — reading only
+report. Each report recorded and passed on is the round's report path from super-roast's write step (accepted repair, else original). The report file is the only cross-iteration state. **Three of its sections drive this loop — reading only
 `## Confirmed findings` silently discards the two that most need a human:**
 
 | Report section | What this loop does with it |
@@ -1115,7 +1115,7 @@ Write these, each as it happens:
 |---|---|
 | the root spec's path | `brainstorming` commits it |
 | the root epic id | §Decomposition creates it |
-| the complete actual settled `roast-design` report/input list, including earlier, amend and genuinely empty rounds | `super-roast` returns each report; preserve all prior inputs when writing the list |
+| the complete actual settled `roast-design` report/input list, including earlier, amend and genuinely empty rounds | `super-roast` returns each report; record each as the round's report path from its write step (accepted repair, else original); preserve all prior inputs when writing the list |
 | the roast round count | incremented **per round**, before the next round starts |
 | a parked escalation, beyond-cap item, verdict qualifier, or graph change | the round or pass that produced it |
 | `findingsLedgerDesign: <path>` (`<artifact-dir>/findings-ledger-design.md`; single-valued, replaced) | Step 1 first builds the ledger |

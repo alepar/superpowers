@@ -1,0 +1,21 @@
+## tests/super-code/test-report-verdict.sh
+rc=0 secs=5
+  [PASS] super-auto SKILL: round's report path
+  [PASS] super-design SKILL: round's report path
+report-verdict: all tests passed
+## tests/super-roast/test-assemble-args.sh
+rc=0 secs=4
+  [PASS] design-r1: independence header rendered from the assembled roster
+
+All super-roast assemble-args tests passed
+## tests/super-auto/test-contract-lint.sh
+rc=0 secs=126
+  [PASS] a super-auto abort that removes before it rewrites the state fails
+
+All super-auto contract lint tests passed
+## tests/super-design/test-scripts.sh
+rc=0 secs=1
+  [PASS] promotion prompt has no ~5+ number
+
+All super-design script tests passed
+done

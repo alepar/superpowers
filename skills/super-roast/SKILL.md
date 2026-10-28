@@ -211,13 +211,32 @@ lane-yield (found/confirmed/unique/refuted): correctness 5/2/1/1 · security 0/0
 - <N> candidates dropped by the remainder cap — raise config.remainderCap and re-run to see them
 
 ## Rejected (with reason)        ← so re-roasts don't re-litigate
+- <entry>   (or: - none)
+
 ## Unverified nits (spot-checked)
+- <entry>   (or: - none)
+
 ## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent
+- <entry>   (or: - none)
 ```
+
+Every section of the report body below (Confirmed findings, both Not verified sections, Beyond remainder cap, Rejected, Unverified nits, Escalations) holds only `- ` items, each with optional indented continuation lines, or the single item `- none`: no prose preamble, sub-headings or bold labels inside a section. An explanatory sentence goes outside the recognized sections.
 
 The report is written to `docs/superpowers/reviews/YYYY-MM-DD-<topic>-roast-<mode>-N.md`
 (`<mode>` = `design` or `pr`, N = iteration) by the orchestrator, after the engine returns
 `reportMarkdown` — the pipeline itself writes nothing to the repo.
+- **Format check and repair (the write step).** After writing the file, run
+  `bash <skills-root>/super-code/scripts/report-verdict --complete --source format-check <file>`.
+  Exit 0: done. Exit 2 (usage or I/O): no repair; note it in the friction log. Exit 4 whose error is
+  `unrecognized finding source` or `missing verdict value`: no re-dispatch; the original stands and a
+  friction line names the error. Any other exit 4 is a grammar failure, and only on exit 4 the reporter is
+  re-dispatched once with the parser error and the original path. Write its output to a new sibling
+  `<original stem>-format-repair.md`, never over the original, then run
+  `report-verdict --repair-check <original> <repair>`. Exit 0: the repair stands, and
+  `report format repair: <original> → <repair> — <parser error>` is appended to the friction log. Exit 4
+  or 2: the original stands, and the friction line names the failed check. **The round's report path** is
+  the path this step ends on (the accepted repair, else the original); callers record and pass that path.
+  The orchestrator never edits finding content.
 - (User preferences for report location override this default — `super-auto` supplies its run directory.)
 - **`<mode>` is in the filename, not just the header, because the same topic gets roasted twice:
   once as a design and once as a PR.** Without it both land on `…-roast-1.md` on the same day in
