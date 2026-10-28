@@ -597,5 +597,37 @@ assert_eq "$code" 2 "missing ORIGINAL exits 2"
 run bash "$R" --repair-check "$T/repair-orig.md" "$T/nope.md"
 assert_eq "$code" 2 "missing REPAIR exits 2"
 
+echo "report-verdict --complete: roast report body rule"
+run bash "$R" --complete --source format-check "$FX/roast-unverified-nits-prose.md"
+assert_eq "$code" 4 "prose preamble in Unverified nits: grammar failure exits 4"
+assert_eq "$out" "" "prose preamble in Unverified nits: empty stdout"
+case "$(cat "$T/err")" in *"finding text without a list marker in Unverified nits"*) pass "prose preamble: error names the section";; *) fail "prose preamble: error names the section"; cat "$T/err";; esac
+run bash "$R" --complete --source format-check "$FX/roast-template-shaped.md"
+assert_eq "$code" 0 "template-shaped roast report: exits 0"
+assert_eq "$(node -e 'const j = JSON.parse(process.argv[1]); console.log(j.occurrences.length)' "$out")" 7 "template-shaped: all seven items extracted"
+assert_eq "$(node -e 'const j = JSON.parse(process.argv[1]); console.log(j.occurrences.map(o => o.section).join("\n"))' "$out")" "Confirmed findings
+Not verified (beyond panel cap)
+Not verified (dedupe failed or judge lost)
+Beyond remainder cap (count only)
+Rejected (with reason)
+Unverified nits (spot-checked)
+Escalations (need human)" "template-shaped: one occurrence per section"
+
+flat() { tr '\n' ' ' < "$1" | tr -s ' '; }
+RP=$(flat "$REPO_ROOT/skills/super-roast/reporter-prompt.md")
+SR=$(flat "$REPO_ROOT/skills/super-roast/SKILL.md")
+SA=$(flat "$REPO_ROOT/skills/super-auto/SKILL.md")
+SD=$(flat "$REPO_ROOT/skills/super-design/SKILL.md")
+has() { if printf '%s\n' "$1" | grep -qF -- "$2"; then pass "$3"; else fail "$3"; echo "    missing: $2"; fi; }
+has "$RP" 'only `- ` items' "reporter-prompt: body rule, list items only"
+has "$RP" 'no prose preamble, sub-headings or bold labels' "reporter-prompt: body rule, no preamble"
+has "$SR" 'only `- ` items' "super-roast SKILL: body rule, list items only"
+has "$SR" 'no prose preamble, sub-headings or bold labels' "super-roast SKILL: body rule, no preamble"
+for phrase in '--complete --source format-check' 'only on exit 4' '-format-repair.md' '--repair-check' 'report format repair:' "round's report path"; do
+  has "$SR" "$phrase" "super-roast SKILL write step: $phrase"
+done
+has "$SA" "record and pass the round's report path" "super-auto SKILL: round's report path"
+has "$SD" "is the round's report path from super-roast's write step" "super-design SKILL: round's report path"
+
 if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
 echo "report-verdict: all tests passed"

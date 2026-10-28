@@ -231,6 +231,8 @@ a caller's cap already tripped.
 Write the free-text parts (evidence, reasons, fix-shape hints) as plain, literal statements a
 reviewer can scan: short sentences, one fact per line, no metaphor or flourish.
 
+Every section of the report body below (Confirmed findings, both Not verified sections, Beyond remainder cap, Rejected, Unverified nits, Escalations) holds only `- ` items, each with optional indented continuation lines, or the single item `- none`: no prose preamble, sub-headings or bold labels inside a section. An explanatory sentence goes outside the recognized sections.
+
 ---
 super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified] [review readiness incomplete] [converged]
 mode: design | PR        iteration: N of 3
@@ -257,8 +259,13 @@ independence: {{INDEPENDENCE}}
 - <N> candidates dropped by the remainder cap — raise config.remainderCap and re-run to see them
 
 ## Rejected (with reason)        ← so re-roasts don't re-litigate
+- <entry>   (or: - none)
+
 ## Unverified nits (spot-checked)
+- <entry>   (or: - none)
+
 ## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent
+- <entry>   (or: - none)
 ---
 
 Notes on filling it in:
