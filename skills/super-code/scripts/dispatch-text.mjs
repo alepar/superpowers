@@ -18,6 +18,7 @@ import { fileURLToPath } from 'node:url'
 import assemblyArchive from './assembly-archive.cjs'
 const { validateFailedAssembly, boundedReport } = assemblyArchive
 
+const OUT_OF_RANGE_SAMPLE = 20
 const here = dirname(fileURLToPath(import.meta.url))
 const codeSkill = resolve(here, '..')
 const skillsRoot = resolve(codeSkill, '..')
@@ -419,7 +420,8 @@ function reviewInputs(repo, base, head, out, current = null) {
     ...collectionOrigins.map(o => '- Collection origin: ' + JSON.stringify(o)),
     ...omitted.map(o => '- ' + JSON.stringify(o)),
     ...gaps.map(g => '- Selection/evidence gap (unavailable): ' + g),
-    ...outOfRange.map(g => '- Outside captured range (informational; neither selected nor waived): ' + g),
+    ...(outOfRange.length ? ['- Outside captured range: ' + outOfRange.length + ' informational entries (neither selected nor waived); the first ' + Math.min(outOfRange.length, OUT_OF_RANGE_SAMPLE) + ' are listed; the full list is review-inputs.json outOfRange.'] : []),
+    ...outOfRange.slice(0, OUT_OF_RANGE_SAMPLE).map(g => '- Outside captured range (informational; neither selected nor waived): ' + g),
     'Open each report/archive at its recorded revision. Omission supplies no finding disposition or verdict.',
   ].join('\n') + '\n')
   console.log(JSON.stringify({ status: result.status, sourceAvailable, wholeRangeReady: false, dir: out, selected: selected.length, omitted: omitted.length, gaps }))
