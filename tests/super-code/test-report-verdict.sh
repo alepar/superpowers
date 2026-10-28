@@ -122,6 +122,28 @@ for needle in '"## Verdict"' '"## Must fix before landing"' '"## Untested scope"
   if printf '%s\n' "$out" | grep -qF -- "$needle"; then pass "prompt fixes $needle"; else fail "prompt fixes $needle"; fi
 done
 
+echo "report-verdict: review-file whole-file rule"
+run bash "$R" --complete --source format-check "$FX/narrative-findings-subheadings.md"
+assert_eq "$code" 4 "narrative Findings under sub-headings is a grammar failure"
+assert_has "$(cat "$T/err")" "report-verdict: --complete: empty finding section: Findings" "names the empty Findings section"
+run bash "$R" --complete --source format-check "$FX/findings-prose-preamble.md"
+assert_eq "$code" 4 "prose preamble in Findings is a grammar failure"
+if grep -qF "finding text without a list marker" "$T/err"; then pass "names the unmarked text"; else fail "names the unmarked text"; cat "$T/err"; fi
+run bash "$R" --complete --source format-check "$FX/whole-file-rule.md"
+assert_eq "$code" 0 "a file written to the whole-file rule extracts"
+want=$(grep '^- ' "$FX/whole-file-rule.md" | grep -vc '^- none$')
+got=$(printf '%s' "$out" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).occurrences.length))')
+assert_eq "$got" "$want" "every list item of the rule-shaped file is an occurrence"
+for mode in single cluster seam; do
+  extra=(--dir /review/inputs)
+  case "$mode" in cluster) extra=(--dir /review/inputs --cluster 1 --name source);; seam) extra=(--dir /review/inputs --reviewed none);; esac
+  run bash "$REPO_ROOT/skills/super-code/scripts/dispatch-text" --ledger "$T/ledger.md" --stdout final-review --mode "$mode" \
+    --base 1111111111111111111111111111111111111111 --head 2222222222222222222222222222222222222222 "${extra[@]}"
+  for needle in 'mark extractable sections anywhere' '"- none"' 'no sub-headings, bold labels or prose preamble' 'report-verdict --complete --source format-check' 'only on exit 4' 'formatting only'; do
+    if printf '%s\n' "$out" | grep -qF -- "$needle"; then pass "$mode prompt carries: $needle"; else fail "$mode prompt carries: $needle"; fi
+  done
+done
+
 echo "report-verdict: step-back"
 run bash "$R" "$FX/step-back.md"
 assert_eq "$code" 0 "exits 0"
