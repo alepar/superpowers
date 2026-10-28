@@ -1,0 +1,215 @@
+whole-epic review incomplete; bounded inspected hunks only; all remaining hunks and provenance gaps remain unreviewed
+Whole-range review outstanding: this is a bounded captured-source review (forced not-ready); a whole-range review of 444f86b..776fd88 is still required for acceptance, even though the branch's own review-inputs appears to clear the historical provenance gaps.
+All 2115 provenance gaps recorded in .superpowers/sdd/super-plan-mlr-plan/assembled/final-review-inv-20261028T162628-final/review-inputs.json (historical run payloads under docs/superpowers/runs/2026-10-16-workflow-reliability/, "incomplete split bundle: missing or non-regular captured file") are unreviewed; none was waived or selected.
+Full-suite sweep not run: no full-suite measurement of this branch exists; only the ten targeted suites listed in Scope and method were executed at the captured head.
+coordinator.js changed, and its documented dryRun scenarios and agent counts (coordinator-workflow.md) were not run in this review; replay-harness template-literal count moved 455 to 464 with a recorded reason.
+Skill and prompt text changes (super-auto, super-roast, super-design, implementer and task-reviewer prompts, reporter prompt) have prompt-text assertions only; no drill pressure eval evidence was seen, which the project's skill-change rule asks for.
+Drift-check reconciliation depends on an implementer agent saving and running the emitted script and acting on its last line; test-setup-reuse.sh proves the script, not agent compliance.
+Ledger/Git identity metrics gap (git-only identities from earlier epics) means ledger completeness for this epic was not independently established.
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-1-step-back-keys.txt
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-1-step-back.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-1.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-2.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-findings-round-1.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-findings-round-2.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-ledger.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-1-requirements.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-1-review-1.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-1-review-2.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-2-requirements.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-2-review-1.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-2-review-2.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/design-roast-1-tree.json
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/design-roast-2-tree.json
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-ledger-design.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-overrides-design.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/friction.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-1s3.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-2s3.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-rsc.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-tco-row.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-v94.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-zhk.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/rsc-proto.diff
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/rsc-scenarios.sh
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/run.md
+Unreviewed path: docs/superpowers/specs/INDEX.md
+Unreviewed path: evidence/super-plan-1s3/final-run.log
+Unreviewed path: evidence/super-plan-mlr.6/summary.log
+Unreviewed path: evidence/super-plan-mlr.6/test-assemble-args.sh.log
+Unreviewed path: evidence/super-plan-mlr.6/test-contract-lint.sh.log
+Unreviewed path: evidence/super-plan-mlr.6/test-report-verdict.sh.log
+Unreviewed path: evidence/super-plan-mlr.6/test-scripts.sh.log
+Unreviewed path (executed, passed): tests/super-auto/review-continuity-e2e.sh
+Unreviewed path (executed, passed): tests/super-auto/review-inputs-range-scope.sh
+Unreviewed path (executed, passed): tests/super-auto/test-contract-lint.sh
+Unreviewed path (executed, passed): tests/super-auto/test-scripts.sh
+Unreviewed path: tests/super-code/fixtures/report-verdict/findings-prose-preamble.md
+Unreviewed path: tests/super-code/fixtures/report-verdict/narrative-findings-subheadings.md
+Unreviewed path: tests/super-code/fixtures/report-verdict/roast-template-shaped.md
+Unreviewed path: tests/super-code/fixtures/report-verdict/roast-unverified-nits-prose.md
+Unreviewed path: tests/super-code/fixtures/report-verdict/whole-file-rule.md
+Unreviewed path (executed, passed): tests/super-code/test-context-preflight.sh
+Unreviewed path (executed, passed): tests/super-code/test-dispatch-text.sh
+Unreviewed path (executed, passed): tests/super-code/test-report-verdict.sh
+Unreviewed path (executed, passed; read only in part): tests/super-code/test-setup-reuse.sh
+Unreviewed path (executed, passed): tests/super-roast/test-assemble-args.sh
+Task 6 (v94) [check-ordering] drift check before ALREADY-MERGED CHECK: a landed task's branch is rebased in place and merged --no-ff, so it is an ancestor of integration (no stale `stack:` commits in `$integ..$br`) and its parents have landed (not passed as current parents), so drift is 0 and the check proceeds; residual risk is a hand-landed or partially merged branch, which ends in REBUILT then ALREADY_MERGED or a typed SETUP_FAILED, never data loss; worth one fixture later.
+Task 6 (v94) [prose-dependent-execution] script executed by the agent from prose; a missing parent branch counts as drift and ends SETUP_FAILED with work preserved, which is the safe direction.
+Task 8 (zhk) [prose-flow] "Then, unless step 0 reported stacked," reads awkwardly after the inserted policy sentence; wording only.
+Task 8 (zhk) [brittle-prompt-assertion] exact-string prompt asserts in test-dispatch-text.sh; maintenance cost, not a defect.
+Task 8 (zhk) [close-note-pending] established-vs-inferred producer close note is a closure-time item.
+Task 1 (mlr.1) [missing-edge-case-test] no fixture for ATX ending a bold-opened section or a shallower ATX sibling; probed at head, both behave per §4.1(d); add fixtures with the fence fix.
+Task 9 (mlr.5) [prefix-rule-breadth] (iv) accepts "- " plus any non-list line, including a heading; spec-literal, and checks (i)/(iii) catch boundary changes in practice.
+Task 2 (2s3) [reconstructed-fixtures] fixtures reconstructed from investigation descriptions; acceptable with the originals gone.
+Task 2 (2s3) [unquoted-path] coordinator.js reviewFileFormat interpolates the review path unquoted into the self-check command; current workspace paths contain no spaces, but quoting it is a one-character follow-up.
+Task 2 (2s3) [test-location] prompt-text assertions in test-report-verdict.sh; brief permitted.
+Task 10 (mlr.6) [evidence-logs-committed] evidence/ logs in the tree; base already carries evidence/super-plan-ufz.* directories, so this follows existing repo practice.
+Task 11 (tco) [mirror-text-test] contract tests mostly assert wording; assemble-args transport is the behavioral check.
+Task 11 (tco) [doc-drift] post-cap audit cites "as in phase 4"; indirect but correct.
+Task 12 (mlr.3) [behavior-test-text-independent] projection test independent of the new SKILL.md text; text covered by lint only.
+Task 13 (mlr.4) [roast-collect-interpretation] e2e asserts pointer plus finding-source retention rather than report-status --collect of roast reports; matches what collect actually handles.
+Task 13 (mlr.4) [close-note-unverified-mapping] close-note test mapping derived from changed files; closure-time documentation.
+Own observation: scope-dispositions treats both roast-code/round-N and roast-design/round-N as matching sources for a code scopeFilter-round-N decision, so an equal key in a same-numbered design round could mask an unrouted gap; code and design keys use different location forms, so a collision is unlikely.
+[Nit] tests/super-code/test-setup-reuse.sh:26
+[Nit] tests/super-auto/review-inputs-range-scope.sh:16
+[FYI] skills/super-code/scripts/dispatch-text.mjs:348; skills/super-code/scripts/dispatch-text.mjs:349
+Whole-range review outstanding: this review is bounded (provenance unavailable from the installed 6.4.2-alepar6.6 review-inputs); a whole-range review of 444f86b2..2d92ee1b is still required for acceptance. The branch's own review-inputs clears the historical gaps for this range, so a review assembled with the branch's scripts should be able to run the normal route.
+All 2115 provenance gaps in assembled/final-review-inv-20261028T192155-final/review-inputs.json (historical run docs/superpowers/runs/2026-10-16-workflow-reliability/, inv-mvc60k41-xt8p35rk04d, incomplete split bundle and missing captured files) are unreviewed; none was selected or waived.
+Full-suite sweep not run: no full-suite measurement of this branch exists yet; only the seven targeted runs listed in Scope and method were executed at the captured head.
+coordinator.js changed and its documented dryRun scenarios and agent counts (coordinator-workflow.md) were not run in this review.
+Drift-check reconciliation relies on the implementer agent saving and running the emitted script and acting on its last line; test-setup-reuse.sh proves the script, not agent compliance.
+Ledger/Git identity metrics gap (git-only ids from earlier epics): ledger completeness for this epic was not independently established.
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-final-review-keys.refmap.json
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-final-review-keys.txt
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-punch-list.txt
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-scope-keys.txt
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-step-back-keys.txt
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-step-back.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-ledger.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-overrides.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/profile-inv-20261028T162628.json
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/profile-inv-20261028T162628.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/bounded-coverage.json
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/bounded-draft.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/diffstat.txt
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/generated-input-provenance.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/review-inputs.json
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/final-review-inv-20261028T162628.md
+Unreviewed path: tests/super-auto/review-continuity-e2e.sh
+Unreviewed path: tests/super-auto/review-inputs-range-scope.sh
+Unreviewed path: tests/super-auto/test-contract-lint.sh
+Unreviewed path: tests/super-auto/test-scripts.sh
+Unreviewed path: tests/super-code/fixtures/report-verdict/mismatched-fence.md
+Unreviewed path: tests/super-code/fixtures/report-verdict/unclosed-fence.md
+Unreviewed path: tests/super-code/test-dispatch-text.sh
+Unreviewed path: tests/super-code/test-report-verdict.sh
+Unreviewed path: tests/super-code/test-setup-reuse.sh
+Unreviewed path: tests/super-roast/test-assemble-args.sh
+skills/super-code/coordinator.js drift script: REBUILT says report stacked true whenever parents exist, even when every parent ref was gone and no stack merge was made; base is still correct.
+skills/super-code/coordinator.js drift script: rebase --onto flattens any non-stack merge an earlier attempt made on the task branch after the old base; no work lost, old head printed.
+Ledger Task 6 check-ordering: drift check runs before the ALREADY-MERGED CHECK on a reused branch; a landed branch rarely shows drift and work is preserved.
+Ledger Task 2 unquoted review path in the reviewFileFormat() self-check command (breaks only on a path with spaces).
+Ledger Task 14 bare fence toggles elsewhere, including the new scope-decision scanner at scope-dispositions:175 (a stray fence in run.md would hide later decisions from the unrouted check); follow-up.
+Ledger Task 15 over-broad markable guard; Task 19 trim-only key normalization; Task 14 and Task 17 boundary-test gaps; Task 16 tests that passed before the fix.
+Ledger Task 8, 10, 11, 12, 13 and remaining Task 2 items (prose flow, brittle prompt assertions, close-note items, committed evidence logs per existing convention, wording-presence tests, reconstructed fixtures, test location).
+Whole-range review outstanding: this review is bounded because the installed 6.4.2-alepar6.6 review-inputs reported 2115 provenance gaps; a whole-range review of 444f86b2..487992e1 assembled with the branch's own scripts (which route those entries to outOfRange) is still required for acceptance.
+All 2115 provenance gaps in assembled/final-review-inv-20261028T203458-final/review-inputs.json (historical run docs/superpowers/runs/2026-10-16-workflow-reliability/, inv-mvc60k41-xt8p35rk04d, incomplete split bundle and missing captured files) are unreviewed; none was selected or waived.
+Full-suite sweep not run: no full-suite measurement of this branch exists yet; only the eleven targeted runs named in Scope and method were executed at the captured head.
+Workflow-hosted dryRun of coordinator.js not run; only the offline replay (replay-harness.mjs, test-coordinator-replay.sh) was executed, green.
+Skill and prompt text changes (super-auto, super-roast, super-design, implementer, task-reviewer and reporter prompts) carry prompt-text assertions only; no drill pressure eval evidence was seen, which the project's skill-change rule asks for.
+Drift-check reconciliation depends on the implementer agent saving and running the emitted script and acting on its last line; test-setup-reuse.sh proves the script, not agent compliance.
+Executed but not read as diffs: tests/super-code/test-report-verdict.sh, tests/super-code/test-setup-reuse.sh, tests/super-auto/review-inputs-range-scope.sh, tests/super-auto/review-continuity-e2e.sh, tests/super-code/test-context-preflight.sh, tests/super-auto/test-scripts.sh; their hunks are unreviewed.
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-1-step-back-keys.txt
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-1-step-back.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-1.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-2.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-3.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-final-review-keys.refmap.json
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-final-review-keys.txt
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-punch-list.txt
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-scope-keys.txt
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-step-back-keys.txt
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-step-back.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-2-final-review-keys.txt
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-2-step-back-keys.txt
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-2-step-back.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-2.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/amend-code-1-roast.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/amend-code-1.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-findings-round-1.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-findings-round-2.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-ledger.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-1-requirements.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-1-review-1.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-1-review-2.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-2-requirements.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-2-review-1.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-2-review-2.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/design-roast-1-tree.json
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/design-roast-2-tree.json
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/design-roast-3-tree.json
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-ledger-design.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-ledger.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-overrides-design.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-overrides.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/friction.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-1s3.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-2s3.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-rsc.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-tco-row.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-v94.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-zhk.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/rsc-proto.diff
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/rsc-scenarios.sh
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/profile-inv-20261028T162628.json
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/profile-inv-20261028T162628.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/profile-inv-20261028T192155.json
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/profile-inv-20261028T192155.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/bounded-coverage.json
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/bounded-draft.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/diffstat.txt
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/generated-input-provenance.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/review-inputs.json
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/final-review-inv-20261028T162628.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T192155/assembled/final-review-inv-20261028T192155-final/bounded-coverage.json
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T192155/assembled/final-review-inv-20261028T192155-final/bounded-draft.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T192155/assembled/final-review-inv-20261028T192155-final/diffstat.txt
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T192155/assembled/final-review-inv-20261028T192155-final/generated-input-provenance.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T192155/assembled/final-review-inv-20261028T192155-final/review-inputs.json
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T192155/final-review-inv-20261028T192155.md
+Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/run.md
+Unreviewed path (no hunk inspected): evidence/super-plan-1s3/final-run.log
+Unreviewed path (no hunk inspected): evidence/super-plan-mlr.6/summary.log
+Unreviewed path (no hunk inspected): evidence/super-plan-mlr.6/test-assemble-args.sh.log
+Unreviewed path (no hunk inspected): evidence/super-plan-mlr.6/test-contract-lint.sh.log
+Unreviewed path (no hunk inspected): evidence/super-plan-mlr.6/test-report-verdict.sh.log
+Unreviewed path (no hunk inspected): evidence/super-plan-mlr.6/test-scripts.sh.log
+Unreviewed path (no hunk inspected): tests/super-auto/review-continuity-e2e.sh
+Unreviewed path (no hunk inspected): tests/super-auto/review-inputs-range-scope.sh
+Unreviewed path (no hunk inspected): tests/super-auto/test-scripts.sh
+Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/findings-prose-preamble.md
+Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/mismatched-fence.md
+Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/narrative-findings-subheadings.md
+Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/roast-template-shaped.md
+Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/roast-unverified-nits-prose.md
+Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/unclosed-fence.md
+Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/whole-file-rule.md
+Unreviewed path (no hunk inspected): tests/super-code/test-context-preflight.sh
+Unreviewed path (no hunk inspected): tests/super-code/test-report-verdict.sh
+Unreviewed path (no hunk inspected): tests/super-code/test-setup-reuse.sh
+skills/super-code/scripts/report-verdict --repair-check splits its path:tmpfile pairs on the first colon, so a report path containing a colon is misclassified and the repair wrongly rejected (fails safe, misleading error); no run path carries a colon today.
+skills/super-code/coordinator.js reviewFileFormat(): the exit-4 self-repair instruction conflicts with the write guard's never-replace rule, so a strict reviewer notes rather than repairs; the result is the existing loud extraction gap, never a silent loss.
+skills/super-code/coordinator.js drift script: a current parent with no resolvable branch is treated as landed without the already-merged check, so a rebuild can omit an unlanded deleted parent; work is preserved and the case is unlikely.
+skills/super-code/scripts/report-verdict --complete and keys_roast: a bullet line inside a fenced block in a recognized section starts a new item, splitting a finding that quotes a markdown list; spec-permitted, not a silent drop.
+run.md projection: routed round-1 Should-fix report-verdict:229 (fix bead super-plan-mlr.16, logic replaced by mlr.21) has no finding-disposition and stays outstanding until the caller records a supported one.
+Ledger Task 6 check-ordering: drift check runs before the ALREADY-MERGED CHECK; the landed-parent exclusion means a landed task shows no drift, and work is preserved in every branch.
+Ledger Task 22 suite-not-run: offline dryRun replay ran green in this review; the Workflow-hosted run is listed as untested scope.
+Ledger Task 2 unquoted review path in the reviewFileFormat() self-check command (breaks only on a path with spaces), reconstructed fixtures, and prompt-text assertion location.
+Ledger Task 14 bare fence toggles in sibling run.md/prompt parsers (including the scope-decision scanner in scope-dispositions) and its boundary-test gap; Task 17 provenance-sample boundary test; Task 19 trim-only key normalization.
+Ledger Task 16 tests that passed before their fix (disclosed coverage gap, not a skipped test).
+Ledger Task 1 missing edge-case fixtures for ATX-after-bold and shallower siblings; Task 1 fence-state, Task 9 prefix-breadth and Task 15 markable items are resolved at head.
+Ledger Task 8, 10, 11, 12, 13, 20 and 21 items (prose flow, brittle prompt assertions, close-note items, committed evidence logs per existing convention, wording-presence tests, collect interpretation, stray blank line, coarse env checks, partial env pins).

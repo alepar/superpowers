@@ -1,0 +1,89 @@
+review: not ready
+[Must-fix] untested: whole-epic review incomplete; bounded inspected hunks only; all remaining hunks and provenance gaps remain unreviewed
+[Must-fix] untested: Whole-range review outstanding: this review is bounded because the installed 6.4.2-alepar6.6 review-inputs reported 2115 provenance gaps; a whole-range review of 444f86b2..487992e1 assembled with the branch's own scripts (which route those entries to outOfRange) is still required for acceptance.
+[Must-fix] untested: All 2115 provenance gaps in assembled/final-review-inv-20261028T203458-final/review-inputs.json (historical run docs/superpowers/runs/2026-10-16-workflow-reliability/, inv-mvc60k41-xt8p35rk04d, incomplete split bundle and missing captured files) are unreviewed; none was selected or waived.
+[Must-fix] untested: Full-suite sweep not run: no full-suite measurement of this branch exists yet; only the eleven targeted runs named in Scope and method were executed at the captured head.
+[Must-fix] untested: Workflow-hosted dryRun of coordinator.js not run; only the offline replay (replay-harness.mjs, test-coordinator-replay.sh) was executed, green.
+[Must-fix] untested: Skill and prompt text changes (super-auto, super-roast, super-design, implementer, task-reviewer and reporter prompts) carry prompt-text assertions only; no drill pressure eval evidence was seen, which the project's skill-change rule asks for.
+[Must-fix] untested: Drift-check reconciliation depends on the implementer agent saving and running the emitted script and acting on its last line; test-setup-reuse.sh proves the script, not agent compliance.
+[Must-fix] untested: Ledger/Git identity metrics gap (git-only ids from earlier epics): ledger completeness for this epic was not independently established.
+[Must-fix] untested: Executed but not read as diffs: tests/super-code/test-report-verdict.sh, tests/super-code/test-setup-reuse.sh, tests/super-auto/review-inputs-range-scope.sh, tests/super-auto/review-continuity-e2e.sh, tests/super-code/test-context-preflight.sh, tests/super-auto/test-scripts.sh; their hunks are unreviewed.
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-1-step-back-keys.txt
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-1-step-back.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-1.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-2.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-3.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-final-review-keys.refmap.json
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-final-review-keys.txt
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-punch-list.txt
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-scope-keys.txt
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-step-back-keys.txt
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-step-back.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-2-final-review-keys.txt
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-2-step-back-keys.txt
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-2-step-back.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-2.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/amend-code-1-roast.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/amend-code-1.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-findings-round-1.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-findings-round-2.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-ledger.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-1-requirements.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-1-review-1.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-1-review-2.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-2-requirements.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-2-review-1.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-2-review-2.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/design-roast-1-tree.json
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/design-roast-2-tree.json
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/design-roast-3-tree.json
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-ledger-design.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-ledger.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-overrides-design.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-overrides.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/friction.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-1s3.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-2s3.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-rsc.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-tco-row.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-v94.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-zhk.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/rsc-proto.diff
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/rsc-scenarios.sh
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/profile-inv-20261028T162628.json
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/profile-inv-20261028T162628.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/profile-inv-20261028T192155.json
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/profile-inv-20261028T192155.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/bounded-coverage.json
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/bounded-draft.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/diffstat.txt
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/generated-input-provenance.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/assembled/final-review-inv-20261028T162628-final/review-inputs.json
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/final-review-inv-20261028T162628.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T192155/assembled/final-review-inv-20261028T192155-final/bounded-coverage.json
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T192155/assembled/final-review-inv-20261028T192155-final/bounded-draft.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T192155/assembled/final-review-inv-20261028T192155-final/diffstat.txt
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T192155/assembled/final-review-inv-20261028T192155-final/generated-input-provenance.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T192155/assembled/final-review-inv-20261028T192155-final/review-inputs.json
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T192155/final-review-inv-20261028T192155.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): docs/superpowers/runs/2026-10-28-review-continuity-followups/run.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): evidence/super-plan-1s3/final-run.log
+[Must-fix] untested: Unreviewed path (no hunk inspected): evidence/super-plan-mlr.6/summary.log
+[Must-fix] untested: Unreviewed path (no hunk inspected): evidence/super-plan-mlr.6/test-assemble-args.sh.log
+[Must-fix] untested: Unreviewed path (no hunk inspected): evidence/super-plan-mlr.6/test-contract-lint.sh.log
+[Must-fix] untested: Unreviewed path (no hunk inspected): evidence/super-plan-mlr.6/test-report-verdict.sh.log
+[Must-fix] untested: Unreviewed path (no hunk inspected): evidence/super-plan-mlr.6/test-scripts.sh.log
+[Must-fix] untested: Unreviewed path (no hunk inspected): tests/super-auto/review-continuity-e2e.sh
+[Must-fix] untested: Unreviewed path (no hunk inspected): tests/super-auto/review-inputs-range-scope.sh
+[Must-fix] untested: Unreviewed path (no hunk inspected): tests/super-auto/test-scripts.sh
+[Must-fix] untested: Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/findings-prose-preamble.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/mismatched-fence.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/narrative-findings-subheadings.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/roast-template-shaped.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/roast-unverified-nits-prose.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/unclosed-fence.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): tests/super-code/fixtures/report-verdict/whole-file-rule.md
+[Must-fix] untested: Unreviewed path (no hunk inspected): tests/super-code/test-context-preflight.sh
+[Must-fix] untested: Unreviewed path (no hunk inspected): tests/super-code/test-report-verdict.sh
+[Must-fix] untested: Unreviewed path (no hunk inspected): tests/super-code/test-setup-reuse.sh
