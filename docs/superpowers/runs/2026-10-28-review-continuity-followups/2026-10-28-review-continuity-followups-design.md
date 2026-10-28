@@ -54,6 +54,53 @@ Align producers to the existing extractor grammar and tighten the extractor wher
 
 Script/test changes are covered by behavior tests in the existing suites (`tests/super-code/test-report-verdict.sh`, `test-dispatch-text.sh`, `test-context-preflight.sh`, `tests/super-auto/test-scripts.sh`, a real-git setup fixture modelled on `tests/super-code/test-setup-cleanup.sh`, prompt-text assertions). Prompt edits to skills are verified by prompt-text assertions plus fixtures rendered from the templates that must parse; full drill pressure evals are run by the orchestrator only where an existing eval already covers the changed behavior (skill-sourced check), otherwise recorded as not run. dryRun agent counts in `coordinator-workflow.md` must not change.
 
+## Key abstractions
+
+**Range relevance rule** — new closure in `reviewInputs` (`dispatch-text.mjs`), built once per invocation from the captured `changed` list and `current`; answers whether a `run.md` is in range.
+- Owns: the path-only rule of §4.2 — relevant when it is the caller-bound current run, when the run.md or its `.collection-origin.json` sidecar is a changed path, when any changed path is at or under `dirname(run)/reviews/`, or when it is re-read as a mirror origin.
+- Hides: how relevance is decided; `snapshot`, `validateCollections` and `authenticateOrigins` never test paths themselves.
+- Must not: read run ids or claims, skip parsing an irrelevant run (the mirror ambiguity check needs every run), or waive a problem.
+- Relationships: used only by the run-scoped gap sink.
+
+**Run-scoped gap sink** — new closure in `reviewInputs` replacing run-specific `gap(text)` calls.
+- Owns: routing each run-attributed problem to blocking `gaps` or non-blocking `outOfRange`. Problems attributable to no run (captured-commit checks, extraction failure, previously claimed payload problems) always go to `gaps`.
+- Hides: the two-list split; `snapshotGap`, `collectionGap` and origin-ambiguity calls pass the run and the text only.
+- Must not: change `status` or the exit code because of `outOfRange`, or select or omit paths based on it.
+- Relationships: depends on the relevance rule; `review-inputs.json` and `generated-input-provenance.md` gain an informational `outOfRange` field and lines.
+
+**`claude_window`** — new bash function in `context-preflight`, a hand-kept mirror of `CLAUDE_WINDOWS` in `context-pass.mjs`.
+- Owns: model id → window; case-insensitive `[1m]`; 200K fallback.
+- Hides: the table; the explicit-id fallthrough and the same-family alias branch both call it.
+- Must not: guess a window for a bare alias without a settings source (stays `unknown`), read env, or apply overrides — env precedence, `CLAUDE_CODE_AUTO_COMPACT_WINDOW` and `--context-window` stay outside it.
+- Relationships: a parity test runs one id list through both resolvers; cross-reference comments in both files and `MAINTENANCE.md`.
+
+**Bookkeeping completeness checks** — new pass in `scope-dispositions --project`, after the projection is built.
+- Owns: gaps `scope-filter decision without finding-route: round <N> <key>` and `declared roast report has no finding-source: <path>` (from the `roast-code:`/`roast-design:` fields), and the additive `unrouted` metric.
+- Hides: how run.md fields are read and matched; the key is compared only to detect a missing record.
+- Must not: link, route or dispose anything; never treat bead closure, an equal display key or a clean review as resolution.
+- Relationships: writes through the existing `gap(origin, message)`, so `FINDING_GAP:` lines and exit 3 cover it.
+
+**`workspaceSetup` (`coordinator.js`)** — extended: the both-exist ordinary-attempt branch gains a drift fragment (ancestry and `stack:` parent check, then rebuilt base and `rebase --onto`, or typed failure); a new fragment covers branch-only and worktree-only. The stack-merge command text becomes one local helper used by both the fresh-cut `stackStep` and the drift rebuild. Every failure is `SETUP_FAILED: <cause>` naming the old head or which of branch/worktree exists; the existing mapping to BLOCKED carries it; no new result status.
+
+**`reviewFileFormat()` (`coordinator.js`)** — extended: the single source of the whole-file section rule and the `report-verdict --complete` self-check for final, cluster and seam prompts. The reporter template and the super-roast SKILL.md mirror restate the same rule.
+
+**`report-verdict --complete` and `strictDraft` in `assembly-archive.cjs`** — extended: a sub-heading or bold label inside a recognized section that already has items is an error.
+
+**`reviewReadiness`** (validated in `super-roast/scripts/assemble-args.mjs`) — extended: fields and meaning documented in the super-roast Inputs table; code-roast derivation stated once in super-auto phase 4 (rounds and post-cap audit); design-roast rule stated once in super-design §Adversarial Review Loop, cited by super-auto's amend design roast.
+
+**Implementer `## Commit` step and task-reviewer severity rules** — extended as prompt text only (§4.7).
+
+Variation: no growing set of kinds. The model-window table grows (one row in `CLAUDE_WINDOWS` and one in `claude_window`, parity test catches drift); the recognized section words are a fixed list held in two copies that change together; readiness values are a closed set `assemble-args.mjs` enforces. No registry or interface is justified.
+Walk-through: a product-only change with an old incomplete run elsewhere — the reviewer writes its report per `reviewFileFormat()` and self-checks with `--complete`; `review-inputs` marks the old run irrelevant and the sink sends its gap to `outOfRange`, exit 0; phase 4 derives `complete`/`available` from `review-inputs.json` and passes it; Step 2 records `finding-source` then one `finding-route` per scope decision, and a missing route surfaces as a projection gap. A new 1M Claude model touches one row in each window table.
+Per spec §4.1(d): the extractor change lands in both `report-verdict --complete` and `assembly-archive.cjs` `strictDraft`, keeping two grammar copies on purpose; tests run the same sub-heading fixtures against both.
+Per spec §4.5: a drift rebase conflict never takes the STACK_CONFLICT `--discard` path; drift failure is always `SETUP_FAILED`.
+
+Digest:
+- Range relevance rule: decides whether a run.md is in the captured range using paths only; a new relevance criterion goes in this one predicate; callers never test changed paths or run ids themselves.
+- Run-scoped gap sink: routes each run-attributed problem to `gaps` or `outOfRange`; any new per-run validation reports through it; callers never push to `gaps` directly for a run-scoped problem.
+- `claude_window`: maps a model id to its window in bash, kept in step with `CLAUDE_WINDOWS`; a new model is a row here and in `context-pass.mjs`; callers never add their own case list of 1M ids.
+- Bookkeeping completeness checks: surface missing `finding-route` and `finding-source` records as projection gaps; any new missing-record check is added to this pass; callers never use a key match to link or resolve a finding.
+
 ## Post-Implementation Notes
 
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
