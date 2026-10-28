@@ -11,3 +11,4 @@
 - [2026-10-28T19:59Z] super-auto · roast-code r2 assembler: provenance unavailable; captured source available (same 2115 historical gaps); bounded direct review of 444f86b266b2208b612e0e91b0f54762576ff95a..9b358f0481493b7b072479ddae1ad117000aaa2f
 - [2026-10-28T19:59Z] super-auto/super-roast seam · scope-dispositions --project --keys punch list includes final-review untested/deferred keys that assemble-args --punch-listed rejects (not [SEV] <location>); passed only the roast-format keys (filtered copy .superpowers/sdd/super-plan-mlr-plan/punch-roast-r1.txt), original punch-list file unchanged
 - [2026-10-28T19:59Z] super-roast · code round 2 rung: Workflow (wf_71190575-424)
+- [2026-10-28T20:13Z] super-auto · code step-back r2 remains: field trimmed to canonical keys (agent appended resolved/untested prose that is not key-only)
