@@ -1,0 +1,9 @@
+whole-epic review incomplete; bounded inspected hunks only; all remaining hunks and provenance gaps remain unreviewed
+Caller-deferred full-suite sweep: no full-suite measurement of b4c1fb9e exists; only tests/super-auto/test-contract-lint.sh and tests/super-auto/test-scripts.sh were run by this review (both pass).
+Review-package provenance: review-inputs.json status unavailable with 2115 gaps, all missing captured files of archived invocation inv-mvc60k41-xt8p35rk04d under docs/superpowers/runs/2026-10-16-workflow-reliability; no whole-range package was built or reviewed.
+Ledger/Git identity gap: Metrics `git-only` lists beads of earlier epics (super-plan-998.*, super-plan-goq.*, super-plan-ufz.*); not reconciled here.
+Integration with the parallel readiness/continuity branch that edits the same skills/super-auto files: not visible to this review; the epic's hand-back item (re-run super-plan-z1k.1's sweep grep on the integrated result) is still owed by the main coordinator.
+Behavioral effect of the new defaults on a live run (actual absence of a launch question, top-split auto-apply under default autonomy): covered only by the outstanding probes, not by any test.
+docs/superpowers/specs/INDEX.md new row status is `draft` though implemented on this branch.
+run.md parked degraded verdicts (coverage round 2 widening; design roast r1 `[low coverage] [review readiness incomplete]` from an empty readiness basis with full stage coverage).
+Design roast r1 rejected FYI with Should-fix dissent on model-initiated entry (no `disable-model-invocation`): follow-up decision for the human, not a regression introduced here.
