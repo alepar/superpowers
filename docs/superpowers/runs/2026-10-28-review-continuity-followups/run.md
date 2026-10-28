@@ -13,6 +13,8 @@ spec: 2026-10-28-review-continuity-followups-design.md
 epic: super-plan-mlr
 roastDesignRound: 1
 roast-design: 2026-10-28-review-continuity-followups-roast-design-1.md
+findingsLedgerDesign: findings-ledger-design.md
+stepBackDesign-round-1: local — nine findings across five independent subsystems; one shared under-specified §4.1(c) --complete contract (cluster complete-contract) and a §4.7 reviewer-policy pair (cluster reviewer-commit-policy), fixed as spec clarifications
 
 approvals:
 - top-split · auto · super-plan-2s3 LEAF, super-plan-mlr.1 LEAF, super-plan-mlr.2 LEAF, super-plan-rsc LEAF, super-plan-tco LEAF, super-plan-row LEAF, super-plan-mlr.3 LEAF, super-plan-v94 LEAF, super-plan-1s3 LEAF, super-plan-zhk LEAF
