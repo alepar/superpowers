@@ -110,6 +110,8 @@ cp "$FIX/roast-template-shaped.md" "$T/s2/roast-code-1.md"
 run bash "$RV" --complete --source roast-code/round-1 "$T/s2/roast-code-1.md"; printf '%s\n' "$out" >"$T/s2/ext.json"
 retain_run "$T/s2/run.md" "$T/s2/roast-code-1.md" "$T/s2/ext.json"
 run bash "$RS" "$T/s2/run.md"
+assert_eq "$code" 0 "S2 report-status exits 0"
+case "$out$err" in *'finding projection unavailable'*) fail "S2 finding projection ran: $out" ;; *'outstanding findings: '*) pass "S2 finding projection ran and reported outstanding findings" ;; *) fail "S2 finding projection ran and reported outstanding findings: $out" ;; esac
 case "$out$err" in *'finding evidence'*|*'review collection'*) fail "S2 retained roast source leaves status qualifiers: $out" ;; *) pass "S2 report-status prints no finding evidence or review collection qualifier" ;; esac
 acceptance_out "$T/s2/run.md" >"$T/s2/acc.txt"
 if grep -qF "$GAP" "$T/s2/acc.txt"; then fail "S2 acceptance reports a source-coverage gap for a retained report"; else pass "S2 acceptance has no source-coverage gap for the retained report"; fi
@@ -199,6 +201,8 @@ printf '%s\n' "$out" >"$T/s5/ext.json"
 assert_eq "$(node -e 'console.log(JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).artifact===process.argv[2])' "$T/s5/ext.json" "$REPAIR")" "true" "S5 extraction artifact is the repair path"
 retain_run "$T/s5/run.md" "$REPAIR" "$T/s5/ext.json"
 run bash "$RS" "$T/s5/run.md"
+assert_eq "$code" 0 "S5 report-status exits 0"
+case "$out$err" in *'finding projection unavailable'*) fail "S5 finding projection ran: $out" ;; *'outstanding findings: '*) pass "S5 finding projection ran and reported outstanding findings" ;; *) fail "S5 finding projection ran and reported outstanding findings: $out" ;; esac
 case "$out$err" in *'finding evidence'*|*'review collection'*) fail "S5 retained repair leaves status qualifiers: $out" ;; *) pass "S5 report-status prints no finding evidence or review collection qualifier" ;; esac
 acceptance_out "$T/s5/run.md" >"$T/s5/acc.txt"
 if grep -qF "$GAP" "$T/s5/acc.txt"; then fail "S5 acceptance reports a source-coverage gap for the retained repair"; else pass "S5 acceptance has no source-coverage gap for the retained repair"; fi
