@@ -726,21 +726,29 @@ assert_eq "$code" 4 "--classify on an unrecognized source exits 4"
 run bash "$R" --classify "$T/nope.md"
 assert_eq "$code" 2 "--classify on a missing file exits 2"
 
-printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n### detail\n- b\n## Untested scope\n- none\n' > "$T/x-orig.md"
-printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n- detail\n- b\n## Untested scope\n- none\n' > "$T/x-repair.md"
+# Cross-copy: a final-review draft whose only defect is unmarked prose in Deferred OK.
+# The defective original is rejected by --complete and strictDraft; the marker-only
+# repair is accepted by --repair-check, --complete and strictDraft, and both files
+# yield the same --keys extraction.
+printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n## Deferred OK\nd prose\n## Untested scope\n- none\n' > "$T/x-orig.md"
+printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n## Deferred OK\n- d prose\n## Untested scope\n- none\n' > "$T/x-repair.md"
 run bash "$R" --complete --source format-check "$T/x-orig.md"
 assert_eq "$code" 4 "cross-copy original: --complete exits 4"
 run node "$T/strict.cjs" "$AA" "$T/x-orig.md"
-assert_eq "$out" "throws: draft sub-heading inside a finding section" "cross-copy original: strictDraft rejects"
+assert_eq "$out" "throws: draft finding text without a list marker" "cross-copy original: strictDraft rejects"
 run bash "$R" --complete --source format-check "$T/x-repair.md"
 assert_eq "$code" 0 "cross-copy repair: --complete exits 0"
 assert_eq "$(occ "$out")" "Must fix before landing|1|a
-Must fix before landing|2|detail
-Must fix before landing|3|b" "cross-copy repair: occurrences in order"
+Deferred OK|1|d prose" "cross-copy repair: --complete occurrences in order"
 run node "$T/strict.cjs" "$AA" "$T/x-repair.md"
 assert_eq "$out" "ok" "cross-copy repair: strictDraft accepts"
+run bash "$R" --keys "$T/x-orig.md"
+X_KEYS_ORIG="$out"
+run bash "$R" --keys "$T/x-repair.md"
+assert_eq "$out" "$X_KEYS_ORIG" "cross-copy: original and repair extract identical keys"
 run bash "$R" --repair-check "$T/x-orig.md" "$T/x-repair.md"
-case "$(cat "$T/err")" in *"(iv)"*) fail "cross-copy pair: not rejected at (iv)";; *) pass "cross-copy pair: not rejected at (iv)";; esac
+assert_eq "$code" 0 "cross-copy pair: --repair-check exits 0"
+assert_eq "$(cat "$T/err")" "" "cross-copy pair: --repair-check prints nothing"
 
 if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
 echo "report-verdict: all tests passed"
