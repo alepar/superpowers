@@ -109,7 +109,9 @@ for flag in "" "--parents ep.1" "--reentry"; do
   done
 done
 run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2 --parents ep.1
-assert_has "$out" "merge-base --is-ancestor task-ep.1 task-ep.2" "--parents: drift check against the current parent"
+assert_has "$out" "refs/heads/task-ep.1^{commit}" "--parents: the parent is resolved once"
+assert_has "$out" 'merge-base --is-ancestor $p0 $br' "--parents: drift check against the resolved parent"
+assert_has "$out" '--detach $integ || fail checkout' "--parents: the detach checkout is fallible"
 assert_has "$out" "prerequisite drift; uncommitted work preserved; nothing reset" "drift with a dirty worktree fails typed"
 assert_has "$out" "rebase --onto" "drift with a clean worktree rebases onto the rebuilt base"
 assert_has "$out" "rebase --abort" "a failed rebase is aborted"
