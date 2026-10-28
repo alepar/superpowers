@@ -1,0 +1,76 @@
+whole-epic review incomplete; bounded inspected hunks only; all remaining hunks and provenance gaps remain unreviewed
+Whole-range review outstanding: this is a bounded captured-source review (forced not-ready); a whole-range review of 444f86b..776fd88 is still required for acceptance, even though the branch's own review-inputs appears to clear the historical provenance gaps.
+All 2115 provenance gaps recorded in .superpowers/sdd/super-plan-mlr-plan/assembled/final-review-inv-20261028T162628-final/review-inputs.json (historical run payloads under docs/superpowers/runs/2026-10-16-workflow-reliability/, "incomplete split bundle: missing or non-regular captured file") are unreviewed; none was waived or selected.
+Full-suite sweep not run: no full-suite measurement of this branch exists; only the ten targeted suites listed in Scope and method were executed at the captured head.
+coordinator.js changed, and its documented dryRun scenarios and agent counts (coordinator-workflow.md) were not run in this review; replay-harness template-literal count moved 455 to 464 with a recorded reason.
+Skill and prompt text changes (super-auto, super-roast, super-design, implementer and task-reviewer prompts, reporter prompt) have prompt-text assertions only; no drill pressure eval evidence was seen, which the project's skill-change rule asks for.
+Drift-check reconciliation depends on an implementer agent saving and running the emitted script and acting on its last line; test-setup-reuse.sh proves the script, not agent compliance.
+Ledger/Git identity metrics gap (git-only identities from earlier epics) means ledger completeness for this epic was not independently established.
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-1-step-back-keys.txt
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-1-step-back.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-1.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-design-2.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-findings-round-1.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-findings-round-2.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-ledger.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-1-requirements.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-1-review-1.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-1-review-2.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-2-requirements.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-2-review-1.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/coverage-round-2-review-2.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/design-roast-1-tree.json
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/design-roast-2-tree.json
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-ledger-design.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/findings-overrides-design.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/friction.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-1s3.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-2s3.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-rsc.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-tco-row.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-v94.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-zhk.md
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/rsc-proto.diff
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/rsc-scenarios.sh
+Unreviewed path: docs/superpowers/runs/2026-10-28-review-continuity-followups/run.md
+Unreviewed path: docs/superpowers/specs/INDEX.md
+Unreviewed path: evidence/super-plan-1s3/final-run.log
+Unreviewed path: evidence/super-plan-mlr.6/summary.log
+Unreviewed path: evidence/super-plan-mlr.6/test-assemble-args.sh.log
+Unreviewed path: evidence/super-plan-mlr.6/test-contract-lint.sh.log
+Unreviewed path: evidence/super-plan-mlr.6/test-report-verdict.sh.log
+Unreviewed path: evidence/super-plan-mlr.6/test-scripts.sh.log
+Unreviewed path (executed, passed): tests/super-auto/review-continuity-e2e.sh
+Unreviewed path (executed, passed): tests/super-auto/review-inputs-range-scope.sh
+Unreviewed path (executed, passed): tests/super-auto/test-contract-lint.sh
+Unreviewed path (executed, passed): tests/super-auto/test-scripts.sh
+Unreviewed path: tests/super-code/fixtures/report-verdict/findings-prose-preamble.md
+Unreviewed path: tests/super-code/fixtures/report-verdict/narrative-findings-subheadings.md
+Unreviewed path: tests/super-code/fixtures/report-verdict/roast-template-shaped.md
+Unreviewed path: tests/super-code/fixtures/report-verdict/roast-unverified-nits-prose.md
+Unreviewed path: tests/super-code/fixtures/report-verdict/whole-file-rule.md
+Unreviewed path (executed, passed): tests/super-code/test-context-preflight.sh
+Unreviewed path (executed, passed): tests/super-code/test-dispatch-text.sh
+Unreviewed path (executed, passed): tests/super-code/test-report-verdict.sh
+Unreviewed path (executed, passed; read only in part): tests/super-code/test-setup-reuse.sh
+Unreviewed path (executed, passed): tests/super-roast/test-assemble-args.sh
+Task 6 (v94) [check-ordering] drift check before ALREADY-MERGED CHECK: a landed task's branch is rebased in place and merged --no-ff, so it is an ancestor of integration (no stale `stack:` commits in `$integ..$br`) and its parents have landed (not passed as current parents), so drift is 0 and the check proceeds; residual risk is a hand-landed or partially merged branch, which ends in REBUILT then ALREADY_MERGED or a typed SETUP_FAILED, never data loss; worth one fixture later.
+Task 6 (v94) [prose-dependent-execution] script executed by the agent from prose; a missing parent branch counts as drift and ends SETUP_FAILED with work preserved, which is the safe direction.
+Task 8 (zhk) [prose-flow] "Then, unless step 0 reported stacked," reads awkwardly after the inserted policy sentence; wording only.
+Task 8 (zhk) [brittle-prompt-assertion] exact-string prompt asserts in test-dispatch-text.sh; maintenance cost, not a defect.
+Task 8 (zhk) [close-note-pending] established-vs-inferred producer close note is a closure-time item.
+Task 1 (mlr.1) [missing-edge-case-test] no fixture for ATX ending a bold-opened section or a shallower ATX sibling; probed at head, both behave per §4.1(d); add fixtures with the fence fix.
+Task 9 (mlr.5) [prefix-rule-breadth] (iv) accepts "- " plus any non-list line, including a heading; spec-literal, and checks (i)/(iii) catch boundary changes in practice.
+Task 2 (2s3) [reconstructed-fixtures] fixtures reconstructed from investigation descriptions; acceptable with the originals gone.
+Task 2 (2s3) [unquoted-path] coordinator.js reviewFileFormat interpolates the review path unquoted into the self-check command; current workspace paths contain no spaces, but quoting it is a one-character follow-up.
+Task 2 (2s3) [test-location] prompt-text assertions in test-report-verdict.sh; brief permitted.
+Task 10 (mlr.6) [evidence-logs-committed] evidence/ logs in the tree; base already carries evidence/super-plan-ufz.* directories, so this follows existing repo practice.
+Task 11 (tco) [mirror-text-test] contract tests mostly assert wording; assemble-args transport is the behavioral check.
+Task 11 (tco) [doc-drift] post-cap audit cites "as in phase 4"; indirect but correct.
+Task 12 (mlr.3) [behavior-test-text-independent] projection test independent of the new SKILL.md text; text covered by lint only.
+Task 13 (mlr.4) [roast-collect-interpretation] e2e asserts pointer plus finding-source retention rather than report-status --collect of roast reports; matches what collect actually handles.
+Task 13 (mlr.4) [close-note-unverified-mapping] close-note test mapping derived from changed files; closure-time documentation.
+Own observation: scope-dispositions treats both roast-code/round-N and roast-design/round-N as matching sources for a code scopeFilter-round-N decision, so an equal key in a same-numbered design round could mask an unrouted gap; code and design keys use different location forms, so a collision is unlikely.
+[Nit] tests/super-code/test-setup-reuse.sh:26
+[Nit] tests/super-auto/review-inputs-range-scope.sh:16
+[FYI] skills/super-code/scripts/dispatch-text.mjs:348; skills/super-code/scripts/dispatch-text.mjs:349
