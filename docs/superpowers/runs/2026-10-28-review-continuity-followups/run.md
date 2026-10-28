@@ -33,7 +33,7 @@ scopeFilter-round-1: [Nit] tests/super-auto/review-inputs-range-scope.sh:16 punc
 scopeFilter-round-1: [FYI] skills/super-code/scripts/dispatch-text.mjs:348; skills/super-code/scripts/dispatch-text.mjs:349 punch-list — The per-file hashing cost is pre-existing performance behavior the goal does not name, and the change slightly reduced it.
 cluster dropped: c4-test-git-isolation — every new test helper that creates commits (review-inputs-range-scope.sh, review-continuity-e2e.sh, test-setup-reuse.sh, including the emitted drift script and merges run under them) pins author and committer identity through env, plus commit.gpgsign=false and core.hooksPath=/dev/null, for every git invocation.
 scope-filter: 9 in-scope · 3 punch-listed
-roast-design: 2026-10-28-review-continuity-followups-roast-design-1.md, 2026-10-28-review-continuity-followups-roast-design-2.md
+roast-design: 2026-10-28-review-continuity-followups-roast-design-1.md, 2026-10-28-review-continuity-followups-roast-design-2.md, 2026-10-28-review-continuity-followups-roast-design-3.md
 findingsLedgerDesign: findings-ledger-design.md
 graph-pass: depth 3→3 · width 3.7→3.7 · applied 0 · parked 2
 stepBackDesign-round-1: local — nine findings across five independent subsystems; one shared under-specified §4.1(c) --complete contract (cluster complete-contract) and a §4.7 reviewer-policy pair (cluster reviewer-commit-policy), fixed as spec clarifications

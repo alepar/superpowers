@@ -1,0 +1,1213 @@
+[
+  {
+    "id": "super-plan-mlr.2",
+    "title": "super-roast report body rule and format repair",
+    "description": "Split from super-plan-2s3 (spec docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md §4.1 b, c — super-roast side). The super-roast reporter template leaves Rejected, Unverified nits and Escalations without a body rule, so prose under them fails report-verdict --complete (retained: /private/tmp/superpowers-mosh-feedback-triage-dx2/pr1-original.md L134, /private/tmp/superpowers-mosh-phase2-triage-9tg/ roast-pr-1 L56), and nothing validates the written report.\nowns: super-roast report body rule and format-repair step; owns: repaired-report file naming (…-format-repair.md) and the \"round's report path\" definition (accepted repair, else original) that callers record in roast-code:/roast-design: and collection reads; owns: report-verdict --repair-check ORIGINAL REPAIR mode (spec §4.1(c) checks i-iv; a separate mode in the same script whose --complete grammar super-plan-mlr.1 owns — touch only the new mode and its usage comment). consumes: the spec §4.1 report grammar as super-plan-mlr.1 enforces it; the whole-file rule wording from super-plan-2s3 is restated, not imported (parity checked in the integration sweep). A format repair is format-only: the round's reviewReadiness, inputs and finding content are unchanged.\nFiles: skills/super-roast/reporter-prompt.md (Step 6 template ~L221-285), skills/super-roast/SKILL.md (template mirror ~L195-216 and the step that writes reportMarkdown ~L218-220, which defines the round's report path), skills/super-code/scripts/report-verdict (new --repair-check mode only), skills/super-auto/SKILL.md (phase-4 row, only the write sentence \"Once super-roast returns reportMarkdown, write it to the round's report file …\" — shared row, the default-flags tab owns the rest), skills/super-design/SKILL.md (§Adversarial Review Loop invocation paragraph ~L686-692 and the run-state write table row for the roast-design report/input list ~L1118), tests/super-code/test-report-verdict.sh (--repair-check fixtures), prompt-text assertions.\nInvestigation: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-2s3.md.\nblocked-by super-plan-mlr.1: mlr.2's format-repair trigger is --complete exit 4 and its test asserts the retained Unverified-nits shape fails with exit 4 once mlr.1 lands; both edit the report-verdict usage comment mlr.1 must rewrite for exits 4/2 and both extend tests/super-code/test-report-verdict.sh.",
+    "acceptance_criteria": "- [ ] Every section of the reporter template (Confirmed findings, Not verified sections, Beyond remainder cap, Rejected, Unverified nits, Escalations) states: only \"- \" items with indented continuations, or \"- none\"; no prose preamble, sub-headings or bold labels inside; any explanatory sentence goes outside recognized sections. SKILL.md mirror matches.\n- [ ] After writing reportMarkdown, the orchestrator runs `report-verdict --complete --source format-check \u003cfile\u003e` on it; only on exit 4 (grammar failure; exit 2 usage/I/O errors never trigger a repair) it re-dispatches the reporter once with the parser error and the original path and writes the result to a new sibling …-format-repair.md (never over the original); header-only failures (unrecognized finding source, missing verdict value) are not re-dispatched — the original is recorded with a friction line. The repair is accepted only when `report-verdict --repair-check \u003coriginal\u003e \u003crepair\u003e` exits 0 (4 rejects naming the failed check; 2 usage/I-O, treated as reject): (i) it passes --complete, (ii) every line before the first `## ` heading is byte-identical, (iii) `--keys` output is identical, and (iv) after deleting blank and `- none` lines from both, the line counts are equal and each repair line equals the original line at that position, or is it prefixed with `- ` (original not already a list item), or, only for an original heading deeper than `## ` or a bold label whose label is not a recognized roast section word, is `- \u003clabel\u003e`; fenced lines compare as plain lines. An accepted repair is recorded as the round's report and \"report format repair: \u003coriginal\u003e → \u003crepair\u003e — \u003cerror\u003e\" is appended to the friction log; if any check fails, the original is recorded and the friction line names the failed check. The orchestrator never edits finding content.\n- [ ] Tests: the retained pr1/roast-pr-1 Unverified-nits shape fails --complete today (exit 4 once super-plan-mlr.1 lands) and a template-shaped fixture exits 0 with all items; prompt-text assertions cover the body rule and the repair step.\n- [ ] skills/super-roast/super-roast-workflow.md is not changed; if a change proves necessary, its documented dryRun scenarios are re-run and the agent counts match the doc.\n- [ ] super-roast/SKILL.md's write step defines the round's report path (accepted repair, else original); super-auto's phase-4 write sentence (also followed by the post-cap audit and the amend design roast) and super-design's §Adversarial Review Loop invocation paragraph and roast-design write-table row state that they record and pass that path.\n- [ ] --repair-check fixtures in test-report-verdict.sh: accept a repair that only adds `- ` to a prose line, adds `- none` under an empty section, or demotes `### detail` to `- detail`; reject one that drops or rewords an item or a continuation line, renames or adds a section heading, moves an item to another section, or changes a header line or --keys output.",
+    "status": "closed",
+    "priority": 1,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T15:35:20Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T16:40:51Z",
+    "closed_at": "2026-10-28T16:40:51Z",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.2",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T15:35:20Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.2",
+        "depends_on_id": "super-plan-mlr.1",
+        "type": "blocks",
+        "created_at": "2026-10-28T16:40:17Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.2",
+        "depends_on_id": "super-plan-mlr.5",
+        "type": "supersedes",
+        "created_at": "2026-10-28T16:40:50Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 1,
+    "comment_count": 1,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.1",
+    "title": "Report extractor: reject sub-headings inside recognized sections",
+    "description": "Split from super-plan-2s3 (spec docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md §4.1 d): a sub-heading or bold-label line inside a recognized report section that already has items currently ends the section and silently drops the items after it with exit 0 (repro: printf '## Must fix\\n- a\\n### detail\\n- b\\n' | report-verdict --complete returns only a). Make it an error in both grammar copies.\nowns: report-verdict --complete section grammar in both copies (skills/super-code/scripts/report-verdict and assembly-archive.cjs strictDraft), incl. the no-sub-heading rule decided in spec §4.1; consumes: nothing from siblings. super-plan-2s3 and super-plan-mlr.2 write producer text against the same spec-decided rule.\nFiles: skills/super-code/scripts/report-verdict (--complete section boundary ~L86-131), skills/super-code/scripts/assembly-archive.cjs (strictDraft ~L13-36), tests/super-code/test-report-verdict.sh, plus any existing assembly-archive test.\nInvestigation: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-2s3.md.",
+    "acceptance_criteria": "- [ ] report-verdict --complete exits 4 (the new distinct grammar-failure exit, spec §4.1(c)) with a message naming the section when a sub-heading or bold label follows items inside a recognized section; no items are dropped silently.\n- [ ] Discriminator (spec §4.1(d)), for a heading()-matched line inside a recognized section with items: a recognized section label (that copy's word list, any level, ATX or bold) is a sibling; an ATX heading at the same or shallower level than the section's opening heading is a sibling; a deeper ATX heading or an unrecognized bold label is the forbidden sub-heading. A bold-label-opened section ends at any ATX heading or recognized bold label. Fixtures cover back-to-back recognized sections, `## Findings` then `## Analysis`, and `### detail` / `**Note**` after items.\n- [ ] Every --complete grammar failure (unrecognized source, missing verdict, missing/empty section, unmarked text, forbidden sub-heading) exits 4; usage errors, invalid source id and unreadable/non-file/invalid-UTF-8 artifacts keep exit 2; stderr prefix `report-verdict: --complete: ` unchanged; the usage comment documents both codes.\n- [ ] assembly-archive.cjs strictDraft applies the same rule and discriminator (as a thrown grammar error).\n- [ ] In both copies a line inside a fenced code block (``` or ~~~ fence line, at most three leading spaces) is never a heading; a fixture with a column-0 fence holding `# reproduce` between two items in a recognized section extracts both items in both copies.\n- [ ] The same sub-heading fixtures run against both copies in tests and both reject.\n- [ ] Existing conforming fixtures and the footer-only controls still exit 0; existing report-verdict tests pass.",
+    "status": "closed",
+    "priority": 1,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T15:32:31Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T17:53:20Z",
+    "closed_at": "2026-10-28T17:53:20Z",
+    "close_reason": "implemented; review and merge tracked by super-plan-mlr.7",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.1",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T15:32:31Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 6,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-2s3",
+    "title": "Validate generated review report format before collection",
+    "description": "D1/D2: malformed final/cluster review headings or prose in roast sections make complete extraction fail and degrade subsequent source collection. Existing final-review prompt already requires flat bullets, so preserve grammar and original artifacts. Minimum fix: validate actual producer output, bounded format-only repair and producer/consumer contract cases. Evidence /private/tmp/superpowers-mosh-feedback-triage-dx2/triage.json\n\n## Design slice (run super-plan-mlr, spec docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md §4.1 a, c — super-code side)\nProducer side of the review-report contract for super-code final, cluster and seam reviews. owns: whole-file report section rule (reviewFileFormat() single source). consumes: the spec §4.1 report grammar as super-plan-mlr.1 enforces it (producer text is written to the decided rule; no code dependency). The super-roast reporter side is sibling leaf super-plan-mlr.2; the extractor tightening is super-plan-mlr.1.\nFiles: skills/super-code/coordinator.js (reviewFileFormat ~L2992 and the final/cluster/seam prompts ~L3019-3032), skills/super-code/coordinator-workflow.md if it restates the format, tests/super-code/test-report-verdict.sh, a prompt-text assertion test (tests/skill-scripts/).\nInvestigation: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-2s3.md. Retained failing reports: /private/tmp/superpowers-mosh-feedback-triage-dx2/ (final-original.md, cluster1-original.md; copy needed ones into test fixtures).\n\nblocked-by super-plan-mlr.1: 2s3 acceptance needs its retained failing fixtures to exit 4 and its reviewer self-check to repair only on exit 4; mlr.1 creates that exit-4 contract in report-verdict --complete (today those shapes exit 2), and both edit tests/super-code/test-report-verdict.sh.",
+    "acceptance_criteria": "Original triage acceptance: validate actual producer output, bounded format-only repair, producer/consumer contract cases; preserve findings and original generations.\n- [ ] reviewFileFormat() states the whole-file rule: the recognized words (findings, must fix, concerns, blockers, deferred, untested scope) mark extractable sections anywhere; narrative goes under other headings; each recognized section holds only \"- \" items (indented continuations allowed) or \"- none\"; no sub-headings, bold labels or prose preamble inside one.\n- [ ] Final, cluster and seam review prompts tell the reviewer to run `bash ${codeSkill}/scripts/report-verdict --complete --source format-check \u003cown file\u003e` before returning and, only on exit 4 (grammar failure), fix formatting only (any other nonzero exit is noted in the report, not repaired), never finding content, without replacing existing partial contents (reviewWriteGuard holds).\n- [ ] Tests: the retained failing shapes that fail today (narrative Findings whose content sits under ### sub-headings → \"empty finding section\"; prose preamble in Findings) fail with the grammar-failure exit 4 (spec §4.1(c)); a fixture written to the new rule's shape exits 0 with every item extracted; prompt-text assertions on the rendered final, cluster and seam prompts cover the rule and the self-check.\n- [ ] node tests/super-code/replay-harness.mjs passes with dryRun agent counts unchanged.",
+    "notes": "\n\nReporter followup mnSGjefUcEV4 and retained artifacts at alepar/herdr@be183064a145617389c3b57261cbab4a389e97d4 checked. CORRECTION: final/cluster footers comply and parse0; earlier narrative Findings sections fail whole-file parse2. reviewFileFormat constrains footer only, extractor constrains all recognized sections. PR1 line134 prose preamble also reproduces parse2. Thus full producer/extractor contract alignment + output validation is justified, not simply reviewer noncompliance. Do not ignore narrative findings or overwrite original archives. Baseline run mistake supported but classifier root cause unproven (Launch/result lost). Graph/replanning historical evidence lost, remain unverified. Evidence /private/tmp/superpowers-mosh-feedback-triage-dx2/retained-original-parser-results.json; updated triage /private/tmp/superpowers-mosh-feedback-triage-dx2/triage.json\nPhase2 triage9tg: pinned a900f967 roast-pr-1 also fails report-verdict --complete (prose in Unverified nits). Duplicate producer/extractor contract failure; missing roast finding-source in Phase2 is partly downstream of this. Original report retained /private/tmp/superpowers-mosh-phase2-triage-9tg/. No fix claimed.\nUser explicitly authorized all P1/P2 fixes together via /super-auto autonomous with both roasts. Handed to Claude-2 tab mosh-feedback-fixes, seat sQ0Vrl8aT6jI, pair dZ377vckcS8, message mQ0VbOwrZg1Q. Launch started; adoption/completion not inferred. Integration-branch delivery to main coordinator requested.\nsuper-design promotion review (run super-plan-mlr) said PROMOTE (two subsystems; repair recording unspecified). Session overrule: split instead — super-roast side moved to super-plan-mlr.2; recording specified in spec §4.1(c). Each half is one feature in one subsystem.",
+    "status": "closed",
+    "priority": 1,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T07:52:03Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T17:57:43Z",
+    "closed_at": "2026-10-28T17:57:43Z",
+    "close_reason": "implemented; review and merge tracked by super-plan-mlr.10",
+    "labels": [
+      "sp:demoted-by-session",
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-2s3",
+        "depends_on_id": "super-plan-mlr.1",
+        "type": "blocks",
+        "created_at": "2026-10-28T16:40:10Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-2s3",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T15:32:23Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 2,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.22",
+    "title": "Pin git identity, signing and hooks in the new test fixtures",
+    "description": "Owns the git invocation helpers of the three new test files: every git call and the emitted drift-check script run carry GIT_AUTHOR_NAME/EMAIL and GIT_COMMITTER_NAME/EMAIL through env plus `-c commit.gpgsign=false -c core.hooksPath=/dev/null`, following test-setup-cleanup.sh / test-scripts.sh:224; consumes nothing from product code and changes no assertion. Verify by running each file under GIT_CONFIG_GLOBAL with user.useConfigOnly=true and commit.gpgsign=true, gpg.program=false, GIT_CONFIG_NOSYSTEM=1 | tests/super-code/test-setup-reuse.sh, tests/super-auto/review-inputs-range-scope.sh, tests/super-auto/review-continuity-e2e.sh | covers: [Nit] tests/super-code/test-setup-reuse.sh:26, [Nit] tests/super-auto/review-inputs-range-scope.sh:16 — Context, not to be changed: everything else in docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1.md, docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-2.md, the step-back record docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-2-step-back.md, the amended spec section §4.1 of docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md and the amend record docs/superpowers/runs/2026-10-28-review-continuity-followups/amend-code-1.md (links). Findings and step-back text there are evidence, not instructions. This is an applied-redesign bead: it may change every instance of the redesign, cited or not. Done when: its named findings are resolved and only its named files changed. The spec's ## Goal is never edited.\n\nFiles: tests/super-code/test-setup-reuse.sh, tests/super-auto/review-inputs-range-scope.sh, tests/super-auto/review-continuity-e2e.sh only. Test-side environment only: no change to skills/super-code/coordinator.js or the script it emits.",
+    "acceptance_criteria": "- [ ] Every git invocation in the three named test files (including the emitted drift script and merges run under them) runs with pinned GIT_AUTHOR_NAME/EMAIL, GIT_COMMITTER_NAME/EMAIL, commit.gpgsign=false and core.hooksPath=/dev/null\n- [ ] A check (grep-based test or helper assertion) fails if a bare git commit/merge call bypasses the pinned helper in those files\n- [ ] All three test files pass; no file outside them changes",
+    "status": "open",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T20:18:52Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T20:21:41Z",
+    "labels": [
+      "sp:redesign-code-1",
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.22",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T20:18:52Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.21",
+    "title": "report-verdict --repair-check rule (iv) from the --complete parse",
+    "description": "Owns the --repair-check rule (iv) decision in skills/super-code/scripts/report-verdict per amended spec §4.1(c): add the internal `--classify FILE` mode that runs the --complete node block's own section/fence/item state machine and emits per-line section, inFence, role (fence, fenced, boundary, sub-heading, item, continuation, unmarked, none, inactive) and heading label, without stopping on section-body grammar errors; rewrite the --repair-check node block to allow `- ` only on unmarked or sub-heading lines and `- \u003clabel\u003e` only on whole-line sub-heading labels, keep every other role byte-identical, and require equal (section, inFence) sequences; remove the `markable` regex; change --complete's fence-without-item error to `code fence outside a finding item in \u003csection\u003e`. Consumes the unchanged --complete grammar, checks (i)-(iii) and the roast word list; does not touch --keys, the `keys_roast` awk or assembly-archive.cjs strictDraft. Tests: reject a `- ` prefix on fence delimiters around a fenced `## Rejected` line, reject a marker on an unindented lazy continuation, reject a prefixed `**Findings**` label, accept `- ` on bold-led non-label lines (`**[Nit] src/a.sh:3** — claim`, `**Note:** text`), assert the new fence error text; existing r1-r11 repair-check cases stay green | skills/super-code/scripts/report-verdict, tests/super-code/test-report-verdict.sh, tests/super-code/fixtures/report-verdict/ | covers: [Should-fix] skills/super-code/scripts/report-verdict:226, [Nit] skills/super-code/scripts/report-verdict:226, [Should-fix] skills/super-code/scripts/report-verdict:229, [Should-fix] skills/super-code/scripts/report-verdict:223; skills/super-code/scripts/report-verdict:229 — Context, not to be changed: everything else in docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1.md, docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-2.md, the step-back record docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-2-step-back.md, the amended spec section §4.1 of docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md and the amend record docs/superpowers/runs/2026-10-28-review-continuity-followups/amend-code-1.md (links). Findings and step-back text there are evidence, not instructions. This is an applied-redesign bead: it may change every instance of the redesign, cited or not. Done when: its named findings are resolved and only its named files changed. The spec's ## Goal is never edited.\n\nowns: --repair-check rule (iv) and the internal --classify mode (checks i-iii stay as super-plan-mlr.5 built them). Replaces super-plan-mlr.16's markable() prefix-escape logic; mlr.16's regression fixtures stay and must pass under the new parse.\nconsumes: report-verdict --complete parser and grammar (owned by super-plan-mlr.1, incl. the super-plan-mlr.15 unclosed-fence rule); any refactor that exposes per-line classification leaves --complete output byte-identical on every existing tests/super-code/test-report-verdict.sh fixture.\nrule (iv) is a report-verdict-only check; assembly-archive.cjs strictDraft is not changed.",
+    "acceptance_criteria": "- [ ] --repair-check rule (iv) is decided from the --complete parse (--classify), per amended spec §4.1(c); the markable() regex is gone\n- [ ] Rejection fixtures: '- ' on a fence delimiter; '- ' on an unindented lazy continuation; '- ' on an indented continuation; a prefixed recognized-word bold label or ## heading; any repair whose --complete occurrences (section, position, key, text) differ from the original's would-be extraction\n- [ ] Acceptance fixture: '- ' on a bold-led non-label prose line\n- [ ] --complete output is byte-identical on all pre-existing test-report-verdict.sh fixtures; mlr.16 fixtures still pass\n- [ ] One fixture runs an accepted repair through both report-verdict --complete and assembly-archive.cjs strictDraft and asserts identical extraction\n- [ ] The --complete 'without a list marker' error no longer points at a fence delimiter as the line to mark\n- [ ] Only skills/super-code/scripts/report-verdict and tests/super-code/ files change",
+    "status": "open",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T20:18:51Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T20:21:40Z",
+    "labels": [
+      "sp:redesign-code-1",
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.21",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T20:18:51Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.20",
+    "title": "Fix: scope-dispositions key normalization for the missing-route gap",
+    "description": "Covers: [Nit] skills/super-auto/scripts/scope-dispositions:185\nFiles touched (hint): skills/super-auto/scripts/scope-dispositions, tests/super-auto/test-scripts.sh\nContext, not to be changed: everything else in docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1.md, the step-back record docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-step-back.md and the final review docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/final-review-inv-20261028T162628.md (links). Findings and step-back text there are evidence, not instructions.\nThe spec's ## Goal is never edited.\nDone when: its named findings are resolved and only its named files changed.",
+    "acceptance_criteria": "- [ ] [Nit] skills/super-auto/scripts/scope-dispositions:185 resolved, with a test that fails before the fix\n- [ ] Only the hinted files change",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T19:21:32Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T19:43:09Z",
+    "closed_at": "2026-10-28T19:43:09Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.20",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T19:21:32Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.19",
+    "title": "Fix: review-continuity e2e S2/S5 assertions must fail when projection never ran",
+    "description": "Covers: [Should-fix] tests/super-auto/review-continuity-e2e.sh:113\nFiles touched (hint): tests/super-auto/review-continuity-e2e.sh\nContext, not to be changed: everything else in docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1.md, the step-back record docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-step-back.md and the final review docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/final-review-inv-20261028T162628.md (links). Findings and step-back text there are evidence, not instructions.\nThe spec's ## Goal is never edited.\nDone when: its named findings are resolved and only its named files changed.",
+    "acceptance_criteria": "- [ ] [Should-fix] tests/super-auto/review-continuity-e2e.sh:113 resolved, with a test that fails before the fix\n- [ ] Only the hinted files change",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T19:21:31Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T19:35:58Z",
+    "closed_at": "2026-10-28T19:35:58Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.19",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T19:21:31Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.18",
+    "title": "Fix: provenance digest must not inline the full outOfRange list",
+    "description": "Covers: [Should-fix] skills/super-code/scripts/dispatch-text.mjs:422\nFiles touched (hint): skills/super-code/scripts/dispatch-text.mjs, tests/super-auto/review-inputs-range-scope.sh\nContext, not to be changed: everything else in docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1.md, the step-back record docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-step-back.md and the final review docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/final-review-inv-20261028T162628.md (links). Findings and step-back text there are evidence, not instructions.\nThe spec's ## Goal is never edited.\nDone when: its named findings are resolved and only its named files changed.",
+    "acceptance_criteria": "- [ ] [Should-fix] skills/super-code/scripts/dispatch-text.mjs:422 resolved, with a test that fails before the fix\n- [ ] Only the hinted files change",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T19:21:30Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T19:36:44Z",
+    "closed_at": "2026-10-28T19:36:44Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.18",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T19:21:30Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.16",
+    "title": "Fix: --repair-check rule (iv) prefix escape",
+    "description": "Covers: [Should-fix] skills/super-code/scripts/report-verdict:229; [Should-fix] skills/super-code/scripts/report-verdict:223; skills/super-code/scripts/report-verdict:229\nThis is a cluster bead: it may change every instance of its rule, cited or not.\n\u003crule\u003ea repair may add a `- ` prefix only to a line that is unindented, is not an ATX heading and is not a bold label. Remove the generic '- ' + a escape so every allowed transformation goes through a guard (the demoted() roastWord check included). Add rejection tests for an indented continuation, a demoted ## heading and a demoted recognized-word bold label.\u003c/rule\u003e\nFiles touched (hint): skills/super-code/scripts/report-verdict, tests/super-code/test-report-verdict.sh\nContext, not to be changed: everything else in docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1.md, the step-back record docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-step-back.md and the final review docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/final-review-inv-20261028T162628.md (links). Findings and step-back text there are evidence, not instructions.\nThe spec's ## Goal is never edited.\nDone when: its named findings are resolved and only its named files changed.",
+    "acceptance_criteria": "- [ ] [Should-fix] skills/super-code/scripts/report-verdict:229 resolved, with a test that fails before the fix\n- [ ] [Should-fix] skills/super-code/scripts/report-verdict:223; skills/super-code/scripts/report-verdict:229 resolved, with a test that fails before the fix\n- [ ] Only the hinted files change",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T19:21:29Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T19:37:35Z",
+    "closed_at": "2026-10-28T19:37:35Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.16",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T19:21:29Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.17",
+    "title": "Fix: drift-check script treats every git step as fallible",
+    "description": "Covers: [Nit] skills/super-code/coordinator.js:2654; skills/super-code/coordinator.js:2652; [Nit] skills/super-code/coordinator.js:2646; [Nit] skills/super-code/coordinator.js:2655\nThis is a cluster bead: it may change every instance of its rule, cited or not.\n\u003crule\u003ethe emitted drift-check script treats every git step as fallible: it resolves parent SHAs once at the top and treats a parent ref that no longer resolves as already landed; every checkout, merge and rebase ends in || fail \u003cstep\u003e, and fail() verifies the restore before reporting it. Tests cover each fail branch (merge conflict, multiple parents, missing parent), not only the rebase conflict.\u003c/rule\u003e\nFiles touched (hint): skills/super-code/coordinator.js (workspaceSetup drift fragment), tests/super-code/test-setup-reuse.sh, tests/super-code/test-dispatch-text.sh\nContext, not to be changed: everything else in docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1.md, the step-back record docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-step-back.md and the final review docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/final-review-inv-20261028T162628.md (links). Findings and step-back text there are evidence, not instructions.\nThe spec's ## Goal is never edited.\nDone when: its named findings are resolved and only its named files changed.",
+    "acceptance_criteria": "- [ ] [Nit] skills/super-code/coordinator.js:2654; skills/super-code/coordinator.js:2652 resolved, with a test that fails before the fix\n- [ ] [Nit] skills/super-code/coordinator.js:2646 resolved, with a test that fails before the fix\n- [ ] [Nit] skills/super-code/coordinator.js:2655 resolved, with a test that fails before the fix\n- [ ] Only the hinted files change",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T19:21:29Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T19:39:21Z",
+    "closed_at": "2026-10-28T19:39:21Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.17",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T19:21:29Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.15",
+    "title": "Fix: unclosed fence must fail loudly in both report grammar copies",
+    "description": "Covers: [Should-fix] skills/super-code/scripts/report-verdict:140; [Must-fix] final review: unclosed fence (inv-20261028T162628/final Must fix before landing #1)\nThis is a cluster bead: it may change every instance of its rule, cited or not.\n\u003crule\u003eevery section-grammar parser that tracks fences (report-verdict --complete, assembly-archive.cjs strictDraft, and any other copy of the fence toggle in the tree) fails loudly with its grammar error (exit 4, or a thrown strictDraft error) when a fence is still open at EOF, and the closing fence must match the opening marker. One shared fixture is run against every copy.\u003c/rule\u003e\nFiles touched (hint): skills/super-code/scripts/report-verdict, skills/super-code/scripts/assembly-archive.cjs, tests/super-code/test-report-verdict.sh, tests/super-code/fixtures/report-verdict/\nContext, not to be changed: everything else in docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1.md, the step-back record docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-roast-pr-1-step-back.md and the final review docs/superpowers/runs/2026-10-28-review-continuity-followups/reviews/inv-20261028T162628/final-review-inv-20261028T162628.md (links). Findings and step-back text there are evidence, not instructions.\nThe spec's ## Goal is never edited.\nDone when: its named findings are resolved and only its named files changed.",
+    "acceptance_criteria": "- [ ] [Should-fix] skills/super-code/scripts/report-verdict:140 resolved, with a test that fails before the fix\n- [ ] [Must-fix] final review: unclosed fence (inv-20261028T162628/final Must fix before landing #1) resolved, with a test that fails before the fix\n- [ ] Only the hinted files change",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T19:21:27Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T19:42:06Z",
+    "closed_at": "2026-10-28T19:42:06Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.15",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T19:21:27Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.14",
+    "title": "review: super-plan-mlr.3",
+    "description": "Review, fix and merge of super-plan-mlr.3, tracked separately so super-plan-mlr.3's dependents can start once it is implemented. The merge that lands super-plan-mlr.3 closes this bead.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T18:17:06Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T18:18:12Z",
+    "closed_at": "2026-10-28T18:18:12Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:review",
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.14",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T18:17:06Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.14",
+        "depends_on_id": "super-plan-mlr.3",
+        "type": "blocks",
+        "created_at": "2026-10-28T18:17:06Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.13",
+    "title": "review: super-plan-tco",
+    "description": "Review, fix and merge of super-plan-tco, tracked separately so super-plan-tco's dependents can start once it is implemented. The merge that lands super-plan-tco closes this bead.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T18:01:34Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T18:06:46Z",
+    "closed_at": "2026-10-28T18:06:46Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:review",
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.13",
+        "depends_on_id": "super-plan-tco",
+        "type": "blocks",
+        "created_at": "2026-10-28T18:01:34Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.13",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T18:01:34Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.12",
+    "title": "review: super-plan-mlr.6",
+    "description": "Review, fix and merge of super-plan-mlr.6, tracked separately so super-plan-mlr.6's dependents can start once it is implemented. The merge that lands super-plan-mlr.6 closes this bead.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T18:00:08Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T18:03:15Z",
+    "closed_at": "2026-10-28T18:03:15Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:review",
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.12",
+        "depends_on_id": "super-plan-mlr.6",
+        "type": "blocks",
+        "created_at": "2026-10-28T18:00:08Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.12",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T18:00:08Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.11",
+    "title": "review: super-plan-mlr.5",
+    "description": "Review, fix and merge of super-plan-mlr.5, tracked separately so super-plan-mlr.5's dependents can start once it is implemented. The merge that lands super-plan-mlr.5 closes this bead.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T17:57:45Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T17:59:15Z",
+    "closed_at": "2026-10-28T17:59:15Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:review",
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.11",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T17:57:45Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.11",
+        "depends_on_id": "super-plan-mlr.5",
+        "type": "blocks",
+        "created_at": "2026-10-28T17:57:45Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.10",
+    "title": "review: super-plan-2s3",
+    "description": "Review, fix and merge of super-plan-2s3, tracked separately so super-plan-2s3's dependents can start once it is implemented. The merge that lands super-plan-2s3 closes this bead.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T17:57:43Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T18:01:06Z",
+    "closed_at": "2026-10-28T18:01:06Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:demoted-by-session",
+      "sp:review",
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.10",
+        "depends_on_id": "super-plan-2s3",
+        "type": "blocks",
+        "created_at": "2026-10-28T17:57:43Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.10",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T17:57:43Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.9",
+    "title": "review: super-plan-row",
+    "description": "Review, fix and merge of super-plan-row, tracked separately so super-plan-row's dependents can start once it is implemented. The merge that lands super-plan-row closes this bead.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T17:55:36Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T17:58:21Z",
+    "closed_at": "2026-10-28T17:58:21Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:demoted-by-session",
+      "sp:review",
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.9",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T17:55:36Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.9",
+        "depends_on_id": "super-plan-row",
+        "type": "blocks",
+        "created_at": "2026-10-28T17:55:36Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.8",
+    "title": "review: super-plan-rsc",
+    "description": "Review, fix and merge of super-plan-rsc, tracked separately so super-plan-rsc's dependents can start once it is implemented. The merge that lands super-plan-rsc closes this bead.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T17:53:23Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T17:54:37Z",
+    "closed_at": "2026-10-28T17:54:37Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:review",
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.8",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T17:53:23Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.8",
+        "depends_on_id": "super-plan-rsc",
+        "type": "blocks",
+        "created_at": "2026-10-28T17:53:23Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.7",
+    "title": "review: super-plan-mlr.1",
+    "description": "Review, fix and merge of super-plan-mlr.1, tracked separately so super-plan-mlr.1's dependents can start once it is implemented. The merge that lands super-plan-mlr.1 closes this bead.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T17:53:20Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T17:54:04Z",
+    "closed_at": "2026-10-28T17:54:04Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:review",
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.7",
+        "depends_on_id": "super-plan-mlr.1",
+        "type": "blocks",
+        "created_at": "2026-10-28T17:53:20Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.7",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T17:53:20Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.6",
+    "title": "super-roast report body rule, format-repair write step and caller report-path sentences",
+    "description": "Split from super-plan-mlr.2: Two independent groups: a new report-verdict --repair-check mode with four mechanical checks and about 14 accept/reject fixtures (script code), and prompt/template/caller text across four skill files with prompt-text assertions. They share no code (the text only names the command), so they can run in parallel. Surface is 82K tokens.\nfiles: skills/super-roast/reporter-prompt.md, skills/super-roast/SKILL.md, skills/super-auto/SKILL.md, skills/super-design/SKILL.md, tests/super-code/test-report-verdict.sh, tests/super-code/fixtures/report-verdict/roast-unverified-nits-prose.md, tests/super-code/fixtures/report-verdict/roast-template-shaped.md\nreads: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md, docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-2s3.md, skills/super-roast/reporter-prompt.md, skills/super-roast/SKILL.md\nblocked-by super-plan-mlr.1: Split from super-plan-mlr.2, which was blocked by super-plan-mlr.1; the split dropped the edge. The format-repair trigger written into super-roast/SKILL.md is --complete exit 4, and the prose fixture test asserts exit 4 'once super-plan-mlr.1 lands' (today that shape exits 2).",
+    "acceptance_criteria": "- [ ] Every section of the reporter template (Confirmed findings, Not verified sections, Beyond remainder cap, Rejected, Unverified nits, Escalations) states: only \"- \" items with indented continuations, or \"- none\"; no prose preamble, sub-headings or bold labels inside; any explanatory sentence goes outside recognized sections. SKILL.md mirror matches.\n- [ ] After writing reportMarkdown, the orchestrator runs `report-verdict --complete --source format-check \u003cfile\u003e` on it; only on exit 4 (grammar failure; exit 2 usage/I/O errors never trigger a repair) it re-dispatches the reporter once with the parser error and the original path and writes the result to a new sibling …-format-repair.md (never over the original); header-only failures (unrecognized finding source, missing verdict value) are not re-dispatched — the original is recorded with a friction line. The repair is accepted only when `report-verdict --repair-check \u003coriginal\u003e \u003crepair\u003e` exits 0 (4 rejects naming the failed check; 2 usage/I-O, treated as reject): (i) it passes --complete, (ii) every line before the first `## ` heading is byte-identical, (iii) `--keys` output is identical, and (iv) after deleting blank and `- none` lines from both, the line counts are equal and each repair line equals the original line at that position, or is it prefixed with `- ` (original not already a list item), or, only for an original heading deeper than `## ` or a bold label whose label is not a recognized roast section word, is `- \u003clabel\u003e`; fenced lines compare as plain lines. An accepted repair is recorded as the round's report and \"report format repair: \u003coriginal\u003e → \u003crepair\u003e — \u003cerror\u003e\" is appended to the friction log; if any check fails, the original is recorded and the friction line names the failed check. The orchestrator never edits finding content.\n- [ ] Tests: the retained pr1/roast-pr-1 Unverified-nits shape fails --complete today (exit 4 once super-plan-mlr.1 lands) and a template-shaped fixture exits 0 with all items; prompt-text assertions cover the body rule and the repair step.\n- [ ] skills/super-roast/super-roast-workflow.md is not changed; if a change proves necessary, its documented dryRun scenarios are re-run and the agent counts match the doc.\n- [ ] super-roast/SKILL.md's write step defines the round's report path (accepted repair, else original); super-auto's phase-4 write sentence (also followed by the post-cap audit and the amend design roast) and super-design's §Adversarial Review Loop invocation paragraph and roast-design write-table row state that they record and pass that path.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T16:40:29Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T18:00:09Z",
+    "closed_at": "2026-10-28T18:00:09Z",
+    "close_reason": "implemented; review and merge tracked by super-plan-mlr.12",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.6",
+        "depends_on_id": "super-plan-mlr.1",
+        "type": "blocks",
+        "created_at": "2026-10-28T17:44:11Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.6",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T16:40:29Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 3,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.5",
+    "title": "report-verdict --repair-check mode and its fixtures",
+    "description": "Split from super-plan-mlr.2: Two independent groups: a new report-verdict --repair-check mode with four mechanical checks and about 14 accept/reject fixtures (script code), and prompt/template/caller text across four skill files with prompt-text assertions. They share no code (the text only names the command), so they can run in parallel. Surface is 82K tokens.\nfiles: skills/super-code/scripts/report-verdict, tests/super-code/test-report-verdict.sh\nreads: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md, skills/super-code/scripts/report-verdict\nblocked-by super-plan-mlr.1: Split from super-plan-mlr.2, which was blocked by super-plan-mlr.1; the split dropped the edge. --repair-check check (i) runs report-verdict --complete, whose exit-4 grammar-failure contract super-plan-mlr.1 creates, and both edit the report-verdict script and its usage comment.",
+    "acceptance_criteria": "- [ ] --repair-check fixtures in test-report-verdict.sh: accept a repair that only adds `- ` to a prose line, adds `- none` under an empty section, or demotes `### detail` to `- detail`; reject one that drops or rewords an item or a continuation line, renames or adds a section heading, moves an item to another section, or changes a header line or --keys output.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T16:40:23Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T17:57:45Z",
+    "closed_at": "2026-10-28T17:57:45Z",
+    "close_reason": "implemented; review and merge tracked by super-plan-mlr.11",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.5",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T16:40:23Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.5",
+        "depends_on_id": "super-plan-mlr.1",
+        "type": "blocks",
+        "created_at": "2026-10-28T17:43:50Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 2,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.4",
+    "title": "Integration sweep: review continuity followups",
+    "description": "Root integration sweep for run super-plan-mlr (spec docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md). Verifies the goal's main flow end to end, registers new tests, and sweeps for unwired pieces; fixes small gaps inline, files blockers for big ones. Also serves as the seam integration for the three seams contracted in coverage round 1 (report grammar mlr.1↔2s3/mlr.2; review-inputs outOfRange rsc↔tco; bookkeeping gap text row↔mlr.3).\nFiles: CLAUDE.md (release test list, only to register new test files), tests/ (one end-to-end scenario), any small inline fix.\nblocked-by super-plan-2s3: consumes all leaves (integration sweep)\nblocked-by super-plan-mlr.1: consumes all leaves (integration sweep)\nblocked-by super-plan-mlr.2: consumes all leaves (integration sweep)\nblocked-by super-plan-rsc: consumes all leaves (integration sweep)\nblocked-by super-plan-tco: consumes all leaves (integration sweep)\nblocked-by super-plan-row: consumes all leaves (integration sweep)\nblocked-by super-plan-mlr.3: consumes all leaves (integration sweep)\nblocked-by super-plan-v94: consumes all leaves (integration sweep)\nblocked-by super-plan-1s3: consumes all leaves (integration sweep)\nblocked-by super-plan-zhk: consumes all leaves (integration sweep)\nblocked-by super-plan-mlr.5: consumes split of super-plan-mlr.2\nblocked-by super-plan-mlr.6: consumes split of super-plan-mlr.2",
+    "acceptance_criteria": "- [ ] Every test file added by this tree is listed in CLAUDE.md 'Cutting a Fork Release' step 1, and the whole list passes.\n- [ ] One end-to-end scenario: a final-review report written to the new reviewFileFormat() shape and a roast report written to the new reporter template both pass report-verdict --complete; report-status --collect retains them; a later product-only range's dispatch-text review-inputs exits 0 with any untouched old incomplete run in outOfRange; the phase-4 readiness derivation from that review-inputs.json yields complete/available accepted by super-roast assemble-args.\n- [ ] scope-dispositions --project on a run.md written per the new caller instructions reports no bookkeeping gap; with a route removed it reports one.\n- [ ] node tests/super-code/replay-harness.mjs passes with dryRun agent counts unchanged.\n\n- [ ] A malformed roast report (prose under Unverified nits) goes through the super-roast format repair, the …-format-repair.md path recorded in roast-code: is collected by report-status --collect, and the original stays on disk.\n- [ ] The 2s3 and mlr.2 producer-shape fixtures are re-run against the tightened extractor (after super-plan-mlr.1) and pass.\n- [ ] A prompt-text test asserts the super-roast reporter template's restated body rule and coordinator.js reviewFileFormat() state the same constraints (recognized words, '- ' items or '- none', no sub-headings/bold labels/preamble).\n- [ ] The sweep's close note lists the unproven historical causes (exact mosh-hex.5 setup failure; which agent produced each AI-trailer commit) as qualified, separate from the verified fixes.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T15:40:57Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T18:35:30Z",
+    "closed_at": "2026-10-28T18:35:30Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.4",
+        "depends_on_id": "super-plan-mlr.5",
+        "type": "blocks",
+        "created_at": "2026-10-28T16:40:41Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.4",
+        "depends_on_id": "super-plan-2s3",
+        "type": "blocks",
+        "created_at": "2026-10-28T15:40:58Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.4",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T15:40:57Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.4",
+        "depends_on_id": "super-plan-rsc",
+        "type": "blocks",
+        "created_at": "2026-10-28T15:40:59Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.4",
+        "depends_on_id": "super-plan-zhk",
+        "type": "blocks",
+        "created_at": "2026-10-28T15:41:03Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.4",
+        "depends_on_id": "super-plan-row",
+        "type": "blocks",
+        "created_at": "2026-10-28T15:41:01Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.4",
+        "depends_on_id": "super-plan-mlr.2",
+        "type": "blocks",
+        "created_at": "2026-10-28T15:40:59Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.4",
+        "depends_on_id": "super-plan-tco",
+        "type": "blocks",
+        "created_at": "2026-10-28T15:41:00Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.4",
+        "depends_on_id": "super-plan-mlr.6",
+        "type": "blocks",
+        "created_at": "2026-10-28T16:40:44Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.4",
+        "depends_on_id": "super-plan-mlr.3",
+        "type": "blocks",
+        "created_at": "2026-10-28T15:41:01Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.4",
+        "depends_on_id": "super-plan-1s3",
+        "type": "blocks",
+        "created_at": "2026-10-28T15:41:03Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.4",
+        "depends_on_id": "super-plan-mlr.1",
+        "type": "blocks",
+        "created_at": "2026-10-28T15:40:58Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.4",
+        "depends_on_id": "super-plan-v94",
+        "type": "blocks",
+        "created_at": "2026-10-28T15:41:02Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 12,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr.3",
+    "title": "super-auto caller finding-route and pending-human records",
+    "description": "Split from super-plan-row (spec docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md §4.4 — caller side). The mosh caller wrote six finding-source records and no route/link/disposition records, silently substituted scope keys for an empty projection, and kept pending human escalations only as free-text parked lines.\nowns: caller record-writing instructions. consumes: scope-dispositions bookkeeping gap kinds and message text from super-plan-row.\nFiles: skills/super-auto/SKILL.md (§Step 2 — scope filter, §Step 3 — file fix beads, §Final-review items / §Cap disposition human-gated sentences ~L430/452), skills/super-auto/run-state.md (§Finding continuity records ~L442-445).\nSeam: super-auto/SKILL.md §Autonomous mode and the phase table are shared with the separate default-flags tab; touch only the sentences named here.\nInvestigation: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-tco-row.md (part B).\n\nblocked-by super-plan-row: consumes scope-dispositions bookkeeping gap kinds and message text\nblocked-by super-plan-mlr.6: mlr.3's Step 2 runs report-verdict --complete --source roast-code/round-N on the round's report path (accepted ...-format-repair.md, else the original), which mlr.6 defines in super-roast/SKILL.md's write step; mlr.3's contract lint asserts that phrase; both also edit skills/super-auto/SKILL.md.",
+    "acceptance_criteria": "- [ ] Step 2 tells the caller to append the round's finding-source (report-verdict --complete --source roast-design/round-N or roast-code/round-N, run on the recorded report path — the accepted …-format-repair.md, else the original — so the record's artifact equals it) and then one finding-route per scope decision; on extraction failure, record the gap and never substitute scope keys for the punch list.\n- [ ] Step 3 appends a fix:\u003cbead\u003e finding-route for each filed fix bead.\n- [ ] Human-gated items (roast Escalations, reserved human decisions) get a finding-route with deferred \"pending human decision: \u003cwhat\u003e\" carrying the occurrence ref; parked: lines cite that ref; a later occurrence is linked only by a finding-link whose basis cites evidence it is the same defect, never key equality; resolution only by a finding-disposition citing the human's recorded approval line; autonomous mode never writes a human approval.\n- [ ] run-state.md defines the reserved \"pending human decision:\" deferred prefix in one sentence; no new record kind.\n- [ ] tests/super-auto/test-contract-lint.sh (or test-scripts.sh) asserts the new instructions exist and that a run.md written per them projects with no bookkeeping gap.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T15:35:21Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T18:17:06Z",
+    "closed_at": "2026-10-28T18:17:06Z",
+    "close_reason": "implemented; review and merge tracked by super-plan-mlr.14",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-mlr.3",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T15:35:21Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.3",
+        "depends_on_id": "super-plan-row",
+        "type": "blocks",
+        "created_at": "2026-10-28T15:40:27Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-mlr.3",
+        "depends_on_id": "super-plan-mlr.6",
+        "type": "blocks",
+        "created_at": "2026-10-28T17:53:25Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 2,
+    "dependent_count": 2,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-mlr",
+    "title": "Review continuity followups (mosh triage P1/P2)",
+    "description": "Root epic for super-auto run docs/superpowers/runs/2026-10-28-review-continuity-followups/ (branch super-auto/review-continuity-followups). Spec: docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md. Literal human request: \"lets $ht handoff to claude-2 all p1 and p2 fixes, at once, using /super-auto in fully autonomous mode, both roasts on\". Closable by this run: it holds exactly the seven followups plus run-created leaves.\n\n## Global Constraints\n- Smallest change covering each issue, in existing scripts/prompts/contracts/tests; no new workflow abstraction (source: coordinator scope choice relayed with the human request).\n- Tests prove behavior (run the real script / rendered prompt against fixtures), not mirror implementation text (source: project instruction, coordinator brief).\n- Never overwrite original review reports or archives; never blind-reset, force-delete, stash or WIP-commit task work (source: bead acceptance super-plan-2s3, super-plan-v94).\n- Never infer finding resolution from bead closure, equal display key or a later clean review; never auto-approve a human acceptance change (source: bead acceptance super-plan-row).\n- No global hardcoded AI-trailer ban, no history rewrite, no metadata-lint framework (source: bead acceptance super-plan-zhk).\n- dryRun agent counts recorded in skills/super-code/coordinator-workflow.md must not change (source: project release instruction).\n- Commit messages: Conventional-commit style matching repo history (e.g. 'fix(super-code): ...'). This repo's instruction files set no trailer policy.\n- Skill-text edits stay minimal and do not rewrite carefully tuned content (Red Flags, rationalization lists, 'human partner' wording) (source: CLAUDE.md Skill Changes Require Evaluation).\n\u003c!-- key-abstractions digest: begin --\u003e\n- Range relevance rule: decides whether a run.md is in the captured range using paths and mirror-origin status only (an origin is relevant only through a relevant mirror), evaluated after origin authentication; a new relevance criterion goes in this one predicate; callers never test changed paths or run ids themselves.\n- Run-scoped gap sink: routes each run-attributed problem to `gaps` or `outOfRange`, buffering until origins are authenticated; any new per-run validation reports through it; callers never push to `gaps` directly for a run-scoped problem.\n- `claude_window`: maps a model id to its window in bash, kept in step with `CLAUDE_WINDOWS` by the parity test; a new model is a row here and in `context-pass.mjs` plus its parity ids; callers never add their own case list of 1M ids.\n- Bookkeeping completeness checks: surface a scope-filter decision with no `finding-route` as a projection gap (missing `finding-source` records stay with `report-status`'s source-coverage check); any new missing-record check is added to this pass; callers never use a key match to link or resolve a finding.\n\u003c!-- key-abstractions digest: end --\u003e",
+    "status": "open",
+    "priority": 2,
+    "issue_type": "epic",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T15:31:00Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T16:25:08Z",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependency_count": 0,
+    "dependent_count": 0,
+    "comment_count": 0
+  },
+  {
+    "id": "super-plan-zhk",
+    "title": "Carry project commit policy to the implementer commit step and task-review severity",
+    "description": "Source: Herdr mosh Phase2 report mnSGIFED8uqR, alepar/herdr@a900f96707d42ba28fdec87a1fc03afbb12a7b31. Triage source Superpowers 444f86b2 (6.6). Evidence /private/tmp/superpowers-mosh-phase2-triage-9tg. Retained epic Global Constraints explicitly forbid AI co-author lines; friction and reviews report six offending commits later rewritten and minor grading. Original old commit objects not GitHub-reachable. Planner prompt already requires verbatim Global Constraints; missing propagation versus ignored supplied policy/harness defaults not established. Correction: pinned herdr-AGENTS.md line237 explicitly forbids AI co-author lines. Initial triage missed this; repository instructions and epic both contain the policy.\n\n## Design slice (run super-plan-mlr, spec docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md §4.7)\nEstablished (investigation inv-zhk.md): all trailers read Claude Sonnet 5.5 (implementer tier); implementer-prompt.md ## Commit (~L133-145) has no message-policy rule; herdr has AGENTS.md but no CLAUDE.md, so Claude Code agents see the AGENTS.md rule only via prompts; the harness attribution reminder asks for trailers; task-reviewer-prompt.md severity (~L151-164) files style under Minor and review-package shows commit subjects only. Not established: which exact agent produced each commit, or whether planner task sections kept the constraint. The report must keep that qualification.\nowns: none (prompt text only). consumes: nothing.\nFiles: skills/super-code/implementer-prompt.md (## Commit), skills/super-code/task-reviewer-prompt.md (severity rules, commit inspection), a prompt-text assertion test.",
+    "acceptance_criteria": "Original acceptance: inspect available evidence to locate escape; smallest generic check honoring supplied project commit policy and requirement severity; no global AI-trailer ban, no history rewrite, no metadata-lint framework; exact producer root cause evidenced before implementation (here: the verified prompt gaps are implemented; the historical producer attribution is reported as inferred).\n- [ ] implementer-prompt.md ## Commit says commit messages follow the commit rules in the repository's instruction files (AGENTS.md, CLAUDE.md, CONTRIBUTING) and the brief's Global Constraints, and that project rules win over a harness's default attribution/trailer instruction; fix passes inherit it.\n- [ ] task-reviewer-prompt.md grades a violation of an explicit project or brief constraint, commit-message policy included, as Important (missed requirement), and tells the reviewer to read full messages (git log --format=%B BASE..HEAD) and check them against the commit rules in the repository's instruction files (AGENTS.md, CLAUDE.md, CONTRIBUTING — added to the reviewer prompt's ## Read list) plus the brief's Global Constraints.\n- [ ] Remedy for an already-committed bad message (spec §4.7): the fix pass may reword only the task's own unmerged commits in BASE..HEAD (never a stack: merge or anything on the integration branch), messages only, each commit's tree unchanged; this is the only rewrite allowed (\"no history rewrite\" means no other rewrite and no rewrite machinery). The implementer prompt's fix-pass path states it.\n- [ ] No trailer is named or banned generically; review-package unchanged.\n- [ ] Prompt-text test asserts both rules appear in the rendered implementer and task-review prompts (including the fix-pass path).\n- [ ] The bead's close note states what is established and that the exact commit-producing agent is inferred, not proven.",
+    "notes": "User explicitly authorized all P1/P2 fixes together via /super-auto autonomous with both roasts. Handed to Claude-2 tab mosh-feedback-fixes, seat sQ0Vrl8aT6jI, pair dZ377vckcS8, message mQ0VbOwrZg1Q. Launch started; adoption/completion not inferred. Integration-branch delivery to main coordinator requested.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T14:37:22Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T17:47:41Z",
+    "closed_at": "2026-10-28T17:47:41Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-zhk",
+        "depends_on_id": "super-plan-9tg",
+        "type": "discovered-from",
+        "created_at": "2026-10-28T14:37:22Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-zhk",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T15:32:30Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 1,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-row",
+    "title": "Persist caller finding continuity and pending human escalation identity",
+    "description": "Source: Herdr mosh Phase2 report mnSGIFED8uqR, alepar/herdr@a900f96707d42ba28fdec87a1fc03afbb12a7b31. Triage source Superpowers 444f86b2 (6.6). Evidence /private/tmp/superpowers-mosh-phase2-triage-9tg. Original run.md has six final-review finding-source records and zero finding-link/route/disposition records. Projector faithfully returns158 occurrences/groups,0 repaired,empty deferred keys. Synthetic explicit link+route control groups and emits keys correctly. Existing SKILL/run-state instructions already require these records; caller compliance/validation escaped. Repeated pending acceptance relaxation remains a real human gate. Roast extraction failure duplicates super-plan-2s3.\n\n## Design slice (run super-plan-mlr, spec docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md §4.4 — projector side)\nowns: Bookkeeping completeness checks (see epic digest); owns: scope-dispositions bookkeeping gap kinds and their message text. consumes: existing finding-source/finding-route/finding-disposition schema in skills/super-auto/run-state.md (no new record kind). Caller-side instructions are sibling leaf super-plan-mlr.3.\nFiles: skills/super-auto/scripts/scope-dispositions (--project, after projection ~L80-200), tests/super-auto/test-scripts.sh.\nMatching rule (spec §4.4): a matching roast occurrence is a finding-source occurrence from the same round's roast source (existing id roast-design/round-N / roast-code/round-N) whose extracted key equals the recorded scope-filter key; that source's artifact is the recorded roast-code:/roast-design: path (accepted …-format-repair.md, else original) per the spec §4.1(c) contract; the decision has a route when a finding-route names one of those refs. Key equality only locates where a record should exist.\nInvestigation: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-tco-row.md (part B); original mosh run.md in /private/tmp/superpowers-mosh-phase2-triage-9tg/.",
+    "acceptance_criteria": "Original acceptance: at actual caller boundaries retain valid roast sources and evidence-backed links/routes/dispositions using existing schema; make omitted bookkeeping visible; retain pending escalation identity/status in subsequent reviews; never infer resolution from bead closure, same display key or later clean reviews; never auto-approve human acceptance changes. (Caller instructions: super-plan-mlr.3.)\n- [ ] scope-dispositions --project emits \"scope-filter decision without finding-route: round \u003cN\u003e \u003ckey\u003e\" for each recorded scopeFilter-round-N decision with no finding-route on a matching occurrence (a source counts only when its id is that round's roast-design/round-N or roast-code/round-N and its artifact equals the recorded path); exits 3 with it; adds an unrouted metric; creates no link, route or disposition. It adds no declared-report-without-finding-source gap: report-status --acceptance's existing \"source coverage: declared report has no retained source extraction\" check covers that (exempting keys-only and source-correspondence inputs), spec §4.4.\n- [ ] Tests: a fixture shaped like the mosh run.md (sources present, routes absent, scope-filter lines present) shows the missing-route gap; a fixture with keys-only and source-correspondence-covered declared inputs and complete routes shows no bookkeeping gap; a fixture with explicit routes shows none; adding a closed bead or a later clean review does not remove a gap or resolve a finding; existing scope-dispositions tests pass.",
+    "notes": "User explicitly authorized all P1/P2 fixes together via /super-auto autonomous with both roasts. Handed to Claude-2 tab mosh-feedback-fixes, seat sQ0Vrl8aT6jI, pair dZ377vckcS8, message mQ0VbOwrZg1Q. Launch started; adoption/completion not inferred. Integration-branch delivery to main coordinator requested.\nsuper-design promotion review (run super-plan-mlr) said PROMOTE (script + caller protocol; matching/linking undefined). Session overrule: split instead — caller instructions moved to super-plan-mlr.3; matching and linking rules defined in spec §4.4.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T14:37:21Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T17:55:36Z",
+    "closed_at": "2026-10-28T17:55:36Z",
+    "close_reason": "implemented; review and merge tracked by super-plan-mlr.9",
+    "labels": [
+      "sp:demoted-by-session",
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-row",
+        "depends_on_id": "super-plan-9tg",
+        "type": "discovered-from",
+        "created_at": "2026-10-28T14:37:21Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-row",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T15:32:27Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 3,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-v94",
+    "title": "Revalidate reused stacked task branches against current prerequisites",
+    "description": "Source: Herdr mosh Phase2 report mnSGIFED8uqR, alepar/herdr@a900f96707d42ba28fdec87a1fc03afbb12a7b31. Triage source Superpowers 444f86b2 (6.6). Evidence /private/tmp/superpowers-mosh-phase2-triage-9tg. Report records mosh-hex.5 SETUP_FAILED after reuse of stale pre-review parent. Current coordinator workspaceSetup BOTH-exist path explicitly reuses branch/worktree as-is, while stackStep only runs for fresh setup; recut state is invocation-local. Static reuse gap confirmed, incident prior refs/setup output not retained here; requested existing evidence, no rerun.\n\n## Design slice (run super-plan-mlr, spec docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md §4.5)\nowns: workspaceSetup reuse reconciliation text (shared stack-merge helper used by fresh stackStep and drift rebuild). consumes: nothing from siblings. The drift rebuild creates only \"stack: p\" merge commits with the coordinator's fixed message, like the fresh stack step; they are not implementer commits and are outside super-plan-zhk's scope.\noldBase rule (spec §4.5): the existing both-exist base rule — newest first-parent stack: commit on the task branch, else git merge-base \u003cbranch\u003e \u003cintegration\u003e.\nFiles: skills/super-code/coordinator.js (workspaceSetup ~L2624-2645, stackStep ~L2631-2633), skills/super-code/coordinator-workflow.md (~L902-903, ~L1147-1169), skills/super-code/coordinator-subagents.md (~L57), tests/super-code/test-dispatch-text.sh (setup text assertions), a real-git fixture test modelled on tests/super-code/test-setup-cleanup.sh.\nOut of scope: seeding discardFailed for a resumed cancelled line (follow-up).\nInvestigation: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-v94.md.",
+    "acceptance_criteria": "Original acceptance: exercise retry/resume with changed prerequisite and existing task branch; detect/reconcile drift before implementer dispatch, preserving committed and dirty work; no blind reset/delete; distinguish verified code gap from unproven historical cause.\n- [ ] Both-exist ordinary path checks drift (a current parent not an ancestor of the task branch, or a first-parent stack: X commit for X no longer a current parent); no drift → unchanged reuse.\n- [ ] Drift + dirty worktree (ignoring .tmp/) → SETUP_FAILED \"prerequisite drift; uncommitted work preserved; nothing reset\"; files untouched.\n- [ ] Drift + clean worktree → base rebuilt by merging each current parent as \"stack: p\" on a detached integration HEAD, task commits moved with git rebase --onto \u003cnewBase\u003e \u003coldBase\u003e \u003cbranch\u003e; on conflict abort, branch restored to old head, SETUP_FAILED naming old head; never the STACK_CONFLICT --discard path.\n- [ ] Branch-only and worktree-only states, on both the ordinary-attempt and review re-entry paths: branch-only runs the ALREADY-MERGED CHECK first and returns ALREADY_MERGED when it prints true (the landed `--keep-branch` state); otherwise, and always for worktree-only, typed SETUP_FAILED naming which exists; both preserved. Recut path unchanged. Real-git fixture covers a merged branch-only task → ALREADY_MERGED.\n- [ ] No -D, --force, reset --hard, stash or WIP commit in the emitted text (asserted).\n- [ ] Real-git fixture test executes the emitted commands: parent advanced after task commit → task commit on new base, old head reachable; dirty variant preserved; conflict variant leaves branch at old head.\n- [ ] dryRun agent counts in coordinator-workflow.md unchanged (node tests/super-code/replay-harness.mjs passes).\n- [ ] The bead's close note states the verified code gap separately from the unproven exact mosh-hex.5 failure cause.",
+    "notes": "Reporter confirms setup output/branch refs deleted. Only ledger pending retry stale pre-review parent at source-line161 survives. Historical cause remains qualified; no reconstruction/rerun requested.\nUser explicitly authorized all P1/P2 fixes together via /super-auto autonomous with both roasts. Handed to Claude-2 tab mosh-feedback-fixes, seat sQ0Vrl8aT6jI, pair dZ377vckcS8, message mQ0VbOwrZg1Q. Launch started; adoption/completion not inferred. Integration-branch delivery to main coordinator requested.\nsuper-design promotion review (run super-plan-mlr) said PROMOTE (oldBase derivation unspecified). Session overrule: kept LEAF after spec §4.5 amendment defining oldBase as the existing both-exist base rule; one subsystem.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T14:37:21Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T17:52:32Z",
+    "closed_at": "2026-10-28T17:52:32Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:demoted-by-session",
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-v94",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T15:32:28Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-v94",
+        "depends_on_id": "super-plan-9tg",
+        "type": "discovered-from",
+        "created_at": "2026-10-28T14:37:21Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 1,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-rsc",
+    "title": "Scope review provenance checks to the captured review range",
+    "description": "Source: Herdr mosh Phase2 report mnSGIFED8uqR, alepar/herdr@a900f96707d42ba28fdec87a1fc03afbb12a7b31. Triage source Superpowers 444f86b2 (6.6). Evidence /private/tmp/superpowers-mosh-phase2-triage-9tg. Confirmed independent reproduction: unchanged prior run.md with incomplete collection causes dispatch-text review-inputs exit3 for base..head changing only product.txt, no omissions, source available. dispatch-text.mjs snapshots and validates every run.md at both endpoints. Actual Phase2 reviews used upstream base5608de06 and include Phase1, so not all inherited gaps in this incident are irrelevant. Adjacent to tco and2s3, distinct selector scope.\n\n## Design slice (run super-plan-mlr, spec docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md §4.2)\nowns: Range relevance rule; owns: Run-scoped gap sink (see epic digest); owns: review-inputs.json outOfRange field (informational list, never counted in status or gaps); owns: review-inputs.json status/gaps semantics after range scoping. consumes: nothing from siblings.\nFiles: skills/super-code/scripts/dispatch-text.mjs (reviewInputs ~L129-408: snapshot loop, validateCollections, authenticateOrigins, result object), skills/super-auto/SKILL.md (§Review collection, one clause on range scoping), tests/super-code/test-dispatch-text.sh and/or tests/super-auto/test-scripts.sh.\nPrototype diff and scenario script (from investigation, verify before reuse): docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/rsc-proto.diff, rsc-scenarios.sh; findings inv-rsc.md.",
+    "acceptance_criteria": "Original acceptance: later unrelated product-only range is not blocked solely by untouched old collections; preserve provenance guards for relevant claimed, changed, deleted or corrupt artifacts and real omissions; do not blanket-filter by current run ID or waive inherited gaps.\n- [ ] Relevance is decided by one predicate from the captured changed paths: current run; run.md path, its run.md.collection-origin.json sidecar, or any path at/under dirname(run)/reviews/ changed; or re-read as the origin of a relevant mirror run.\n- [ ] Problems from irrelevant runs go to a non-blocking outOfRange list in review-inputs.json and the provenance digest, labelled informational; they never change status or exit code; irrelevant runs are still parsed for the mirror ambiguity check.\n- [ ] Evaluation order (spec §4.2): the sink buffers run-attributed problems from snapshot and origin authentication and classifies them once, after authenticateOrigins has run at both endpoints (before validateCollections of the endpoints); later problems are classified immediately. A run named as origin by a mirror declaration that authenticateOrigins examined counts as re-read (authenticated or not) only when the mirror run that declares it is itself relevant by the path criteria; the mirror ambiguity check still runs over all parsed runs. Tests: with the mirror run.md in the changed paths, its origin's snapshot problem outside the changed paths still blocks (exit 3); an untouched mirror/origin pair with an origin problem goes to outOfRange and a product-only range exits 0.\n- [ ] Tests (real git fixtures): A product-only range with an untouched incomplete prior run exits 0 with outOfRange non-empty; B range edits that run.md → exit 3; C range edits a file under its reviews/ → exit 3; D range corrupts it → exit 3; E range deletes the corrupt run.md → exit 3; F broad range whose base predates the prior run → exit 3; current run with incomplete history stays guarded.\n- [ ] Existing review-inputs suites still pass (current-review-selection.mjs, collection-origin-selection.mjs, failed-assembly-archive.mjs, selection-recovery-correction.mjs and the -r1.sh suites listed in inv-rsc.md).",
+    "notes": "Followup mnSGYuDBDysE: launch base mosh=be183064 includes Phase1. Code roasts captured be183064..c7a5e996/b62f8bb5/85da17f0 (Phase2 only); coordinator reviewSource records used upstream5608de06..tip (Phase1+2). Distinguish ranges: broader final reviews do not justify inherited gaps on Phase2-only roasts. Independent product-only reproduction stands.\nUser explicitly authorized all P1/P2 fixes together via /super-auto autonomous with both roasts. Handed to Claude-2 tab mosh-feedback-fixes, seat sQ0Vrl8aT6jI, pair dZ377vckcS8, message mQ0VbOwrZg1Q. Launch started; adoption/completion not inferred. Integration-branch delivery to main coordinator requested.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T14:37:20Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T17:53:24Z",
+    "closed_at": "2026-10-28T17:53:24Z",
+    "close_reason": "implemented; review and merge tracked by super-plan-mlr.8",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-rsc",
+        "depends_on_id": "super-plan-9tg",
+        "type": "discovered-from",
+        "created_at": "2026-10-28T14:37:20Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-rsc",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T15:32:24Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 3,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-tco",
+    "title": "Carry review readiness in canonical super-auto/design roast invocations",
+    "description": "G3: super-roast requires explicit reviewReadiness with source basis; canonical super-auto/super-design text never names reviewReadiness/--review-readiness. Omission correctly degrades output but callers do not say how to supply it. Thread real captured readiness each round, retain unknown where evidence absent; do not synthesize complete. Evidence /private/tmp/superpowers-mosh-feedback-triage-dx2/triage.json\n\n## Design slice (run super-plan-mlr, spec docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md §4.3)\nowns: reviewReadiness caller contract text (super-roast Inputs row, super-auto phase-4 derivation, super-design design-roast rule). consumes: review-inputs.json status/gaps fields; consumes: review-inputs.json outOfRange field from super-plan-rsc (must NOT affect readiness).\nFiles: skills/super-roast/SKILL.md (Inputs table ~L46-58, prose ~L238-241), skills/super-auto/SKILL.md (phase-4 row ~L171, post-cap audit ~L325, §Redesign cycle step 3 amend design roast ~L415), skills/super-design/SKILL.md (§Adversarial Review Loop invocation ~L686-690 and re-roast sites), tests/super-auto/test-contract-lint.sh and/or tests/super-roast/test-assemble-args.sh.\nSeam: a separate tab changes super-auto default flags; the phase-4 row and §Autonomous mode are shared text — edit only the readiness clauses.\nInvestigation: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-tco-row.md (part A).\n\nblocked-by super-plan-rsc: consumes review-inputs.json outOfRange field",
+    "acceptance_criteria": "Original: thread real captured readiness each round, retain unknown where evidence absent; do not synthesize complete.\n- [ ] super-roast Inputs table has a reviewReadiness row: fields coverage (complete|bounded|unknown), provenance (available|unavailable|unknown), basis; only complete+available with a nonempty basis tied to the captured source counts as ready; omission degrades.\n- [ ] super-auto phase 4 (every round and the post-cap audit) states the derivation: assembler exit 0 + review-inputs.json status complete, no gaps, base/head equal to captured SHAs → complete/available with basis naming that file, status and range; typed \"provenance unavailable; captured source available\" bounded review → bounded/unavailable with cause and scope; any other assembler failure or direct fallback → unknown/unavailable with cause; fits never changes it; never copied from a prior round or inferred from a green sweep.\n- [ ] super-design design roast: complete/available only when every settled spec path is passed and committed clean at a captured HEAD SHA (basis: SHA + paths), else unknown; super-auto's amend design roast cites that rule.\n- [ ] A review-inputs.json whose only non-empty problem list is outOfRange still derives complete/available (stated in the derivation text).\n- [ ] A test proves the derived readiness values are accepted by assemble-args (complete/available with basis, bounded/unavailable, unknown/unavailable) and that complete without basis is rejected or degraded as today.",
+    "notes": "User explicitly authorized all P1/P2 fixes together via /super-auto autonomous with both roasts. Handed to Claude-2 tab mosh-feedback-fixes, seat sQ0Vrl8aT6jI, pair dZ377vckcS8, message mQ0VbOwrZg1Q. Launch started; adoption/completion not inferred. Integration-branch delivery to main coordinator requested.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T07:52:04Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T18:01:36Z",
+    "closed_at": "2026-10-28T18:01:36Z",
+    "close_reason": "implemented; review and merge tracked by super-plan-mlr.13",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-tco",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T15:32:25Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "super-plan-tco",
+        "depends_on_id": "super-plan-rsc",
+        "type": "blocks",
+        "created_at": "2026-10-28T15:40:25Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 2,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  },
+  {
+    "id": "super-plan-1s3",
+    "title": "Reconcile context-preflight and profiler model-window resolution",
+    "description": "D5 reproduced on6.6: CLAUDE_CODE_SUBAGENT_MODEL=claude-opus-5-5 yields200000 from context-preflight but1000000 from context-pass.claudeWindow. Use consistent model-window knowledge while preserving configuration overrides/unknown cases. Evidence /private/tmp/superpowers-mosh-feedback-triage-dx2/context-preflight.json; context-pass.mjs:58-70.\n\n## Design slice (run super-plan-mlr, spec docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md §4.6)\nowns: claude_window (see epic digest). consumes: CLAUDE_WINDOWS table in skills/super-code/scripts/context-pass.mjs (comment-only change there).\nFiles: skills/super-code/scripts/context-preflight (read_claude ~L118-188), skills/super-code/scripts/context-pass.mjs (~L55-70 cross-reference comment), skills/super-code/MAINTENANCE.md (~L425), tests/super-code/test-context-preflight.sh.\nInvestigation: docs/superpowers/runs/2026-10-28-review-continuity-followups/investigation/inv-1s3.md.",
+    "acceptance_criteria": "- [ ] CLAUDE_CODE_SUBAGENT_MODEL=claude-opus-5-5 gives 1000000 for all roles and no \"on a 200K model\" warning; claude-opus-4-6 gives 200K with warnings; claude-opus-4-6[1m] gives 1M; ANTHROPIC_DEFAULT_OPUS_MODEL=claude-opus-5-5 gives opus roles 1M; ANTHROPIC_MODEL=claude-opus-5-5 with the bare alias gives opus roles 1M; an unknown explicit id gives 200K; a bare alias with no readable settings stays unknown; CLAUDE_CODE_AUTO_COMPACT_WINDOW still applies.\n- [ ] Parity test runs ≥10 ids through context-preflight --json and claudeWindow() and requires equal windows; the list has at least one matching and one boundary non-matching id per CLAUDE_WINDOWS row (e.g. claude-opus-5 / claude-opus-50), and the test asserts CLAUDE_WINDOWS row count equals the number of claude_window patterns, so a row added to one table alone fails.\n- [ ] Cross-reference comments in both resolvers and MAINTENANCE.md; no node dependency added to context-preflight.",
+    "notes": "User explicitly authorized all P1/P2 fixes together via /super-auto autonomous with both roasts. Handed to Claude-2 tab mosh-feedback-fixes, seat sQ0Vrl8aT6jI, pair dZ377vckcS8, message mQ0VbOwrZg1Q. Launch started; adoption/completion not inferred. Integration-branch delivery to main coordinator requested.",
+    "status": "closed",
+    "priority": 2,
+    "issue_type": "bug",
+    "owner": "alepar@gmail.com",
+    "created_at": "2026-10-28T07:52:03Z",
+    "created_by": "Alexey Parfenov",
+    "updated_at": "2026-10-28T17:46:38Z",
+    "closed_at": "2026-10-28T17:46:38Z",
+    "close_reason": "Closed",
+    "labels": [
+      "sp:super-plan-mlr"
+    ],
+    "dependencies": [
+      {
+        "issue_id": "super-plan-1s3",
+        "depends_on_id": "super-plan-mlr",
+        "type": "parent-child",
+        "created_at": "2026-10-28T15:32:29Z",
+        "created_by": "Alexey Parfenov",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 0,
+    "dependent_count": 1,
+    "comment_count": 0,
+    "parent": "super-plan-mlr"
+  }
+]
