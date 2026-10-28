@@ -662,5 +662,85 @@ Must fix before landing|2|second" "mismatched fence: ~~~ does not close a backti
 run node "$T/strict.cjs" "$AA" "$FX/mismatched-fence.md"
 assert_eq "$out" "ok" "mismatched fence: strictDraft accepts"
 
+echo "report-verdict: --repair-check rule (iv) from the --complete parse"
+rc_pair() { # name want-code original repair
+  run bash "$R" --repair-check "$3" "$4"
+  assert_eq "$code" "$2" "$1: exits $2"
+  if [ "$2" = 4 ]; then
+    assert_eq "$out" "" "$1: empty stdout"
+    case "$(cat "$T/err")" in "report-verdict: --repair-check: "*"(iv)"*) pass "$1: stderr names (iv)";; *) fail "$1: stderr names (iv)"; echo "    got: $(cat "$T/err")";; esac
+  fi
+}
+FENCE=$(printf '```\n## Rejected (with reason)\n```')
+FENCE_REPAIR=$(printf -- '- ```\n## Rejected (with reason)\n- ```')
+rc_mk "$T/o-fence.md" "- none" "$FENCE" "- detail"
+rc_mk "$T/p-fence.md" "- none" "$FENCE_REPAIR" "- detail"
+rc_pair "marker on fence delimiters" 4 "$T/o-fence.md" "$T/p-fence.md"
+run bash "$R" --complete --source format-check "$T/o-fence.md"
+assert_eq "$code" 4 "fence original: --complete exits 4"
+case "$(cat "$T/err")" in *"code fence outside a finding item in Unverified nits (spot-checked)"*) pass "fence error names the fence";; *) fail "fence error names the fence"; cat "$T/err";; esac
+case "$(cat "$T/err")" in *"without a list marker"*) fail "fence error does not ask for a list marker";; *) pass "fence error does not ask for a list marker";; esac
+
+rc_mk "$T/o-lazy.md" "- none" "- $RC_PROSE" "lazy continuation of the c.sh nit"
+rc_mk "$T/p-lazy.md" "- none" "- $RC_PROSE" "- lazy continuation of the c.sh nit"
+rc_pair "marker on an unindented lazy continuation" 4 "$T/o-lazy.md" "$T/p-lazy.md"
+
+rc_mk "$T/o-label.md" "- none" "- $RC_PROSE" "**Findings**"
+rc_mk "$T/p-label.md" "- none" "- $RC_PROSE" "- **Findings**"
+rc_pair "prefixed recognized-word bold label" 4 "$T/o-label.md" "$T/p-label.md"
+
+sed -e 's/^- \[Nit\] c.sh:1 — a nit$/- [Nit] d.sh:2 — another nit/;t' -e 's/^- \[Nit\] d.sh:2 — another nit$/- [Nit] c.sh:1 — a nit/' "$T/repaired.md" > "$T/r13.md"
+rc_pair "same-shaped nit items swapped" 4 "$T/repair-orig.md" "$T/r13.md"
+
+rc_mk "$T/o-boldnit.md" "- none" "- $RC_PROSE" '**[Nit] src/a.sh:3** — claim'
+rc_mk "$T/p-boldnit.md" "- none" "- $RC_PROSE" '- **[Nit] src/a.sh:3** — claim'
+rc_pair "marker on bold-led non-label prose" 0 "$T/o-boldnit.md" "$T/p-boldnit.md"
+rc_mk "$T/o-boldnote.md" "- none" "- $RC_PROSE" '**Note:** text'
+rc_mk "$T/p-boldnote.md" "- none" "- $RC_PROSE" '- **Note:** text'
+rc_mk "$T/p-boldnote2.md" "- none" "- $RC_PROSE" '- Note:'
+rc_pair "marker on bold Note prose" 0 "$T/o-boldnote.md" "$T/p-boldnote.md"
+rc_pair "label demoted when it is not the whole line" 4 "$T/o-boldnote.md" "$T/p-boldnote2.md"
+
+# --classify rows carry line numbers; resolve them against the file text
+cls() { node --input-type=module - "$1" "$2" "$3" <<'NODE'
+import fs from 'node:fs';
+const [file, text, field] = process.argv.slice(2);
+const lines = fs.readFileSync(file, 'utf8').split('\n');
+const rows = JSON.parse(fs.readFileSync(file + '.cls', 'utf8'));
+const hit = rows.filter(r => lines[r.n] === text);
+console.log(hit.length ? hit.map(r => String(r[field])).join('\n') : 'no-row');
+NODE
+}
+bash "$R" --classify "$T/repair-orig.md" > "$T/repair-orig.md.cls"
+assert_eq "$(cls "$T/repair-orig.md" '### detail' role)" "sub-heading" "--classify: ### detail is a sub-heading"
+assert_eq "$(cls "$T/repair-orig.md" '### detail' section)" "Unverified nits (spot-checked)" "--classify: sub-heading keeps its section"
+assert_eq "$(cls "$T/repair-orig.md" "$RC_PROSE" role)" "unmarked" "--classify: prose before any item is unmarked"
+assert_eq "$(cls "$T/repair-orig.md" '  continuation for the first finding' role)" "continuation" "--classify: indented line is a continuation"
+assert_eq "$(cls "$T/repair-orig.md" '## Rejected (with reason)' role)" "boundary" "--classify: ## line is a boundary"
+bash "$R" --classify "$T/o-fence.md" > "$T/o-fence.md.cls"
+assert_eq "$(cls "$T/o-fence.md" '```' role | head -1)" "fence" "--classify: fence delimiter role"
+assert_eq "$(cls "$T/o-fence.md" '```' inFence | head -1)" "true" "--classify: fence delimiter is inFence"
+assert_eq "$(cls "$T/o-fence.md" '## Rejected (with reason)' role | tail -1)" "fenced" "--classify: heading inside a fence is fenced"
+run bash "$R" --classify "$FX/unknown.md"
+assert_eq "$code" 4 "--classify on an unrecognized source exits 4"
+run bash "$R" --classify "$T/nope.md"
+assert_eq "$code" 2 "--classify on a missing file exits 2"
+
+printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n### detail\n- b\n## Untested scope\n- none\n' > "$T/x-orig.md"
+printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n- detail\n- b\n## Untested scope\n- none\n' > "$T/x-repair.md"
+run bash "$R" --complete --source format-check "$T/x-orig.md"
+assert_eq "$code" 4 "cross-copy original: --complete exits 4"
+run node "$T/strict.cjs" "$AA" "$T/x-orig.md"
+assert_eq "$out" "throws: draft sub-heading inside a finding section" "cross-copy original: strictDraft rejects"
+run bash "$R" --complete --source format-check "$T/x-repair.md"
+assert_eq "$code" 0 "cross-copy repair: --complete exits 0"
+assert_eq "$(occ "$out")" "Must fix before landing|1|a
+Must fix before landing|2|detail
+Must fix before landing|3|b" "cross-copy repair: occurrences in order"
+run node "$T/strict.cjs" "$AA" "$T/x-repair.md"
+assert_eq "$out" "ok" "cross-copy repair: strictDraft accepts"
+run bash "$R" --repair-check "$T/x-orig.md" "$T/x-repair.md"
+case "$(cat "$T/err")" in *"(iv)"*) fail "cross-copy pair: not rejected at (iv)";; *) pass "cross-copy pair: not rejected at (iv)";; esac
+
 if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
 echo "report-verdict: all tests passed"
