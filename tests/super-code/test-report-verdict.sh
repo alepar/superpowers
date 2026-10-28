@@ -792,7 +792,7 @@ rc3_mk "$T/c3-star.md" "$(printf '%s\n* [Should-fix] y.sh:1 — other' "$C1")"
 rc3 "* [SEV] item in Confirmed findings" 4 "$T/c3-star.md" "$T/c3-star.md" "(iii) confirmed finding without a --keys key: [Should-fix] y.sh:1"
 printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n### detail\n- b\n## Untested scope\n- none\n' > "$T/c3-fr-orig.md"
 printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n- detail\n- b\n## Untested scope\n- none\n' > "$T/c3-fr-rep.md"
-rc3 "final-review repair" 4 "$T/c3-fr-orig.md" "$T/c3-fr-rep.md" "(iii) not a roast report: final-review"
+rc3 "final-review repair" 0 "$T/c3-fr-orig.md" "$T/c3-fr-rep.md"
 
 if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
 echo "report-verdict: all tests passed"
