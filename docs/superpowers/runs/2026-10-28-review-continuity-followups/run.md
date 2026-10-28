@@ -11,3 +11,6 @@ branch: super-auto/review-continuity-followups
 base: main
 spec: 2026-10-28-review-continuity-followups-design.md
 epic: super-plan-mlr
+
+approvals:
+- top-split · auto · super-plan-2s3 LEAF, super-plan-mlr.1 LEAF, super-plan-mlr.2 LEAF, super-plan-rsc LEAF, super-plan-tco LEAF, super-plan-row LEAF, super-plan-mlr.3 LEAF, super-plan-v94 LEAF, super-plan-1s3 LEAF, super-plan-zhk LEAF
