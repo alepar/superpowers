@@ -12,3 +12,4 @@
 - [2026-10-28T19:59Z] super-auto/super-roast seam · scope-dispositions --project --keys punch list includes final-review untested/deferred keys that assemble-args --punch-listed rejects (not [SEV] <location>); passed only the roast-format keys (filtered copy .superpowers/sdd/super-plan-mlr-plan/punch-roast-r1.txt), original punch-list file unchanged
 - [2026-10-28T19:59Z] super-roast · code round 2 rung: Workflow (wf_71190575-424)
 - [2026-10-28T20:13Z] super-auto · code step-back r2 remains: field trimmed to canonical keys (agent appended resolved/untested prose that is not key-only)
+- [2026-10-28T20:14Z] super-design findings-ledger · round-1 findings the round-2 roast reports as resolved (delta: 8 resolved, listed with fixing commits) still read 'open' in the code ledger; Amend Mode's code coverage rule then demands work: lines or disputes for already-fixed keys
