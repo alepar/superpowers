@@ -1,0 +1,12 @@
+[Should-fix] skills/super-code/scripts/report-verdict:140
+[Should-fix] skills/super-code/scripts/report-verdict:229
+[Should-fix] skills/super-code/scripts/report-verdict:223; skills/super-code/scripts/report-verdict:229
+[Should-fix] skills/super-code/scripts/dispatch-text.mjs:422
+[Should-fix] tests/super-auto/review-continuity-e2e.sh:113
+[Nit] skills/super-code/coordinator.js:2654; skills/super-code/coordinator.js:2652
+[Nit] skills/super-code/coordinator.js:2646
+[Nit] skills/super-auto/scripts/scope-dispositions:185
+[Nit] skills/super-code/coordinator.js:2655
+[Nit] tests/super-code/test-setup-reuse.sh:26
+[Nit] tests/super-auto/review-inputs-range-scope.sh:16
+[FYI] skills/super-code/scripts/dispatch-text.mjs:348; skills/super-code/scripts/dispatch-text.mjs:349
