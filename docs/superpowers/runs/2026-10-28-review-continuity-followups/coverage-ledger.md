@@ -10,3 +10,15 @@ cl-9 · r1 · UNOWNED-SEAM · report --complete grammar · applied — super-pla
 cl-10 · r1 · UNOWNED-SEAM · review-inputs outOfRange · applied — super-plan-rsc owns field; super-plan-tco consumes, edge tco<-rsc
 cl-11 · r1 · UNOWNED-SEAM · bookkeeping gap text · applied — super-plan-row owns kinds and text; super-plan-mlr.3 consumes, edge mlr.3<-row
 cl-12 · r1 · UNOWNED-SEAM · repaired roast report file · applied — super-plan-mlr.2 owns naming and recording in roast-code:/roast-design: per spec §4.1(c)
+cl-13 · r2 · GAP · R3 · applied — super-plan-mlr.1 owns line names report-verdict and assembly-archive.cjs strictDraft
+cl-14 · r2 · GAP · R13 · applied — super-plan-mlr.2 acceptance: super-roast-workflow.md unchanged, else dryRun re-run with matching counts
+cl-15 · r2 · GAP · R1 · rejected — super-plan-2s3 acceptance already names final, cluster and seam prompts
+cl-16 · r2 · GAP · end-to-end repaired roast report · applied — sweep super-plan-mlr.4 scenario: malformed roast → repair → collect, original kept
+cl-17 · r2 · GAP · R-new collection survives malformed report · rejected — existing report-status --collect records a per-source "complete extraction unavailable" gap and continues (inv-2s3 §4)
+cl-18 · r2 · GAP · R11 · applied — sweep super-plan-mlr.4 close note lists unproven causes qualified
+cl-19 · r2 · UNOWNED-SEAM · report --complete grammar · applied — 2s3/mlr.2 consume the spec §4.1 grammar as mlr.1 enforces it; sweep re-runs producer fixtures after mlr.1
+cl-20 · r2 · UNOWNED-SEAM · reviewFileFormat vs grammar canonical · applied — parity test moved from mlr.2 to sweep super-plan-mlr.4
+cl-21 · r2 · UNOWNED-SEAM · repaired roast report file · rejected — rsc relevance is path-only over run.md/sidecar/reviews; repair file is an ordinary changed path; sweep scenario covers collection
+cl-22 · r2 · UNOWNED-SEAM · review-inputs status/gaps semantics · applied — super-plan-rsc owns semantics after range scoping
+cl-23 · r2 · UNOWNED-SEAM · repair round readiness · applied — super-plan-mlr.2: format repair keeps the round's reviewReadiness unchanged
+cl-24 · r2 · UNOWNED-SEAM · reconcile commits commit policy · applied — super-plan-v94: drift rebuild makes only fixed-message stack: merges, outside zhk scope
