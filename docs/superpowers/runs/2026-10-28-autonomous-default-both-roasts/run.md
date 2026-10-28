@@ -9,3 +9,4 @@ context: Context: claude · planner=200K/167K · implementer=200K/167K · review
 idea: also $ht handoff to claude-2 to make fully autonomous mode, both roasts on the default mode of /super-auto
 branch: super-auto/autonomous-default-both-roasts
 base: main
+spec: 2026-10-28-super-auto-autonomous-default-design.md
