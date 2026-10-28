@@ -442,7 +442,7 @@ findings outstanding even if a disposition claims resolution.
 **Routing.** Append `- finding-route · {"ref":<ref>,"owner":"<bead>","fix":"<fix bead>",
 "deferred":"<reason>"}` as one JSON line, with any nonempty subset of owner/fix/deferred.
 Deferral is explicit routing, not inferred from a section name. A fix-task assignment, closed
-bead, success claim or a later silent/ready review leaves the finding outstanding.
+bead, success claim or a later silent/ready review leaves the finding outstanding. A `deferred` reason beginning `pending human decision:` marks a human-gated item awaiting a human's decision; it stays outstanding until a supported `finding-disposition` cites the human's recorded approval line.
 
 **Supported disposition.** Append
 `- finding-disposition · {"ref":<ref>,"disposition":"resolved","judgment":"supported",

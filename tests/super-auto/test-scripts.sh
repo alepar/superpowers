@@ -457,6 +457,55 @@ assert_eq "$code" 3 "later clean review and closed bead keep the gap"
 if node -e 'const p=JSON.parse(process.argv[1]); if(p.metrics.unrouted!==2||p.metrics.repaired!==0||p.findings.some(f=>!f.outstanding))process.exit(1)' "$out"; then pass "no finding resolves by proxy"; else fail "no finding resolves by proxy"; fi
 echo
 
+echo "scope-dispositions --project: run.md written per the caller instructions"
+CI="$T/ci"; mkdir -p "$CI"
+cat > "$CI/roast-pr-1.md" <<'REVIEW'
+super-roast verdict: Should-fix (2 confirmed)
+mode: PR        iteration: 1 of 3
+## Confirmed findings
+- [Should-fix] a.sh:3 — first
+- [Nit] b.sh:9 — second
+## Escalations (need human)
+- [Blocking] c.sh:1 — needs a human decision
+REVIEW
+cat > "$CI/roast-pr-2.md" <<'REVIEW'
+super-roast verdict: Should-fix (0 confirmed)
+mode: PR        iteration: 2 of 3
+## Confirmed findings
+- none
+## Escalations (need human)
+- [Blocking] c.sh:1 — still needs a human decision
+REVIEW
+bash "$REPO_ROOT/skills/super-code/scripts/report-verdict" --complete --source roast-code/round-1 "$CI/roast-pr-1.md" > "$CI/s1.json"
+bash "$REPO_ROOT/skills/super-code/scripts/report-verdict" --complete --source roast-code/round-2 "$CI/roast-pr-2.md" > "$CI/s2.json"
+node - "$CI" <<'NODE'
+const fs=require('node:fs'), p=process.argv[2];
+const s1=fs.readFileSync(p+'/s1.json','utf8').trim(), s2=fs.readFileSync(p+'/s2.json','utf8').trim();
+const rec=(t,d)=>`- finding-${t} · ${typeof d==='string'?d:JSON.stringify(d)}\n`;
+const r=(n,sec,pos)=>({source:'roast-code/round-'+n,section:sec,position:pos});
+const C='Confirmed findings', E='Escalations (need human)';
+const scope='scopeFilter-round-1: [Should-fix] a.sh:3 in-scope — goal\nscopeFilter-round-1: [Nit] b.sh:9 punch-list — formatting\nscope-filter: 1 in-scope · 1 punch-listed\n';
+const round1=rec('source',s1)+
+  rec('route',{ref:r(1,C,1),owner:'bd-epic'})+rec('route',{ref:r(1,C,2),deferred:'punch-list: out of scope (filtered)'})+
+  rec('route',{ref:r(1,C,1),fix:'bd-epic.9'})+
+  rec('route',{ref:r(1,E,1),deferred:'pending human decision: accept the c.sh:1 risk'});
+const round2=rec('source',s2)+rec('route',{ref:r(2,E,1),deferred:'pending human decision: accept the c.sh:1 risk'});
+const parked=(n,txt)=>`  - roast-pr-${n}.md · escalation · "${txt}"\n`;
+const park='parked:\n'+parked(1,'roast-code/round-1 Escalations (need human) #1: [Blocking] c.sh:1 — pending human decision');
+fs.writeFileSync(p+'/run1.md',`roast-code: ${p}/roast-pr-1.md\napprovals:\n`+round1+scope+park);
+fs.writeFileSync(p+'/run2.md',`roast-code: ${p}/roast-pr-1.md\nroast-code: ${p}/roast-pr-2.md\napprovals:\n`+round1+round2+scope+park);
+fs.writeFileSync(p+'/run3.md',fs.readFileSync(p+'/run2.md','utf8').replace('scopeFilter-round-1',
+  rec('link',{refs:[r(1,E,1),r(2,E,1)],basis:'round-2 text repeats the round-1 c.sh:1 escalation: "still needs a human decision"'})+'scopeFilter-round-1'));
+NODE
+run bash "$S" --project "$CI/run1.md"
+assert_eq "$code" 0 "run.md written per the caller instructions projects cleanly"
+if node -e 'const p=JSON.parse(process.argv[1]); const e=p.findings.filter(f=>/c\.sh:1/.test(JSON.stringify(f))); if(p.gaps.length||p.metrics.unrouted!==0||e.length!==1||!e[0].outstanding||!/pending human decision:/.test(JSON.stringify(e[0]))||p.findings.some(f=>f.dispositions.length))process.exit(1)' "$out"; then pass "no gap, no unrouted decision, escalation outstanding as pending human decision, nothing resolved"; else fail "caller-written run.md projection"; echo "$out" | head -c 1500; fi
+run bash "$S" --project "$CI/run2.md"
+if node -e 'const p=JSON.parse(process.argv[1]); const e=p.findings.filter(f=>/c\.sh:1/.test(JSON.stringify(f))); if(e.length!==2||e.some(f=>!f.outstanding)||p.findings.some(f=>f.dispositions.length))process.exit(1)' "$out"; then pass "equal escalation keys across rounds stay two separate findings"; else fail "equal escalation keys across rounds stay two separate findings"; echo "$out" | head -c 1500; fi
+run bash "$S" --project "$CI/run3.md"
+if node -e 'const p=JSON.parse(process.argv[1]); const e=p.findings.filter(f=>/c\.sh:1/.test(JSON.stringify(f))); if(e.length!==1||!e[0].outstanding||p.findings.some(f=>f.dispositions.length))process.exit(1)' "$out"; then pass "an explicit finding-link groups the two escalations and leaves them outstanding"; else fail "an explicit finding-link groups the two escalations and leaves them outstanding"; echo "$out" | head -c 1500; fi
+echo
+
 echo "review collection and caller continuity"
 cp "$RF/clean.md" "$T/malformed-collection.md"
 printf 'approvals:\n- review-collection · {"invocationId":"bad","reviewPath":null,"complete":true,"gaps":[]}\n' >> "$T/malformed-collection.md"

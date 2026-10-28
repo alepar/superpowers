@@ -355,6 +355,22 @@ check_abort() { # SKILLS_ROOT
   case "$txt" in *aborted*) ;; *) echo "(abort) resume.md: the dissolved-skip rule does not name a non-aborted record" ;; esac
 }
 
+check_continuity() { # SKILL_DIR
+  local f k
+  f="$T/cont-step2"; section "$1/SKILL.md" '^#### Step 2 — scope filter$' '^#### ' | collapse > "$f"
+  for k in 'report-verdict --complete --source roast-code/round-<N>' 'roast-design/round-<N>' "round's report path" 'one `finding-route` per scope decision' 'never write the punch-list file from the scope keys'; do
+    grep -qF -- "$k" "$f" || echo "(continuity) SKILL.md §Step 2 lacks: $k"
+  done
+  f="$T/cont-step3"; section "$1/SKILL.md" '^#### Step 3 — file fix beads$' '^#### ' | collapse > "$f"
+  grep -qF -- '"fix":"<fix bead id>"' "$f" || echo '(continuity) SKILL.md §Step 3 lacks: "fix":"<fix bead id>"'
+  f="$T/cont-cap"; section "$1/SKILL.md" '^#### Cap disposition$' '^#{1,3} ' | collapse > "$f"
+  for k in '"deferred":"pending human decision: <what>"' '`finding-link`' 'never key equality' "human's recorded approval line" 'an autonomous run never writes a human approval'; do
+    grep -qF -- "$k" "$f" || echo "(continuity) SKILL.md §Cap disposition lacks: $k"
+  done
+  f="$T/cont-rs"; section "$1/run-state.md" '^\*\*Routing\.\*\*' '^\*\*Supported disposition' | collapse > "$f"
+  grep -qF -- 'pending human decision:' "$f" || echo "(continuity) run-state.md Routing paragraph lacks: pending human decision:"
+}
+
 lint() { # SKILLS_ROOT REPO_ROOT -> one "file[:line]: message" per problem
   check_example "$1/super-auto"
   check_pointers "$1" "$2"
@@ -362,6 +378,7 @@ lint() { # SKILLS_ROOT REPO_ROOT -> one "file[:line]: message" per problem
   check_baseline "$1/super-auto"
   check_status_examples "$1/super-auto"
   check_keys_rule "$1/super-auto"
+  check_continuity "$1/super-auto"
   check_disputed "$1/super-auto"
   check_report_rows "$1/super-auto"
   check_itercap "$1"
@@ -467,6 +484,15 @@ copy; sed '/^- `amend-checked`/s/lastGood/pre-amendment base/g' "$REPO_ROOT/skil
 expect_caught "a resume amend-checked bullet that re-checks against HEAD fails" "resume.md amend-checked bullet: lacks 'lastGood'"
 copy; awk '/^2\. On `aborted`/ { sub(/rewrite the state to `aborted — <reason>` first, so a crash in what follows resumes into resume.md §Redesign cycle replay.s `aborted — <reason>` bullet, which repeats these same idempotent steps. /, ""); sub(/; park a/, "; rewrite the state to `aborted — <reason>`; park a") } { print }' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
 expect_caught "a super-auto abort that removes before it rewrites the state fails" "super-auto Redesign cycle item 2: '\`aborted — <reason>\`' does not come before 'dissolved@r<N>'"
+
+copy; sed 's|--source roast-code/round-<N>|--source roast-code|' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "a Step 2 without the round's finding-source command fails" "(continuity) SKILL.md §Step 2 lacks: report-verdict --complete --source roast-code/round-<N>"
+copy; sed 's|"fix":"<fix bead id>"|"fix":"x"|' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "a Step 3 without the fix route fails" '§Step 3 lacks: "fix":"<fix bead id>"'
+copy; sed 's|pending human decision: <what>|deferred: <what>|' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "a Cap disposition without the pending-human route fails" "§Cap disposition lacks: "
+copy; sed 's|pending human decision:|human pending:|g' "$REPO_ROOT/skills/super-auto/run-state.md" > "$SA/run-state.md"
+expect_caught "a run-state Routing paragraph without the reserved prefix fails" "run-state.md Routing paragraph lacks"
 
 echo
 if [ "$FAILURES" -eq 0 ]; then
