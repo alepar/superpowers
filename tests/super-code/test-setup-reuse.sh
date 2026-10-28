@@ -162,7 +162,7 @@ class Reuse(unittest.TestCase):
 
     def landed_parent_reuses_dirty(self,delete):
         # ep.1 landed on integration (default merge subject); ep.2 keeps its stale `stack: ep.1`
-        self.git(*ID,'merge','--no-ff','--no-edit','-q','task-ep.1')
+        self.git('merge','--no-ff','--no-edit','-q','task-ep.1')
         if delete: self.git('branch','-d','task-ep.1')
         (self.wt/'g.txt').write_text('uncommitted\n')
         rc,out=self.drift()   # ep.1 left the current parents when it landed
