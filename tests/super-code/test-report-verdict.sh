@@ -519,5 +519,61 @@ done
 run bash "$R" --complete --source '' "$T/explicit-empty.md"
 assert_eq "$code" 2 "empty source id exits 2 (grammar block)"
 
+echo "report-verdict: --repair-check accepts only marker additions"
+RC_HDR='super-roast verdict: Should-fix (2 confirmed)
+mode: PR        iteration: 1 of 3
+'
+RC_CONF='## Confirmed findings
+- [Should-fix] a.sh:3 — first finding
+  continuation for the first finding
+- [Should-fix] b.sh:9 — second finding
+'
+RC_PROSE='One refute-seat pass each; not panel-strength verification.'
+rc_mk() { # file rejected-body prose-line subheading-line
+  printf '%s\n%s\n## Rejected (with reason)\n%s\n\n## Unverified nits (spot-checked)\n%s\n- [Nit] c.sh:1 — a nit\n%s\n- [Nit] d.sh:2 — another nit\n' "$RC_HDR" "$RC_CONF" "$2" "$3" "$4" > "$1"
+}
+# originals: all three defects, or exactly one defect each
+rc_mk "$T/repair-orig.md" "" "$RC_PROSE" "### detail"
+rc_mk "$T/repair-orig-prose.md" "- none" "$RC_PROSE" "- detail"
+rc_mk "$T/repair-orig-empty.md" "" "- $RC_PROSE" "- detail"
+rc_mk "$T/repair-orig-subheading.md" "- none" "- $RC_PROSE" "### detail"
+rc_mk "$T/repaired.md" "- none" "- $RC_PROSE" "- detail"
+for pair in prose empty subheading; do
+  run bash "$R" --repair-check "$T/repair-orig-$pair.md" "$T/repaired.md"
+  assert_eq "$code" 0 "single edit ($pair): accepted"
+  assert_eq "$(cat "$T/err")" "" "single edit ($pair): no stderr"
+done
+run bash "$R" --repair-check "$T/repair-orig.md" "$T/repaired.md"
+assert_eq "$code" 0 "all three edits: accepted"
+awk '/^## /{body=1} !body || NF' "$T/repaired.md" > "$T/repaired-noblank.md"  # header blanks are checked by (ii)
+run bash "$R" --repair-check "$T/repair-orig.md" "$T/repaired-noblank.md"
+assert_eq "$code" 0 "all three edits, section blank lines dropped: accepted"
+
+rc_rej() { # name check repair-file
+  run bash "$R" --repair-check "$T/repair-orig.md" "$3"
+  assert_eq "$code" 4 "$1: exits 4"
+  assert_eq "$out" "" "$1: empty stdout"
+  case "$(cat "$T/err")" in "report-verdict: --repair-check: "*"$2"*) pass "$1: stderr names $2";; *) fail "$1: stderr names $2"; echo "    got: $(cat "$T/err")";; esac
+}
+sed '/d.sh:2/d' "$T/repaired.md" > "$T/r1.md"; rc_rej "item dropped" "(iv)" "$T/r1.md"
+sed 's/another nit/another nit, reworded/' "$T/repaired.md" > "$T/r2.md"; rc_rej "item reworded" "(iv)" "$T/r2.md"
+sed '/continuation for/d' "$T/repaired.md" > "$T/r3.md"; rc_rej "continuation dropped" "(iv)" "$T/r3.md"
+sed 's/continuation for the first/continuation for the 1st/' "$T/repaired.md" > "$T/r4.md"; rc_rej "continuation reworded" "(iv)" "$T/r4.md"
+sed 's/^## Rejected (with reason)$/## Rejected/' "$T/repaired.md" > "$T/r5.md"; rc_rej "heading renamed" "(iv)" "$T/r5.md"
+{ cat "$T/repaired.md"; printf '## Escalations (need human)\n- none\n'; } > "$T/r6.md"; rc_rej "heading added" "(iv)" "$T/r6.md"
+sed -e '/c.sh:1/d' -e 's/^## Rejected (with reason)$/&\n- [Nit] c.sh:1 — a nit/' "$T/repaired.md" > "$T/r7.md"; rc_rej "item moved to another section" "(iv)" "$T/r7.md"
+sed 's/^mode: PR /mode: diff /' "$T/repaired.md" > "$T/r8.md"; rc_rej "header line changed" "(ii)" "$T/r8.md"
+sed 's/a.sh:3/a.sh:4/' "$T/repaired.md" > "$T/r9.md"; rc_rej "--keys output changed" "(iii)" "$T/r9.md"
+sed '/^- none$/d' "$T/repaired.md" > "$T/r10.md"; rc_rej "repair fails --complete" "(i)" "$T/r10.md"
+
+run bash "$R" --repair-check "$T/repair-orig.md"
+assert_eq "$code" 2 "one argument exits 2"
+run bash "$R" --repair-check "$T/repair-orig.md" "$T/repaired.md" "$T/repaired.md"
+assert_eq "$code" 2 "three file arguments exit 2"
+run bash "$R" --repair-check "$T/nope.md" "$T/repaired.md"
+assert_eq "$code" 2 "missing ORIGINAL exits 2"
+run bash "$R" --repair-check "$T/repair-orig.md" "$T/nope.md"
+assert_eq "$code" 2 "missing REPAIR exits 2"
+
 if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
 echo "report-verdict: all tests passed"

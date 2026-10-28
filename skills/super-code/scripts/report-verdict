@@ -50,6 +50,16 @@ set -euo pipefail
 # Exits 0 on success; 4 when the file was read but fails the grammar (unrecognized source, missing
 # verdict, missing/empty section, unmarked text, a sub-heading inside a recognized section); 2 for
 # usage errors, an invalid source id, or an unreadable, non-file or invalid-UTF-8 artifact.
+
+# Usage: report-verdict --repair-check ORIGINAL REPAIR
+# Accepts a format repair of a report only when it adds list markers and nothing else. Exits 0 to
+# accept; 4 to reject, stderr `report-verdict: --repair-check: <failed check>`; 2 for a usage or I/O error.
+#   (i)   REPAIR passes --complete.
+#   (ii)  every line before the first `## ` heading is byte-identical.
+#   (iii) --keys output and exit code are identical for both files.
+#   (iv)  after dropping blank and `- none` lines, both have the same lines in the same order, except a
+#         repair line may be the original prefixed `- `, or a `###`+ heading / unrecognized bold label
+#         demoted to `- <label>`.
 if [ "${1:-}" = "--complete" ]; then
   if [ $# -ne 4 ] || [ "$2" != "--source" ]; then
     echo "report-verdict: --complete requires --source IMMUTABLE_SOURCE_ID FILE" >&2
@@ -164,6 +174,60 @@ try {
 } catch (error) {
   console.error(`report-verdict: --complete: ${error.message}`);
   process.exitCode = error.grammar ? 4 : 2;
+}
+NODE
+  exit $?
+fi
+
+if [ "${1:-}" = "--repair-check" ]; then
+  if [ $# -ne 3 ]; then
+    echo "report-verdict: --repair-check requires ORIGINAL REPAIR" >&2
+    exit 2
+  fi
+  for f in "$2" "$3"; do
+    if [ ! -f "$f" ] || [ ! -r "$f" ]; then
+      echo "report-verdict: --repair-check: cannot read $f" >&2
+      exit 2
+    fi
+  done
+  rc_tmp=$(mktemp)
+  trap 'rm -f "$rc_tmp"' EXIT
+  if ! bash "$0" --complete --source format-check "$3" >/dev/null 2>"$rc_tmp"; then
+    echo "report-verdict: --repair-check: (i) repair fails --complete: $(sed 's/^report-verdict: --complete: //' "$rc_tmp")" >&2
+    exit 4
+  fi
+  set +e
+  keys_o=$(bash "$0" --keys "$2" 2>/dev/null); code_o=$?
+  keys_r=$(bash "$0" --keys "$3" 2>/dev/null); code_r=$?
+  set -e
+  if [ "$code_o" != "$code_r" ] || [ "$keys_o" != "$keys_r" ]; then
+    echo "report-verdict: --repair-check: (iii) --keys output differs" >&2
+    exit 4
+  fi
+  node --input-type=module - "$2" "$3" <<'NODE'
+import fs from 'node:fs';
+
+const read = f => new TextDecoder('utf-8', {fatal:true}).decode(fs.readFileSync(f)).replace(/\r\n?/g, '\n').split('\n');
+function reject(message) { console.error(`report-verdict: --repair-check: ${message}`); process.exit(4); }
+let o, r;
+try { [o, r] = process.argv.slice(2).map(read); }
+catch (error) { console.error(`report-verdict: --repair-check: ${error.message}`); process.exit(2); }
+const head = lines => { const i = lines.findIndex(l => /^## /.test(l)); return i < 0 ? lines : lines.slice(0, i); };
+const ho = head(o), hr = head(r);
+if (ho.length !== hr.length || ho.some((l, i) => l !== hr[i])) reject('(ii) header lines differ');
+const keep = lines => lines.filter(l => l.trim() && !/^ ?(?:[-*]|[0-9]+[.)])[ \t]+none[ \t.*_`]*$/i.test(l));
+const ko = keep(o), kr = keep(r);
+if (ko.length !== kr.length) reject('(iv) line count differs');
+const item = /^ ?(?:[-*]|[0-9]+[.)])[ \t]/;
+const roastWord = /^(?:deferred\b|concerns?\b|blockers?\b|findings?\b|untested scope\b|confirmed findings\b|not verified\b|beyond remainder cap\b|rejected\b|unverified nits\b|escalations\b)/i;
+function demoted(line) {
+  const m = line.match(/^#{3,}[ \t]+(.*\S)[ \t]*$/) || line.match(/^\*\*([^*]+)\*\*[ \t]*$/);
+  return m && !roastWord.test(m[1]) ? '- ' + m[1] : null;
+}
+for (let k = 0; k < ko.length; k++) {
+  const a = ko[k], b = kr[k];
+  if (b === a || (!item.test(a) && b === '- ' + a) || b === demoted(a)) continue;
+  reject(`(iv) line ${k + 1} differs: ${a}`);
 }
 NODE
   exit $?
