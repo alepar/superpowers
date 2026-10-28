@@ -55,6 +55,8 @@ Keep the window full. The Workflow coordinator does these, and so do you:
   commit and its task has open dependents in the tree (`scripts/tree-deps`), run
   `scripts/review-bead split <id>`. Its dependents become ready; dispatch each with
   `implement --parents <its unmerged in-tree blockers>`. The setup stacks them on those branches.
+  A reused task branch is drift-checked against its current parents; the setup rebases it onto a
+  rebuilt stack base or returns `SETUP_FAILED` with the work preserved.
   A ready review bead (`ready-in-tree`'s `reviews`) re-enters its task at review
   (`implement --reentry`).
   - A stacked task merges only after all its parents have landed, with `merge --stacked --base
