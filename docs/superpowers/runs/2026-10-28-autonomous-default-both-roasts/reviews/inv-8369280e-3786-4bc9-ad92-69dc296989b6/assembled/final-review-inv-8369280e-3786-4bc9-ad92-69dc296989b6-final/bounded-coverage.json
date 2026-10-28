@@ -1,0 +1,122 @@
+{
+ "inspected": [
+  {
+   "path": "README.md",
+   "hunks": [
+    "@@ -14,7 +14,7 @@ Superpowers for large-scope autonomous software development. Give it a vision an",
+    "@@ -45,7 +45,7 @@ codex plugin add superpowers@superpowers-alepar",
+    "@@ -70,7 +70,7 @@ Skills are used when you ask for them, for example *\"Use super-roast…\"*. Routi"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/2026-10-28-super-auto-autonomous-default-design.md",
+   "hunks": [
+    "@@ -0,0 +1,107 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/2026-10-28-super-auto-autonomous-default-roast-design-1-step-back-keys.txt",
+   "hunks": [
+    "@@ -0,0 +1,2 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/2026-10-28-super-auto-autonomous-default-roast-design-1-step-back.md",
+   "hunks": [
+    "@@ -0,0 +1,6 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/2026-10-28-super-auto-autonomous-default-roast-design-1.md",
+   "hunks": [
+    "@@ -0,0 +1,77 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/coverage-findings-round-1.md",
+   "hunks": [
+    "@@ -0,0 +1,5 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/coverage-findings-round-2.md",
+   "hunks": [
+    "@@ -0,0 +1,5 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/coverage-ledger.md",
+   "hunks": [
+    "@@ -0,0 +1,11 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/coverage-round-1-requirements.md",
+   "hunks": [
+    "@@ -0,0 +1,8 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/coverage-round-1-review-1.md",
+   "hunks": [
+    "@@ -0,0 +1 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/coverage-round-1-review-2.md",
+   "hunks": [
+    "@@ -0,0 +1 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/findings-ledger-design.md",
+   "hunks": [
+    "@@ -0,0 +1,5 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/friction.md",
+   "hunks": [
+    "@@ -0,0 +1,3 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/run.md",
+   "hunks": [
+    "@@ -0,0 +1,27 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/specs/2026-07-31-super-auto-design.md",
+   "hunks": [
+    "@@ -301,3 +301,7 @@ mode this fork's own history is a long argument against."
+   ]
+  },
+  {
+   "path": "docs/superpowers/specs/INDEX.md",
+   "hunks": [
+    "@@ -8,6 +8,7 @@ Catalog of the design specs in this directory, newest first. The brainstorming l"
+   ]
+  },
+  {
+   "path": "skills/super-auto/MAINTENANCE.md",
+   "hunks": [
+    "@@ -23,7 +23,7 @@ A runtime file points at a rule's canonical home instead of restating it, copyin"
+   ]
+  },
+  {
+   "path": "skills/super-auto/SKILL.md",
+   "hunks": [
+    "@@ -1,14 +1,14 @@",
+    "@@ -148,14 +148,16 @@ Before the flags, look for a run already in flight per resume.md §Finding a run",
+    "@@ -562,7 +564,7 @@ apply the recommended option and park it for anything that comes up later. A ses"
+   ]
+  },
+  {
+   "path": "skills/super-auto/run-state.md",
+   "hunks": [
+    "@@ -81,7 +81,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i"
+   ]
+  }
+ ]
+}

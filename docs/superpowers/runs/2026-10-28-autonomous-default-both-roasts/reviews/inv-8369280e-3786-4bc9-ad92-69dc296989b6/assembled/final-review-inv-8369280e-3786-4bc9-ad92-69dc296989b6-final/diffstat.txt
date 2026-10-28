@@ -1,0 +1,21 @@
+ README.md                                          |   6 +-
+ ...6-10-28-super-auto-autonomous-default-design.md | 107 +++++++++++++++++++++
+ ...omous-default-roast-design-1-step-back-keys.txt |   2 +
+ ...-autonomous-default-roast-design-1-step-back.md |   6 ++
+ ...super-auto-autonomous-default-roast-design-1.md |  77 +++++++++++++++
+ .../coverage-findings-round-1.md                   |   5 +
+ .../coverage-findings-round-2.md                   |   5 +
+ .../coverage-ledger.md                             |  11 +++
+ .../coverage-round-1-requirements.md               |   8 ++
+ .../coverage-round-1-review-1.md                   |   1 +
+ .../coverage-round-1-review-2.md                   |   1 +
+ .../findings-ledger-design.md                      |   5 +
+ .../findings-overrides-design.md                   |   0
+ .../friction.md                                    |   3 +
+ .../run.md                                         |  27 ++++++
+ .../specs/2026-07-31-super-auto-design.md          |   4 +
+ docs/superpowers/specs/INDEX.md                    |   1 +
+ skills/super-auto/MAINTENANCE.md                   |   2 +-
+ skills/super-auto/SKILL.md                         |  24 ++---
+ skills/super-auto/run-state.md                     |   2 +-
+ 20 files changed, 281 insertions(+), 16 deletions(-)
