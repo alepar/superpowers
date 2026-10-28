@@ -58,8 +58,8 @@ set -euo pipefail
 #   (ii)  every line before the first `## ` heading is byte-identical.
 #   (iii) --keys output and exit code are identical for both files.
 #   (iv)  after dropping blank and `- none` lines, both have the same lines in the same order, except a
-#         repair line may be the original prefixed `- `, or a `###`+ heading / unrecognized bold label
-#         demoted to `- <label>`.
+#         repair line may be an unindented original line that is not a list item, ATX heading or bold
+#         label, prefixed `- `; or a `###`+ heading / unrecognized bold label demoted to `- <label>`.
 if [ "${1:-}" = "--complete" ]; then
   if [ $# -ne 4 ] || [ "$2" != "--source" ]; then
     echo "report-verdict: --complete requires --source IMMUTABLE_SOURCE_ID FILE" >&2
@@ -220,13 +220,14 @@ const ko = keep(o), kr = keep(r);
 if (ko.length !== kr.length) reject('(iv) line count differs');
 const item = /^ ?(?:[-*]|[0-9]+[.)])[ \t]/;
 const roastWord = /^(?:deferred\b|concerns?\b|blockers?\b|findings?\b|untested scope\b|confirmed findings\b|not verified\b|beyond remainder cap\b|rejected\b|unverified nits\b|escalations\b)/i;
+const markable = a => /^\S/.test(a) && !item.test(a) && !/^#+[ \t]/.test(a) && !/^\*\*[^*]+\*\*/.test(a);
 function demoted(line) {
   const m = line.match(/^#{3,}[ \t]+(.*\S)[ \t]*$/) || line.match(/^\*\*([^*]+)\*\*[ \t]*$/);
   return m && !roastWord.test(m[1]) ? '- ' + m[1] : null;
 }
 for (let k = 0; k < ko.length; k++) {
   const a = ko[k], b = kr[k];
-  if (b === a || (!item.test(a) && b === '- ' + a) || b === demoted(a)) continue;
+  if (b === a || (markable(a) && b === '- ' + a) || b === demoted(a)) continue;
   reject(`(iv) line ${k + 1} differs: ${a}`);
 }
 NODE
