@@ -410,6 +410,53 @@ run bash "$S" --project "$T/projection.md" --keys
 assert_eq "$code" 3 "unavailable source artifacts are an explicit gap"
 assert_eq "$out" '[Nit] café,format.ts:1 — A' "retained occurrences survive unavailable source"
 
+echo "scope-dispositions --project: bookkeeping completeness"
+BK="$T/bk"; mkdir -p "$BK"
+cat > "$BK/roast-1.md" <<'REVIEW'
+super-roast verdict: not ready
+## Confirmed findings
+- [Important] a.ts:1 — x
+- [Nit] b.ts:2 — y
+REVIEW
+cat > "$BK/roast-2.md" <<'REVIEW'
+super-roast verdict: ready
+## Confirmed findings
+- none
+REVIEW
+bash "$REPO_ROOT/skills/super-code/scripts/report-verdict" --complete --source roast-code/round-1 "$BK/roast-1.md" > "$BK/s1.json"
+bash "$REPO_ROOT/skills/super-code/scripts/report-verdict" --complete --source roast-code/round-2 "$BK/roast-2.md" > "$BK/s2.json"
+node - "$BK" <<'NODE'
+const fs=require('node:fs'), p=process.argv[2];
+const s1=fs.readFileSync(p+'/s1.json','utf8').trim(), s2=fs.readFileSync(p+'/s2.json','utf8').trim();
+const rec=(t,d)=>`- finding-${t} · ${typeof d==='string'?d:JSON.stringify(d)}\n`;
+const ref=n=>({source:'roast-code/round-1',section:'Confirmed findings',position:n});
+const head=`roast-code: ${p}/roast-1.md\n`;
+const scope='scopeFilter-round-1: [Important] a.ts:1 in-scope — goal\nscopeFilter-round-1: [Nit] b.ts:2 punch-list — formatting\nscope-filter: 1 in-scope · 1 punch-listed\n';
+const routes=rec('route',{ref:ref(1),fix:'bead x'})+rec('route',{ref:ref(2),deferred:'outside goal'});
+fs.writeFileSync(p+'/mosh.md',head+'approvals:\n'+rec('source',s1)+scope);
+fs.writeFileSync(p+'/routed.md',head+'approvals:\n'+rec('source',s1)+routes+scope);
+fs.writeFileSync(p+'/covered.md',head+`roast-code: ${p}/keys-only.txt\n`+'approvals:\n'+rec('source',s1)+routes+
+  '- source-correspondence · {"covers":"roast-code/round-9"}\n'+scope);
+const other=JSON.parse(s1); other.artifact=p+'/roast-2.md';
+fs.writeFileSync(p+'/mismatch.md',head+'approvals:\n'+rec('source',other)+rec('route',{ref:ref(1),fix:'bead x'})+rec('route',{ref:ref(2),deferred:'d'})+scope);
+fs.writeFileSync(p+'/proxy.md',head+'approvals:\n'+rec('source',s1)+rec('source',s2)+'closed bead: x-1\n'+scope);
+NODE
+run bash "$S" --project "$BK/mosh.md"
+assert_eq "$code" 3 "mosh-shaped run (sources, no routes) exits with a gap"
+if node -e 'const p=JSON.parse(process.argv[1]); const g=p.gaps.map(x=>x.message); if(!g.includes("scope-filter decision without finding-route: round 1 [Important] a.ts:1")||!g.includes("scope-filter decision without finding-route: round 1 [Nit] b.ts:2")||p.metrics.unrouted!==2||p.findings.some(f=>f.routes.length||f.links.length||f.dispositions.length||!f.outstanding))process.exit(1)' "$out"; then pass "missing routes are named per decision, counted, and create no records"; else fail "missing routes are named per decision, counted, and create no records"; fi
+for ok in routed covered; do
+  run bash "$S" --project "$BK/$ok.md"
+  assert_eq "$code" 0 "$ok run has no bookkeeping gap"
+  if node -e 'const p=JSON.parse(process.argv[1]); if(p.metrics.unrouted!==0||p.gaps.length)process.exit(1)' "$out"; then pass "$ok run counts zero unrouted"; else fail "$ok run counts zero unrouted"; fi
+done
+run bash "$S" --project "$BK/mismatch.md"
+assert_eq "$code" 3 "source whose artifact is not a recorded roast path does not match"
+if node -e 'const p=JSON.parse(process.argv[1]); if(p.metrics.unrouted!==2)process.exit(1)' "$out"; then pass "mismatched artifact leaves both decisions unrouted"; else fail "mismatched artifact leaves both decisions unrouted"; fi
+run bash "$S" --project "$BK/proxy.md"
+assert_eq "$code" 3 "later clean review and closed bead keep the gap"
+if node -e 'const p=JSON.parse(process.argv[1]); if(p.metrics.unrouted!==2||p.metrics.repaired!==0||p.findings.some(f=>!f.outstanding))process.exit(1)' "$out"; then pass "no finding resolves by proxy"; else fail "no finding resolves by proxy"; fi
+echo
+
 echo "review collection and caller continuity"
 cp "$RF/clean.md" "$T/malformed-collection.md"
 printf 'approvals:\n- review-collection · {"invocationId":"bad","reviewPath":null,"complete":true,"gaps":[]}\n' >> "$T/malformed-collection.md"

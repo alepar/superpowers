@@ -129,6 +129,7 @@ for (const {data:d, origin} of entries.filter(e => e.type === 'finding-link')) {
   for (const r of d.refs.slice(1)) parent.set(root(id(r)), root(id(d.refs[0])));
   links.push({refs:d.refs.map(ref), basis:d.basis, origin});
 }
+const routedRefs = new Set();
 const groups = new Map();
 for (const [k, o] of occurrences) {
   const r = root(k);
@@ -149,6 +150,7 @@ for (const {type, data:d, origin} of entries) {
       gap(origin, 'route needs nonempty owner, fix or deferred reason'); continue;
     }
     group.routes.push({...d, origin});
+    routedRefs.add(id(d.ref));
     if (string(d.deferred)) group.deferred = true;
   } else {
     // Presence of evidence alone is not semantic support. The owning agent must
@@ -165,6 +167,25 @@ for (const group of groups.values()) {
   group.outstanding = conflict || !group.dispositions.some(d => d.supported);
 }
 const findings = [...groups.values()];
+// Bookkeeping completeness: a recorded scope-filter decision needs a finding-route on a
+// matching occurrence. Key equality only locates where the record should exist; it links nothing.
+const recorded = new Set(), decisions = [];
+fence = false;
+for (const [index, line] of text.split(/\r?\n/).entries()) {
+  if (/^\s*(```|~~~)/.test(line)) { fence = !fence; continue; }
+  if (fence) continue;
+  const pointer = line.match(/^\s*roast-(?:code|design):\s*(.*)$/);
+  if (pointer) for (const p of pointer[1].split(',')) if (p.trim()) recorded.add(path.resolve(path.dirname(run), p.trim()));
+  const decision = line.match(/^\s*scopeFilter-round-(\d+): (.+?) (?:in-scope|punch-list) — /);
+  if (decision) decisions.push({round:decision[1], key:decision[2], origin:`${run}:${index + 1}`});
+}
+let unrouted = 0;
+for (const {round, key, origin} of decisions) {
+  const sources = new Set([`roast-code/round-${round}`, `roast-design/round-${round}`]);
+  const routed = [...occurrences].some(([k, o]) => sources.has(o.value.source) && o.value.key === key &&
+    o.artifacts.some(a => recorded.has(path.resolve(path.dirname(run), a))) && routedRefs.has(k));
+  if (!routed) { unrouted++; gap(origin, `scope-filter decision without finding-route: round ${round} ${key}`); }
+}
 // Let stdout drain before exit, and make failed writes observable even through console.
 process.exitCode = gaps.length ? 3 : 0;
 process.stdout.on('error', error => {
@@ -193,6 +214,7 @@ if (keys) {
     rejected:actionable.filter(f => !f.outstanding && !repaired(f) && f.dispositions.some(d => d.supported && d.disposition === 'rejected')).length,
     outstanding:actionable.filter(f => f.outstanding).length,
     deferred:actionable.filter(f => f.outstanding && f.deferred).length,
+    unrouted,
     gaps:gaps.length,
   };
   console.log(JSON.stringify({version:1, findings, gaps, metrics}, null, 2));
