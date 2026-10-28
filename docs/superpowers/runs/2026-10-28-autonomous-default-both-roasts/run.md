@@ -20,6 +20,6 @@ stepBackDesign-round-1: local — one ledger key, two opt-out-mapping Nits; clus
 graph-pass: depth 1→1 · width 1.0→1.0 · applied 0 · parked 0
 parked:
 - coverage-findings-round-2.md · degraded-verdict · "coverage round 2 widening: yes (5→5, 3/5 novel); 3 of 5 rejected on evidence; cap held at 2 rounds (auto)"
+- 2026-10-28-super-auto-autonomous-default-roast-design-1.md · degraded-verdict · "design roast r1 verdict qualifier [low coverage] [review readiness incomplete]: caller supplied no readiness basis (design mode); every stage completed (scouts 8/8, judges 100%) (auto)"
 roast-design: 2026-10-28-super-auto-autonomous-default-roast-design-1.md
 findingsLedgerDesign: findings-ledger-design.md
-- 2026-10-28-super-auto-autonomous-default-roast-design-1.md · degraded-verdict · "design roast r1 verdict qualifier [low coverage] [review readiness incomplete]: caller supplied no readiness basis (design mode); every stage completed (scouts 8/8, judges 100%) (auto)"
