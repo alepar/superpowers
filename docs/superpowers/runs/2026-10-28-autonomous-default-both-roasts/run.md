@@ -1,6 +1,6 @@
 # super-auto run — 2026-10-28-autonomous-default-both-roasts
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=t
-phase: report
+phase: finish
 codeMechanism: Workflow
 runTag: autonomous-default-both-roasts-20261028T151244
 context: Context: claude · planner=200K/167K · implementer=200K/167K · reviewer=200K/167K · finalReview=200K/167K · assembler=200K/167K · warn: planner, finalReview on a 200K model → set ANTHROPIC_DEFAULT_OPUS_MODEL=<model>[1m] or config.models.<role> to a 1M model · warn: implementer, reviewer, assembler on a 200K model → set ANTHROPIC_DEFAULT_SONNET_MODEL=<model>[1m] or config.models.<role> to a 1M model
@@ -112,3 +112,4 @@ codeBuckets:
 roastCodeRound: 2
 roastCodeExit: operator-skipped (orchestrator: r2 confirmed zero findings of any severity and resolved both r1 Nits; [converged] withheld only because the bounded direct reviews carry no readiness basis)
 friction: 8 events
+feedback: parked — upstream-feedback-draft.md (7 defects, 1 design question, 1 doc gap); not filed
