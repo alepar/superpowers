@@ -18,3 +18,5 @@ approvals:
 roastDesignRound: 1
 parked:
 - coverage-findings-round-2.md · degraded-verdict · "coverage round 2 widening: yes (5→5, 3/5 novel); 3 of 5 rejected on evidence; cap held at 2 rounds (auto)"
+roast-design: 2026-10-28-super-auto-autonomous-default-roast-design-1.md
+findingsLedgerDesign: findings-ledger-design.md
