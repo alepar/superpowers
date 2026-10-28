@@ -19,13 +19,14 @@ function strictDraft(draft){
  const verdict=lines.slice(index+1).find(l=>l.trim());
  requireThat(verdict&&!/^(?:#+[ \t]|\*\*| ?(?:[-*]|[0-9]+[.)])[ \t])/.test(verdict),'missing draft verdict');
  const none=t=>t.toLowerCase().replace(/[ \t.*_`]+/g,'')==='none';
- let active=false,content=false,item=null,level=0,fence=false;
+ let active=false,content=false,item=null,level=0,fence=null;
  const flush=()=>{if(item&&none(item[0]))requireThat(!item.slice(1).some(l=>l.trim()),'none marker has finding text');item=null};
  const close=()=>{flush();requireThat(!active||content,'empty draft finding section')};
  for(const line of lines){
-  const isFence=/^ {0,3}(?:```|~~~)/.test(line);
-  if(isFence)fence=!fence;
-  const h=fence||isFence?null:line.match(/^#+[ \t]+(.*)$/)||line.match(/^\*\*([^*]+)\*\*/);
+  const f=line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
+  if(f&&fence===null)fence=f[1];
+  else if(f&&f[1][0]===fence[0]&&f[1].length>=fence.length&&!f[2].trim())fence=null;
+  const h=f||fence!==null?null:line.match(/^#+[ \t]+(.*)$/)||line.match(/^\*\*([^*]+)\*\*/);
   if(h){
    const recognized=/^(?:deferred\b|concerns?\b|blockers?\b|findings?\b|untested scope\b|must[- ]fix\b)/i.test(h[1]);
    const atx=line.match(/^(#+)[ \t]+/),lvl=atx?atx[1].length:0;
@@ -38,6 +39,7 @@ function strictDraft(draft){
   else if(none(line))content=true;
   else requireThat(!line.trim(),'draft finding text without a list marker');
  }
+ requireThat(fence===null,'draft unclosed code fence');
  close();
 }
 function boundedReport(draft,evidence){

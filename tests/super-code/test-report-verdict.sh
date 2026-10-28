@@ -648,5 +648,19 @@ rc_mk "$T/repair-note.md" "- none" "- $RC_PROSE" "- Note"
 run bash "$R" --repair-check "$T/repair-orig-note.md" "$T/repair-note.md"
 assert_eq "$code" 0 "unrecognized bold label demoted to an item: accepted"
 
+echo "report-verdict --complete: unclosed and mismatched fences, both copies"
+run bash "$R" --complete --source invocation/fence "$FX/unclosed-fence.md"
+assert_eq "$code" 4 "unclosed fence: --complete exits 4"
+assert_eq "$out" "" "unclosed fence: no success JSON"
+case "$(cat "$T/err")" in "report-verdict: --complete: "*unclosed*) pass "unclosed fence: grammar prefix and message";; *) fail "unclosed fence: grammar prefix and message"; cat "$T/err";; esac
+run node "$T/strict.cjs" "$AA" "$FX/unclosed-fence.md"
+case "$out" in "throws: "*unclosed*) pass "unclosed fence: strictDraft throws";; *) fail "unclosed fence: strictDraft throws: $out";; esac
+run bash "$R" --complete --source invocation/fence "$FX/mismatched-fence.md"
+assert_eq "$code" 0 "mismatched fence: --complete exits 0"
+assert_eq "$(occ "$out")" "Must fix before landing|1|first
+Must fix before landing|2|second" "mismatched fence: ~~~ does not close a backtick fence"
+run node "$T/strict.cjs" "$AA" "$FX/mismatched-fence.md"
+assert_eq "$out" "ok" "mismatched fence: strictDraft accepts"
+
 if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
 echo "report-verdict: all tests passed"
