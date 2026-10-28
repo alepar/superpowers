@@ -10,3 +10,4 @@ idea: Fix the seven accumulated P1/P2 super-* followups in one run (literal huma
 branch: super-auto/review-continuity-followups
 base: main
 spec: 2026-10-28-review-continuity-followups-design.md
+epic: super-plan-mlr
