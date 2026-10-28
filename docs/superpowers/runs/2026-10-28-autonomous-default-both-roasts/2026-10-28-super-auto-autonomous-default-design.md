@@ -86,12 +86,12 @@ INDEX rows are not rewritten; the 2026-07-31 super-auto spec gets a dated Post-I
 **Evaluation.** Recommended: before/after behavioral probes run by the orchestrator (not a leaf:
 they need fresh agents), each giving a fresh subagent the SKILL.md text (pre-change from `base`,
 post-change from the branch) and an invocation, asking for the `flags:` line it would write and
-whether it would ask anything before phase 1: (1) unqualified idea; (2) "…, interactive"; (3) "…,
+whether it would ask anything before phase 1, and whether it would stop anywhere before the phase-7 hand-back (the existing §Autonomous mode answers the design- and code-roast pauses; the probe checks that they still do under the default): (1) unqualified idea; (2) "…, interactive"; (3) "…,
 skip the code roast"; (4) "…, one-shot, stop for design review"; (5) a resume whose `run.md` records
 `autonomous=f`; (6) "…, autonomous" — and whether the default run would merge into `base` without
 the human. Expected after: (1) `autonomous=t`, both skips `f`, no question; (2) `autonomous=f`;
 (3) `skipCodeRoast=t, autonomous=t`; (4) `planOneShot=t, autonomous=f`; (5) recorded flags kept;
-(6) unchanged; no unattended merge. Run each probe in at least two fresh sessions. The project's
+(6) unchanged; no unattended merge; and (1), (3), (6) stop nowhere before the phase-7 hand-back. Run each probe in at least two fresh sessions. The project's
 drill harness (`evals/`) is not checked out here; the probes are the evidence and are labeled as
 subagent micro-tests, not drill evals. Mechanical: the existing `tests/super-auto` suites stay green.
 
