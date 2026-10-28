@@ -16,7 +16,10 @@ approvals:
 - coverage-round-1 · canonical R1–R8 (coverage-round-1-requirements.md) · requirements: 8 · mapped: 8 · unmapped: 0 · cov-1 applied auto · cov-2 applied auto · cov-3 rejected auto · cov-4 rejected auto · cov-5 applied auto
 - coverage-round-2 · cov-6 applied auto · cov-7 rejected auto · cov-8 rejected auto · cov-9 rejected auto · cov-10 applied auto
 roastDesignRound: 1
+stepBackDesign-round-1: local — one ledger key, two opt-out-mapping Nits; cluster opt-out-mapping-coverage applied inline to the spec (221df21a); mechanical single-file fix, no re-roast; loop exit: r1 Nit (2 confirmed) both fixed, no escalations, nothing beyond cap
+graph-pass: depth 1→1 · width 1.0→1.0 · applied 0 · parked 0
 parked:
 - coverage-findings-round-2.md · degraded-verdict · "coverage round 2 widening: yes (5→5, 3/5 novel); 3 of 5 rejected on evidence; cap held at 2 rounds (auto)"
 roast-design: 2026-10-28-super-auto-autonomous-default-roast-design-1.md
 findingsLedgerDesign: findings-ledger-design.md
+- 2026-10-28-super-auto-autonomous-default-roast-design-1.md · degraded-verdict · "design roast r1 verdict qualifier [low coverage] [review readiness incomplete]: caller supplied no readiness basis (design mode); every stage completed (scouts 8/8, judges 100%) (auto)"

@@ -8,3 +8,4 @@ cov-7 · r2 · GAP · R-new-c tests pin old defaults · rejected — no test pin
 cov-8 · r2 · GAP · R-new-b combined opt-outs · rejected — leaf acceptance maps each opt-out to its own flag plus the contradiction rule; reviewer A withdrew with full spec
 cov-9 · r2 · GAP · R-new-1 evaluation probes · rejected — duplicate of cov-1 with no new evidence (epic description verified by reviewer A's full-spec re-run)
 cov-10 · r2 · UNOWNED-SEAM · readiness/continuity text · applied — post-integration re-sweep recorded on the epic as a hand-back item for the main coordinator
+gp-1 · graph · GRAPH-EDGE · none · kept — zero candidate edges (single leaf)
