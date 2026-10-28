@@ -8,3 +8,6 @@
 - [2026-10-28T18:55Z] super-auto · roast-code r1 assembler: review input selection: provenance unavailable; captured source available (2115 historical gaps under docs/superpowers/runs/2026-10-16-workflow-reliability, installed 6.6 dispatch-text validates all run.md — the super-plan-rsc defect); bounded direct review of 444f86b266b2208b612e0e91b0f54762576ff95a..5e427d047e465be40720afda6263dff846a94837, readiness bounded/unavailable
 - [2026-10-28T18:55Z] super-roast · code round 1 rung: Workflow (wf_15b2b191-9fa)
 - [2026-10-28T19:19Z] super-auto · code step-back r1 saved with a condensed pattern: field (clusters and keys verbatim), not byte-verbatim as SKILL.md asks
+- [2026-10-28T19:59Z] super-auto · roast-code r2 assembler: provenance unavailable; captured source available (same 2115 historical gaps); bounded direct review of 444f86b266b2208b612e0e91b0f54762576ff95a..9b358f0481493b7b072479ddae1ad117000aaa2f
+- [2026-10-28T19:59Z] super-auto/super-roast seam · scope-dispositions --project --keys punch list includes final-review untested/deferred keys that assemble-args --punch-listed rejects (not [SEV] <location>); passed only the roast-format keys (filtered copy .superpowers/sdd/super-plan-mlr-plan/punch-roast-r1.txt), original punch-list file unchanged
+- [2026-10-28T19:59Z] super-roast · code round 2 rung: Workflow (wf_71190575-424)
