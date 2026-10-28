@@ -11,7 +11,7 @@ branch: super-auto/review-continuity-followups
 base: main
 spec: 2026-10-28-review-continuity-followups-design.md
 epic: super-plan-mlr
-roastDesignRound: 1
+roastDesignRound: 2
 roast-design: 2026-10-28-review-continuity-followups-roast-design-1.md
 findingsLedgerDesign: findings-ledger-design.md
 stepBackDesign-round-1: local — nine findings across five independent subsystems; one shared under-specified §4.1(c) --complete contract (cluster complete-contract) and a §4.7 reviewer-policy pair (cluster reviewer-commit-policy), fixed as spec clarifications
