@@ -153,11 +153,11 @@ Resolve the flags below once, before any phase runs. A flag the invocation does 
 | Flag | Default | Effect |
 |---|---|---|
 | plan one-shot | `false` | Stated to `super-design`, which relays it to every `brainstorming` iteration it runs (root spec, each subepic) — Mode B instead of Mode A (`autonomous` forces Mode B regardless). Without `autonomous`, the top split is applied without asking and the run stops after phase 2 for design review (§Autonomous mode) |
-| skip plan roast | `false` | Stated to `super-design`, either way — it pre-decides the adversarial-review offer on the settled tree (skip or run), so the user, who already answered here, is never asked again |
+| skip plan roast | `false` | Stated to `super-design`, either way — it pre-decides the adversarial-review offer on the settled tree (skip or run), so the run never asks about it again: the resolved value, stated or default, is the answer |
 | skip code roast | `false` | Omits the final PR-mode roast entirely |
 | autonomous | `true` | Stated to `super-design` — it owns the design gates and its own roast loop, and its unattended behavior is conditional on being told. No stop from launch to the phase-7 hand-back; the top split is applied, not asked (§Autonomous mode). It never covers the merge into `base` (§Invariants I5 (human-owned merge)) |
 
-Plain-word opt-outs set the flags: "interactive", "not autonomous" or a bare "ask me" sets `autonomous=false` ("ask me only about X" is a reserved topic, §Autonomous mode **Reserved decisions**, and keeps `autonomous=true`); "stop for design review", or `planOneShot` stated without `autonomous`, sets `planOneShot=true, autonomous=false`; "skip the plan roast" or "skip the design roast" sets `skipPlanRoast=true`; "skip the code roast" sets `skipCodeRoast=true`. An invocation that states both `autonomous` and a design-review stop takes the explicit `autonomous` value as stated, without a question, and the first status note says so.
+Plain-word opt-outs set the flags: "interactive", "not autonomous" or a bare "ask me" sets `autonomous=false` ("ask me only about X" is a reserved topic, §Autonomous mode **Reserved decisions**, and keeps `autonomous=true`); "stop for design review", or `planOneShot` stated without `autonomous`, sets `planOneShot=true, autonomous=false`; "skip the plan roast" or "skip the design roast" sets `skipPlanRoast=true`; "skip the code roast" sets `skipCodeRoast=true`. An invocation that states both `autonomous` and a design-review stop records `planOneShot=true, autonomous=true` (the explicit `autonomous` value as stated), without a question, and the first status note names the overridden design-review stop.
 
 ## Phase sequence
 
@@ -583,7 +583,7 @@ not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict`
 - Loop-exit pauses (both loops): `super-design` §Unattended Runs already records and hands
   back instead of pausing when the caller owns the hand-off; whatever was open lands in `run.md` and
   the report.
-- Fix designs are applied without asking or waiting — the request to run autonomously is the
+- Fix designs are applied without asking or waiting — `autonomous`, stated or by default, is the
   approval.
 - Nested brainstorms triggered by a fix run in Mode B.
 - Escalations and beyond-cap items are parked and surfaced in the final report, never

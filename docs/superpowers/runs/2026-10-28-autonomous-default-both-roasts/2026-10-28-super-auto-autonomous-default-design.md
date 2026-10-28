@@ -92,7 +92,7 @@ skip the code roast"; (4) "…, one-shot, stop for design review"; (5) a resume 
 `autonomous` stated; (9) "…, ask me only about the database schema"; (10) "…, skip the design roast" — and whether the default run would merge into `base` without
 the human. Expected after: (1) `autonomous=t`, both skips `f`, no question; (2) `autonomous=f`;
 (3) `skipCodeRoast=t, autonomous=t`; (4) `planOneShot=t, autonomous=f`; (5) recorded flags kept;
-(6) unchanged; (7) `autonomous=t` with the contradiction named in the status note; (8) `planOneShot=t,
+(6) unchanged; (7) `planOneShot=t, autonomous=t` with the overridden design-review stop named in the status note; (8) `planOneShot=t,
 autonomous=f`; (9) `autonomous=t` with the reserved topic recorded under `approvals:`; (10) `skipPlanRoast=t,
 autonomous=t`; no unattended merge; and (1), (3), (6), (9), (10) stop nowhere before the phase-7 hand-back. Run each probe in at least two fresh sessions. The project's
 drill harness (`evals/`) is not checked out here; the probes are the evidence and are labeled as
