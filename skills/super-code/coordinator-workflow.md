@@ -1169,7 +1169,8 @@ blocker filing, commit last). Two conventions the coordinator owns:
   first-parent `stack: ` commit.
   A reused branch is drift-checked against the task's current parents before the implementer
   continues (a current parent not an ancestor of the branch, or a first-parent `stack: X` commit for
-  an `X` no longer a parent). No drift reuses it unchanged. Drift with uncommitted work (ignoring
+  an `X` that is no longer a parent and has not landed (`scripts/already-merged` prints false; a
+  landed parent is not drift)). No drift reuses it unchanged. Drift with uncommitted work (ignoring
   `.tmp/`) returns `SETUP_FAILED` with nothing touched. Drift with a clean worktree rebuilds the base
   by merging each current parent as `stack: <parent>` onto a detached integration HEAD (the same
   merges as the fresh stack step) and moves the task's commits with `git rebase --onto <newBase>

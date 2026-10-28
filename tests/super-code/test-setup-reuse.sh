@@ -143,6 +143,30 @@ class Reuse(unittest.TestCase):
         self.assertEqual(self.git('log','--first-parent','--grep=^stack: ','--format=%s','integration..task-ep.2').stdout.split('\n')[:-1],['stack: ep.1'])
         self.assertEqual(self.git('branch','--show-current',cwd=self.wt).stdout.strip(),'task-ep.2')
 
+    def landed_parent_reuses_dirty(self,delete):
+        # ep.1 landed on integration (default merge subject); ep.2 keeps its stale `stack: ep.1`
+        self.git(*ID,'merge','--no-ff','--no-edit','-q','task-ep.1')
+        if delete: self.git('branch','-d','task-ep.1')
+        (self.wt/'g.txt').write_text('uncommitted\n')
+        rc,out=self.drift()   # ep.1 left the current parents when it landed
+        self.assertEqual(rc,0,out); self.assertTrue(out[-1].startswith('REUSE:'),out)
+        self.assertEqual((self.wt/'g.txt').read_text(),'uncommitted\n')
+        self.assertEqual(self.rev('task-ep.2'),self.old)
+
+    def test_landed_parent_kept_branch_reuses_dirty(self):
+        self.landed_parent_reuses_dirty(False)
+
+    def test_landed_parent_deleted_branch_reuses_dirty(self):
+        self.landed_parent_reuses_dirty(True)
+
+    def test_removed_dependency_dirty_still_drifts(self):
+        (self.wt/'g.txt').write_text('uncommitted\n')
+        rc,out=self.drift()   # ep.1 neither a current parent nor landed
+        self.assertEqual(rc,1,out)
+        self.assertEqual(out[-1],'SETUP_FAILED: prerequisite drift; uncommitted work preserved; nothing reset')
+        self.assertEqual((self.wt/'g.txt').read_text(),'uncommitted\n')
+        self.assertEqual(self.rev('task-ep.2'),self.old)
+
     def test_missing_parent_counts_as_landed(self):
         # the merge lane landed ep.1 and deleted its branch
         self.git(*ID,'merge','--no-ff','-q','-m','land','task-ep.1'); self.git('branch','-d','task-ep.1')

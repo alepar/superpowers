@@ -2647,7 +2647,8 @@ function workspaceSetup(planPath, n, id, worktree, branchName, integrationBranch
     'drift=0',
     // a parent ref that no longer resolves was merged and its branch deleted: it counts as landed
     ...parents.map((p, i) => `p${i}=$(git rev-parse -q --verify 'refs/heads/${taskBranch(p)}^{commit}')\n[ -z "$p${i}" ] || git merge-base --is-ancestor $p${i} $br || drift=1`),
-    `for x in $(git log --first-parent --grep='^stack: ' --format=%s $integ..$br | sed 's/^stack: //'); do case " ${parents.join(' ')} " in *" $x "*) ;; *) drift=1;; esac; done`,
+    // a stale `stack: X` whose X already-merged reports landed is not drift (any other result is)
+    `for x in $(git log --first-parent --grep='^stack: ' --format=%s $integ..$br | sed 's/^stack: //'); do case " ${parents.join(' ')} " in *" $x "*) ;; *) [ "$(bash ${codeSkill}/scripts/already-merged $integ ${taskBranch('$x')})" = true ] || drift=1;; esac; done`,
     '[ $drift = 0 ] && { echo "REUSE: no prerequisite drift; base=$oldBase"; exit 0; }',
     `[ -n "$(git status --porcelain -- . ':(exclude).tmp')" ] && { echo "SETUP_FAILED: prerequisite drift; uncommitted work preserved; nothing reset"; exit 1; }`,
     'oldHead=$(git rev-parse $br)',
