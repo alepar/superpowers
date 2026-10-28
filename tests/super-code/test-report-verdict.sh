@@ -629,5 +629,24 @@ done
 has "$SA" "record and pass the round's report path" "super-auto SKILL: round's report path"
 has "$SD" "is the round's report path from super-roast's write step" "super-design SKILL: round's report path"
 
+echo "report-verdict: --repair-check rule (iv) guards every marker addition"
+sed 's/^  continuation for the first finding$/-   continuation for the first finding/' "$T/repaired.md" > "$T/r11.md"
+rc_rej "indented continuation given a marker" "(iv)" "$T/r11.md"
+sed 's/^## Rejected (with reason)$/- &/' "$T/repaired.md" > "$T/r12.md"
+rc_rej "## heading demoted to an item" "(iv)" "$T/r12.md"
+rc_mk "$T/repair-orig-bold.md" "- none" "- $RC_PROSE" "**Escalations**"
+rc_mk "$T/repair-bold-generic.md" "- none" "- $RC_PROSE" "- **Escalations**"
+rc_mk "$T/repair-bold-demoted.md" "- none" "- $RC_PROSE" "- Escalations"
+for v in generic demoted; do
+  run bash "$R" --repair-check "$T/repair-orig-bold.md" "$T/repair-bold-$v.md"
+  assert_eq "$code" 4 "recognized-word bold label ($v): exits 4"
+  assert_eq "$out" "" "recognized-word bold label ($v): empty stdout"
+  case "$(cat "$T/err")" in "report-verdict: --repair-check: "*"(iv)"*) pass "recognized-word bold label ($v): stderr names (iv)";; *) fail "recognized-word bold label ($v): stderr names (iv)"; echo "    got: $(cat "$T/err")";; esac
+done
+rc_mk "$T/repair-orig-note.md" "- none" "- $RC_PROSE" "**Note**"
+rc_mk "$T/repair-note.md" "- none" "- $RC_PROSE" "- Note"
+run bash "$R" --repair-check "$T/repair-orig-note.md" "$T/repair-note.md"
+assert_eq "$code" 0 "unrecognized bold label demoted to an item: accepted"
+
 if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
 echo "report-verdict: all tests passed"
