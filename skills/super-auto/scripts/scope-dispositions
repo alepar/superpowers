@@ -176,13 +176,13 @@ for (const [index, line] of text.split(/\r?\n/).entries()) {
   if (fence) continue;
   const pointer = line.match(/^\s*roast-(?:code|design):\s*(.*)$/);
   if (pointer) for (const p of pointer[1].split(',')) if (p.trim()) recorded.add(path.resolve(path.dirname(run), p.trim()));
-  const decision = line.match(/^\s*scopeFilter-round-(\d+): (.+?) (?:in-scope|punch-list) — /);
-  if (decision) decisions.push({round:decision[1], key:decision[2], origin:`${run}:${index + 1}`});
+  const decision = line.match(/^\s*scopeFilter-round-(\d+): (.+?)\s+(?:in-scope|punch-list) —(?: |$)/);
+  if (decision) decisions.push({round:decision[1], key:decision[2].trim(), origin:`${run}:${index + 1}`});
 }
 let unrouted = 0;
 for (const {round, key, origin} of decisions) {
   const sources = new Set([`roast-code/round-${round}`, `roast-design/round-${round}`]);
-  const routed = [...occurrences].some(([k, o]) => sources.has(o.value.source) && o.value.key === key &&
+  const routed = [...occurrences].some(([k, o]) => sources.has(o.value.source) && o.value.key.trim() === key &&
     o.artifacts.some(a => recorded.has(path.resolve(path.dirname(run), a))) && routedRefs.has(k));
   if (!routed) { unrouted++; gap(origin, `scope-filter decision without finding-route: round ${round} ${key}`); }
 }

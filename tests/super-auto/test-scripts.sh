@@ -455,6 +455,27 @@ if node -e 'const p=JSON.parse(process.argv[1]); if(p.metrics.unrouted!==2)proce
 run bash "$S" --project "$BK/proxy.md"
 assert_eq "$code" 3 "later clean review and closed bead keep the gap"
 if node -e 'const p=JSON.parse(process.argv[1]); if(p.metrics.unrouted!==2||p.metrics.repaired!==0||p.findings.some(f=>!f.outstanding))process.exit(1)' "$out"; then pass "no finding resolves by proxy"; else fail "no finding resolves by proxy"; fi
+cat > "$BK/roast-sp.md" <<'REVIEW'
+super-roast verdict: not ready
+## Confirmed findings
+- [Nit] b.js:2  — claim
+REVIEW
+bash "$REPO_ROOT/skills/super-code/scripts/report-verdict" --complete --source roast-code/round-1 "$BK/roast-sp.md" > "$BK/sp.json"
+node - "$BK" <<'NODE'
+const fs=require('node:fs'), p=process.argv[2];
+const sp=fs.readFileSync(p+'/sp.json','utf8').trim(), s1=fs.readFileSync(p+'/s1.json','utf8').trim();
+const rec=(t,d)=>`- finding-${t} · ${typeof d==='string'?d:JSON.stringify(d)}\n`;
+const ref={source:'roast-code/round-1',section:'Confirmed findings',position:1};
+fs.writeFileSync(p+'/spaced.md',`roast-code: ${p}/roast-sp.md\napprovals:\n`+rec('source',sp)+rec('route',{ref,deferred:'outside goal'})+
+  'scopeFilter-round-1: [Nit] b.js:2 punch-list — formatting\n');
+fs.writeFileSync(p+'/bare.md',`roast-code: ${p}/roast-1.md\napprovals:\n`+rec('source',s1)+'scopeFilter-round-1: [Nit] b.ts:2 punch-list —\n');
+NODE
+run bash "$S" --project "$BK/spaced.md"
+assert_eq "$code" 0 "roast line with extra whitespace before the dash still matches its route"
+if node -e 'const p=JSON.parse(process.argv[1]); if(p.metrics.unrouted!==0||p.gaps.length)process.exit(1)' "$out"; then pass "whitespace-variant key counts zero unrouted"; else fail "whitespace-variant key counts zero unrouted"; fi
+run bash "$S" --project "$BK/bare.md"
+assert_eq "$code" 3 "decision line ending at the dash is checked, not skipped"
+if node -e 'const p=JSON.parse(process.argv[1]); if(!p.gaps.some(x=>x.message==="scope-filter decision without finding-route: round 1 [Nit] b.ts:2"))process.exit(1)' "$out"; then pass "dash-terminated decision names its missing route"; else fail "dash-terminated decision names its missing route"; fi
 echo
 
 echo "scope-dispositions --project: run.md written per the caller instructions"
