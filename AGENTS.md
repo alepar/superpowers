@@ -159,11 +159,14 @@ This repository is the `alepar` fork. Its versions are `<upstream version>-alepa
    - `bash tests/super-roast/test-assemble-args.sh`
    - `bash tests/super-auto/test-scripts.sh`
    - `bash tests/super-auto/test-contract-lint.sh`
+   - `bash tests/super-auto/review-inputs-range-scope.sh`
+   - `bash tests/super-auto/review-continuity-e2e.sh`
    - `bash tests/skill-scripts/test-bash-invocation.sh`
    - `bash tests/codex/test-marketplace-manifest.sh`
    - `bash tests/super-code/test-run-marker.sh`
    - `bash tests/super-code/test-run-profile-in-flight.sh`
    - `bash tests/super-code/test-report-verdict.sh`
+   - `bash tests/super-code/test-setup-reuse.sh`
    - `bash tests/super-code/test-run-digest.sh`
    - `bash tests/super-code/test-task-surface.sh`
    - `bash tests/super-code/test-split-oversized.sh`
