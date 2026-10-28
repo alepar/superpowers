@@ -4,11 +4,19 @@
 # branch-only landed state. Git mutates only the temp fixture repo.
 set -euo pipefail
 ROOT=$(cd "$(dirname "$0")/../.." && pwd)
-python3 - "$ROOT" <<'TEST'
+python3 - "$0" "$ROOT" <<'TEST'
 import os, pathlib, re, shutil, subprocess, sys, tempfile, unittest
 ROOT=pathlib.Path(sys.argv.pop())
+SELF=pathlib.Path(sys.argv.pop()).read_text()
 GIT=shutil.which('git')
-ID=['-c','user.name=Fixture','-c','user.email=fixture@example.invalid']
+# Every git the fixtures run (directly, in the emitted drift script, in the PATH shim) gets a pinned
+# identity, no signing and no hooks: PIN covers the calls made here, ENV (GIT_CONFIG_COUNT is the
+# environment form of -c) covers script text that cannot take -c.
+PIN=['-c','commit.gpgsign=false','-c','core.hooksPath=/dev/null']
+ENV=dict(os.environ, GIT_AUTHOR_NAME='Fixture', GIT_AUTHOR_EMAIL='fixture@example.invalid',
+         GIT_COMMITTER_NAME='Fixture', GIT_COMMITTER_EMAIL='fixture@example.invalid',
+         GIT_CONFIG_COUNT='2', GIT_CONFIG_KEY_0='commit.gpgsign', GIT_CONFIG_VALUE_0='false',
+         GIT_CONFIG_KEY_1='core.hooksPath', GIT_CONFIG_VALUE_1='/dev/null')
 
 class Reuse(unittest.TestCase):
     def setUp(self):
@@ -30,9 +38,9 @@ class Reuse(unittest.TestCase):
         self.ledger.write_text(f'Launch: mechanism ordinary-subagents · epic ep · invocationId fixture · branch integration · integrationWorktree {self.repo} · concurrency 1 · earlyUnblock on · sweep deferred\n')
 
     def git(self,*a,cwd=None,check=True):
-        return subprocess.run([GIT,'-C',str(cwd or self.repo),*a],check=check,capture_output=True,text=True)
+        return subprocess.run([GIT,'-C',str(cwd or self.repo),*PIN,*a],check=check,capture_output=True,text=True,env=ENV)
     def commit(self,cwd,msg):
-        self.git(*ID,'commit','-qm',msg,cwd=cwd)
+        self.git('commit','-qm',msg,cwd=cwd)
     def rev(self,ref): return self.git('rev-parse',ref).stdout.strip()
     def commit_on_branch(self,br,path,content,msg):
         # advance a branch that no worktree holds, via a throwaway worktree
@@ -42,11 +50,11 @@ class Reuse(unittest.TestCase):
 
     def text(self,*mode):
         p=subprocess.run(['bash',str(ROOT/'skills/super-code/scripts/dispatch-text'),'--ledger',str(self.ledger),
-                          '--stdout','implement','--id','ep.2','--n','2',*mode],capture_output=True,text=True,check=True)
+                          '--stdout','implement','--id','ep.2','--n','2',*mode],capture_output=True,text=True,check=True,env=ENV)
         return re.search(r'<workspace-setup>(.*?)</workspace-setup>',p.stdout,re.S).group(1)
     def drift(self,*mode,env=None):
         script=re.search(r'<drift-check>\n(.*?)\n</drift-check>',self.text(*mode),re.S).group(1)
-        e=dict(os.environ); e.update(env or {})
+        e=dict(ENV); e.update(env or {})
         p=subprocess.run(['bash','-c',script],cwd=self.wt,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,env=e)
         return p.returncode,p.stdout.strip().splitlines()
     def shim(self,**flags):
@@ -74,6 +82,15 @@ class Reuse(unittest.TestCase):
     def git_dir(self):
         gd=pathlib.Path(self.git('rev-parse','--git-dir',cwd=self.wt).stdout.strip())
         return gd if gd.is_absolute() else self.wt/gd
+
+    def test_git_calls_are_pinned(self):
+        # a git call that skips the pinned helper would use this machine's identity, signing and hooks
+        chunks=[c for c in SELF.split('\n    def ') if not c.startswith('test_git_calls_are_pinned')]
+        src='\n    def '.join(chunks)
+        self.assertEqual(src.count('[GIT,'),1)
+        self.assertNotIn("'user.name=",src); self.assertNotIn('*ID',src)
+        for c in chunks:
+            if 'subprocess.run(' in c and '[GIT,' not in c: self.assertIn('env=',c,c[:60])
 
     def test_no_drift_reuses(self):
         rc,out=self.drift('--parents','ep.1')
@@ -145,7 +162,7 @@ class Reuse(unittest.TestCase):
 
     def landed_parent_reuses_dirty(self,delete):
         # ep.1 landed on integration (default merge subject); ep.2 keeps its stale `stack: ep.1`
-        self.git(*ID,'merge','--no-ff','--no-edit','-q','task-ep.1')
+        self.git('merge','--no-ff','--no-edit','-q','task-ep.1')
         if delete: self.git('branch','-d','task-ep.1')
         (self.wt/'g.txt').write_text('uncommitted\n')
         rc,out=self.drift()   # ep.1 left the current parents when it landed
@@ -169,7 +186,7 @@ class Reuse(unittest.TestCase):
 
     def test_missing_parent_counts_as_landed(self):
         # the merge lane landed ep.1 and deleted its branch
-        self.git(*ID,'merge','--no-ff','-q','-m','land','task-ep.1'); self.git('branch','-d','task-ep.1')
+        self.git('merge','--no-ff','-q','-m','land','task-ep.1'); self.git('branch','-d','task-ep.1')
         rc,out=self.drift('--parents','ep.1')
         self.assertEqual(rc,0,out); self.assertTrue(out[-1].startswith(('REUSE:','REBUILT:')),out)
         self.assertEqual(self.git('show','-s','--format=%s','task-ep.2').stdout.strip(),'T1')
@@ -219,7 +236,7 @@ class Reuse(unittest.TestCase):
             self.assertIn('If ONLY the branch exists: run the ALREADY-MERGED CHECK',text)
             self.assertIn('If ONLY the worktree exists',text)
             cmd=re.search(r'`(bash \S*/already-merged integration task-ep\.2)`',text).group(1)
-            p=subprocess.run(cmd,shell=True,cwd=self.repo,capture_output=True,text=True)
+            p=subprocess.run(cmd,shell=True,cwd=self.repo,capture_output=True,text=True,env=ENV)
             self.assertEqual(p.stdout.strip(),'true',p.stdout+p.stderr)
 
 unittest.main(verbosity=2)
