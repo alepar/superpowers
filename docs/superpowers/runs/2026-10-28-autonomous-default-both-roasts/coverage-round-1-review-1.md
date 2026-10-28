@@ -1,0 +1,1 @@
+(re-run with full spec; replaces original) GAP R-new-1 evaluation probes untracked; GAP R8 sweep beyond listed sections; GAP Codex plugin copy (low confidence); UNOWNED-SEAM readiness/continuity text shared with another tab. requirements: R1–R8 mapped (R8 partial). No ORPHAN.

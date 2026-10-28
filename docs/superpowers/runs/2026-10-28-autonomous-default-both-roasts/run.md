@@ -13,3 +13,4 @@ spec: 2026-10-28-super-auto-autonomous-default-design.md
 epic: super-plan-z1k
 approvals:
 - top-split · auto · super-plan-z1k.1 LEAF
+- coverage-round-1 · canonical R1–R8 (coverage-round-1-requirements.md) · requirements: 8 · mapped: 8 · unmapped: 0 · cov-1 applied auto · cov-2 applied auto · cov-3 rejected auto · cov-4 rejected auto · cov-5 applied auto
