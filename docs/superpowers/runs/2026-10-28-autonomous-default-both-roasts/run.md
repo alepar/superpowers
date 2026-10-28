@@ -112,4 +112,3 @@ codeBuckets:
 roastCodeRound: 2
 roastCodeExit: operator-skipped (orchestrator: r2 confirmed zero findings of any severity and resolved both r1 Nits; [converged] withheld only because the bounded direct reviews carry no readiness basis)
 friction: 8 events
-feedback: parked — upstream-feedback-draft.md (7 defects, 1 design question, 1 doc gap); not filed
