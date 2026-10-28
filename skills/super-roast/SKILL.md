@@ -55,6 +55,7 @@ line when writing the report file (e.g. `mode: PR (assumed — input is a branch
 | punch-listed keys (optional, rounds ≥ 2) | the prior round's confirmed findings the caller's scope filter deliberately left unfixed, one `[SEV] <location>` key per line (`assemble-args --punch-listed FILE`). A prior finding on this list that the round does not re-surface is reported `punch-listed (open)`, never resolved |
 | autonomous (optional) | see Mode selection above and the Handoff exception in The Process step 7 |
 | stated intent (optional, PR mode) | pointer text saying what the change is meant to do, such as the paths of the specs it implements (a caller with a design tree lists the root spec first, then the nested ones). Relayed into `assemble-args`' `--artifact` (The Process), which every scout and judge already reads as the change's stated intent. Paths, never pasted content |
+| review readiness (optional) | `{"coverage","provenance","basis"}`: coverage `complete`\|`bounded`\|`unknown`, provenance `available`\|`unavailable`\|`unknown`, basis the source evidence it rests on. Relayed as `assemble-args --review-readiness <json\|@file>`. Only `complete` + `available` with a nonempty basis tied to the captured source counts as ready, and `[converged]` needs it. Omission, or any other value, is unknown and degrades the round (`[low coverage] [review readiness incomplete]`) |
 
 Only mode and the artifact are required; a bare invocation gets defaults for the rest.
 
@@ -254,7 +255,7 @@ only; both absent on iteration 1). The delta line counts confirmed findings as n
 resolved / regressed / punch-listed (open) against the prior report, with Blocking sub-counts.
 A punch-listed (open) finding was left unfixed on purpose: it never counts as resolved for any
 convergence or thrash reading, and, being sub-Blocking by construction, leaves `[converged]`
-unchanged. `[converged]` additionally requires caller-supplied `reviewReadiness` with coverage
+unchanged. `[converged]` additionally requires caller-supplied `reviewReadiness` (Inputs table, review readiness row) with coverage
 `complete`, provenance `available`, and a nonempty source-evidence basis. Pass that object with
 `assemble-args --review-readiness <json|@file>`; omission or malformed readiness is unknown,
 adds `[low coverage] [review readiness incomplete]`, and prevents convergence. The existing
