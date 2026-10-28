@@ -47,6 +47,9 @@ set -euo pipefail
 # key is the original first item line without its list marker; roast keys stop before " — ".
 # text keeps that first line and its continuations verbatim, excluding separator blank lines.
 # Node is already used by the coordinator and dispatch helpers; only built-in modules are needed.
+# Exits 0 on success; 4 when the file was read but fails the grammar (unrecognized source, missing
+# verdict, missing/empty section, unmarked text, a sub-heading inside a recognized section); 2 for
+# usage errors, an invalid source id, or an unreadable, non-file or invalid-UTF-8 artifact.
 if [ "${1:-}" = "--complete" ]; then
   if [ $# -ne 4 ] || [ "$2" != "--source" ]; then
     echo "report-verdict: --complete requires --source IMMUTABLE_SOURCE_ID FILE" >&2
@@ -56,11 +59,15 @@ if [ "${1:-}" = "--complete" ]; then
 import fs from 'node:fs';
 
 const [artifact, source] = process.argv.slice(2);
-function invalid(message) { throw new Error(message); }
+function invalid(message) { const e = new Error(message); e.grammar = true; throw e; }
+function ioError(message) { throw new Error(message); }
 try {
-  if (!source.trim() || /[\u0000-\u001f\u007f]/u.test(source)) invalid('invalid immutable source identity');
-  if (!fs.statSync(artifact).isFile()) invalid(`cannot read ${artifact}: not a file`);
-  const raw = new TextDecoder('utf-8', {fatal:true}).decode(fs.readFileSync(artifact));
+  if (!source.trim() || /[\u0000-\u001f\u007f]/u.test(source)) ioError('invalid immutable source identity');
+  let raw;
+  try {
+    if (!fs.statSync(artifact).isFile()) ioError(`cannot read ${artifact}: not a file`);
+    raw = new TextDecoder('utf-8', {fatal:true}).decode(fs.readFileSync(artifact));
+  } catch (error) { ioError(error.message); }
   const lines = raw.replace(/\r\n?/g, '\n').split('\n');
   const status = lines.map(l => l.match(/^[ \t]*(?:\*\*)?[Ss]tatus(?::\*\*|\*\*:|:)[ \t]*\**(DONE_WITH_CONCERNS|DONE|NEEDS_CONTEXT|BLOCKED_AUTH|BLOCKED|IMPLEMENTED|FIXED|CLEAN|NEEDS_FIX|INVALID)\b/)).find(Boolean);
   const roast = lines.find(l => /^super-roast verdict: /.test(l));
@@ -100,6 +107,7 @@ try {
   function none(text) { return text.toLowerCase().replace(/[ \t.*_`]+/g, '') === 'none'; }
   const occurrences = [], positions = new Map();
   let section = null, active = false, sectionSeen = false, hasContent = false, item = null;
+  let level = 0, inFence = false;  // level: '#' count of the opening heading, 0 for a bold label
   function flushItem() {
     if (!item) return;
     while (item.lines.length > 1 && !item.lines.at(-1).trim()) item.lines.pop();
@@ -119,9 +127,16 @@ try {
     if (active && !hasContent) invalid(`empty finding section: ${section}`);
   }
   for (const line of lines) {
-    const label = heading(line);
+    if (/^ {0,3}(?:```|~~~)/.test(line)) inFence = !inFence;
+    const label = inFence || /^ {0,3}(?:```|~~~)/.test(line) ? null : heading(line);
     if (label !== null) {
+      const atx = line.match(/^(#+)[ \t]+/);
+      const lvl = atx ? atx[1].length : 0;
+      if (active && hasContent && !relevant(label) && !(atx && (level === 0 || lvl <= level))) {
+        invalid(`sub-heading inside ${section}: ${line.trim()}`);
+      }
       closeSection();
+      level = lvl;
       section = label;
       active = relevant(section);
       if (active) sectionSeen = true;
@@ -148,7 +163,7 @@ try {
   console.log(JSON.stringify({version:1, source, artifact, kind, verdict, occurrences}));
 } catch (error) {
   console.error(`report-verdict: --complete: ${error.message}`);
-  process.exitCode = 2;
+  process.exitCode = error.grammar ? 4 : 2;
 }
 NODE
   exit $?

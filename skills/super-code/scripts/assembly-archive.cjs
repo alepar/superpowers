@@ -19,12 +19,18 @@ function strictDraft(draft){
  const verdict=lines.slice(index+1).find(l=>l.trim());
  requireThat(verdict&&!/^(?:#+[ \t]|\*\*| ?(?:[-*]|[0-9]+[.)])[ \t])/.test(verdict),'missing draft verdict');
  const none=t=>t.toLowerCase().replace(/[ \t.*_`]+/g,'')==='none';
- let active=false,content=false,item=null;
+ let active=false,content=false,item=null,level=0,fence=false;
  const flush=()=>{if(item&&none(item[0]))requireThat(!item.slice(1).some(l=>l.trim()),'none marker has finding text');item=null};
  const close=()=>{flush();requireThat(!active||content,'empty draft finding section')};
  for(const line of lines){
-  const h=line.match(/^#+[ \t]+(.*)$/)||line.match(/^\*\*([^*]+)\*\*/);
-  if(h){close();active=/^(?:deferred\b|concerns?\b|blockers?\b|findings?\b|untested scope\b|must[- ]fix\b)/i.test(h[1]);content=false;continue}
+  const isFence=/^ {0,3}(?:```|~~~)/.test(line);
+  if(isFence)fence=!fence;
+  const h=fence||isFence?null:line.match(/^#+[ \t]+(.*)$/)||line.match(/^\*\*([^*]+)\*\*/);
+  if(h){
+   const recognized=/^(?:deferred\b|concerns?\b|blockers?\b|findings?\b|untested scope\b|must[- ]fix\b)/i.test(h[1]);
+   const atx=line.match(/^(#+)[ \t]+/),lvl=atx?atx[1].length:0;
+   requireThat(!(active&&content)||recognized||(atx&&(level===0||lvl<=level)),'draft sub-heading inside a finding section');
+   close();active=recognized;level=lvl;content=false;continue}
   if(!active)continue;
   const bullet=line.match(/^ ?(?:[-*]|[0-9]+[.)])[ \t]+(.*)$/);
   if(bullet){flush();requireThat(bullet[1].trim(),'empty draft finding item');item=[bullet[1]];content=true}
