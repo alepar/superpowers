@@ -51,25 +51,30 @@ set -euo pipefail
 # verdict, missing/empty section, unmarked text, a sub-heading inside a recognized section); 2 for
 # usage errors, an invalid source id, or an unreadable, non-file or invalid-UTF-8 artifact.
 
+# Usage: report-verdict --classify FILE   (internal; used only by --repair-check)
+# Runs the --complete section/fence/item state machine and prints one JSON row per line:
+# {n,section,inFence,role,label,whole}. Section-body grammar errors do not stop it. Exits 4 on a header
+# failure (unrecognized source, missing verdict) and 2 for a usage or I/O error.
+
 # Usage: report-verdict --repair-check ORIGINAL REPAIR
 # Accepts a format repair of a report only when it adds list markers and nothing else. Exits 0 to
 # accept; 4 to reject, stderr `report-verdict: --repair-check: <failed check>`; 2 for a usage or I/O error.
 #   (i)   REPAIR passes --complete.
 #   (ii)  every line before the first `## ` heading is byte-identical.
 #   (iii) --keys output and exit code are identical for both files.
-#   (iv)  after dropping blank and `- none` lines, both have the same lines in the same order, except a
-#         repair line may be an unindented original line that is not a list item, ATX heading or bold
-#         label, prefixed `- `; or a `###`+ heading / unrecognized bold label demoted to `- <label>`.
-if [ "${1:-}" = "--complete" ]; then
-  if [ $# -ne 4 ] || [ "$2" != "--source" ]; then
-    echo "report-verdict: --complete requires --source IMMUTABLE_SOURCE_ID FILE" >&2
-    exit 2
-  fi
-  node --input-type=module - "$4" "$3" <<'NODE'
+#   (iv)  after dropping blank and `- none` lines, both files have equal line counts; each repair line
+#         equals the original line at the same position, except that a line --classify calls `unmarked`
+#         may gain `- `, and a `sub-heading` line may gain `- ` or, when its label is the whole line,
+#         become `- <label>`; every kept line keeps its --classify section and fence state.
+complete_node() {
+  node --input-type=module - "$@" <<'NODE'
 import fs from 'node:fs';
 
-const [artifact, source] = process.argv.slice(2);
-function invalid(message) { const e = new Error(message); e.grammar = true; throw e; }
+const [mode, artifact, source] = process.argv.slice(2);
+const classify = mode === 'classify';
+function invalidHeader(message) { const e = new Error(message); e.grammar = true; throw e; }
+// Body grammar errors do not stop --classify; it keeps classifying every line.
+function invalid(message) { if (!classify) invalidHeader(message); }
 function ioError(message) { throw new Error(message); }
 try {
   if (!source.trim() || /[\u0000-\u001f\u007f]/u.test(source)) ioError('invalid immutable source identity');
@@ -88,7 +93,7 @@ try {
   else if (status) { kind = 'task-report'; verdict = status[1]; }
   else if (roast !== undefined) { kind = 'roast'; verdict = roast.slice('super-roast verdict: '.length).trim(); }
   else if (lines.some(l => verdictMarker.test(l))) kind = 'final-review';
-  else invalid('unrecognized finding source');
+  else invalidHeader('unrecognized finding source');
 
   if (kind === 'final-review') {
     let index = lines.findIndex(l => /^#+[ \t]*\**Verdict\**[ \t]*:?/.test(l));
@@ -98,11 +103,11 @@ try {
       .replace(/^[ \t*:]+|[ \t*:]+$/g, '');
     if (!verdict) {
       const following = lines.slice(index + 1).find(l => l.trim());
-      if (!following || /^(?:#+[ \t]|\*\*| ?(?:[-*]|[0-9]+[.)])[ \t])/.test(following)) invalid('missing verdict value');
+      if (!following || /^(?:#+[ \t]|\*\*| ?(?:[-*]|[0-9]+[.)])[ \t])/.test(following)) invalidHeader('missing verdict value');
       verdict = following.replace(/^[ \t*:]+|[ \t*:]+$/g, '');
     }
   }
-  if (!verdict) invalid('missing verdict value');
+  if (!verdict) invalidHeader('missing verdict value');
 
   function heading(line) {
     const match = line.match(/^#+[ \t]+(.*)$/) || line.match(/^\*\*([^*]+)\*\*/);
@@ -136,15 +141,27 @@ try {
     flushItem();
     if (active && !hasContent) invalid(`empty finding section: ${section}`);
   }
-  for (const line of lines) {
+  const rows = [];
+  for (let n = 0; n < lines.length; n++) {
+    const line = lines[n];
     const f = line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
     if (f && fence === null) fence = f[1];
     else if (f && f[1][0] === fence[0] && f[1].length >= fence.length && !f[2].trim()) fence = null;
+    const inFence = !!f || fence !== null;
+    const row = (role, rowLabel = null, whole = false) => rows.push({n, section, inFence, role, label: rowLabel, whole});
+    const fenceRole = f ? 'fence' : fence !== null ? 'fenced' : null;
     const label = f || fence !== null ? null : heading(line);
     if (label !== null) {
       const atx = line.match(/^(#+)[ \t]+/);
       const lvl = atx ? atx[1].length : 0;
-      if (active && hasContent && !relevant(label) && !(atx && (level === 0 || lvl <= level))) {
+      const whole = !!atx || /^\*\*[^*]+\*\*[ \t]*$/.test(line);
+      const forbidden = active && !relevant(label) && !(atx && (level === 0 || lvl <= level));
+      if (classify && forbidden) {
+        flushItem();
+        row('sub-heading', label.trim(), whole);
+        continue;
+      }
+      if (forbidden && hasContent) {
         invalid(`sub-heading inside ${section}: ${line.trim()}`);
       }
       closeSection();
@@ -153,32 +170,54 @@ try {
       active = relevant(section);
       if (active) sectionSeen = true;
       hasContent = false;
+      row('boundary', label.trim(), whole);
       continue;
     }
-    if (!active) continue;
+    if (!active) { row(fenceRole || 'inactive'); continue; }
     const bullet = line.match(/^ ?(?:[-*]|[0-9]+[.)])[ \t]+(.*)$/);
     if (bullet) {
+      row(fenceRole || 'item');
       flushItem();
       if (!bullet[1].trim()) invalid(`empty finding item in ${section}`);
       item = {lines:[bullet[1]]};
       hasContent = true;
     } else if (item) {
+      row(fenceRole || 'continuation');
       item.lines.push(line);
     } else if (none(line)) {
+      row(fenceRole || 'none');
       hasContent = true;
     } else if (line.trim()) {
-      invalid(`finding text without a list marker in ${section}`);
-    }
+      row(fenceRole || 'unmarked');
+      invalid(inFence ? `code fence outside a finding item in ${section}` : `finding text without a list marker in ${section}`);
+    } else row(fenceRole || 'none');
   }
   if (fence !== null) invalid(`unclosed code fence (opened with ${fence})`);
   closeSection();
   if (!sectionSeen) invalid('missing finding sections');
-  console.log(JSON.stringify({version:1, source, artifact, kind, verdict, occurrences}));
+  console.log(JSON.stringify(classify ? rows : {version:1, source, artifact, kind, verdict, occurrences}));
 } catch (error) {
-  console.error(`report-verdict: --complete: ${error.message}`);
+  console.error(`report-verdict: --${classify ? 'classify' : 'complete'}: ${error.message}`);
   process.exitCode = error.grammar ? 4 : 2;
 }
 NODE
+}
+
+if [ "${1:-}" = "--complete" ]; then
+  if [ $# -ne 4 ] || [ "$2" != "--source" ]; then
+    echo "report-verdict: --complete requires --source IMMUTABLE_SOURCE_ID FILE" >&2
+    exit 2
+  fi
+  complete_node complete "$4" "$3"
+  exit $?
+fi
+
+if [ "${1:-}" = "--classify" ]; then
+  if [ $# -ne 2 ]; then
+    echo "report-verdict: --classify requires FILE" >&2
+    exit 2
+  fi
+  complete_node classify "$2" classify
   exit $?
 fi
 
@@ -194,7 +233,9 @@ if [ "${1:-}" = "--repair-check" ]; then
     fi
   done
   rc_tmp=$(mktemp)
-  trap 'rm -f "$rc_tmp"' EXIT
+  rc_cls_o=$(mktemp)
+  rc_cls_r=$(mktemp)
+  trap 'rm -f "$rc_tmp" "$rc_cls_o" "$rc_cls_r"' EXIT
   if ! bash "$0" --complete --source format-check "$3" >/dev/null 2>"$rc_tmp"; then
     echo "report-verdict: --repair-check: (i) repair fails --complete: $(sed 's/^report-verdict: --complete: //' "$rc_tmp")" >&2
     exit 4
@@ -207,35 +248,46 @@ if [ "${1:-}" = "--repair-check" ]; then
     echo "report-verdict: --repair-check: (iii) --keys output differs" >&2
     exit 4
   fi
-  node --input-type=module - "$2" "$3" <<'NODE'
+  for pair in "$2:$rc_cls_o" "$3:$rc_cls_r"; do
+    set +e
+    bash "$0" --classify "${pair%%:*}" >"${pair#*:}" 2>"$rc_tmp"; cls_code=$?
+    set -e
+    if [ "$cls_code" -ne 0 ]; then
+      echo "report-verdict: --repair-check: (iv) cannot classify ${pair%%:*}: $(sed 's/^report-verdict: --classify: //' "$rc_tmp")" >&2
+      [ "$cls_code" -eq 2 ] && exit 2
+      exit 4
+    fi
+  done
+  node --input-type=module - "$2" "$3" "$rc_cls_o" "$rc_cls_r" <<'NODE'
 import fs from 'node:fs';
 
 const read = f => new TextDecoder('utf-8', {fatal:true}).decode(fs.readFileSync(f)).replace(/\r\n?/g, '\n').split('\n');
 function reject(message) { console.error(`report-verdict: --repair-check: ${message}`); process.exit(4); }
-let o, r;
-try { [o, r] = process.argv.slice(2).map(read); }
-catch (error) { console.error(`report-verdict: --repair-check: ${error.message}`); process.exit(2); }
+let o, r, co, cr;
+try {
+  [o, r] = process.argv.slice(2, 4).map(read);
+  [co, cr] = process.argv.slice(4, 6).map(f => JSON.parse(fs.readFileSync(f, 'utf8')));
+} catch (error) { console.error(`report-verdict: --repair-check: ${error.message}`); process.exit(2); }
 const head = lines => { const i = lines.findIndex(l => /^## /.test(l)); return i < 0 ? lines : lines.slice(0, i); };
 const ho = head(o), hr = head(r);
 if (ho.length !== hr.length || ho.some((l, i) => l !== hr[i])) reject('(ii) header lines differ');
-const keep = lines => lines.filter(l => l.trim() && !/^ ?(?:[-*]|[0-9]+[.)])[ \t]+none[ \t.*_`]*$/i.test(l));
-const ko = keep(o), kr = keep(r);
+const keep = (lines, rows) => lines.map((line, i) => ({line, row: rows[i]}))
+  .filter(({line}) => line.trim() && !/^ ?(?:[-*]|[0-9]+[.)])[ \t]+none[ \t.*_`]*$/i.test(line));
+const ko = keep(o, co), kr = keep(r, cr);
 if (ko.length !== kr.length) reject('(iv) line count differs');
-const item = /^ ?(?:[-*]|[0-9]+[.)])[ \t]/;
-const roastWord = /^(?:deferred\b|concerns?\b|blockers?\b|findings?\b|untested scope\b|confirmed findings\b|not verified\b|beyond remainder cap\b|rejected\b|unverified nits\b|escalations\b)/i;
-const markable = a => /^\S/.test(a) && !item.test(a) && !/^#+[ \t]/.test(a) && !/^\*\*[^*]+\*\*/.test(a);
-function demoted(line) {
-  const m = line.match(/^#{3,}[ \t]+(.*\S)[ \t]*$/) || line.match(/^\*\*([^*]+)\*\*[ \t]*$/);
-  return m && !roastWord.test(m[1]) ? '- ' + m[1] : null;
-}
 for (let k = 0; k < ko.length; k++) {
-  const a = ko[k], b = kr[k];
-  if (b === a || (markable(a) && b === '- ' + a) || b === demoted(a)) continue;
-  reject(`(iv) line ${k + 1} differs: ${a}`);
+  const {line: a, row: ra} = ko[k], {line: b, row: rb} = kr[k];
+  const ok = b === a
+    || (ra.role === 'unmarked' && b === '- ' + a)
+    || (ra.role === 'sub-heading' && (b === '- ' + a || (ra.whole && b === '- ' + ra.label)));
+  if (!ok) reject(`(iv) line ${k + 1} differs: ${a}`);
+  if (ra.section !== rb.section) reject(`(iv) line ${k + 1} changes section: ${a}`);
+  if (ra.inFence !== rb.inFence) reject(`(iv) line ${k + 1} changes fence state: ${a}`);
 }
 NODE
   exit $?
 fi
+
 
 keys=0
 if [ $# -eq 2 ] && [ "$1" = "--keys" ]; then
