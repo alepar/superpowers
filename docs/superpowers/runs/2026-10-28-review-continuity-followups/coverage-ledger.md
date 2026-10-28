@@ -24,3 +24,13 @@ cl-23 · r2 · UNOWNED-SEAM · repair round readiness · applied — super-plan-
 cl-24 · r2 · UNOWNED-SEAM · reconcile commits commit policy · applied — super-plan-v94: drift rebuild makes only fixed-message stack: merges, outside zhk scope
 cl-25 · graph · GRAPH-EDGE · super-plan-tco <- super-plan-rsc · parked — drop would cut depth only with the mlr.3 edge too (3→2); safe no: tco consumes rsc's outOfRange field and both edit skills/super-auto/SKILL.md
 cl-26 · graph · GRAPH-EDGE · super-plan-mlr.3 <- super-plan-row · parked — drop safe no: mlr.3 consumes row's gap message text; spec §4.4 fixes the text, so a drop is plausible but needs a human
+cl-27 · amend-code-1 · flag-sweep · super-plan-mlr.10 · kept — super-code early-unblock review: bead (closed bookkeeping), flag inherited from its task
+cl-28 · amend-code-1 · flag-sweep · super-plan-mlr.9 · kept — super-code early-unblock review: bead (closed bookkeeping), flag inherited from its task
+cl-29 · amend-code-1 · unstated · super-plan-mlr.14 <- super-plan-mlr.3 · kept — coordinator-created review-bead edge (review: <id> blocked by its task by construction), closed
+cl-30 · amend-code-1 · unstated · super-plan-mlr.13 <- super-plan-tco · kept — coordinator-created review-bead edge (review: <id> blocked by its task by construction), closed
+cl-31 · amend-code-1 · unstated · super-plan-mlr.12 <- super-plan-mlr.6 · kept — coordinator-created review-bead edge (review: <id> blocked by its task by construction), closed
+cl-32 · amend-code-1 · unstated · super-plan-mlr.11 <- super-plan-mlr.5 · kept — coordinator-created review-bead edge (review: <id> blocked by its task by construction), closed
+cl-33 · amend-code-1 · unstated · super-plan-mlr.10 <- super-plan-2s3 · kept — coordinator-created review-bead edge (review: <id> blocked by its task by construction), closed
+cl-34 · amend-code-1 · unstated · super-plan-mlr.9 <- super-plan-row · kept — coordinator-created review-bead edge (review: <id> blocked by its task by construction), closed
+cl-35 · amend-code-1 · unstated · super-plan-mlr.8 <- super-plan-rsc · kept — coordinator-created review-bead edge (review: <id> blocked by its task by construction), closed
+cl-36 · amend-code-1 · unstated · super-plan-mlr.7 <- super-plan-mlr.1 · kept — coordinator-created review-bead edge (review: <id> blocked by its task by construction), closed
