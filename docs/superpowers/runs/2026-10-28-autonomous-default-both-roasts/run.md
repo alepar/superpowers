@@ -10,3 +10,6 @@ idea: also $ht handoff to claude-2 to make fully autonomous mode, both roasts on
 branch: super-auto/autonomous-default-both-roasts
 base: main
 spec: 2026-10-28-super-auto-autonomous-default-design.md
+epic: super-plan-z1k
+approvals:
+- top-split · auto · super-plan-z1k.1 LEAF
