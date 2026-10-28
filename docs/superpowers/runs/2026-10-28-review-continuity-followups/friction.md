@@ -4,3 +4,4 @@
 - [2026-10-28T16:15Z] super-roast · design round 1 rung: Workflow (wf_37cec545-237)
 - [2026-10-28T16:50Z] super-roast · design round 2 rung: Workflow (wf_c4c14102-2f2)
 - [2026-10-28T17:20Z] super-design · parallelism pass judge not dispatched: both candidate edges are mechanically safe-no (dependent's consumes: names the blocker's output; shared files), so the unattended outcome (park) was fixed; recorded inline
+- [2026-10-28T17:35Z] super-code · session ended mid-phase-3 after planning (no dispatch); relaunched coordinator from ledger with same invocationId (unsettled); herdr-threads daemon PermissionDenied at session start
