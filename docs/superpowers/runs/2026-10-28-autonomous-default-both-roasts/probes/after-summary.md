@@ -22,3 +22,14 @@ Method: fresh sonnet subagent per session, read-only, answering from the skill t
 Result: before, every fresh invocation asked a launch question and an unqualified one ran interactive. After, every fresh invocation resolves its flags without asking (except the reserved-topic ask in S9), an unqualified one runs autonomous with both roasts on, every opt-out takes effect, the resume keeps its recorded flags, and no session reads the change as merge authority.
 
 Residual ambiguity (3/3 after sessions): S7's recorded planOneShot value. Harmless, carried to the report.
+
+## Re-probe after fix e3dd1327 (head d9e65f79)
+
+Two fresh sessions, S7 and S9 only, against skills/super-auto at d9e65f79.
+
+| Scenario | Expected | Result |
+|---|---|---|
+| S7 "autonomous, stop for design review" | no ask · `planOneShot=t … autonomous=t` · overridden stop named in status note · no stop | 2/2 as expected; both cite the new recorded-value clause |
+| S9 "ask me only about the database schema" | reserved-topic ask only · `f f f t` · no mid-run stop | 2/2 as expected |
+
+The residual S7 ambiguity noted above is closed.
