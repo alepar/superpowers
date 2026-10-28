@@ -202,6 +202,57 @@ for (const value of ['', '{', 'null', '[]', JSON.stringify({ coverage: 'complete
 console.log('  [PASS] readiness omission is unknown; JSON and @file preserve valid evidence; malformed input exits 2')
 NODE
 
+echo "assemble-args: caller-derived review readiness"
+node --input-type=module - "$A" <<'NODE'
+import assert from 'node:assert/strict'
+import { spawnSync } from 'node:child_process'
+const assembler = process.argv[2]
+const pr = ['--mode', 'pr', '--inputs', 'captured-source', '--diff-stat', 'M a.js']
+const design = ['--mode', 'design', '--inputs', 'docs/spec.md', '--spec', '/abs/spec.md']
+const accepted = [
+  [pr, { coverage: 'complete', provenance: 'available', basis: '/r/assembled/roast-code-r2/review-inputs.json: status complete, no gaps, captured 1111111..2222222' }],
+  [pr, { coverage: 'bounded', provenance: 'unavailable', basis: 'review input selection: provenance unavailable; captured source available; inspected src/a.js; unreviewed docs/old/run.md' }],
+  [pr, { coverage: 'unknown', provenance: 'unavailable', basis: 'assembler: unavailable — exit 1' }],
+  [design, { coverage: 'complete', provenance: 'available', basis: 'settled tree @3333333: docs/spec.md' }],
+  [design, { coverage: 'unknown', provenance: 'unknown', basis: 'docs/spec.md has uncommitted changes' }],
+]
+for (const [args, value] of accepted) {
+  const result = spawnSync('bash', [assembler, ...args, '--review-readiness', JSON.stringify(value)], { encoding: 'utf8' })
+  assert.equal(result.status, 0, result.stderr)
+  assert.deepEqual(JSON.parse(result.stdout).reviewReadiness, value, 'derived readiness survives transport unchanged')
+}
+for (const args of [pr, design]) {
+  for (const basis of ['', '   ']) {
+    const result = spawnSync('bash', [assembler, ...args, '--review-readiness', JSON.stringify({ coverage: 'complete', provenance: 'available', basis })], { encoding: 'utf8' })
+    assert.equal(result.status, 2, `complete+available with basis ${JSON.stringify(basis)} is rejected`)
+  }
+}
+console.log('  [PASS] derived readiness values accepted; complete without a basis exits 2 in both modes')
+NODE
+
+flat() { tr '\n' ' ' < "$1" | tr -s ' '; }
+has() {
+  case "$1" in *"$3"*) pass "$2 has: $3" ;; *) fail "$2 lacks: $3" ;; esac
+}
+ROAST_RAW="$REPO_ROOT/skills/super-roast/SKILL.md"
+AUTO_RAW="$REPO_ROOT/skills/super-auto/SKILL.md"
+row=$(grep '^| review readiness' "$ROAST_RAW" || true)
+for p in coverage provenance basis '--review-readiness'; do
+  has "$row" "super-roast Inputs row" "$p"
+done
+AUTO=$(flat "$AUTO_RAW")
+for p in 'review-inputs.json' '"coverage":"complete","provenance":"available"' '"coverage":"bounded","provenance":"unavailable"' '"coverage":"unknown","provenance":"unavailable"' 'outOfRange' 'never copied from a prior round' 'green sweep'; do
+  has "$AUTO" "super-auto phase 4" "$p"
+done
+has "$(grep 'iteration `post-cap audit`, which `super-roast` accepts, with the punch-list file' "$AUTO_RAW")" "post-cap audit" "review readiness"
+amend=$(grep '^3\. On `applied`' "$AUTO_RAW")
+has "$amend" "amend design roast" "review readiness"
+has "$amend" "amend design roast" '§Adversarial Review Loop (root only)'
+DESIGN=$(flat "$REPO_ROOT/skills/super-design/SKILL.md")
+for p in '**Review readiness (design roast).**' 'settled tree @<sha>: <spec paths>' 'git status --porcelain'; do
+  has "$DESIGN" "super-design" "$p"
+done
+
 echo "assemble-args: no node"
 nonode=$(mktemp -d)
 for b in bash dirname; do ln -s "$(command -v "$b")" "$nonode/$b"; done

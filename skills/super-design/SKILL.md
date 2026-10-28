@@ -698,6 +698,8 @@ report. Each report recorded and passed on is the round's report path from super
 | `## Not verified (beyond panel cap)` | Severe candidates the panel cap left unjudged. Present them next to the escalations and ask whether to re-roast with a raised `config.panelCap` before fixing anything — an unverified Blocking candidate is not a cleared one. Unattended, the answer is no: park them and fix the confirmed queue. |
 | `## Not verified (dedupe failed or judge lost)` | Findings the engine could not get judged (dedupe died, or a judge was lost). Treat them like the beyond-cap section: surface next to the escalations and offer a re-roast; unattended, park them and fix the confirmed queue. |
 
+**Review readiness (design roast).** Every round, re-roasts included, also passes super-roast review readiness (its Inputs table). Before the round, capture `git rev-parse --verify HEAD^{commit}`. Pass `{"coverage":"complete","provenance":"available","basis":"settled tree @<sha>: <spec paths>"}` only when every spec of the settled tree is in the artifact passed and each is committed at that SHA with no uncommitted change (`git status --porcelain -- <spec paths>` prints nothing). Otherwise pass `{"coverage":"unknown","provenance":"unknown","basis":"<which condition failed>"}`. A coverage-loop pass is not a basis. super-auto's amend design roast follows this rule.
+
 **Round order.** A round's report is handled in this order: the converged test (the fix list's item 4),
 Step 1, the thrash and cap tests (item 4), then the branch Step 1 chose. "The fix list" is the
 numbered items 1–4 below; Step 1 is not its item 1.
