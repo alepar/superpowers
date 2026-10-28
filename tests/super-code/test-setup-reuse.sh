@@ -5,7 +5,7 @@
 set -euo pipefail
 ROOT=$(cd "$(dirname "$0")/../.." && pwd)
 python3 - "$ROOT" <<'TEST'
-import pathlib, re, shutil, subprocess, sys, tempfile, unittest
+import os, pathlib, re, shutil, subprocess, sys, tempfile, unittest
 ROOT=pathlib.Path(sys.argv.pop())
 GIT=shutil.which('git')
 ID=['-c','user.name=Fixture','-c','user.email=fixture@example.invalid']
@@ -44,10 +44,36 @@ class Reuse(unittest.TestCase):
         p=subprocess.run(['bash',str(ROOT/'skills/super-code/scripts/dispatch-text'),'--ledger',str(self.ledger),
                           '--stdout','implement','--id','ep.2','--n','2',*mode],capture_output=True,text=True,check=True)
         return re.search(r'<workspace-setup>(.*?)</workspace-setup>',p.stdout,re.S).group(1)
-    def drift(self,*mode):
+    def drift(self,*mode,env=None):
         script=re.search(r'<drift-check>\n(.*?)\n</drift-check>',self.text(*mode),re.S).group(1)
-        p=subprocess.run(['bash','-c',script],cwd=self.wt,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
+        e=dict(os.environ); e.update(env or {})
+        p=subprocess.run(['bash','-c',script],cwd=self.wt,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,env=e)
         return p.returncode,p.stdout.strip().splitlines()
+    def shim(self,**flags):
+        # a git first on PATH that execs the real git unless a flag fails one invocation:
+        # FAIL_DETACH fails any checkout --detach; FAIL_RESTORE fails the checkout of the task branch
+        sd=self.d/'shim'; sd.mkdir(exist_ok=True)
+        g=sd/'git'
+        g.write_text('#!/bin/bash\n'
+          'if [ "$1" = checkout ]; then\n'
+          '  case " $* " in\n'
+          '    *" --detach "*) [ -n "$SHIM_FAIL_DETACH" ] && exit 1;;\n'
+          '    *" task-ep.2 "*) [ -n "$SHIM_FAIL_RESTORE" ] && exit 1;;\n'
+          '  esac\n'
+          'fi\n'
+          f'exec {GIT} "$@"\n')
+        g.chmod(0o755)
+        env={'PATH':f'{sd}:{os.environ["PATH"]}'}
+        env.update({'SHIM_'+k.upper():'1' for k,v in flags.items() if v})
+        return env
+    def stack_conflict_fixture(self):
+        # integration and the parent both change f.txt past the shared base, so merging the parent
+        # into the detached integration tip conflicts
+        (self.repo/'f.txt').write_text('i\n'); self.git('add','f.txt'); self.commit(self.repo,'I1')
+        self.commit_on_branch('task-ep.1','f.txt','p2\n','P2')
+    def git_dir(self):
+        gd=pathlib.Path(self.git('rev-parse','--git-dir',cwd=self.wt).stdout.strip())
+        return gd if gd.is_absolute() else self.wt/gd
 
     def test_no_drift_reuses(self):
         rc,out=self.drift('--parents','ep.1')
@@ -107,6 +133,59 @@ class Reuse(unittest.TestCase):
         gd=gd if gd.is_absolute() else self.wt/gd
         self.assertFalse((gd/'rebase-merge').exists() or (gd/'rebase-apply').exists())
         self.assertEqual(self.git('status','--porcelain',cwd=self.wt).stdout,'')
+
+    def test_detach_failure_fails_typed(self):
+        self.commit_on_branch('task-ep.1','f.txt','p2\n','P2')
+        rc,out=self.drift('--parents','ep.1',env=self.shim(fail_detach=True))
+        self.assertEqual(rc,1,out); self.assertTrue(out[-1].startswith('SETUP_FAILED:'),out)
+        self.assertIn('checkout',out[-1])
+        self.assertEqual(self.rev('task-ep.2'),self.old)
+        self.assertEqual(self.git('log','--first-parent','--grep=^stack: ','--format=%s','integration..task-ep.2').stdout.split('\n')[:-1],['stack: ep.1'])
+        self.assertEqual(self.git('branch','--show-current',cwd=self.wt).stdout.strip(),'task-ep.2')
+
+    def test_missing_parent_counts_as_landed(self):
+        # the merge lane landed ep.1 and deleted its branch
+        self.git(*ID,'merge','--no-ff','-q','-m','land','task-ep.1'); self.git('branch','-d','task-ep.1')
+        rc,out=self.drift('--parents','ep.1')
+        self.assertEqual(rc,0,out); self.assertTrue(out[-1].startswith(('REUSE:','REBUILT:')),out)
+        self.assertEqual(self.git('show','-s','--format=%s','task-ep.2').stdout.strip(),'T1')
+        # a still-unlanded second parent is rebuilt in, the landed one is skipped
+        self.git('branch','task-ep.3','integration'); self.commit_on_branch('task-ep.3','h.txt','h\n','H')
+        rc,out=self.drift('--parents','ep.1,ep.3')
+        self.assertEqual(rc,0,out); self.assertTrue(out[-1].startswith('REBUILT:'),out)
+        self.assertEqual(self.git('log','--first-parent','--format=%s','integration..task-ep.2').stdout.split('\n')[:-1],['T1','stack: ep.3'])
+
+    def test_stack_merge_conflict_restores_old_head(self):
+        self.stack_conflict_fixture()
+        rc,out=self.drift('--parents','ep.1')
+        self.assertEqual(rc,1,out); self.assertTrue(out[-1].startswith('SETUP_FAILED:'),out)
+        self.assertIn('ep.1',out[-1]); self.assertIn('f.txt',out[-1])
+        self.assertEqual(self.rev('task-ep.2'),self.old)
+        self.assertEqual(self.git('branch','--show-current',cwd=self.wt).stdout.strip(),'task-ep.2')
+        self.assertFalse((self.git_dir()/'MERGE_HEAD').exists())
+        self.assertEqual(self.git('status','--porcelain',cwd=self.wt).stdout,'')
+
+    def test_two_parents_rebuild_in_order(self):
+        self.git('branch','task-ep.3','integration'); self.commit_on_branch('task-ep.3','h.txt','h\n','H')
+        rc,out=self.drift('--parents','ep.1,ep.3')
+        self.assertEqual(rc,0,out); self.assertTrue(out[-1].startswith('REBUILT:'),out)
+        self.assertEqual(self.git('log','--first-parent','--format=%s','integration..task-ep.2').stdout.split('\n')[:-1],['T1','stack: ep.3','stack: ep.1'])
+        self.assertEqual(self.git('show','task-ep.2:h.txt').stdout,'h\n')
+        self.assertEqual(self.git('show','task-ep.2:g.txt').stdout,'t1\n')
+
+    def test_second_parent_conflict_names_it_and_restores(self):
+        self.git('branch','task-ep.3','integration'); self.commit_on_branch('task-ep.3','f.txt','other\n','H')
+        rc,out=self.drift('--parents','ep.1,ep.3')
+        self.assertEqual(rc,1,out); self.assertTrue(out[-1].startswith('SETUP_FAILED:'),out)
+        self.assertIn('ep.3',out[-1]); self.assertIn('f.txt',out[-1])
+        self.assertEqual(self.rev('task-ep.2'),self.old)
+        self.assertEqual(self.git('branch','--show-current',cwd=self.wt).stdout.strip(),'task-ep.2')
+
+    def test_unverified_restore_is_not_claimed(self):
+        self.stack_conflict_fixture()
+        rc,out=self.drift('--parents','ep.1',env=self.shim(fail_restore=True))
+        self.assertEqual(rc,1,out); self.assertTrue(out[-1].startswith('SETUP_FAILED:'),out)
+        self.assertNotIn('restored to old head',out[-1]); self.assertIn(self.old,out[-1])
 
     def test_merged_branch_only_is_already_merged(self):
         self.git('merge','--no-ff','-q','-m','land','task-ep.2')
