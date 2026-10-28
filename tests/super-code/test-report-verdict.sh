@@ -585,7 +585,7 @@ sed 's/^## Rejected (with reason)$/## Rejected/' "$T/repaired.md" > "$T/r5.md"; 
 { cat "$T/repaired.md"; printf '## Escalations (need human)\n- none\n'; } > "$T/r6.md"; rc_rej "heading added" "(iv)" "$T/r6.md"
 sed -e '/c.sh:1/d' -e 's/^## Rejected (with reason)$/&\n- [Nit] c.sh:1 — a nit/' "$T/repaired.md" > "$T/r7.md"; rc_rej "item moved to another section" "(iv)" "$T/r7.md"
 sed 's/^mode: PR /mode: diff /' "$T/repaired.md" > "$T/r8.md"; rc_rej "header line changed" "(ii)" "$T/r8.md"
-sed 's/a.sh:3/a.sh:4/' "$T/repaired.md" > "$T/r9.md"; rc_rej "--keys output changed" "(iii)" "$T/r9.md"
+sed 's/a.sh:3/a.sh:4/' "$T/repaired.md" > "$T/r9.md"; rc_rej "--keys key reworded" "(iv)" "$T/r9.md"
 sed '/^- none$/d' "$T/repaired.md" > "$T/r10.md"; rc_rej "repair fails --complete" "(i)" "$T/r10.md"
 
 run bash "$R" --repair-check "$T/repair-orig.md"
@@ -630,10 +630,21 @@ has "$SA" "record and pass the round's report path" "super-auto SKILL: round's r
 has "$SD" "is the round's report path from super-roast's write step" "super-design SKILL: round's report path"
 
 echo "report-verdict: --repair-check rule (iv) guards every marker addition"
+# (iii) cases: marking the Confirmed continuation or demoting the Rejected heading changes the --keys sequence
 sed 's/^  continuation for the first finding$/-   continuation for the first finding/' "$T/repaired.md" > "$T/r11.md"
-rc_rej "indented continuation given a marker" "(iv)" "$T/r11.md"
+rc_rej "indented continuation given a marker" "(iii)" "$T/r11.md"
 sed 's/^## Rejected (with reason)$/- &/' "$T/repaired.md" > "$T/r12.md"
-rc_rej "## heading demoted to an item" "(iv)" "$T/r12.md"
+rc_rej "## heading demoted to an item" "(iii)" "$T/r12.md"
+# (iv) cases: the same mutations outside Confirmed findings leave --keys unchanged
+sed 's/^\(- \[Nit\] c.sh:1 .*\)$/\1\n  nit continuation/' "$T/repair-orig.md" > "$T/r13-orig.md"
+sed 's/^\(- \[Nit\] c.sh:1 .*\)$/\1\n  nit continuation/' "$T/repaired.md" > "$T/r13-ok.md"
+sed 's/^  nit continuation$/-   nit continuation/' "$T/r13-ok.md" > "$T/r13.md"
+run bash "$R" --repair-check "$T/r13-orig.md" "$T/r13-ok.md"
+assert_eq "$code" 0 "nit continuation left alone: accepted"
+run bash "$R" --repair-check "$T/r13-orig.md" "$T/r13.md"
+assert_eq "$code" 4 "nit continuation given a marker: exits 4"
+case "$(cat "$T/err")" in *"(iv)"*) pass "nit continuation given a marker: stderr names (iv)";; *) fail "nit continuation given a marker: stderr names (iv)"; cat "$T/err";; esac
+sed 's/^## Unverified nits (spot-checked)$/- &/' "$T/repaired.md" > "$T/r14.md"; rc_rej "## heading demoted to an item (nits)" "(iv)" "$T/r14.md"
 rc_mk "$T/repair-orig-bold.md" "- none" "- $RC_PROSE" "**Escalations**"
 rc_mk "$T/repair-bold-generic.md" "- none" "- $RC_PROSE" "- **Escalations**"
 rc_mk "$T/repair-bold-demoted.md" "- none" "- $RC_PROSE" "- Escalations"
@@ -749,6 +760,39 @@ assert_eq "$out" "$X_KEYS_ORIG" "cross-copy: original and repair extract identic
 run bash "$R" --repair-check "$T/x-orig.md" "$T/x-repair.md"
 assert_eq "$code" 0 "cross-copy pair: --repair-check exits 0"
 assert_eq "$(cat "$T/err")" "" "cross-copy pair: --repair-check prints nothing"
+
+echo "report-verdict: --repair-check (iii) every Confirmed finding keyed"
+rc3_mk() { # file confirmed-body
+  printf '%s\n## Confirmed findings\n%s\n\n## Rejected (with reason)\n- none\n\n## Unverified nits (spot-checked)\n- [Nit] c.sh:1 — a nit\n' "$RC_HDR" "$2" > "$1"
+}
+rc3() { # name want-code orig repair [stderr-substring]
+  run bash "$R" --repair-check "$3" "$4"
+  assert_eq "$code" "$2" "$1: exits $2"
+  assert_eq "$out" "" "$1: empty stdout"
+  if [ -n "${5:-}" ]; then
+    case "$(cat "$T/err")" in "report-verdict: --repair-check: $5"*) pass "$1: stderr is $5";; *) fail "$1: stderr is $5"; echo "    got: $(cat "$T/err")";; esac
+  else assert_eq "$(cat "$T/err")" "" "$1: no stderr"; fi
+}
+C1='- [Should-fix] a.sh:3 — claim'
+rc3_mk "$T/c3-unmarked-orig.md" "$(printf '[Should-fix] a.sh:3 — claim\n- [Should-fix] b.sh:9 — second finding')"
+rc3_mk "$T/c3-unmarked-rep.md" "$(printf -- '- [Should-fix] a.sh:3 — claim\n- [Should-fix] b.sh:9 — second finding')"
+run bash "$R" --complete --source format-check "$T/c3-unmarked-orig.md"
+assert_eq "$code" 4 "unmarked confirmed original: --complete exits 4"
+rc3 "unmarked confirmed finding marked" 0 "$T/c3-unmarked-orig.md" "$T/c3-unmarked-rep.md"
+rc3_mk "$T/c3-demote-orig.md" "$(printf '%s\n### [Blocking] x' "$C1")"
+rc3_mk "$T/c3-demote-rep.md" "$(printf '%s\n- [Blocking] x' "$C1")"
+rc3 "### [Blocking] x demoted" 0 "$T/c3-demote-orig.md" "$T/c3-demote-rep.md"
+rc3_mk "$T/c3-bold-orig.md" "$(printf '%s\n**[Should-fix] x.sh:12** — claim' "$C1")"
+rc3_mk "$T/c3-bold-rep.md" "$(printf '%s\n- **[Should-fix] x.sh:12** — claim' "$C1")"
+rc3 "bold-led confirmed finding prefixed" 4 "$T/c3-bold-orig.md" "$T/c3-bold-rep.md" "(iii) confirmed finding without a --keys key: **[Should-fix] x.sh:12**"
+rc3_mk "$T/c3-detail-orig.md" "$(printf '%s\n### detail' "$C1")"
+rc3_mk "$T/c3-detail-rep.md" "$(printf '%s\n- detail' "$C1")"
+rc3 "unkeyed ### detail demoted in Confirmed findings" 4 "$T/c3-detail-orig.md" "$T/c3-detail-rep.md" "(iii) confirmed finding without a --keys key: detail"
+rc3_mk "$T/c3-star.md" "$(printf '%s\n* [Should-fix] y.sh:1 — other' "$C1")"
+rc3 "* [SEV] item in Confirmed findings" 4 "$T/c3-star.md" "$T/c3-star.md" "(iii) confirmed finding without a --keys key: [Should-fix] y.sh:1"
+printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n### detail\n- b\n## Untested scope\n- none\n' > "$T/c3-fr-orig.md"
+printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n- detail\n- b\n## Untested scope\n- none\n' > "$T/c3-fr-rep.md"
+rc3 "final-review repair" 0 "$T/c3-fr-orig.md" "$T/c3-fr-rep.md"
 
 if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
 echo "report-verdict: all tests passed"

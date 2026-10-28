@@ -61,7 +61,9 @@ set -euo pipefail
 # accept; 4 to reject, stderr `report-verdict: --repair-check: <failed check>`; 2 for a usage or I/O error.
 #   (i)   REPAIR passes --complete.
 #   (ii)  every line before the first `## ` heading is byte-identical.
-#   (iii) --keys output and exit code are identical for both files.
+#   (iii) when REPAIR is a roast report (other kinds skip this rule), its --keys output equals, line for line and in order, the
+#         keys (trailing whitespace removed) of its --complete occurrences in Confirmed findings
+#         sections: every confirmed finding the repair extracts is keyed.
 #   (iv)  after dropping blank and `- none` lines, both files have equal line counts; each repair line
 #         equals the original line at the same position, except that a line --classify calls `unmarked`
 #         may gain `- `, and a `sub-heading` line may gain `- ` or, when its label is the whole line,
@@ -235,19 +237,30 @@ if [ "${1:-}" = "--repair-check" ]; then
   rc_tmp=$(mktemp)
   rc_cls_o=$(mktemp)
   rc_cls_r=$(mktemp)
-  trap 'rm -f "$rc_tmp" "$rc_cls_o" "$rc_cls_r"' EXIT
-  if ! bash "$0" --complete --source format-check "$3" >/dev/null 2>"$rc_tmp"; then
+  rc_json=$(mktemp)
+  rc_keys=$(mktemp)
+  trap 'rm -f "$rc_tmp" "$rc_cls_o" "$rc_cls_r" "$rc_json" "$rc_keys"' EXIT
+  if ! bash "$0" --complete --source format-check "$3" >"$rc_json" 2>"$rc_tmp"; then
     echo "report-verdict: --repair-check: (i) repair fails --complete: $(sed 's/^report-verdict: --complete: //' "$rc_tmp")" >&2
     exit 4
   fi
-  set +e
-  keys_o=$(bash "$0" --keys "$2" 2>/dev/null); code_o=$?
-  keys_r=$(bash "$0" --keys "$3" 2>/dev/null); code_r=$?
-  set -e
-  if [ "$code_o" != "$code_r" ] || [ "$keys_o" != "$keys_r" ]; then
-    echo "report-verdict: --repair-check: (iii) --keys output differs" >&2
-    exit 4
-  fi
+  if ! bash "$0" --keys "$3" >"$rc_keys" 2>/dev/null; then : > "$rc_keys"; fi
+  node --input-type=module - "$rc_json" "$rc_keys" <<'NODE' || exit $?
+import fs from 'node:fs';
+function reject(message) { console.error(`report-verdict: --repair-check: ${message}`); process.exit(4); }
+const [json, keysFile] = process.argv.slice(2);
+const {kind, occurrences} = JSON.parse(fs.readFileSync(json, 'utf8'));
+if (kind !== 'roast') process.exit(0);
+const want = occurrences.filter(o => /^confirmed findings\b/i.test(o.section))
+  .map(o => o.key.replace(/[ \t]+$/, ''));
+const got = fs.readFileSync(keysFile, 'utf8').split('\n');
+if (got.at(-1) === '') got.pop();
+for (let i = 0; i < Math.max(want.length, got.length); i++) {
+  if (want[i] === got[i]) continue;
+  if (i < want.length) reject(`(iii) confirmed finding without a --keys key: ${want[i]}`);
+  reject(`(iii) --keys key without a confirmed finding: ${got[i]}`);
+}
+NODE
   for pair in "$2:$rc_cls_o" "$3:$rc_cls_r"; do
     set +e
     bash "$0" --classify "${pair%%:*}" >"${pair#*:}" 2>"$rc_tmp"; cls_code=$?
