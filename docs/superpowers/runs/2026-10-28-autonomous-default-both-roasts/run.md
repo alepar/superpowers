@@ -1,6 +1,6 @@
 # super-auto run — 2026-10-28-autonomous-default-both-roasts
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=t
-phase: roast-code
+phase: report
 codeMechanism: Workflow
 runTag: autonomous-default-both-roasts-20261028T151244
 context: Context: claude · planner=200K/167K · implementer=200K/167K · reviewer=200K/167K · finalReview=200K/167K · assembler=200K/167K · warn: planner, finalReview on a 200K model → set ANTHROPIC_DEFAULT_OPUS_MODEL=<model>[1m] or config.models.<role> to a 1M model · warn: implementer, reviewer, assembler on a 200K model → set ANTHROPIC_DEFAULT_SONNET_MODEL=<model>[1m] or config.models.<role> to a 1M model
@@ -80,6 +80,7 @@ approvals:
 - finding-disposition · {"ref": {"source": "inv-d0314019-cd40-4412-b119-368b1fb66aab/final", "section": "Deferred OK", "position": 4}, "disposition": "rejected", "judgment": "supported", "basis": "suites re-run green by the reviewer", "evidence": ["reviews/inv-d0314019-cd40-4412-b119-368b1fb66aab/final-review-inv-d0314019-cd40-4412-b119-368b1fb66aab.md Deferred OK 4"]}
 - finding-disposition · {"ref": {"source": "inv-d0314019-cd40-4412-b119-368b1fb66aab/final", "section": "Deferred OK", "position": 5}, "disposition": "rejected", "judgment": "supported", "basis": "the lint's mutation case shows the check fails when the default flips, which is the red run the minor asks for", "evidence": ["tests/super-auto/test-contract-lint.sh @ d9e65f79 mutation case"]}
 - finding-route · {"ref": {"source": "inv-d0314019-cd40-4412-b119-368b1fb66aab/final", "section": "Deferred OK", "position": 6}, "owner": "human", "deferred": "spec-mandated rejections and the model-initiated entry question surface at hand-back"}
+- finding-source · {"version":1,"source":"roast-code/round-2","artifact":"docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/2026-10-28-super-auto-autonomous-default-roast-pr-2.md","kind":"roast","verdict":"clean (0 nits) [low coverage] [review readiness incomplete]","occurrences":[{"section":"Rejected (with reason)        ← so re-roasts don't re-litigate","position":1,"key":"none this iteration. The seven rejections from iteration 1 (contradiction resolves toward autonomy; closed opt-out phrase list; default `true` removes the pre-spend checkpoint; no eval evidence at ed7eb8d4; `planOneShot` alone parks at the design-ready stop; \"only pre-launch ask\" wording; Default-column vs prose for `autonomous`) stand as written there. No scout re-surfaced any of them.","text":"none this iteration. The seven rejections from iteration 1 (contradiction resolves toward autonomy; closed opt-out phrase list; default `true` removes the pre-spend checkpoint; no eval evidence at ed7eb8d4; `planOneShot` alone parks at the design-ready stop; \"only pre-launch ask\" wording; Default-column vs prose for `autonomous`) stand as written there. No scout re-surfaced any of them."},{"section":"Unverified nits (spot-checked)","position":1,"key":"none this iteration. The fifteen spot-checked nits from iteration 1 were not re-surfaced; their refute-seat rejections stand as recorded there.","text":"none this iteration. The fifteen spot-checked nits from iteration 1 were not re-surfaced; their refute-seat rejections stand as recorded there."}]}
 roastDesignRound: 1
 stepBackDesign-round-1: local — one ledger key, two opt-out-mapping Nits; cluster opt-out-mapping-coverage applied inline to the spec (221df21a); mechanical single-file fix, no re-roast; loop exit: r1 Nit (2 confirmed) both fixed, no escalations, nothing beyond cap
 graph-pass: depth 1→1 · width 1.0→1.0 · applied 0 · parked 0
@@ -88,7 +89,7 @@ parked:
 - 2026-10-28-super-auto-autonomous-default-roast-design-1.md · degraded-verdict · "design roast r1 verdict qualifier [low coverage] [review readiness incomplete]: caller supplied no readiness basis (design mode); every stage completed (scouts 8/8, judges 100%) (auto)"
 roast-design: 2026-10-28-super-auto-autonomous-default-roast-design-1.md
 findingsLedgerDesign: findings-ledger-design.md
-roast-code: 2026-10-28-super-auto-autonomous-default-roast-pr-1.md
+roast-code: 2026-10-28-super-auto-autonomous-default-roast-pr-1.md, 2026-10-28-super-auto-autonomous-default-roast-pr-2.md
 findingsLedger: findings-ledger.md
 scopeFilter-round-1: [Nit] skills/super-auto/SKILL.md:160 in-scope — The contradiction rule leaves the recorded planOneShot value unspecified. The goal names both the design-review stop and a resumed run keeping its recorded flags, so a resume could revive a stop or give a plain interactive run depending on what was written. That is an incorrect or ambiguous result in a goal-named path, not a style point.
 scopeFilter-round-1: [Nit] skills/super-auto/SKILL.md:158 in-scope — Nothing tests the new autonomous=true default or the opt-out mapping, and reverting the default passes both suites. The default is the goal's headline behavior, so this is a missing test for a goal-named behavior. The fix is an assertion in an existing test file, which adds no new script.
@@ -106,3 +107,4 @@ codeBuckets:
   worktreesKept: 
   processSweep: stopped 0 · survived 0 · unknown 0 · kept 0
 roastCodeRound: 2
+roastCodeExit: operator-skipped (orchestrator: r2 confirmed zero findings of any severity and resolved both r1 Nits; [converged] withheld only because the bounded direct reviews carry no readiness basis)
