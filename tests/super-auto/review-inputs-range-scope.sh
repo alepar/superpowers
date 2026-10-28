@@ -104,5 +104,22 @@ sel "$BASE" "$M"
 expect "M1 range adds the mirror run.md, origin untouched" 3
 [ "$(jq_ 'j.gaps.some(t=>/docs\/origin\/run.md:.*malformed collection record/.test(t))')" = "true" ] && pass "M1 origin snapshot problem blocks" || fail "M1 origin snapshot problem should be a gap"
 
+echo "Many out-of-range runs"
+new_repo
+for i in $(seq 1 25); do
+  mkdir -p "docs/prior-$i/reviews/old-inv-$i"
+  printf '# Prior run\napprovals:\n%s\n' "${REC//old-inv/old-inv-$i}" >"docs/prior-$i/run.md"
+  echo old >"docs/prior-$i/reviews/old-inv-$i/final-review-old-inv-$i.md"
+done
+g add -A; g commit -qm many-prior; MANY=$(git rev-parse HEAD)
+echo two >product.txt; g commit -qam product; P=$(git rev-parse HEAD)
+sel "$MANY" "$P"
+expect "N many untouched incomplete prior runs, product-only range" 0
+[ "$(jq_ 'j.status+" "+(j.outOfRange.length>=25)')" = "complete true" ] && pass "N full outOfRange list stays in review-inputs.json" || fail "N review-inputs.json outOfRange"
+PROV="$T/out-$n/generated-input-provenance.md"
+[ "$(grep -c '^- Outside captured range (informational; neither selected nor waived): ' "$PROV")" = "20" ] && pass "N provenance digest lists exactly the sample cap" || fail "N provenance sample cap"
+TOTAL=$(jq_ 'j.outOfRange.length')
+grep -q "^- Outside captured range: $TOTAL informational entries .*review-inputs.json" "$PROV" && pass "N count line names the total and review-inputs.json" || fail "N provenance count line"
+
 [ "$FAILURES" -eq 0 ] || { echo "FAILURES: $FAILURES"; exit 1; }
 echo "review-inputs-range-scope: all passed"
