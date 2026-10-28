@@ -11,14 +11,14 @@ branch: super-auto/review-continuity-followups
 base: main
 spec: 2026-10-28-review-continuity-followups-design.md
 epic: super-plan-mlr
-roastDesignRound: 2
+roastDesignRound: 3
 roastCodeRound: 2
 roast-code: 2026-10-28-review-continuity-followups-roast-pr-1.md, 2026-10-28-review-continuity-followups-roast-pr-2.md
 findingsLedger: findings-ledger.md
 stepBackCode-round-1: local — four clusters (c1 unclosed fence in both grammar copies, c2 repair-check rule (iv) prefix escape, c3 drift script git-step fallibility, c4 test git isolation) plus independent one-offs; untested/unreviewed rows are bounded-review coverage gaps
 stepBackCode-round-2: redesign — applied: --repair-check rule (iv) standalone `markable` text predicate → markability and section/fence equality derived from the --complete parser's own per-line classification (dissolves 4)
 redesignCycles-code: 1
-redesign-code-1: round 2 · triggers shared-cause, defect-type · amended 2026-10-28-review-continuity-followups-design.md §4.1 Report format contract (super-plan-2s3) · lastGood 0209f320 · designRoast - · state beads-filed
+redesign-code-1: round 2 · triggers shared-cause, defect-type · amended 2026-10-28-review-continuity-followups-design.md §4.1 Report format contract (super-plan-2s3) · lastGood 0209f320 · designRoast r3 · state beads-filed
 scopeFilter-round-1: [Should-fix] skills/super-code/scripts/report-verdict:140 in-scope — Goal names report extraction that completes or fails loudly; an unclosed fence silently drops sections and exits 0, which is incorrect behavior in that path.
 scopeFilter-round-1: [Should-fix] skills/super-code/scripts/report-verdict:229 in-scope — The repair check accepts a repair that splits one finding into two occurrences, so extraction results are misleading in a goal-named path.
 scopeFilter-round-1: [Should-fix] skills/super-code/scripts/report-verdict:223; skills/super-code/scripts/report-verdict:229 in-scope — Rule (iv) accepts a demoted heading or bold label that reclassifies findings, a correctness gap in report extraction with no covering test.
