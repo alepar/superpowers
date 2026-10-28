@@ -95,6 +95,10 @@ the human. Expected after: (1) `autonomous=t`, both skips `f`, no question; (2) 
 drill harness (`evals/`) is not checked out here; the probes are the evidence and are labeled as
 subagent micro-tests, not drill evals. Mechanical: the existing `tests/super-auto` suites stay green.
 
+## Key abstractions
+
+No new abstractions; extends the `super-auto` §Inputs flag table (which gains a defaults column, with `autonomous` defaulting to `true`, and one rule mapping plain-word opt-outs to flag values), the §Autonomous mode flag-confirmation text (which moves into the run's first status note) and the `run.md` `flags:` line (format unchanged, and on resume it is still the only source of the flags).
+
 ## Post-Implementation Notes
 
 *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
