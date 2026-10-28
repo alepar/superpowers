@@ -22,3 +22,5 @@ cl-21 · r2 · UNOWNED-SEAM · repaired roast report file · rejected — rsc re
 cl-22 · r2 · UNOWNED-SEAM · review-inputs status/gaps semantics · applied — super-plan-rsc owns semantics after range scoping
 cl-23 · r2 · UNOWNED-SEAM · repair round readiness · applied — super-plan-mlr.2: format repair keeps the round's reviewReadiness unchanged
 cl-24 · r2 · UNOWNED-SEAM · reconcile commits commit policy · applied — super-plan-v94: drift rebuild makes only fixed-message stack: merges, outside zhk scope
+cl-25 · graph · GRAPH-EDGE · super-plan-tco <- super-plan-rsc · parked — drop would cut depth only with the mlr.3 edge too (3→2); safe no: tco consumes rsc's outOfRange field and both edit skills/super-auto/SKILL.md
+cl-26 · graph · GRAPH-EDGE · super-plan-mlr.3 <- super-plan-row · parked — drop safe no: mlr.3 consumes row's gap message text; spec §4.4 fixes the text, so a drop is plausible but needs a human

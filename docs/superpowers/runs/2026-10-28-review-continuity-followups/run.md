@@ -14,11 +14,13 @@ epic: super-plan-mlr
 roastDesignRound: 2
 roast-design: 2026-10-28-review-continuity-followups-roast-design-1.md, 2026-10-28-review-continuity-followups-roast-design-2.md
 findingsLedgerDesign: findings-ledger-design.md
+graph-pass: depth 3→3 · width 3.7→3.7 · applied 0 · parked 2
 stepBackDesign-round-1: local — nine findings across five independent subsystems; one shared under-specified §4.1(c) --complete contract (cluster complete-contract) and a §4.7 reviewer-policy pair (cluster reviewer-commit-policy), fixed as spec clarifications
 
 parked:
 - 2026-10-28-review-continuity-followups-design.md §4.3 · degraded-verdict · "agent decision: design-roast reviewReadiness is complete/available only when every settled spec path is committed clean at a captured HEAD SHA (basis: SHA + paths), else unknown; alternative (always unknown) keeps design loops unable to converge — for human review at hand-back"
 - 2026-10-28-review-continuity-followups-roast-design-2.md · degraded-verdict · "design loop converged at r2 with 6 sub-Blocking confirmations (4 Should-fix, 2 Nit) applied as inline spec clarifications without a re-roast (converged-exit punch list)"
+- graph-pass · graph-change · "drop super-plan-tco <- super-plan-rsc and super-plan-mlr.3 <- super-plan-row together would cut depth 3→2; both safe no (consumes lines reference the other bead; shared files)"
 
 approvals:
 - top-split · auto · super-plan-2s3 LEAF, super-plan-mlr.1 LEAF, super-plan-mlr.2 LEAF, super-plan-rsc LEAF, super-plan-tco LEAF, super-plan-row LEAF, super-plan-mlr.3 LEAF, super-plan-v94 LEAF, super-plan-1s3 LEAF, super-plan-zhk LEAF
