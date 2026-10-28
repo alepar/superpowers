@@ -10,6 +10,7 @@ trap 'rm -rf "$T"' EXIT
 FAILURES=0
 
 node "$SCRIPT_DIR/multi-source-correspondence.mjs"
+bash "$SCRIPT_DIR/review-inputs-range-scope.sh"
 
 pass() { echo "  [PASS] $1"; }
 fail() { echo "  [FAIL] $1"; FAILURES=$((FAILURES + 1)); }
