@@ -630,10 +630,21 @@ has "$SA" "record and pass the round's report path" "super-auto SKILL: round's r
 has "$SD" "is the round's report path from super-roast's write step" "super-design SKILL: round's report path"
 
 echo "report-verdict: --repair-check rule (iv) guards every marker addition"
+# (iii) cases: marking the Confirmed continuation or demoting the Rejected heading changes the --keys sequence
 sed 's/^  continuation for the first finding$/-   continuation for the first finding/' "$T/repaired.md" > "$T/r11.md"
 rc_rej "indented continuation given a marker" "(iii)" "$T/r11.md"
 sed 's/^## Rejected (with reason)$/- &/' "$T/repaired.md" > "$T/r12.md"
 rc_rej "## heading demoted to an item" "(iii)" "$T/r12.md"
+# (iv) cases: the same mutations outside Confirmed findings leave --keys unchanged
+sed 's/^\(- \[Nit\] c.sh:1 .*\)$/\1\n  nit continuation/' "$T/repair-orig.md" > "$T/r13-orig.md"
+sed 's/^\(- \[Nit\] c.sh:1 .*\)$/\1\n  nit continuation/' "$T/repaired.md" > "$T/r13-ok.md"
+sed 's/^  nit continuation$/-   nit continuation/' "$T/r13-ok.md" > "$T/r13.md"
+run bash "$R" --repair-check "$T/r13-orig.md" "$T/r13-ok.md"
+assert_eq "$code" 0 "nit continuation left alone: accepted"
+run bash "$R" --repair-check "$T/r13-orig.md" "$T/r13.md"
+assert_eq "$code" 4 "nit continuation given a marker: exits 4"
+case "$(cat "$T/err")" in *"(iv)"*) pass "nit continuation given a marker: stderr names (iv)";; *) fail "nit continuation given a marker: stderr names (iv)"; cat "$T/err";; esac
+sed 's/^## Unverified nits (spot-checked)$/- &/' "$T/repaired.md" > "$T/r14.md"; rc_rej "## heading demoted to an item (nits)" "(iv)" "$T/r14.md"
 rc_mk "$T/repair-orig-bold.md" "- none" "- $RC_PROSE" "**Escalations**"
 rc_mk "$T/repair-bold-generic.md" "- none" "- $RC_PROSE" "- **Escalations**"
 rc_mk "$T/repair-bold-demoted.md" "- none" "- $RC_PROSE" "- Escalations"
