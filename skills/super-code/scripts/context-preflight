@@ -114,6 +114,24 @@ read_codex() {
 }
 
 # ---- Claude reader ----
+# Mirror of CLAUDE_WINDOWS in context-pass.mjs, one pattern per row in the same order;
+# tests/super-code/test-context-preflight.sh checks parity and row count. A new model is one row in
+# each. Bash ERE has no lookahead, so (?!\d) is ([^0-9]|$).
+claude_window() {
+  local re
+  for re in \
+    '\[1[mM]\]$' \
+    'claude-opus-4-([7-9]|[0-9]{2})([^0-9]|$)' \
+    'claude-opus-5([^0-9]|$)' \
+    'claude-sonnet-5([^0-9]|$)' \
+    'claude-haiku-5-5([^0-9]|$)' \
+    '[Ff][Aa][Bb][Ll][Ee]'
+  do
+    if [[ "$1" =~ $re ]]; then echo 1000000; return; fi
+  done
+  echo 200000
+}
+
 read_claude() {
   local C="${CLAUDE_CONFIG_DIR:-${HOME:-}/.claude}" session="" have_src=0 f
   if [ -n "${ANTHROPIC_MODEL:-}" ]; then session="$ANTHROPIC_MODEL"; have_src=1
@@ -141,13 +159,11 @@ read_claude() {
     else model="$alias"; fi
     win=""
     case "$model" in
-      *"[1m]") win=1000000 ;;
       opus|sonnet)
         if [ "$have_src" = 0 ]; then win=""   # inheritance unknowable
-        elif [ "$sfam" = "$model" ]; then
-          case "$session" in *"[1m]") win=1000000 ;; *) win=200000 ;; esac
+        elif [ "$sfam" = "$model" ]; then win=$(claude_window "$session")
         else win=200000; fi ;;
-      *) win=200000 ;;
+      *) win=$(claude_window "$model") ;;
     esac
     eval "W_$r=\$win"
     if [ -z "$win" ]; then comp=""

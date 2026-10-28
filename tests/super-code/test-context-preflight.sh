@@ -112,6 +112,48 @@ set +e; out=$(cd "$T/proj2" && env -i HOME="$T/home" PATH="$PATH" CLAUDE_CONFIG_
 assert_has "$out" '"planner":1000000' "model-less project settings file does not hide the config dir model"
 assert_has "$out" '"finalReview":1000000' "finalReview window comes from the config dir model"
 
+echo "context-preflight: claude model table"
+ALL1M='{"planner":1000000,"implementer":1000000,"reviewer":1000000,"finalReview":1000000,"assembler":1000000}'
+ALL200K='{"planner":200000,"implementer":200000,"reviewer":200000,"finalReview":200000,"assembler":200000}'
+run CLAUDE_CONFIG_DIR="$T/nope" CLAUDE_CODE_SUBAGENT_MODEL=claude-opus-5-5 -- --harness claude --json
+assert_eq "$out" "$ALL1M" "subagent model claude-opus-5-5 is 1M for every role"
+run CLAUDE_CONFIG_DIR="$T/nope" CLAUDE_CODE_SUBAGENT_MODEL=claude-opus-5-5 -- --harness claude
+assert_lacks "$out" "on a 200K model" "claude-opus-5-5 draws no 200K warning"
+run CLAUDE_CONFIG_DIR="$T/nope" CLAUDE_CODE_SUBAGENT_MODEL=claude-opus-4-6 -- --harness claude --json
+assert_eq "$out" "$ALL200K" "claude-opus-4-6 is 200K"
+run CLAUDE_CONFIG_DIR="$T/nope" CLAUDE_CODE_SUBAGENT_MODEL=claude-opus-4-6 -- --harness claude
+assert_has "$out" "planner, finalReview on a 200K model" "claude-opus-4-6 warns for opus roles"
+assert_has "$out" "implementer, reviewer, assembler on a 200K model" "claude-opus-4-6 warns for sonnet roles"
+run CLAUDE_CONFIG_DIR="$T/nope" CLAUDE_CODE_SUBAGENT_MODEL='claude-opus-4-6[1m]' -- --harness claude --json
+assert_eq "$out" "$ALL1M" "claude-opus-4-6[1m] is 1M"
+run CLAUDE_CONFIG_DIR="$T/nope" CLAUDE_CODE_SUBAGENT_MODEL=claude-unknown-9 -- --harness claude --json
+assert_eq "$out" "$ALL200K" "unknown explicit id is 200K"
+run CLAUDE_CONFIG_DIR="$FX/claude-200k" ANTHROPIC_DEFAULT_OPUS_MODEL=claude-opus-5-5 -- --harness claude --json
+assert_eq "$out" '{"planner":1000000,"implementer":200000,"reviewer":200000,"finalReview":1000000,"assembler":200000}' "ANTHROPIC_DEFAULT_OPUS_MODEL 1M id lifts the opus roles only"
+run CLAUDE_CONFIG_DIR="$T/nope" ANTHROPIC_MODEL=claude-opus-5-5 -- --harness claude --json
+assert_eq "$out" '{"planner":1000000,"implementer":200000,"reviewer":200000,"finalReview":1000000,"assembler":200000}' "ANTHROPIC_MODEL 1M opus id: bare opus alias inherits 1M"
+run CLAUDE_CONFIG_DIR="$T/nope" -- --harness claude --json
+assert_eq "$out" "{}" "bare aliases with no readable settings stay unknown"
+run CLAUDE_CONFIG_DIR="$T/nope" CLAUDE_CODE_SUBAGENT_MODEL=claude-opus-5-5 CLAUDE_CODE_AUTO_COMPACT_WINDOW=500000 -- --harness claude
+assert_has "$out" "planner=1M/500K · implementer=1M/500K" "auto-compact window still applies to a 1M id"
+
+# Parity with claudeWindow() in context-pass.mjs. Two ids per CLAUDE_WINDOWS row: one that matches
+# and one that fails only at the boundary.
+CP="$REPO_ROOT/skills/super-code/scripts/context-pass.mjs"
+PARITY_IDS=(claude-opus-4-7 claude-opus-4-6 claude-opus-4-10 claude-opus-5 claude-opus-5-5 claude-opus-50
+  claude-sonnet-5 claude-sonnet-50 claude-haiku-5-5 claude-haiku-5-50 claude-fable-1 claude-sonnet-4-6
+  'claude-sonnet-4-6[1M]' 'claude-sonnet-4-6[1m]' some-vendor-model)
+for id in "${PARITY_IDS[@]}"; do
+  run CLAUDE_CONFIG_DIR="$T/nope" CLAUDE_CODE_SUBAGENT_MODEL="$id" -- --harness claude --json
+  got=$(printf '%s' "$out" | sed 's/.*"planner":\([0-9]*\).*/\1/')
+  want=$(node --input-type=module -e "import {claudeWindow} from '$CP'; console.log(claudeWindow(process.argv[1]).window)" "$id")
+  assert_eq "$got" "$want" "window parity with claudeWindow(): $id"
+done
+js_rows=$(awk '/^const CLAUDE_WINDOWS/{on=1;next} on&&/^\]\)/{on=0} on&&/^[[:space:]]*\[\//{n++} END{print n+0}' "$CP")
+sh_rows=$(awk '/^claude_window\(\)/{on=1;next} on&&/^\}/{on=0} on&&/^[[:space:]]*'"'"'.*'"'"'/{n++} END{print n+0}' "$P")
+assert_eq "$sh_rows" "$js_rows" "claude_window patterns equal CLAUDE_WINDOWS rows"
+[ "$js_rows" -gt 0 ] && pass "CLAUDE_WINDOWS rows counted ($js_rows)" || fail "CLAUDE_WINDOWS rows counted"
+
 echo "context-preflight: undetected"
 run -- 
 expect_clean "no harness"

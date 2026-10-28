@@ -54,6 +54,7 @@ function blank(harness, o, reason) {
 // ---- Claude Code ----
 // Model ids → window, first match wins. Opus 4.7+, Opus 5, Sonnet 5, Fable and Haiku 5.5 have 1M; a
 // `[1m]` suffix asks for 1M; everything else, Opus/Sonnet 4.6 and older included, has 200K.
+// Mirrored by claude_window in context-preflight (bash); keep both in step — the parity test fails otherwise.
 const CLAUDE_WINDOWS = Object.freeze([
   [/\[1m\]$/i, 1000000],
   [/claude-opus-4-(?:[7-9]|\d{2})(?!\d)/, 1000000],
