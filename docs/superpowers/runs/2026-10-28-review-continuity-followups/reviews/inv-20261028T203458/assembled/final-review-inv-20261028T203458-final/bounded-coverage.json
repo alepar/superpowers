@@ -1,0 +1,190 @@
+{
+ "inspected": [
+  {
+   "path": "AGENTS.md",
+   "hunks": [
+    "@@ -159,11 +159,14 @@ This repository is the `alepar` fork. Its versions are `<upstream version>-alepa"
+   ]
+  },
+  {
+   "path": "docs/superpowers/runs/2026-10-28-review-continuity-followups/2026-10-28-review-continuity-followups-design.md",
+   "hunks": [
+    "@@ -0,0 +1,117 @@"
+   ]
+  },
+  {
+   "path": "docs/superpowers/specs/INDEX.md",
+   "hunks": [
+    "@@ -8,6 +8,7 @@ Catalog of the design specs in this directory, newest first. The brainstorming l"
+   ]
+  },
+  {
+   "path": "skills/super-auto/SKILL.md",
+   "hunks": [
+    "@@ -168,7 +168,7 @@ own, or the flags strand and the sequence is lost. Each row's parenthetical is t",
+    "@@ -322,7 +322,7 @@ The phase-6 sweep and any gated final-SHA leaf then judge the combined tree. Rec",
+    "@@ -396,11 +396,13 @@ in-scope, and pulls each cluster with an in-scope member in as a unit (except a",
+    "@@ -412,7 +414,7 @@ Runs after Step 1's exit tests when Step 1 wrote `redesign-code-<K>` with state",
+    "@@ -449,7 +451,7 @@ whole-branch roast outside this loop, such as a post-cap audit or a re-review af",
+    "@@ -504,7 +506,7 @@ bash <this skill's dir>/scripts/report-status --collect RUN_MD --invocation ID -"
+   ]
+  },
+  {
+   "path": "skills/super-auto/run-state.md",
+   "hunks": [
+    "@@ -442,7 +442,7 @@ findings outstanding even if a disposition claims resolution."
+   ]
+  },
+  {
+   "path": "skills/super-auto/scripts/scope-dispositions",
+   "hunks": [
+    "@@ -129,6 +129,7 @@ for (const {data:d, origin} of entries.filter(e => e.type === 'finding-link')) {",
+    "@@ -149,6 +150,7 @@ for (const {type, data:d, origin} of entries) {",
+    "@@ -165,6 +167,25 @@ for (const group of groups.values()) {",
+    "@@ -193,6 +214,7 @@ if (keys) {"
+   ]
+  },
+  {
+   "path": "skills/super-code/MAINTENANCE.md",
+   "hunks": [
+    "@@ -422,7 +422,7 @@ A null peak, window or percentage prints as `unmeasured` (a null window as `<pea"
+   ]
+  },
+  {
+   "path": "skills/super-code/coordinator-subagents.md",
+   "hunks": [
+    "@@ -55,6 +55,9 @@ Keep the window full. The Workflow coordinator does these, and so do you:"
+   ]
+  },
+  {
+   "path": "skills/super-code/coordinator-workflow.md",
+   "hunks": [
+    "@@ -900,7 +900,7 @@ fields and append-only fix history through reconciliation and later retries.",
+    "@@ -1167,6 +1167,18 @@ blocker filing, commit last). Two conventions the coordinator owns:"
+   ]
+  },
+  {
+   "path": "skills/super-code/coordinator.js",
+   "hunks": [
+    "@@ -2627,9 +2627,13 @@ function workspaceSetup(planPath, n, id, worktree, branchName, integrationBranch",
+    "@@ -2637,11 +2641,31 @@ function workspaceSetup(planPath, n, id, worktree, branchName, integrationBranch",
+    "@@ -2989,8 +3013,8 @@ function reviewSource(repo, base, head) {",
+    "@@ -3016,12 +3040,12 @@ function finalReviewPrompt(epicId, integrationBranch, integrationWorktree, ledge",
+    "@@ -3029,7 +3053,7 @@ function finalSeamReviewPrompt(dir, clusterPaths, reviewPath, epicId, integratio"
+   ]
+  },
+  {
+   "path": "skills/super-code/implementer-prompt.md",
+   "hunks": [
+    "@@ -132,7 +132,10 @@ and the Commit steps below. Passing existing checks alone does not supply delive",
+    "@@ -209,6 +212,9 @@ the task gets; it merges after you, without another review."
+   ]
+  },
+  {
+   "path": "skills/super-code/scripts/assembly-archive.cjs",
+   "hunks": [
+    "@@ -19,12 +19,19 @@ function strictDraft(draft){",
+    "@@ -32,6 +39,7 @@ function strictDraft(draft){"
+   ]
+  },
+  {
+   "path": "skills/super-code/scripts/context-pass.mjs",
+   "hunks": [
+    "@@ -54,6 +54,7 @@ function blank(harness, o, reason) {"
+   ]
+  },
+  {
+   "path": "skills/super-code/scripts/context-preflight",
+   "hunks": [
+    "@@ -114,6 +114,24 @@ read_codex() {",
+    "@@ -141,13 +159,11 @@ read_claude() {"
+   ]
+  },
+  {
+   "path": "skills/super-code/scripts/dispatch-text.mjs",
+   "hunks": [
+    "@@ -18,6 +18,7 @@ import { fileURLToPath } from 'node:url'",
+    "@@ -144,13 +145,27 @@ function reviewInputs(repo, base, head, out, current = null) {",
+    "@@ -164,7 +179,7 @@ function reviewInputs(repo, base, head, out, current = null) {",
+    "@@ -196,22 +211,22 @@ function reviewInputs(repo, base, head, out, current = null) {",
+    "@@ -220,7 +235,7 @@ function reviewInputs(repo, base, head, out, current = null) {",
+    "@@ -233,17 +248,17 @@ function reviewInputs(repo, base, head, out, current = null) {",
+    "@@ -256,9 +271,9 @@ function reviewInputs(repo, base, head, out, current = null) {",
+    "@@ -268,16 +283,17 @@ function reviewInputs(repo, base, head, out, current = null) {",
+    "@@ -309,6 +325,7 @@ function reviewInputs(repo, base, head, out, current = null) {",
+    "@@ -336,7 +353,7 @@ function reviewInputs(repo, base, head, out, current = null) {",
+    "@@ -345,7 +362,7 @@ function reviewInputs(repo, base, head, out, current = null) {",
+    "@@ -361,6 +378,8 @@ function reviewInputs(repo, base, head, out, current = null) {",
+    "@@ -391,7 +410,7 @@ function reviewInputs(repo, base, head, out, current = null) {",
+    "@@ -401,6 +420,8 @@ function reviewInputs(repo, base, head, out, current = null) {"
+   ]
+  },
+  {
+   "path": "skills/super-code/scripts/report-verdict",
+   "hunks": [
+    "@@ -47,20 +47,44 @@ set -euo pipefail",
+    "@@ -71,7 +95,7 @@ try {",
+    "@@ -81,11 +105,11 @@ try {",
+    "@@ -100,6 +124,7 @@ try {",
+    "@@ -118,42 +143,165 @@ try {"
+   ]
+  },
+  {
+   "path": "skills/super-code/task-reviewer-prompt.md",
+   "hunks": [
+    "@@ -72,6 +72,8 @@ return INVALID, as for an empty package.",
+    "@@ -157,6 +159,7 @@ baseline/owner histories remain explicit gaps for reconciliation rather than rep"
+   ]
+  },
+  {
+   "path": "skills/super-design/SKILL.md",
+   "hunks": [
+    "@@ -688,7 +688,7 @@ Inputs table: the artifact-directory override as its report-location override (s",
+    "@@ -698,6 +698,8 @@ report. The report file is the only cross-iteration state. **Three of its sectio",
+    "@@ -1115,7 +1117,7 @@ Write these, each as it happens:"
+   ]
+  },
+  {
+   "path": "skills/super-roast/SKILL.md",
+   "hunks": [
+    "@@ -55,6 +55,7 @@ line when writing the report file (e.g. `mode: PR (assumed \u2014 input is a branch",
+    "@@ -211,13 +212,32 @@ lane-yield (found/confirmed/unique/refuted): correctness 5/2/1/1 \u00b7 security 0/0",
+    "@@ -235,7 +255,7 @@ only; both absent on iteration 1). The delta line counts confirmed findings as n"
+   ]
+  },
+  {
+   "path": "skills/super-roast/reporter-prompt.md",
+   "hunks": [
+    "@@ -231,6 +231,8 @@ a caller's cap already tripped.",
+    "@@ -257,8 +259,13 @@ independence: {{INDEPENDENCE}}"
+   ]
+  },
+  {
+   "path": "tests/super-auto/test-contract-lint.sh",
+   "hunks": [
+    "@@ -355,6 +355,22 @@ check_abort() { # SKILLS_ROOT",
+    "@@ -362,6 +378,7 @@ lint() { # SKILLS_ROOT REPO_ROOT -> one \"file[:line]: message\" per problem",
+    "@@ -468,6 +485,15 @@ expect_caught \"a resume amend-checked bullet that re-checks against HEAD fails\""
+   ]
+  },
+  {
+   "path": "tests/super-code/replay-harness.mjs",
+   "hunks": [
+    "@@ -893,8 +893,8 @@ async function main() {"
+   ]
+  },
+  {
+   "path": "tests/super-code/test-dispatch-text.sh",
+   "hunks": [
+    "@@ -98,6 +98,27 @@ assert_has \"$out\" 'git merge --no-ff -m \"stack: ep.1\" task-ep.1' \"--parents stac",
+    "@@ -140,6 +161,31 @@ assert_has \"$out\" \"A \\`consumes <id>\\` entry\" \"a consumes entry gets the compose"
+   ]
+  },
+  {
+   "path": "tests/super-roast/test-assemble-args.sh",
+   "hunks": [
+    "@@ -202,6 +202,57 @@ for (const value of ['', '{', 'null', '[]', JSON.stringify({ coverage: 'complete"
+   ]
+  }
+ ]
+}
