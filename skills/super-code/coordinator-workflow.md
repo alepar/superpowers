@@ -900,7 +900,7 @@ fields and append-only fix history through reconciliation and later retries.
   solely because an earlier run's work is recorded there. Resume does not filter the ready ids
   by `completed`: a merge that landed but whose `bd close` failed would otherwise leave the epic
   unclosable, whereas re-dispatching makes the re-run's workspace setup reuse the existing worktree
-  and branch (it is idempotent), find the branch already merged, and close the bead. A `pending
+  and branch (after a prerequisite-drift check, below), find the branch already merged, and close the bead. A `pending
   retry` line seeds `pendingRetry`, so a second RESOLVE after a restart still bounces into ESCALATE.
   **A `BLOCKED` line gates nothing:** a fixed blocker's task must be re-dispatchable on the next
   invocation, so a restart gives a previously-BLOCKED id a fresh attempt, and a still-blocked one
@@ -1167,6 +1167,17 @@ blocker filing, commit last). Two conventions the coordinator owns:
   `base` is the commit after those merges, and its implementer is told it builds on unmerged code.
   A setup that re-enters an existing stacked branch finds that base again from the newest
   first-parent `stack: ` commit.
+  A reused branch is drift-checked against the task's current parents before the implementer
+  continues (a current parent not an ancestor of the branch, or a first-parent `stack: X` commit for
+  an `X` no longer a parent). No drift reuses it unchanged. Drift with uncommitted work (ignoring
+  `.tmp/`) returns `SETUP_FAILED` with nothing touched. Drift with a clean worktree rebuilds the base
+  by merging each current parent as `stack: <parent>` onto a detached integration HEAD (the same
+  merges as the fresh stack step) and moves the task's commits with `git rebase --onto <newBase>
+  <oldBase> <branch>`; a conflict aborts, restores the branch to its old head and returns
+  `SETUP_FAILED` naming it, never the `STACK_CONFLICT` discard path. Branch-only and worktree-only
+  states (both paths) are explicit: branch-only runs the already-merged check, else `SETUP_FAILED`;
+  worktree-only is `SETUP_FAILED`; nothing is created or deleted. Not covered (follow-up): seeding
+  `discardFailed` for a resumed `cancelled` line.
 - **Commit is the implementer's last step:** the implementer reports `head` (`git rev-parse HEAD`
   after its commit, with `git status --short` empty); for default implementation completion, a `head` equal to the `base` it reports means
   nothing was committed, and the coordinator sends one bounded commit nudge before treating the

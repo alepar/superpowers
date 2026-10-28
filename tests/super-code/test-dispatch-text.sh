@@ -98,6 +98,25 @@ assert_has "$out" 'git merge --no-ff -m "stack: ep.1" task-ep.1' "--parents stac
 assert_has "$out" "STACK_CONFLICT" "and names the stack-conflict return"
 run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2 --reentry
 assert_has "$out" "This is a review re-entry" "--reentry: the review re-entry setup"
+for flag in "" "--parents ep.1" "--reentry"; do
+  # shellcheck disable=SC2086
+  run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2 $flag
+  assert_has "$out" "If ONLY the branch exists: run the ALREADY-MERGED CHECK" "[$flag] branch-only case"
+  assert_has "$out" "If ONLY the worktree exists" "[$flag] worktree-only case"
+  setup=$(printf '%s' "$out" | tr '\n' '\001' | sed 's/.*<workspace-setup>//; s/<\/workspace-setup>.*//')
+  for bad in '-D ' '--force' 'reset --hard' 'git stash' 'WIP'; do
+    assert_lacks "$setup" "$bad" "[$flag] setup text has no destructive command ($bad)"
+  done
+done
+run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2 --parents ep.1
+assert_has "$out" "merge-base --is-ancestor task-ep.1 task-ep.2" "--parents: drift check against the current parent"
+assert_has "$out" "prerequisite drift; uncommitted work preserved; nothing reset" "drift with a dirty worktree fails typed"
+assert_has "$out" "rebase --onto" "drift with a clean worktree rebases onto the rebuilt base"
+assert_has "$out" "rebase --abort" "a failed rebase is aborted"
+run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2 --reentry
+assert_lacks "$out" "<drift-check>" "--reentry: reuse stays as is, no drift rebuild"
+run bash "$D" --ledger "$L" --stdout implement --id ep.2 --n 2 --recut
+assert_has "$out" "remove-task-worktree --discard" "--recut: still discards through the guarded helper"
 
 echo "dispatch-text: review, fix, seam review, check-fix review"
 run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base "$PIN_BASE" --head "$PIN_HEAD"
