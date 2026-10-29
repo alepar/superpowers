@@ -54,7 +54,7 @@ codeBuckets:
   parked: 
   stalled: false
   review: not ready (unreviewed: whole-epic coverage and omission provenance remain incomplete)
-  sweep: 47916d2 — 28 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: the Launch-line config.sweep (28 CLAUDE.md release tests), run in a fresh clone at the SHA (run-worktree run: 27 passed, 1 failed — tests/codex/test-package-codex-plugin.sh, environment: package-codex-plugin.sh:145 needs a .git directory) @ 47916d202ae0015fd2668a008062e58ce97cc8de
+  sweep: 47916d2 — 28 passed, 0 failed, 0 errors, 0 skipped; failing: none; command: the Launch-line config.sweep (28 CLAUDE.md release tests), run in a fresh clone at the SHA; the run-worktree run differs only by an environment artifact in the Codex package test (sweep/ logs, friction.md) @ 47916d202ae0015fd2668a008062e58ce97cc8de
   slowness: 
   worktreesKept: 
   processSweep: stopped 0 · survived 0 · unknown 0 · kept 0
@@ -63,6 +63,7 @@ parked:
 - 2026-10-28-review-continuity-followups-design.md §4.3 · degraded-verdict · "agent decision: design-roast reviewReadiness is complete/available only when every settled spec path is committed clean at a captured HEAD SHA (basis: SHA + paths), else unknown; alternative (always unknown) keeps design loops unable to converge — for human review at hand-back"
 - 2026-10-28-review-continuity-followups-roast-design-2.md · degraded-verdict · "design loop converged at r2 with 6 sub-Blocking confirmations (4 Should-fix, 2 Nit) applied as inline spec clarifications without a re-roast (converged-exit punch list)"
 - graph-pass · graph-change · "drop super-plan-tco <- super-plan-rsc and super-plan-mlr.3 <- super-plan-row together would cut depth 3→2; both safe no (consumes lines reference the other bead; shared files)"
+- CLAUDE.md §Skill Changes Require Evaluation · degraded-verdict · "skill-change behaviour evals not run: source user (CLAUDE.md: \"If you modify skill content: Use superpowers:writing-skills ... Run adversarial pressure testing across multiple sessions ... Show before/after eval results in your PR\"); the drill harness (evals/, superpowers-evals) is not cloned in this checkout, so no existing command performs it and none was built; skill/prompt text changes carry prompt-text assertions only; owner: the coordinator / human partner before any PR or release"
 
 approvals:
 - top-split · auto · super-plan-2s3 LEAF, super-plan-mlr.1 LEAF, super-plan-mlr.2 LEAF, super-plan-rsc LEAF, super-plan-tco LEAF, super-plan-row LEAF, super-plan-mlr.3 LEAF, super-plan-v94 LEAF, super-plan-1s3 LEAF, super-plan-zhk LEAF
