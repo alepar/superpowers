@@ -18,8 +18,10 @@ findingsLedger: findings-ledger.md
 stepBackCode-round-1: local — four clusters (c1 unclosed fence in both grammar copies, c2 repair-check rule (iv) prefix escape, c3 drift script git-step fallibility, c4 test git isolation) plus independent one-offs; untested/unreviewed rows are bounded-review coverage gaps
 stepBackCode-round-2: redesign — applied: --repair-check rule (iv) standalone `markable` text predicate → markability and section/fence equality derived from the --complete parser's own per-line classification (dissolves 4)
 stepBackCode-round-3: local — redesign cycle 1 held (round-2 :226 findings resolved, none returned); two independent Nits in --repair-check (rule (iii) non-roast exit contract drift, rule (iv) missing role comparison); untested rows are bounded-final-review coverage gaps
-redesignCycles-code: 1
+stepBackCode-round-4: redesign — applied: --repair-check check (iii) self-referential (repair --keys vs the repair's own occurrences) plus the mlr.27 per-line unmarked→continuation rejection in (iv) → (iii) anchored to the original via the byte-identical verdict header: Confirmed-findings occurrence count equals the header's (n confirmed), each keyed; line-298 rejection removed (dissolves 3)
+redesignCycles-code: 2
 redesign-code-1: round 2 · triggers shared-cause, defect-type · amended 2026-10-28-review-continuity-followups-design.md §4.1 Report format contract (super-plan-2s3) · lastGood 0209f320 · designRoast r3 fixed · state applied
+redesign-code-2: round 4 · triggers shared-cause, defect-type · lastGood 2c149091 · state started
 scopeFilter-round-1: [Should-fix] skills/super-code/scripts/report-verdict:140 in-scope — Goal names report extraction that completes or fails loudly; an unclosed fence silently drops sections and exits 0, which is incorrect behavior in that path.
 scopeFilter-round-1: [Should-fix] skills/super-code/scripts/report-verdict:229 in-scope — The repair check accepts a repair that splits one finding into two occurrences, so extraction results are misleading in a goal-named path.
 scopeFilter-round-1: [Should-fix] skills/super-code/scripts/report-verdict:223; skills/super-code/scripts/report-verdict:229 in-scope — Rule (iv) accepts a demoted heading or bold label that reclassifies findings, a correctness gap in report extraction with no covering test.
