@@ -68,6 +68,7 @@ set -euo pipefail
 #         equals the original line at the same position, except that a line --classify calls `unmarked`
 #         may gain `- `, and a `sub-heading` line may gain `- ` or, when its label is the whole line,
 #         become `- <label>`; every kept line keeps its --classify section and fence state.
+#         An `unmarked` line kept without `- ` must not become a `continuation` in REPAIR.
 complete_node() {
   node --input-type=module - "$@" <<'NODE'
 import fs from 'node:fs';
@@ -294,6 +295,7 @@ for (let k = 0; k < ko.length; k++) {
     || (ra.role === 'unmarked' && b === '- ' + a)
     || (ra.role === 'sub-heading' && (b === '- ' + a || (ra.whole && b === '- ' + ra.label)));
   if (!ok) reject(`(iv) line ${k + 1} differs: ${a}`);
+  if (ra.role === 'unmarked' && b === a && rb.role === 'continuation') reject(`(iv) line ${k + 1} unmarked line becomes a continuation: ${a}`);
   if (ra.section !== rb.section) reject(`(iv) line ${k + 1} changes section: ${a}`);
   if (ra.inFence !== rb.inFence) reject(`(iv) line ${k + 1} changes fence state: ${a}`);
 }
