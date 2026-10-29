@@ -17,3 +17,4 @@
 - [2026-10-28T00:23Z] super-auto · roast-code r4 assembler: provenance unavailable; captured source available (same 2115 historical gaps); bounded direct review of 444f86b266b2208b612e0e91b0f54762576ff95a..9b1582f826a98a6ab61de72ccbc7b7c3617d1699
 - [2026-10-28T00:38Z] super-design · Amend Mode code-2 Key Abstractions sync: changed line is a 'Per spec §4.1(c)' note, not a Digest line; epic digest block and owner-bead texts unchanged (sync no-op)
 - [2026-10-28T00:38Z] super-design · Amend Mode filing: a work: title beginning with '--' (here '--repair-check …') is parsed by bd create as a flag; the documented filing sequence passes the title positionally and fails; used --title=
+- [2026-10-28T01:12Z] super-auto · roast-code r5 assembler: provenance unavailable; captured source available (same 2115 historical gaps); bounded direct review of 444f86b266b2208b612e0e91b0f54762576ff95a..c7fb93887a5fcb3f85ff5c75018e3a732e001e54
