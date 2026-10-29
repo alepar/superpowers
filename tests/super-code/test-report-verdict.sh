@@ -545,6 +545,9 @@ echo "report-verdict: --repair-check accepts only marker additions"
 RC_HDR='super-roast verdict: Should-fix (2 confirmed)
 mode: PR        iteration: 1 of 3
 '
+RC_HDR1='super-roast verdict: Should-fix (1 confirmed)
+mode: PR        iteration: 1 of 3
+'
 RC_CONF='## Confirmed findings
 - [Should-fix] a.sh:3 — first finding
   continuation for the first finding
@@ -712,7 +715,8 @@ rc_mk "$T/p-boldnote2.md" "- none" "- $RC_PROSE" '- Note:'
 rc_pair "marker on bold Note prose" 0 "$T/o-boldnote.md" "$T/p-boldnote.md"
 rc_pair "label demoted when it is not the whole line" 4 "$T/o-boldnote.md" "$T/p-boldnote2.md"
 
-# Two consecutive unmarked Confirmed findings: marking only the first folds the second into it.
+# Two consecutive unmarked Confirmed findings: marking only the first folds the second into it,
+# and (iii) rejects the fold because one occurrence differs from the header's (2 confirmed).
 rc_cf() { # file confirmed-body
   printf '%s\n## Confirmed findings\n%s\n\n## Rejected (with reason)\n- none\n\n## Unverified nits (spot-checked)\n- [Nit] c.sh:1 — a nit\n' "$RC_HDR" "$2" > "$1"
 }
@@ -723,8 +727,10 @@ run bash "$R" --complete --source format-check "$T/o-two.md"
 assert_eq "$code" 4 "two unmarked confirmed findings: original fails --complete"
 run bash "$R" --complete --source format-check "$T/p-two-first.md"
 assert_eq "$code" 0 "only the first marked: the repair alone passes --complete (one folded occurrence)"
-rc_pair "only the first of two unmarked confirmed findings marked" 4 "$T/o-two.md" "$T/p-two-first.md"
-case "$(cat "$T/err")" in *"(iv) line 5 unmarked line becomes a continuation: [Should-fix] b.sh:2 — second claim") pass "folded line: stderr names the line";; *) fail "folded line: stderr names the line"; echo "    got: $(cat "$T/err")";; esac
+run bash "$R" --repair-check "$T/o-two.md" "$T/p-two-first.md"
+assert_eq "$code" 4 "only the first of two unmarked confirmed findings marked: exits 4"
+assert_eq "$out" "" "only the first of two unmarked confirmed findings marked: empty stdout"
+assert_eq "$(cat "$T/err")" "report-verdict: --repair-check: (iii) confirmed finding count 1 differs from verdict 2" "folded second finding: rejected by the (iii) header count"
 rc_pair "both unmarked confirmed findings marked" 0 "$T/o-two.md" "$T/p-two-both.md"
 
 # --classify rows carry line numbers; resolve them against the file text
@@ -773,8 +779,8 @@ X_KEYS_ORIG="$out"
 run bash "$R" --keys "$T/x-repair.md"
 assert_eq "$out" "$X_KEYS_ORIG" "cross-copy: original and repair extract identical keys"
 # --repair-check handles roast reports only: the same defect and marker-only repair in a roast pair is accepted
-printf '%s\n## Confirmed findings\n- [Should-fix] a.sh:3 — claim\n\n## Rejected (with reason)\n- none\n\n## Unverified nits (spot-checked)\nd prose\n' "$RC_HDR" > "$T/x-roast-orig.md"
-printf '%s\n## Confirmed findings\n- [Should-fix] a.sh:3 — claim\n\n## Rejected (with reason)\n- none\n\n## Unverified nits (spot-checked)\n- d prose\n' "$RC_HDR" > "$T/x-roast-repair.md"
+printf '%s\n## Confirmed findings\n- [Should-fix] a.sh:3 — claim\n\n## Rejected (with reason)\n- none\n\n## Unverified nits (spot-checked)\nd prose\n' "$RC_HDR1" > "$T/x-roast-orig.md"
+printf '%s\n## Confirmed findings\n- [Should-fix] a.sh:3 — claim\n\n## Rejected (with reason)\n- none\n\n## Unverified nits (spot-checked)\n- d prose\n' "$RC_HDR1" > "$T/x-roast-repair.md"
 run bash "$R" --repair-check "$T/x-roast-orig.md" "$T/x-roast-repair.md"
 assert_eq "$code" 0 "cross-copy roast pair: --repair-check exits 0"
 assert_eq "$(cat "$T/err")" "" "cross-copy roast pair: --repair-check prints nothing"
@@ -814,6 +820,31 @@ rc3 "* [SEV] item in Confirmed findings" 4 "$T/c3-star.md" "$T/c3-star.md" "(iii
 printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n### detail\n- b\n## Untested scope\n- none\n' > "$T/c3-fr-orig.md"
 printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n- detail\n- b\n## Untested scope\n- none\n' > "$T/c3-fr-rep.md"
 rc3 "final-review repair" 4 "$T/c3-fr-orig.md" "$T/c3-fr-rep.md" "(iii) not a roast report: final-review"
+
+echo "report-verdict: --repair-check (iii) confirmed count from the verdict header"
+rc_v() { # file verdict-line confirmed-body
+  printf '%s\nmode: PR        iteration: 1 of 3\n\n## Confirmed findings\n%s\n\n## Rejected (with reason)\n- none\n\n## Unverified nits (spot-checked)\n- [Nit] c.sh:1 — a nit\n' "$2" "$3" > "$1"
+}
+TS_BODY=$(printf '[Should-fix] a.sh:3 — claim\n  verdict: confirmed (reproduce ✓ / refute ✗-survived / ground ✓)\n  evidence: a.sh:3 "while true"\n  fix-shape hint: cap the loop')
+rc_v "$T/v-ts-orig.md" 'super-roast verdict: Should-fix (1 confirmed)' "$TS_BODY"
+rc_v "$T/v-ts-rep.md" 'super-roast verdict: Should-fix (1 confirmed)' "- $TS_BODY"
+run bash "$R" --complete --source format-check "$T/v-ts-orig.md"
+assert_eq "$code" 4 "template-shaped stranded finding: original fails --complete"
+rc3 "template-shaped stranded finding marked once" 0 "$T/v-ts-orig.md" "$T/v-ts-rep.md"
+rc_v "$T/v-del-orig.md" 'super-roast verdict: Should-fix (2 confirmed)' "$(printf -- '- [Should-fix] a.sh:1 — first claim\n[Should-fix] b.sh:2 — second claim')"
+rc_v "$T/v-del-rep.md" 'super-roast verdict: Should-fix (1 confirmed)' '- [Should-fix] a.sh:1 — first claim'
+rc3 "finding deleted and header count lowered" 4 "$T/v-del-orig.md" "$T/v-del-rep.md" "(ii) header lines differ"
+rc_v "$T/v-3-orig.md" 'super-roast verdict: Should-fix (3 confirmed)' "$(printf -- '[Should-fix] a.sh:1 — first claim\n- [Should-fix] b.sh:2 — second claim')"
+rc_v "$T/v-3-rep.md" 'super-roast verdict: Should-fix (3 confirmed)' "$(printf -- '- [Should-fix] a.sh:1 — first claim\n- [Should-fix] b.sh:2 — second claim')"
+rc3 "correct-looking repair, header count 3" 4 "$T/v-3-orig.md" "$T/v-3-rep.md" "(iii) confirmed finding count 2 differs from verdict 3"
+rc_v "$T/v-clean-orig.md" 'super-roast verdict: clean (1 nits)' '[Should-fix] a.sh:1 — first claim'
+rc_v "$T/v-clean-rep.md" 'super-roast verdict: clean (1 nits)' '- [Should-fix] a.sh:1 — first claim'
+rc3 "clean header with a Confirmed finding" 4 "$T/v-clean-orig.md" "$T/v-clean-rep.md" "(iii) confirmed finding count 1 differs from verdict 0"
+rc_v "$T/v-clean-none.md" 'super-roast verdict: clean (1 nits)' '- none'
+rc3 "clean header, Confirmed findings - none" 0 "$T/v-clean-none.md" "$T/v-clean-none.md"
+rc_v "$T/v-nocount-orig.md" 'super-roast verdict: Should-fix' '[Should-fix] a.sh:1 — first claim'
+rc_v "$T/v-nocount-rep.md" 'super-roast verdict: Should-fix' '- [Should-fix] a.sh:1 — first claim'
+rc3 "verdict line with no count" 4 "$T/v-nocount-orig.md" "$T/v-nocount-rep.md" "(iii) verdict carries no confirmed count"
 
 if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
 echo "report-verdict: all tests passed"
