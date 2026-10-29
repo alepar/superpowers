@@ -712,6 +712,21 @@ rc_mk "$T/p-boldnote2.md" "- none" "- $RC_PROSE" '- Note:'
 rc_pair "marker on bold Note prose" 0 "$T/o-boldnote.md" "$T/p-boldnote.md"
 rc_pair "label demoted when it is not the whole line" 4 "$T/o-boldnote.md" "$T/p-boldnote2.md"
 
+# Two consecutive unmarked Confirmed findings: marking only the first folds the second into it.
+rc_cf() { # file confirmed-body
+  printf '%s\n## Confirmed findings\n%s\n\n## Rejected (with reason)\n- none\n\n## Unverified nits (spot-checked)\n- [Nit] c.sh:1 — a nit\n' "$RC_HDR" "$2" > "$1"
+}
+rc_cf "$T/o-two.md" "$(printf '[Should-fix] a.sh:1 — first claim\n[Should-fix] b.sh:2 — second claim')"
+rc_cf "$T/p-two-first.md" "$(printf -- '- [Should-fix] a.sh:1 — first claim\n[Should-fix] b.sh:2 — second claim')"
+rc_cf "$T/p-two-both.md" "$(printf -- '- [Should-fix] a.sh:1 — first claim\n- [Should-fix] b.sh:2 — second claim')"
+run bash "$R" --complete --source format-check "$T/o-two.md"
+assert_eq "$code" 4 "two unmarked confirmed findings: original fails --complete"
+run bash "$R" --complete --source format-check "$T/p-two-first.md"
+assert_eq "$code" 0 "only the first marked: the repair alone passes --complete (one folded occurrence)"
+rc_pair "only the first of two unmarked confirmed findings marked" 4 "$T/o-two.md" "$T/p-two-first.md"
+case "$(cat "$T/err")" in *"(iv) line 5 unmarked line becomes a continuation: [Should-fix] b.sh:2 — second claim") pass "folded line: stderr names the line";; *) fail "folded line: stderr names the line"; echo "    got: $(cat "$T/err")";; esac
+rc_pair "both unmarked confirmed findings marked" 0 "$T/o-two.md" "$T/p-two-both.md"
+
 # --classify rows carry line numbers; resolve them against the file text
 cls() { node --input-type=module - "$1" "$2" "$3" <<'NODE'
 import fs from 'node:fs';
