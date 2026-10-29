@@ -1,7 +1,7 @@
 # super-auto run — 2026-10-28-review-continuity-followups
 
 flags: planOneShot=t skipPlanRoast=f skipCodeRoast=f autonomous=t
-phase: fix-loop
+phase: roast-code
 codeMechanism: Workflow
 runTag: review-continuity-followups-20261028T151257
 context: Context: claude · planner=200K/167K · implementer=200K/167K · reviewer=200K/167K · finalReview=200K/167K · assembler=200K/167K · warn: planner, finalReview on a 200K model → set ANTHROPIC_DEFAULT_OPUS_MODEL=<model>[1m] or config.models.<role> to a 1M model · warn: implementer, reviewer, assembler on a 200K model → set ANTHROPIC_DEFAULT_SONNET_MODEL=<model>[1m] or config.models.<role> to a 1M model
@@ -12,7 +12,7 @@ base: main
 spec: 2026-10-28-review-continuity-followups-design.md
 epic: super-plan-mlr
 roastDesignRound: 3
-roastCodeRound: 4
+roastCodeRound: 5
 roast-code: 2026-10-28-review-continuity-followups-roast-pr-1.md, 2026-10-28-review-continuity-followups-roast-pr-2.md, 2026-10-28-review-continuity-followups-roast-pr-3.md, 2026-10-28-review-continuity-followups-roast-pr-4.md
 findingsLedger: findings-ledger.md
 stepBackCode-round-1: local — four clusters (c1 unclosed fence in both grammar copies, c2 repair-check rule (iv) prefix escape, c3 drift script git-step fallibility, c4 test git isolation) plus independent one-offs; untested/unreviewed rows are bounded-review coverage gaps
