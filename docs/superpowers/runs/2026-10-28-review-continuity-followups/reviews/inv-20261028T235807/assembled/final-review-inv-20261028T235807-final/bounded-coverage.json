@@ -1,0 +1,1 @@
+{"inspected":[{"path":"skills/super-code/scripts/report-verdict","hunks":["@@ -47,20 +47,45 @@ set -euo pipefail","@@ -118,42 +144,166 @@ try {"]},{"path":"tests/super-code/test-report-verdict.sh","hunks":["@@ -447,5 +469,351 @@ assert_eq \"$code\" 2 \"missing --source exits 2\""]}]}

@@ -1,0 +1,988 @@
+{
+  "version": 1,
+  "epic": "super-plan-mlr",
+  "cap": null,
+  "earlyUnblock": true,
+  "runtimeSlots": 10,
+  "invocations": [
+    {
+      "runId": "wf_d1722626-f6b",
+      "dir": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b",
+      "source": "workflow",
+      "start": "2026-10-28T23:58:28.099Z",
+      "end": "2026-10-29T00:21:37.775Z",
+      "agents": 27,
+      "timed": 27,
+      "journal": true
+    }
+  ],
+  "window": {
+    "start": "2026-10-28T23:58:28.099Z",
+    "lastLanding": "2026-10-29T00:12:46.604Z",
+    "end": "2026-10-29T00:21:37.775Z",
+    "graphMs": 858505,
+    "wallMs": 1389676
+  },
+  "graphScope": "observed invocation/residual graph",
+  "diagnosis": {
+    "planningMs": 378557,
+    "windowMs": 858505,
+    "dominant": "task graph"
+  },
+  "shape": {
+    "beads": 25,
+    "edges": 0,
+    "depth": 1,
+    "width": 25,
+    "levels": [
+      25
+    ],
+    "criticalPath": [
+      "super-plan-mlr.27"
+    ],
+    "fanOut": [],
+    "cycles": []
+  },
+  "cuts": [],
+  "beads": [
+    {
+      "id": "super-plan-mlr.26",
+      "n": 24,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "verificationOnlyCompleted": false,
+      "createdAt": null,
+      "mappingReadyAt": "2026-10-29T00:07:27.337Z",
+      "dependencyReadyAt": "2026-10-29T00:07:27.337Z",
+      "readyAt": "2026-10-29T00:07:27.337Z",
+      "dispatchedAt": "2026-10-29T00:07:29.577Z",
+      "landedAt": "2026-10-29T00:11:02.449Z",
+      "waitMs": 2240,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 158575,
+      "implByTool": {
+        "read": 783,
+        "git": 1755,
+        "shell": 10088,
+        "test": 94770
+      },
+      "implToolMs": 107396,
+      "reviewMs": 23224,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 2085,
+      "laneMs": 26934,
+      "seamMs": 0,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 215112,
+      "stackParents": [],
+      "lateEdges": []
+    },
+    {
+      "id": "super-plan-mlr.27",
+      "n": 25,
+      "deps": [],
+      "dependents": [],
+      "attempts": [
+        "IMPLEMENTED"
+      ],
+      "landed": true,
+      "verificationOnlyCompleted": false,
+      "createdAt": null,
+      "mappingReadyAt": "2026-10-29T00:07:27.337Z",
+      "dependencyReadyAt": "2026-10-29T00:07:27.337Z",
+      "readyAt": "2026-10-29T00:07:27.337Z",
+      "dispatchedAt": "2026-10-29T00:07:31.624Z",
+      "landedAt": "2026-10-29T00:12:46.604Z",
+      "waitMs": 4287,
+      "waitCause": "none",
+      "carriedMs": 0,
+      "implMs": 166358,
+      "implByTool": {
+        "read": 6000,
+        "git": 1239,
+        "shell": 105984,
+        "other": 1,
+        "edit": 5329,
+        "test": 19621
+      },
+      "implToolMs": 136975,
+      "reviewMs": 17673,
+      "fixMs": 0,
+      "stackWaitMs": 0,
+      "queueWaitMs": 34071,
+      "laneMs": 94588,
+      "seamMs": 46046,
+      "blockerMs": 0,
+      "reworkMs": 0,
+      "criticalMs": 104155,
+      "stackParents": [],
+      "lateEdges": []
+    }
+  ],
+  "criticalPath": {
+    "ms": 858505,
+    "byCategory": {
+      "startup": 151986,
+      "ready": 6223,
+      "dispatch": 22731,
+      "planning": 378557,
+      "implement": 158575,
+      "review": 23224,
+      "merge": 71163,
+      "seam": 46046
+    },
+    "laneContentionMs": 26934,
+    "redo": {
+      "stack-conflict": {
+        "ms": 0,
+        "beads": []
+      },
+      "cancelled": {
+        "ms": 0,
+        "beads": []
+      },
+      "retry": {
+        "ms": 0,
+        "beads": []
+      }
+    },
+    "segments": [
+      {
+        "kind": "startup",
+        "bead": null,
+        "label": "run start",
+        "via": null,
+        "start": "2026-10-28T23:58:28.099Z",
+        "ms": 151986
+      },
+      {
+        "kind": "ready",
+        "bead": null,
+        "label": "close-epics",
+        "via": null,
+        "start": "2026-10-29T00:01:00.085Z",
+        "ms": 6223
+      },
+      {
+        "kind": "dispatch",
+        "bead": null,
+        "label": "previous → plan",
+        "via": null,
+        "start": "2026-10-29T00:01:06.308Z",
+        "ms": 2472
+      },
+      {
+        "kind": "planning",
+        "bead": null,
+        "label": "plan",
+        "via": "previous",
+        "start": "2026-10-29T00:01:08.780Z",
+        "ms": 378557
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-mlr.26",
+        "label": "planned → impl:super-plan-mlr.26",
+        "via": null,
+        "start": "2026-10-29T00:07:27.337Z",
+        "ms": 2240
+      },
+      {
+        "kind": "implement",
+        "bead": "super-plan-mlr.26",
+        "label": "impl:super-plan-mlr.26",
+        "via": "planned",
+        "start": "2026-10-29T00:07:29.577Z",
+        "ms": 158575
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-mlr.26",
+        "label": "chain → review:super-plan-mlr.26",
+        "via": null,
+        "start": "2026-10-29T00:10:08.152Z",
+        "ms": 2054
+      },
+      {
+        "kind": "review",
+        "bead": "super-plan-mlr.26",
+        "label": "review:super-plan-mlr.26",
+        "via": "chain",
+        "start": "2026-10-29T00:10:10.206Z",
+        "ms": 23224
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-mlr.26",
+        "label": "chain → merge:super-plan-mlr.26",
+        "via": null,
+        "start": "2026-10-29T00:10:33.430Z",
+        "ms": 2085
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-mlr.26",
+        "label": "merge:super-plan-mlr.26",
+        "via": "chain",
+        "start": "2026-10-29T00:10:35.515Z",
+        "ms": 26934
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-mlr.27",
+        "label": "merge-lane → merge:super-plan-mlr.27",
+        "via": null,
+        "start": "2026-10-29T00:11:02.449Z",
+        "ms": 9567
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-mlr.27",
+        "label": "merge:super-plan-mlr.27",
+        "via": "merge-lane",
+        "start": "2026-10-29T00:11:12.016Z",
+        "ms": 12788
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-mlr.27",
+        "label": "chain → seam-review:super-plan-mlr.27",
+        "via": null,
+        "start": "2026-10-29T00:11:24.804Z",
+        "ms": 1947
+      },
+      {
+        "kind": "seam",
+        "bead": "super-plan-mlr.27",
+        "label": "seam-review:super-plan-mlr.27",
+        "via": "chain",
+        "start": "2026-10-29T00:11:26.751Z",
+        "ms": 46046
+      },
+      {
+        "kind": "dispatch",
+        "bead": "super-plan-mlr.27",
+        "label": "chain → merge:super-plan-mlr.27:seam-cleared",
+        "via": null,
+        "start": "2026-10-29T00:12:12.797Z",
+        "ms": 2366
+      },
+      {
+        "kind": "merge",
+        "bead": "super-plan-mlr.27",
+        "label": "merge:super-plan-mlr.27:seam-cleared",
+        "via": "chain",
+        "start": "2026-10-29T00:12:15.163Z",
+        "ms": 31441
+      }
+    ]
+  },
+  "bottleneck": {
+    "bead": "super-plan-mlr.26",
+    "ms": 215112,
+    "share": 0.25056580916826343,
+    "byCategory": {
+      "dispatch": 6379,
+      "implement": 158575,
+      "review": 23224,
+      "merge": 26934
+    },
+    "implByTool": {
+      "read": 783,
+      "git": 1755,
+      "shell": 10088,
+      "test": 94770
+    },
+    "calls": [
+      {
+        "name": "Bash",
+        "cat": "test",
+        "what": "python3 - <<'EOF'",
+        "test": "bash tests/super-code/test-report-verdict.sh",
+        "ms": 55848
+      },
+      {
+        "name": "Bash",
+        "cat": "test",
+        "what": "python3 - <<'EOF'",
+        "test": "bash tests/super-code/test-report-verdict.sh",
+        "ms": 20239
+      },
+      {
+        "name": "Bash",
+        "cat": "test",
+        "what": "bash tests/super-code/test-report-verdict.sh 2>",
+        "test": "bash tests/super-code/test-report-verdict.sh",
+        "ms": 18683
+      },
+      {
+        "name": "Bash",
+        "cat": "shell",
+        "what": "git commit -qam \"fix(super-code): --repair-check rejects no…",
+        "ms": 4447
+      },
+      {
+        "name": "Bash",
+        "cat": "shell",
+        "what": "git worktree add /Users/alepar/AleCode/superpowers/.worktre…",
+        "ms": 2923
+      },
+      {
+        "name": "Bash",
+        "cat": "shell",
+        "what": "bash /Users/alepar/.aisw/profiles/claude/claude-1/plugins/c…",
+        "ms": 2176
+      },
+      {
+        "name": "Bash",
+        "cat": "read",
+        "what": "grep -n \"RC_HDR=\\|strict.cjs\\|^occ()\\|AA=\" tests/super-code…",
+        "ms": 730
+      },
+      {
+        "name": "Bash",
+        "cat": "git",
+        "what": "sed -n 225,290p skills/super-code/scripts/report-verdict",
+        "ms": 597
+      },
+      {
+        "name": "Bash",
+        "cat": "git",
+        "what": "git show a6f5953a",
+        "ms": 555
+      },
+      {
+        "name": "Bash",
+        "cat": "git",
+        "what": "sed -n 736,800p tests/super-code/test-report-verdict.sh",
+        "ms": 543
+      }
+    ]
+  },
+  "lane": {
+    "busyMs": 117209,
+    "seamMs": 46046,
+    "spanMs": 131089,
+    "merges": 3,
+    "firstTryFailed": 1,
+    "firstTryKnown": 2,
+    "queueWaitMs": 36156,
+    "stackWaitMs": 0,
+    "peakQueue": 1
+  },
+  "runtime": {
+    "scope": "all-agent concurrency",
+    "slots": 10,
+    "peak": 4,
+    "fullMs": 0
+  },
+  "taskSlots": {
+    "scope": "task-slot concurrency",
+    "cap": null,
+    "peak": 2,
+    "fullMs": 0
+  },
+  "concurrency": null,
+  "tests": {
+    "busyMs": 324933,
+    "testMs": 114391,
+    "pollMs": 0,
+    "cappedCalls": 0
+  },
+  "slowTests": [
+    {
+      "cmd": "bash tests/super-code/test-report-verdict.sh",
+      "ms": 114391,
+      "runs": 4,
+      "longestMs": 55848
+    }
+  ],
+  "conflicts": [
+    {
+      "file": "skills/super-code/scripts/report-verdict",
+      "stackConflicts": 0,
+      "seamOverlaps": 1,
+      "declaredBy": 9
+    },
+    {
+      "file": "tests/super-code/test-report-verdict.sh",
+      "stackConflicts": 0,
+      "seamOverlaps": 1,
+      "declaredBy": 11
+    }
+  ],
+  "simulation": {
+    "estimate": true,
+    "window": "first dispatch to last landing",
+    "asRunMs": 842559,
+    "actualMs": 858505,
+    "fit": 0.98,
+    "unlimitedSlotsMs": 842559,
+    "unlimitedLanesMs": 817857,
+    "lowerBoundMs": 817857,
+    "graphChain": [
+      "super-plan-mlr.27"
+    ],
+    "whatIfs": [
+      {
+        "kind": "faster",
+        "target": "faster super-plan-mlr.27",
+        "ms": 761612,
+        "savingMs": 80947,
+        "note": "its implement time halved",
+        "estimate": true
+      }
+    ],
+    "verdict": "bead-bound"
+  },
+  "unmeasured": [
+    "Claude context windows from the model table: claude-opus-5-5 1000K, claude-sonnet-5-5 1000K"
+  ],
+  "context": {
+    "agents": [
+      {
+        "harness": "claude",
+        "role": "coordinator",
+        "label": "coordinator",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867.jsonl",
+        "model": "claude-opus-5-5",
+        "requests": 293,
+        "peak": 591726,
+        "peakAt": "2026-10-28T23:01:57.389Z",
+        "first": 64104,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 59,
+        "tasks": 29,
+        "compactions": [
+          {
+            "at": "2026-10-28T23:01:57.389Z",
+            "trigger": "auto",
+            "pre": 591726,
+            "post": 18983,
+            "model": "claude-opus-5-5",
+            "window": 1000000,
+            "gapMs": 3273997,
+            "cause": "idle"
+          }
+        ],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "read-ledger",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a2afbc03e8553a2f2.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 2,
+        "peak": 59777,
+        "peakAt": "2026-10-28T23:58:36.051Z",
+        "first": 42601,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 6,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "ledger-append:launch",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a786d69e5147ef1fd.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 2,
+        "peak": 45740,
+        "peakAt": "2026-10-29T00:00:57.851Z",
+        "first": 42778,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 5,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "close-epics",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a1d59d0f19ed9f77d.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 2,
+        "peak": 43592,
+        "peakAt": "2026-10-29T00:01:06.273Z",
+        "first": 41841,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 4,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "bd-ready",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a2b6cc57be11d3b7e.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 2,
+        "peak": 43716,
+        "peakAt": "2026-10-29T00:01:04.810Z",
+        "first": 41955,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 4,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "plan",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-ab96ce117aa0c3d11.jsonl",
+        "model": "claude-opus-5-5",
+        "requests": 22,
+        "peak": 127665,
+        "peakAt": "2026-10-29T00:06:59.179Z",
+        "first": 43098,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 13,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "ledger-append:surface:1",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-afa4443971a97760e.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 2,
+        "peak": 44892,
+        "peakAt": "2026-10-29T00:07:37.170Z",
+        "first": 42483,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 4,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "plan-rest",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a97d7be9671069ab9.jsonl",
+        "model": "claude-opus-5-5",
+        "requests": 10,
+        "peak": 68459,
+        "peakAt": "2026-10-29T00:08:29.977Z",
+        "first": 43292,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 7,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "impl:super-plan-mlr.26",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-aa4639ad8de21887b.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 13,
+        "peak": 85731,
+        "peakAt": "2026-10-29T00:10:04.501Z",
+        "first": 47091,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 9,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "impl:super-plan-mlr.27",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a6bfad8f0abec1bab.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 9,
+        "peak": 83786,
+        "peakAt": "2026-10-29T00:10:13.337Z",
+        "first": 47091,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 8,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "review:super-plan-mlr.26",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a65f5cbb806c3462c.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 4,
+        "peak": 67742,
+        "peakAt": "2026-10-29T00:10:28.760Z",
+        "first": 44706,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 7,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "ledger-append:human-action:1",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a3f093a7e95cc7939.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 2,
+        "peak": 43629,
+        "peakAt": "2026-10-29T00:10:15.282Z",
+        "first": 41673,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 4,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "review:super-plan-mlr.27",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-ae947d6705eae8aa5.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 4,
+        "peak": 58103,
+        "peakAt": "2026-10-29T00:10:34.299Z",
+        "first": 44686,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 6,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "merge:super-plan-mlr.26",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a133672026781c99a.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 6,
+        "peak": 49285,
+        "peakAt": "2026-10-29T00:10:59.783Z",
+        "first": 45837,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 5,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "close-check:super-plan-mlr.26",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a7196f5a9b9603b24.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 2,
+        "peak": 43238,
+        "peakAt": "2026-10-29T00:11:09.865Z",
+        "first": 41574,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 4,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "merge:super-plan-mlr.27",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a82b98611967eb170.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 4,
+        "peak": 48437,
+        "peakAt": "2026-10-29T00:11:22.771Z",
+        "first": 45829,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 5,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "seam-review:super-plan-mlr.27",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-acd6ed2b9e96f23de.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 6,
+        "peak": 52538,
+        "peakAt": "2026-10-29T00:12:12.733Z",
+        "first": 44200,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 5,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "merge:super-plan-mlr.27:seam-cleared",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-ad70393d21f95b6aa.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 7,
+        "peak": 48974,
+        "peakAt": "2026-10-29T00:12:43.940Z",
+        "first": 45609,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 5,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "close-check:super-plan-mlr.27",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a96c450baf80a3c20.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 3,
+        "peak": 44196,
+        "peakAt": "2026-10-29T00:12:55.752Z",
+        "first": 41606,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 4,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "close-epics",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a3bbd1048deb0f12c.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 2,
+        "peak": 43620,
+        "peakAt": "2026-10-29T00:13:05.308Z",
+        "first": 41865,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 4,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "bd-ready",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a436b3d029b1d96c3.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 2,
+        "peak": 43724,
+        "peakAt": "2026-10-29T00:13:04.360Z",
+        "first": 41979,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 4,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "ledger-append:detector",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a786d2e6cdfdcbcb8.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 3,
+        "peak": 44976,
+        "peakAt": "2026-10-29T00:13:05.404Z",
+        "first": 41701,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 4,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "ledger-append:recovery:deferred:super-plan-mlr:sweep:review-continuity-followups-20261028T151257",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a337b333d1dbad424.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 3,
+        "peak": 45594,
+        "peakAt": "2026-10-29T00:13:18.371Z",
+        "first": 42505,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 5,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "read-ledger:finish",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a7c53ab0d3d1dde61.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 3,
+        "peak": 61851,
+        "peakAt": "2026-10-29T00:13:33.808Z",
+        "first": 42817,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 6,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "assemble:final",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a2f148b142b7ab6eb.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 7,
+        "peak": 52488,
+        "peakAt": "2026-10-29T00:16:45.364Z",
+        "first": 43953,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 5,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "ledger-append:metrics",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-adee958d696bb63a0.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 2,
+        "peak": 45866,
+        "peakAt": "2026-10-29T00:16:56.833Z",
+        "first": 42750,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 5,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "final-review",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-a90a0f90d3ff51bcc.jsonl",
+        "model": "claude-opus-5-5",
+        "requests": 28,
+        "peak": 114126,
+        "peakAt": "2026-10-29T00:21:16.751Z",
+        "first": 46940,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 11,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      },
+      {
+        "harness": "claude",
+        "role": "agent",
+        "label": "worktree-sweep",
+        "file": "/Users/alepar/.aisw/profiles/claude/claude-1/projects/-Users-alepar-AleCode-superpowers/466f2ab3-a599-49d3-9c01-54016a393867/subagents/workflows/wf_d1722626-f6b/agent-ad337763cd28578f7.jsonl",
+        "model": "claude-sonnet-5-5",
+        "requests": 4,
+        "peak": 45805,
+        "peakAt": "2026-10-29T00:21:37.722Z",
+        "first": 42861,
+        "window": 1000000,
+        "windowSource": "table",
+        "peakPct": 5,
+        "tasks": 1,
+        "compactions": [],
+        "unmeasured": null
+      }
+    ],
+    "summary": {
+      "n": 28,
+      "measured": 28,
+      "high": 0,
+      "multiTask": 0,
+      "compacted": 1,
+      "compactions": 1,
+      "byCause": {
+        "cap": 0,
+        "early": 0,
+        "idle": 1,
+        "manual": 0,
+        "unknown": 0
+      },
+      "coordinator": {
+        "peak": 591726,
+        "window": 1000000,
+        "peakPct": 59,
+        "compactions": 1
+      },
+      "max": {
+        "label": "coordinator",
+        "peakPct": 59
+      },
+      "reasons": [
+        "Claude context windows from the model table: claude-opus-5-5 1000K, claude-sonnet-5-5 1000K"
+      ]
+    }
+  },
+  "summary": [
+    "Profile: super-plan-mlr · 1 invocation · 2026-10-28T23:58Z → 2026-10-29T00:21Z · wall 23m (task graph 14m, after the last landing 9m) · agents 27 (timed 27) · beads dispatched 2, landed 2, planned 25",
+    "Profile: graph scope — observed invocation/residual graph; historical topology is unknown",
+    "Profile: shape — 25 beads · 0 edges · depth 1 · width 25 · beads per level 25",
+    "Profile: bound — graph lower bound 14m (unlimited slots and merge lanes) · model of the run 14m (cap ∞, one merge lane) vs actual 14m (98%) → bead-bound: super-plan-mlr.27 alone set the pace — split it or make it faster",
+    "Profile: critical path — 14m = implement 3m · review 23s · merge 1m · seam 46s · planning 6m · ready 6s · startup 3m · dispatch 23s · of which other beads' merge-lane turns 27s",
+    "Profile: diagnosis — planning 6m (44% of first dispatch to last landing)",
+    "Profile: critical chain — close-epics ready 6s → plan planning 6m → super-plan-mlr.26 implement+review+merge 3m → merge lane ×1 2m (seam 46s)",
+    "Profile: bottleneck — super-plan-mlr.26 — 4m on the critical path (25%) · implement 3m · review 23s · merge 27s · dispatch 6s · implement on the path 3m: test 2m · git 2s · shell 10s · model 51s (longest: \"python3 - <<'EOF'\" 56s, \"python3 - <<'EOF'\" 20s) · dependents 0",
+    "Profile: waits — ready→start, summed per bead (beads wait at the same time, so not wall time): 0s over 0 of 2 landed beads",
+    "Profile: early unblock — 0 landed beads had in-run blockers · stacked on an implementation 0 · bounced on a stack conflict then waited for the merge 0 (0s) · waited for a merge without one 0",
+    "Profile: tests — implementers and fixers, summed: 2m running tests and 0s polling background runs, 35% of their 5m · 0 Bash call(s) ran into the 10-minute tool limit",
+    "Profile: merge lane — busy 2m of 2m (89%) · seam reviews and fixes 46s (39% of busy) · 3 merge dispatches, first try not merged for 1 of 2 · queue wait 36s total, peak 1 waiting · stack-parent wait 0s",
+    "Profile: conflicts — skills/super-code/scripts/report-verdict (stack conflicts 0, seam overlaps 1, declared by 9) · tests/super-code/test-report-verdict.sh (stack conflicts 0, seam overlaps 1, declared by 11)",
+    "Profile: runtime — peak 4 agents at once of 10 runtime slots · full 0% of the run · slot cap unknown",
+    "Profile: concurrency scope — all-agent concurrency peak 4 · task-slot concurrency peak 2, cap unknown (ordinary chains retain a slot through merge)",
+    "Profile: what-if estimate — faster super-plan-mlr.27 → 13m (−1m, 10%) — its implement time halved; first dispatch to last landing, planning retained",
+    "Profile: context — agents 28 (measured 28) · peak≥80% 0 · compacted 1 agents, 1 compactions (idle 1) · coordinator 592K/1000K (59%), 1 compactions · max coordinator 59%",
+    "Profile: context agent — coordinator peak 592K/1000K (59%) · first 64K · compactions 1 (idle 1)",
+    "Profile: unmeasured — Claude context windows from the model table: claude-opus-5-5 1000K, claude-sonnet-5-5 1000K"
+  ]
+}
