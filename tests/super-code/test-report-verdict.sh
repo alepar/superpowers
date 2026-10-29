@@ -757,9 +757,15 @@ run bash "$R" --keys "$T/x-orig.md"
 X_KEYS_ORIG="$out"
 run bash "$R" --keys "$T/x-repair.md"
 assert_eq "$out" "$X_KEYS_ORIG" "cross-copy: original and repair extract identical keys"
+# --repair-check handles roast reports only: the same defect and marker-only repair in a roast pair is accepted
+printf '%s\n## Confirmed findings\n- [Should-fix] a.sh:3 — claim\n\n## Rejected (with reason)\n- none\n\n## Unverified nits (spot-checked)\nd prose\n' "$RC_HDR" > "$T/x-roast-orig.md"
+printf '%s\n## Confirmed findings\n- [Should-fix] a.sh:3 — claim\n\n## Rejected (with reason)\n- none\n\n## Unverified nits (spot-checked)\n- d prose\n' "$RC_HDR" > "$T/x-roast-repair.md"
+run bash "$R" --repair-check "$T/x-roast-orig.md" "$T/x-roast-repair.md"
+assert_eq "$code" 0 "cross-copy roast pair: --repair-check exits 0"
+assert_eq "$(cat "$T/err")" "" "cross-copy roast pair: --repair-check prints nothing"
 run bash "$R" --repair-check "$T/x-orig.md" "$T/x-repair.md"
-assert_eq "$code" 0 "cross-copy pair: --repair-check exits 0"
-assert_eq "$(cat "$T/err")" "" "cross-copy pair: --repair-check prints nothing"
+assert_eq "$code" 4 "cross-copy final-review pair: --repair-check exits 4"
+case "$(cat "$T/err")" in "report-verdict: --repair-check: (iii) not a roast report: final-review"*) pass "cross-copy final-review pair: stderr names (iii)";; *) fail "cross-copy final-review pair: stderr names (iii)"; echo "    got: $(cat "$T/err")";; esac
 
 echo "report-verdict: --repair-check (iii) every Confirmed finding keyed"
 rc3_mk() { # file confirmed-body
@@ -792,7 +798,7 @@ rc3_mk "$T/c3-star.md" "$(printf '%s\n* [Should-fix] y.sh:1 — other' "$C1")"
 rc3 "* [SEV] item in Confirmed findings" 4 "$T/c3-star.md" "$T/c3-star.md" "(iii) confirmed finding without a --keys key: [Should-fix] y.sh:1"
 printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n### detail\n- b\n## Untested scope\n- none\n' > "$T/c3-fr-orig.md"
 printf '## Verdict\nnot ready (x)\n## Must fix before landing\n- a\n- detail\n- b\n## Untested scope\n- none\n' > "$T/c3-fr-rep.md"
-rc3 "final-review repair" 0 "$T/c3-fr-orig.md" "$T/c3-fr-rep.md"
+rc3 "final-review repair" 4 "$T/c3-fr-orig.md" "$T/c3-fr-rep.md" "(iii) not a roast report: final-review"
 
 if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
 echo "report-verdict: all tests passed"
