@@ -1,0 +1,5 @@
+decision: local
+triggers: defect-type
+summary: Round 1 has two independent Nits: the contradiction rule leaves planOneShot's recorded value unspecified, and no mechanical test pins the new autonomous=true default. Both are one-clause or one-check local fixes, and no design decision needs to change.
+pattern: none. r1 [Nit] skills/super-auto/SKILL.md:160 is a missing value in the contradiction rule. It touches the durable `flags:` line, which is shared run state, so defect-type applies. r1 [Nit] skills/super-auto/SKILL.md:158 is a test-coverage gap against repo convention. They are in the same §Inputs flag rules but have different causes and different fixes. The core decision (autonomous defaults to true, plain-word opt-outs, contradiction resolved toward the explicit `autonomous`) was upheld by the panel in every rejected finding (3–0 or 2–1). One sequencing note: when the contradiction clause is fixed, the new test-contract-lint.sh assertion from the second fix can also pin the planOneShot value it records, so the rule doesn't come back as an untested finding next round.
+clusters: none

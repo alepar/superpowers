@@ -1,0 +1,1 @@
+(re-run with full spec; replaces original) GAP R-new-1 evaluation probes untracked; GAP R8 sweep; GAP R-new-2 autonomy-gated side effects; UNOWNED-SEAM readiness/continuity text shared with another tab. requirements: R1–R8 mapped (R8 partial). No ORPHAN.

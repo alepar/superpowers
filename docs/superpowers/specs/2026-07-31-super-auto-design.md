@@ -301,3 +301,7 @@ mode this fork's own history is a long argument against.
 - Changing how any phase skill works internally (§1).
 - Migrating existing flat `specs/` and `plans/` documents into run directories (§5).
 - Parallelising the phases — they are strictly serial by construction.
+
+## Post-Implementation Notes
+
+- 2026-10-28: §2 Inputs' flags are no longer collected in a batched launch question with every flag defaulting to `false`. `autonomous` now defaults to `true` (the other flags stay `false`), unstated flags take their defaults without a question, and explicit words opt out (interactive → `autonomous=false`; a design-review stop → `planOneShot=true, autonomous=false`). See docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/2026-10-28-super-auto-autonomous-default-design.md. The body above is left as written.

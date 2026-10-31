@@ -14,7 +14,7 @@ Superpowers for large-scope autonomous software development. Give it a vision an
   </picture>
 </p>
 
-`super-auto` runs this whole sequence from one invocation, and can run it autonomously, without stopping for questions. Each step also works on its own: `super-roast` reviews any PR or design doc, and `super-code` executes an epic (a beads parent task with child tasks) you decomposed by hand.
+`super-auto` runs this whole sequence from one invocation, and by default runs it autonomously, without stopping for questions (ask for an interactive run to keep the design gates). Each step also works on its own: `super-roast` reviews any PR or design doc, and `super-code` executes an epic (a beads parent task with child tasks) you decomposed by hand.
 
 - **Recursive design.** `super-design` turns a goal into a spec and decomposes the spec into a task tree. Any task too large to build directly gets its own spec and decomposition, recursively. Before execution starts, the finished tree is checked against the original goal.
 - **Seams and interfaces up front.** Before each spec is decomposed, a fresh agent names its key abstractions so each one gets a single owner. Tasks that share an interface declare which one owns it and which consume it, and `super-code` reviews each seam again before merging, after rebasing onto sibling changes.
@@ -45,7 +45,7 @@ codex plugin add superpowers@superpowers-alepar
 **Two things to try first:**
 
 1. **Review code you already have.** Ask your agent: *"Use super-roast to review this branch against main."* Nothing is changed. You get a report of verified findings ranked by severity.
-2. **Hand over a small project.** Write a short vision doc (what to build, for whom, what done looks like), then ask: *"Use super-auto on docs/vision.md, autonomous."* Expect the run to take hours. It ends with a report and asks you whether to merge.
+2. **Hand over a small project.** Write a short vision doc (what to build, for whom, what done looks like), then ask: *"Use super-auto on docs/vision.md."* Expect the run to take hours. It ends with a report and asks you whether to merge.
 
 ## Other harnesses (best effort)
 
@@ -70,7 +70,7 @@ Skills are used when you ask for them, for example *"Use super-roast…"*. Routi
 | Skill | What it does |
 |---|---|
 | **Added by this fork** | |
-| `super-auto` | Runs the whole lifecycle above from one goal, optionally autonomous |
+| `super-auto` | Runs the whole lifecycle above from one goal, autonomous by default |
 | `super-design` | Turns a goal into a recursively designed task tree in beads |
 | `super-roast` | Adversarial review of a design doc, or of a PR, branch or diff |
 | `super-code` | Executes a beads epic with parallel tasks in separate worktrees |

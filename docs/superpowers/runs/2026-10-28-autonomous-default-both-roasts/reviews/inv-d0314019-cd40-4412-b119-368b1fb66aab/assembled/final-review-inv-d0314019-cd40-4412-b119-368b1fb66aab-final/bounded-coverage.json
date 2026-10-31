@@ -1,0 +1,13 @@
+{"inspected":[
+{"path":"README.md","hunks":["@@ -14,7 +14,7 @@ Superpowers for large-scope autonomous software development. Give it a vision an","@@ -45,7 +45,7 @@ codex plugin add superpowers@superpowers-alepar","@@ -70,7 +70,7 @@ Skills are used when you ask for them, for example *\"Use super-roast…\"*. Routi"]},
+{"path":"docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/2026-10-28-super-auto-autonomous-default-design.md","hunks":["@@ -0,0 +1,107 @@"]},
+{"path":"docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/2026-10-28-super-auto-autonomous-default-roast-pr-1-punch-list.txt","hunks":["@@ -0,0 +1,9 @@"]},
+{"path":"docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/2026-10-28-super-auto-autonomous-default-roast-pr-1.md","hunks":["@@ -0,0 +1,59 @@"]},
+{"path":"docs/superpowers/runs/2026-10-28-autonomous-default-both-roasts/probes/after-summary.md","hunks":["@@ -0,0 +1,24 @@"]},
+{"path":"docs/superpowers/specs/2026-07-31-super-auto-design.md","hunks":["@@ -301,3 +301,7 @@ mode this fork's own history is a long argument against."]},
+{"path":"docs/superpowers/specs/INDEX.md","hunks":["@@ -8,6 +8,7 @@ Catalog of the design specs in this directory, newest first. The brainstorming l"]},
+{"path":"skills/super-auto/MAINTENANCE.md","hunks":["@@ -23,7 +23,7 @@ A runtime file points at a rule's canonical home instead of restating it, copyin"]},
+{"path":"skills/super-auto/SKILL.md","hunks":["@@ -1,14 +1,14 @@","@@ -148,14 +148,16 @@ Before the flags, look for a run already in flight per resume.md §Finding a run","@@ -562,7 +564,7 @@ apply the recommended option and park it for anything that comes up later. A ses","@@ -581,7 +583,7 @@ not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict`"]},
+{"path":"skills/super-auto/run-state.md","hunks":["@@ -81,7 +81,7 @@ The schema home for `run.md`: every field's name and line format. The numbered i"]},
+{"path":"tests/super-auto/test-contract-lint.sh","hunks":["@@ -242,6 +242,27 @@ check_itercap() { # SKILLS_ROOT","@@ -365,6 +386,7 @@ lint() { # SKILLS_ROOT REPO_ROOT -> one \"file[:line]: message\" per problem","@@ -432,6 +454,8 @@ copy; sed '/^| Gotchas/s/ and its `designRoast`//' \"$REPO_ROOT/skills/super-auto"]}
+]}

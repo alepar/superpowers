@@ -1,0 +1,43 @@
+ README.md                                          |    6 +-
+ ...6-10-28-super-auto-autonomous-default-design.md |  107 +
+ ...omous-default-roast-design-1-step-back-keys.txt |    2 +
+ ...-autonomous-default-roast-design-1-step-back.md |    6 +
+ ...super-auto-autonomous-default-roast-design-1.md |   77 +
+ ...nomous-default-roast-pr-1-final-review-keys.txt |    1 +
+ ...to-autonomous-default-roast-pr-1-punch-list.txt |    9 +
+ ...omous-default-roast-pr-1-scope-dispositions.txt |    3 +
+ ...autonomous-default-roast-pr-1-scope-filter.json |    1 +
+ ...to-autonomous-default-roast-pr-1-scope-keys.txt |    2 +
+ ...utonomous-default-roast-pr-1-step-back-keys.txt |    2 +
+ ...auto-autonomous-default-roast-pr-1-step-back.md |    5 +
+ ...-28-super-auto-autonomous-default-roast-pr-1.md |   59 +
+ .../coverage-findings-round-1.md                   |    5 +
+ .../coverage-findings-round-2.md                   |    5 +
+ .../coverage-ledger.md                             |   11 +
+ .../coverage-round-1-requirements.md               |    8 +
+ .../coverage-round-1-review-1.md                   |    1 +
+ .../coverage-round-1-review-2.md                   |    1 +
+ .../findings-ledger-design.md                      |    5 +
+ .../findings-ledger.md                             |    6 +
+ .../findings-overrides-design.md                   |    0
+ .../findings-overrides.md                          |    0
+ .../friction.md                                    |    6 +
+ .../probes/after-summary.md                        |   24 +
+ .../probes/before-summary.md                       |   12 +
+ .../probes/probe.md                                |   22 +
+ .../profile-wf_a6f8296f-9ea.json                   |  780 ++
+ .../profile-wf_a6f8296f-9ea.md                     |  120 +
+ .../bounded-coverage.json                          |  122 +
+ .../bounded-draft.md                               |   66 +
+ .../diffstat.txt                                   |   21 +
+ .../generated-input-provenance.md                  | 2120 +++++
+ .../review-inputs.json                             | 9193 ++++++++++++++++++++
+ ...iew-inv-8369280e-3786-4bc9-ad92-69dc296989b6.md |   70 +
+ .../run.md                                         |   65 +
+ .../specs/2026-07-31-super-auto-design.md          |    4 +
+ docs/superpowers/specs/INDEX.md                    |    1 +
+ skills/super-auto/MAINTENANCE.md                   |    2 +-
+ skills/super-auto/SKILL.md                         |   26 +-
+ skills/super-auto/run-state.md                     |    2 +-
+ tests/super-auto/test-contract-lint.sh             |   24 +
+ 42 files changed, 12985 insertions(+), 17 deletions(-)
