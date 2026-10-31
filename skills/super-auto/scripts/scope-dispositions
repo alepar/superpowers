@@ -28,15 +28,16 @@ if [ "${1:-}" = --project ]; then
 const fs = require('node:fs');
 const path = require('node:path');
 const args = process.argv.slice(2);
-let run, external, keys = false;
+let run, external, keys = false, roastKeys = false;
 function usage() {
-  console.error('usage: scope-dispositions --project RUN_MD [--keys] [--external JSON]');
+  console.error('usage: scope-dispositions --project RUN_MD [--keys | --roast-keys] [--external JSON]');
   process.exit(2);
 }
 for (let i = 0; i < args.length; i++) {
   if (args[i] === '--project' && !run && args[i + 1]) run = args[++i];
   else if (args[i] === '--external' && !external && args[i + 1]) external = args[++i];
   else if (args[i] === '--keys' && !keys) keys = true;
+  else if (args[i] === '--roast-keys' && !keys) keys = roastKeys = true;
   else usage();
 }
 if (!run) usage();
@@ -193,9 +194,18 @@ process.stdout.on('error', error => {
   process.exitCode = 1;
 });
 if (keys) {
-  const printed = new Set();
+  // --roast-keys: only keys a roast's --punch-listed input accepts (sub-Blocking `[SEV] <location>`);
+  // the rest stay in the full projection and are counted on stderr, never dropped silently.
+  const roastForm = k => /^\[(Should-fix|Nit|FYI)\] \S/.test(k);
+  const printed = new Set(), omitted = [];
   for (const f of findings.filter(f => f.outstanding && f.deferred)) for (const o of f.occurrences) {
-    if (!printed.has(o.key)) { console.log(o.key); printed.add(o.key); }
+    if (printed.has(o.key)) continue;
+    printed.add(o.key);
+    if (roastKeys && !roastForm(o.key)) omitted.push(o.key); else console.log(o.key);
+  }
+  if (omitted.length) {
+    console.error(`ROAST_KEYS_OMITTED: ${omitted.length} outstanding deferred key(s) not in [SEV] <location> form; they stay in the full projection`);
+    for (const k of omitted) console.error('  ' + k);
   }
   for (const g of gaps) console.error('FINDING_GAP: ' + g.origin + ': ' + g.message);
 } else {

@@ -15,6 +15,7 @@ bash "$SCRIPT_DIR/review-inputs-range-scope.sh"
 pass() { echo "  [PASS] $1"; }
 fail() { echo "  [FAIL] $1"; FAILURES=$((FAILURES + 1)); }
 assert_eq() { if [ "$1" = "$2" ]; then pass "$3"; else fail "$3"; echo "    expected: $2"; echo "    got:      $1"; fi; }
+assert_has() { case "$1" in *"$2"*) pass "$3" ;; *) fail "$3"; echo "    missing: $2" ;; esac; }
 run() { set +e; out=$("$@" 2>"$T/err"); code=$?; set -e; }
 
 cat > "$T/keys" <<'K'
@@ -350,6 +351,12 @@ fs.writeFileSync(p+'/bad-link.md',records+line('link',{refs:[ref(1),ref(99)],bas
 fs.writeFileSync(p+'/external.json',JSON.stringify({version:1,records:[{type:'finding-disposition',ref:ref(1),disposition:'dissolved',basis:'later review silent'}]}));
 fs.writeFileSync(p+'/external-supported.json',JSON.stringify({version:1,records:[{type:'finding-disposition',ref:ref(1),disposition:'resolved',judgment:'supported',basis:'verified external fix',evidence:['external.log'],verification:'reproduction now passes'}]}));
 fs.writeFileSync(p+'/external-malformed.json','{broken');
+fs.writeFileSync(p+'/mixed-kinds.md',records
+  +line('source',{version:1,source:'inv-m/final',kind:'final-review',artifact:b.artifact,verdict:'not ready',occurrences:[{section:'Untested scope',position:1,key:'Unreviewed path: docs/x.md',text:'Unreviewed path: docs/x.md'}]})
+  +line('route',{ref:ref(1,'inv-m/final','Untested scope'),deferred:'bounded review'})
+  +line('source',{version:1,source:'roast-code/round-2',kind:'roast',artifact:b.artifact,verdict:'Should-fix (2 confirmed)',occurrences:[{section:'Confirmed findings',position:1,key:'[Should-fix] r.ts:4 — R',text:'[Should-fix] r.ts:4 — R'},{section:'Confirmed findings',position:2,key:'[Must-fix] m.ts:5 — M',text:'[Must-fix] m.ts:5 — M'}]})
+  +line('route',{ref:ref(1,'roast-code/round-2','Confirmed findings'),deferred:'outside goal'})
+  +line('route',{ref:ref(2,'roast-code/round-2','Confirmed findings'),deferred:'outside goal'}));
 NODE
 run bash "$S" --project "$T/projection.md"
 assert_eq "$code" 0 "projection accepts retained complete extraction and supported dispositions"
@@ -367,6 +374,21 @@ assert_eq "$code" 3 "metric projection preserves gap exit"
 if node -e 'const p=JSON.parse(process.argv[1]); if(!p.metrics || p.metrics.repaired!==1 || p.metrics.scope!=="retained sources (partial)" || !p.gaps.length)process.exit(1)' "$out"; then pass "partial projection retains supported metrics with explicit scope"; else fail "partial projection retains supported metrics with explicit scope"; fi
 run bash "$S" --project "$T/projection.md" --keys
 assert_eq "$out" '[Nit] café,format.ts:1 — A' "keys contain deferred A only; verified B, rejected C and active D excluded"
+run bash "$S" --project "$T/mixed-kinds.md" --keys
+assert_has "$out" 'Unreviewed path: docs/x.md' "--keys keeps every outstanding deferred key, roast-form or not"
+printf '%s\n' "$out" > "$T/punch-all.txt"
+run bash "$S" --project "$T/mixed-kinds.md" --roast-keys
+assert_eq "$code" 0 "--roast-keys exits 0 on a gap-free projection"
+assert_eq "$out" "$(printf '%s\n' '[Nit] café,format.ts:1 — A' '[Should-fix] r.ts:4 — R')" "--roast-keys keeps only sub-Blocking [SEV] <location> keys, in --keys order"
+assert_has "$(cat "$T/err")" "ROAST_KEYS_OMITTED: 2 outstanding deferred key(s) not in [SEV] <location> form" "--roast-keys counts what it left out on stderr"
+assert_has "$(cat "$T/err")" "[Must-fix] m.ts:5 — M" "--roast-keys names each omitted key"
+printf '%s\n' "$out" > "$T/punch-roast.txt"
+printf '## Verdict\nShould-fix (1 confirmed)\n' > "$T/prior-roast.md"
+A="$REPO_ROOT/skills/super-roast/scripts/assemble-args.mjs"
+run node "$A" --mode pr --inputs "b@2 vs m@0" --iteration 2 --prior-report "$T/prior-roast.md" --punch-listed "$T/punch-roast.txt" --diff-stat "M a.js" --seats-safe --out "$T/pr2.json" --script "$T/pr2.js"
+assert_eq "$code" 0 "assemble-args accepts the --roast-keys punch list"
+run node "$A" --mode pr --inputs "b@2 vs m@0" --iteration 2 --prior-report "$T/prior-roast.md" --punch-listed "$T/punch-all.txt" --diff-stat "M a.js" --seats-safe --out "$T/pr2b.json" --script "$T/pr2b.js"
+assert_eq "$code" 2 "assemble-args rejects the unfiltered --keys list (the reason --roast-keys exists)"
 run bash "$S" --project "$T/linked.md"
 assert_eq "$code" 0 "explicit reference link accepted"
 if [ "$code" -eq 0 ]; then
