@@ -113,9 +113,12 @@ case "$cmd" in
     done
     echo "]" ;;
   create)
-    title=$1; shift; parent='' labels=''
+    # Like bd's flag parser: a positional title starting with - is read as an unknown flag.
+    title='' parent='' labels=''
     while [ $# -gt 0 ]; do
-      case "$1" in --parent) parent=$2; shift 2 ;; -l) labels=$2; shift 2 ;; -d) shift 2 ;; *) shift ;; esac
+      case "$1" in --title=*) title=${1#--title=}; shift ;; --title) title=$2; shift 2 ;;
+        --parent) parent=$2; shift 2 ;; -l) labels=$2; shift 2 ;; -d) shift 2 ;; --silent|--no-inherit-labels) shift ;;
+        -*) echo "Error: unknown flag: $1" >&2; exit 1 ;; *) title=$1; shift ;; esac
     done
     n=$(( $(ls "$BD_STATE" | grep -c '^bead-') + 1 )); id="new-$n"
     printf 'status=open\nparent=%s\nlabels=%s\ntitle=%s\n' "$parent" "$labels" "$title" > "$BD_STATE/bead-$id"
@@ -231,6 +234,11 @@ file_beads design sp:redesign-design-1 amend-design-escaped.md
 assert_eq "$code" 0 "escaped title replay: block exits 0"
 assert_eq "$(calls | grep -c '^create ' || true)" "$creates_before" "escaped title replay files no duplicate"
 assert_eq "$(wc -l < "$ST/deps.log" | tr -d ' ')" "$deps_before" "escaped title replay adds no dep add"
+
+seed
+file_beads code sp:redesign-code-1 amend-code-dashtitle.md
+assert_eq "$code" 0 "title starting with --: block exits 0"
+assert_eq "$(grep -lxF 'title=--repair-check rejects non-roast repairs' "$ST"/bead-new-* 2>/dev/null | grep -c .)" 1 "title starting with --: filed once with its exact title"
 
 seed; seed_sweep
 file_beads design sp:redesign-design-1 amend-design-no-work.md

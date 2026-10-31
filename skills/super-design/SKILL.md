@@ -956,7 +956,7 @@ caller's bead context.
      [ -n "$item" ] || continue
      title=${item%% | *}
      [ -z "$(id_of "$title")" ] || continue
-     bd create "$title" --parent "$PARENT" --no-inherit-labels -l "sp:$ROOT,$LABEL" \
+     bd create --title="$title" --parent "$PARENT" --no-inherit-labels -l "sp:$ROOT,$LABEL" \
        -d "${item#"$title" | }${CONTEXT:+ — $CONTEXT}" --silent
    done
    if [ "$LOOP" = design ]; then
