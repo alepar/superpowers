@@ -16,22 +16,29 @@
 # Usage: bash already-merged INTEGRATION_BRANCH REF
 #   Prints "true" or "false" and exits 0 either way; a REF that resolves to nothing is checked by
 #   the subject rule alone. Exits 2 on a bad argument or an unknown INTEGRATION_BRANCH.
-# Usage: bash already-merged --landed INTEGRATION_BRANCH
+# Usage: bash already-merged --landed INTEGRATION_BRANCH [--since BASE]
 #   Prints one line `<branch> <second-parent sha> <merge sha>` per `task-*` branch named by a merge
 #   subject on the integration branch's first-parent history, newest first, each branch once —
 #   except a branch that still exists with commits the integration branch lacks (rule 3's limit).
+#   --since BASE limits it to merges after BASE (BASE..INTEGRATION_BRANCH), so task merges the
+#   default branch already carried from earlier runs are not reported as this branch's landings.
 set -euo pipefail
 
-usage() { echo "usage: already-merged INTEGRATION_BRANCH REF | already-merged --landed INTEGRATION_BRANCH" >&2; exit 2; }
+usage() { echo "usage: already-merged INTEGRATION_BRANCH REF | already-merged --landed INTEGRATION_BRANCH [--since BASE]" >&2; exit 2; }
 
 # Each line: <merge sha> <parents…><TAB><subject>, first-parent merges only, newest first. The awk
 # readers below consume their whole input (no early exit), so pipefail never sees a SIGPIPE'd git.
 first_parent_merges() { git log --first-parent --merges --format='%H %P%x09%s' "$1"; }
 
 if [ "${1:-}" = --landed ]; then
-  [ $# -eq 2 ] || usage
+  [ $# -eq 2 ] || { [ $# -eq 4 ] && [ "$3" = --since ]; } || usage
   integ_sha=$(git rev-parse --verify --quiet "${2}^{commit}") || { echo "unknown ref: $2" >&2; exit 2; }
-  first_parent_merges "$integ_sha" | awk -F '\t' '
+  range=$integ_sha
+  if [ $# -eq 4 ]; then
+    base_sha=$(git rev-parse --verify --quiet "${4}^{commit}") || { echo "unknown ref: $4" >&2; exit 2; }
+    range="$base_sha..$integ_sha"
+  fi
+  first_parent_merges "$range" | awk -F '\t' '
     match($2, /^Merge branch '\''task-[^'\'']+'\''/) {
       b = substr($2, 15, RLENGTH - 15); split($1, p, " ")
       if (!(b in seen)) { seen[b] = 1; print b, p[3], p[1] }

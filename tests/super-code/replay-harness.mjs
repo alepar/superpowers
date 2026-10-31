@@ -4376,6 +4376,7 @@ async function main() {
     const out = await run({ args: liveArgs(), canned })
     assertNoThrow(out)
     check(/already-merged --landed epic-bd-100-integration/.test(promptOf(out.trace, 'read-ledger') ?? ''), 'the Resume read also lists the task merges git holds')
+    check(/already-merged --landed epic-bd-100-integration --since <that merge-base>/.test(promptOf(out.trace, 'read-ledger') ?? '') && /git merge-base <default-branch-commit> epic-bd-100-integration/.test(promptOf(out.trace, 'read-ledger') ?? ''), 'the git landing lookup is limited to this branch\'s own merges since its default-branch merge-base')
     check(!out.counts['impl:bd-101'] && !out.counts['review:bd-101'] && !out.counts['merge:bd-101'] && out.counts['close-only:bd-101'] === 1, 'the landed task is closed only: no implement, review or merge', JSON.stringify(out.counts))
     check(promptOf(out.trace, 'close-only:bd-101')?.includes(SHA('b')), 'closure verifies the tip git reported')
     check(!out.counts['triage:bd-101'] && noCancel(out) && out.counts['merge:bd-102'] === 1, 'no blocker; the dependent is not cancelled and merges')
@@ -4761,6 +4762,18 @@ esac
         git('branch', '-q', '-D', 'task-bd-1')
         const landed = am('--landed', 'integ')
         check(landed.code === 0 && landed.out === `task-bd-1 ${tip} ${merge}`, '--landed lists each task merge as <branch> <tip> <merge>', JSON.stringify(landed))
+        // A run's integration branch is cut from a default branch whose first-parent history already
+        // holds other epics' task merges; --since BASE keeps only this branch's own landings.
+        const cut = git('rev-parse', 'integ')
+        git('checkout', '-q', '-b', 'run-integ'); git('checkout', '-q', '-b', 'task-bd-7'); git('commit', '-q', '--allow-empty', '-m', 'seven')
+        const tip7 = git('rev-parse', 'HEAD')
+        git('checkout', '-q', 'run-integ'); git('merge', '-q', '--no-ff', '--no-edit', 'task-bd-7'); git('branch', '-q', '-D', 'task-bd-7')
+        const merge7 = git('rev-parse', 'HEAD')
+        check(am('--landed', 'run-integ').out === `task-bd-7 ${tip7} ${merge7}\ntask-bd-1 ${tip} ${merge}`, 'without --since, --landed also lists the base branch\'s earlier task merges')
+        const since = am('--landed', 'run-integ', '--since', cut)
+        check(since.code === 0 && since.out === `task-bd-7 ${tip7} ${merge7}`, '--landed --since BASE lists only merges after BASE on the first-parent history', JSON.stringify(since))
+        check(am('--landed', 'run-integ', '--since', 'nope').code === 2, 'an unknown --since base exits 2')
+        git('checkout', '-q', 'integ')
         check(am('nope', 'task-bd-1').code === 2 && am('integ').code === 2, 'an unknown integration branch or a missing argument exits 2')
       } finally { rmSync(dir, { recursive: true, force: true }) }
     }
