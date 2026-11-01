@@ -23,6 +23,7 @@ is in addition to the mandatory system-wide `psa-global` subscription.
 
 ### Coordinating delegated runs
 
+- Standing cleanup rule: after a fix is accepted and merged, the coordinator asks its owner tab to clean up its own worktrees, temporary resources and owned processes, preserving required evidence and unrelated work. The owner reports cleanup completion or concrete retained-resource blockers; once cleanup is confirmed and no work remains, the coordinator closes that tab. Include this rule in future handoffs. Unmerged work and active research/replay tabs remain open.
 - When research or a proposal becomes implementation, give your human partner two options before launch: the smallest change covering every element of their literal request, and the full proposal. Give each its files, rough size and new abstractions. In every brief, quote their literal request separately from your own elaborations.
 - Every condition you attach to a delegated run names its source: your human partner's request, a project instruction, or a concrete risk to work you own. A condition with no such source is not attached.
 - When a delegated run's updates report no decision needed for about two hours with no change to product files, ask it which user-visible deliverable changed and which of its open checks your human partner asked for.
