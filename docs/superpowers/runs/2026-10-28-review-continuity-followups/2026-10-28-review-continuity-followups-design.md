@@ -115,4 +115,6 @@ This section is relative to the implementation on this run's branch at the code-
 
 ## Post-Implementation Notes
 
+**2026-10-31 — Changes vs. original design:** Integrated the seven fixes and the stacked run-friction followups into main. The followups pass dash-prefixed amendment titles with `--title=`, build roast punch lists with `--roast-keys`, scope ledger landing checks to the current branch range, and clarify synthetic Workflow stub output. The two code amendments above retain the final repair-check contract. The owner's hand-back records human acceptance and the request to remove the before/after drill-eval requirement; historical bounded-review and unmeasured behavior-eval limitations remain in the run report.
+
 > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
