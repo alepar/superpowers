@@ -1,14 +1,14 @@
 ---
 name: super-auto
-description: Use when taking a feature from a raw idea all the way to finished code in one invocation, optionally unattended, in a repo with a beads (`bd`) tracker. Not for reviewing an existing PR or design (that is super-roast) and not for executing an epic that already has a task tree (that is super-code).
+description: Use when taking a feature from a raw idea all the way to finished code in one invocation, unattended by default, in a repo with a beads (`bd`) tracker. Not for reviewing an existing PR or design (that is super-roast) and not for executing an epic that already has a task tree (that is super-code).
 ---
 
 # super-auto
 
 Drive a feature from a raw idea to finished, reviewed code in one invocation, by sequencing
 `super-design` → `super-roast` (design) → `super-code` → `super-roast` (PR) → a
-fix loop → report → `finishing-a-development-branch`, with an optional autonomous mode that runs
-from launch to the finished report without stopping.
+fix loop → report → `finishing-a-development-branch`. By default the run is autonomous: it runs
+from launch to the finished report without stopping; ask for an interactive run to keep the design gates (§Inputs).
 
 Core principle: `super-auto` owns sequencing and nothing else. Every phase already has an
 owner; this skill invokes them, threads the run's flags (§Inputs) through them, carries parked
@@ -148,14 +148,16 @@ Before the flags, look for a run already in flight per resume.md §Finding a run
 
 ## Inputs
 
-Collect the flags below once, before any phase runs, in one batched question, asking only for those the invocation leaves open; each defaults to `false`, and a resume never re-asks (§Resume). When confirming, say what the pair means (§Autonomous mode).
+Resolve the flags below once, before any phase runs. A flag the invocation does not state takes its default from the table, without a question; there is no launch question about the flags (a reserved-topic question under §Autonomous mode is still the only pre-launch ask). A resume reads `run.md`'s recorded `flags:` line and never re-applies these defaults (§Resume; a resume message that changes a flag goes through resume.md §Resume messages that change something). Name the resolved flags, with what they mean, in the run's first status note (§Autonomous mode).
 
-| Flag | Effect |
-|---|---|
-| plan one-shot | Stated to `super-design`, which relays it to every `brainstorming` iteration it runs (root spec, each subepic) — Mode B instead of Mode A (`autonomous` forces Mode B regardless). Without `autonomous`, the top split is applied without asking and the run stops after phase 2 for design review (§Autonomous mode) |
-| skip plan roast | Stated to `super-design`, either way — it pre-decides the adversarial-review offer on the settled tree (skip or run), so the user, who already answered here, is never asked again |
-| skip code roast | Omits the final PR-mode roast entirely |
-| autonomous | Stated to `super-design` — it owns the design gates and its own roast loop, and its unattended behavior is conditional on being told. No stop from launch to the phase-7 hand-back; the top split is applied, not asked (§Autonomous mode) |
+| Flag | Default | Effect |
+|---|---|---|
+| plan one-shot | `false` | Stated to `super-design`, which relays it to every `brainstorming` iteration it runs (root spec, each subepic) — Mode B instead of Mode A (`autonomous` forces Mode B regardless). Without `autonomous`, the top split is applied without asking and the run stops after phase 2 for design review (§Autonomous mode) |
+| skip plan roast | `false` | Stated to `super-design`, either way — it pre-decides the adversarial-review offer on the settled tree (skip or run), so the run never asks about it again: the resolved value, stated or default, is the answer |
+| skip code roast | `false` | Omits the final PR-mode roast entirely |
+| autonomous | `true` | Stated to `super-design` — it owns the design gates and its own roast loop, and its unattended behavior is conditional on being told. No stop from launch to the phase-7 hand-back; the top split is applied, not asked (§Autonomous mode). It never covers the merge into `base` (§Invariants I5 (human-owned merge)) |
+
+Plain-word opt-outs set the flags: "interactive", "not autonomous" or a bare "ask me" sets `autonomous=false` ("ask me only about X" is a reserved topic, §Autonomous mode **Reserved decisions**, and keeps `autonomous=true`); "stop for design review", or `planOneShot` stated without `autonomous`, sets `planOneShot=true, autonomous=false`; "skip the plan roast" or "skip the design roast" sets `skipPlanRoast=true`; "skip the code roast" sets `skipCodeRoast=true`. An invocation that states both `autonomous` and a design-review stop records `planOneShot=true, autonomous=true` (the explicit `autonomous` value as stated), without a question, and the first status note names the overridden design-review stop.
 
 ## Phase sequence
 
@@ -564,7 +566,7 @@ apply the recommended option and park it for anything that comes up later. A ses
 pause mid-run (a Stop hook that forbids ending a turn, say) cannot honor a mid-run question, and you
 may not be able to detect that in advance. Record each consent or answer under `approvals:`.
 
-Say this when confirming the flags. `autonomous` means no questions from launch to the
+Say this in the status note that names the resolved flags (§Inputs). `autonomous` means no questions from launch to the
 finished report; it implies one-shot (Mode B) design. `planOneShot` alone means no questions until the design is ready, then a
 stop for review.
 
@@ -583,7 +585,7 @@ not asked, and the road not taken is parked (`run-state.md`'s `degraded-verdict`
 - Loop-exit pauses (both loops): `super-design` §Unattended Runs already records and hands
   back instead of pausing when the caller owns the hand-off; whatever was open lands in `run.md` and
   the report.
-- Fix designs are applied without asking or waiting — the request to run autonomously is the
+- Fix designs are applied without asking or waiting — `autonomous`, stated or by default, is the
   approval.
 - Nested brainstorms triggered by a fix run in Mode B.
 - Escalations and beyond-cap items are parked and surfaced in the final report, never

@@ -242,6 +242,27 @@ check_itercap() { # SKILLS_ROOT
   [ "$all" = "$ok" ] || echo "(iterationCap) super-auto/SKILL.md: $((all - ok)) config.iterationCap mention(s) do not read 3 + redesignCycles-code|design"
 }
 
+# (flags) §Inputs pins each flag's default, the plain-word opt-outs, and the value the
+# autonomous + design-review-stop contradiction records.
+check_flag_defaults() { # SKILL_DIR
+  local sk="$1/SKILL.md" row txt k
+  for row in 'plan one-shot|false' 'skip plan roast|false' 'skip code roast|false' 'autonomous|true'; do
+    grep -qF -- "| ${row%%|*} | \`${row#*|}\` |" "$sk" \
+      || echo "(flags) SKILL.md: §Inputs ${row%%|*} default is not \`${row#*|}\`"
+  done
+  txt=$(section "$sk" '^## Inputs$' '^## ' | collapse)
+  for k in \
+    '"interactive", "not autonomous" or a bare "ask me" sets `autonomous=false`' \
+    '"ask me only about X" is a reserved topic' \
+    '"stop for design review", or `planOneShot` stated without `autonomous`, sets `planOneShot=true, autonomous=false`' \
+    '"skip the plan roast" or "skip the design roast" sets `skipPlanRoast=true`' \
+    '"skip the code roast" sets `skipCodeRoast=true`' \
+    'states both `autonomous` and a design-review stop records `planOneShot=true, autonomous=true`' \
+    'names the overridden design-review stop'; do
+    case "$txt" in *"$k"*) ;; *) echo "(flags) SKILL.md: §Inputs lacks '$k'" ;; esac
+  done
+}
+
 # (step1) The ordered procedures the loops run from prose. item N of a section = the text from the
 # line starting "N. " up to the next numbered line; item_has asserts each key sits in the item of
 # its number, so a swapped, merged or deleted item moves a key out of its place and is caught.
@@ -382,6 +403,7 @@ lint() { # SKILLS_ROOT REPO_ROOT -> one "file[:line]: message" per problem
   check_disputed "$1/super-auto"
   check_report_rows "$1/super-auto"
   check_itercap "$1"
+  check_flag_defaults "$1/super-auto"
   check_step1 "$1"
   check_abort "$1"
 }
@@ -449,6 +471,8 @@ copy; sed '/^| Gotchas/s/ and its `designRoast`//' "$REPO_ROOT/skills/super-auto
 expect_caught "a Gotchas row that drops designRoast fails" 'Gotchas & surprises row lacks `designRoast`'
 copy; sed 's/config.iterationCap` = `3 + redesignCycles-code`/config.iterationCap` = `3`/' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
 expect_caught "a super-auto config.iterationCap that is a bare 3 fails" "config.iterationCap mention(s) do not read"
+copy; sed 's/^| autonomous | `true` |/| autonomous | `false` |/' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
+expect_caught "flipping the autonomous default to false fails" '(flags) SKILL.md: §Inputs autonomous default is not `true`'
 
 copy; sed -e 's/^4\. Dispatch the step-back/5. Dispatch the step-back/' -e 's/^5\. Check it with/4. Check it with/' "$REPO_ROOT/skills/super-auto/SKILL.md" > "$SA/SKILL.md"
 expect_caught "swapping two Step 1 items fails" "super-auto Step 1: item 4 lacks 'step-back-prompt.md'"
