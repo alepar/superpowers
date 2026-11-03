@@ -133,6 +133,8 @@ for mode in single cluster seam; do
   assert_has "$out" "show $PIN_HEAD:<path>" "final $mode source is captured"
   assert_has "$out" "REQUIREMENT BASELINE: when the root spec has a \`## Requirement baseline\` section" "final $mode judges delivery against the requirement baseline"
   assert_has "$out" "never Deferred OK alone" "final $mode keeps an undelivered row visible"
+  assert_has "$out" "Without the section, this paragraph does not apply." "final $mode leaves specs without a baseline unchanged"
+  assert_lacks "$out" "Without the section, judge against" "final $mode adds no Goal fallback for specs without a baseline"
 done
 run bash "$D" --ledger "$L" --stdout review --id ep.2 --n 2 --base "$PIN_BASE" --head moving-branch
 assert_eq "$code" 2 "task review rejects a moving source ref"

@@ -34,9 +34,10 @@
 #             and no diff line falls inside it; a Goal present on one side only is a change
 #   unchanged the root spec has an `## Unchanged behavior` section
 #   baseline  the root spec's `## Requirement baseline` body is identical between REV and the working
-#             tree when REV has one (a human scope change is committed before the designer runs)
+#             tree when REV has one, and is not added when REV lacks it for a tracked spec (only the
+#             root brainstorm writes it; a human scope change is committed before the designer runs)
 #   requirements  when the root spec has a baseline, the record has `requirements:` with one
-#             `- <B<n>|S<n>>: preserved|changed|unmet — <reason>` per affected row of the baseline, or
+#             `- <B<n>|S<n>>: preserved|changed|unmet — <reason>` (`—`, `-` or `--`) per affected row of the baseline, or
 #             `requirements: none affected`. Shape only: whether the claim is true is the coverage
 #             reviewer's judgment, never this script's
 # Spec paths are compared normalised: `./docs/x.md` and `docs/x.md` are the same spec, in --specs and

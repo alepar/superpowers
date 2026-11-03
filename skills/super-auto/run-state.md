@@ -152,12 +152,13 @@ The schema home for `run.md`: every field's name and line format. The numbered i
      go-ahead.
    - `coverage-round-<N>` — the disposition applied to each finding in that round,
      each marked `auto` or `human` (`super-design` disposes automatically; only an
-     `ORPHAN`, and only in an interactive run, is the human's). Replay these rather than re-applying them, and read the highest N
+     `ORPHAN` or a requirement-baseline `GAP` with no safe task, and only in an interactive run, is the human's). Replay these rather than re-applying them, and read the highest N
      as how many of the loop's rounds are already spent. Findings a later
      round newly surfaces are covered by no earlier round's record.
      Round 1's record also carries the canonical requirement list the orchestrator
      derived for the root pass (R-id + text; any `R-new` a reviewer proposed is
-     appended here for round 2) and the `requirements: N · mapped: M · unmapped: K
+     appended here for round 2), ` · specsAt <sha>` (HEAD when round 1 dispatched,
+     which round 2's changes input diffs the specs from) and the `requirements: N · mapped: M · unmapped: K
      (…)` line unioned by id from the two reviewers. Round 2 reads the R-list
      back from round 1's record rather than re-deriving it, appending only new
      `R-new` ids — existing ones are never renumbered.
@@ -549,7 +550,7 @@ approvals:
 - finding-link · {"refs":[{"source":"inv-a/final","section":"Deferred OK","position":1},{"source":"inv-b/final","section":"Deferred OK","position":1}],"basis":"reviewed as the same source location and defect"}
 - finding-route · {"ref":{"source":"inv-a/final","section":"Deferred OK","position":1},"owner":"bd-421","fix":"bd-421","deferred":"formatting lies outside the goal"}
 - finding-disposition · {"ref":{"source":"inv-a/final","section":"Deferred OK","position":1},"disposition":"resolved","judgment":"supported","basis":"bd-422 supplied the formatting fix","evidence":["format-verification.log @ 1a2b3c4"],"verification":"formatter check passes on both affected ranges"}
-- coverage-round-1 · canonical R-list: R1 "enforce per-tenant request quota", R2 "reject over-quota requests with 429", R3 "expose current quota usage to callers" · requirements: 3 · mapped: 2 · unmapped: 1 (R3) · auto GAP "no backpressure path" → leaf bd-417; auto ORPHAN "metrics exporter" → kept, goal element added; auto UNOWNED-SEAM "tenant-id propagation" → contract bd-418 / integration bd-419; auto unstated "bd-411<-bd-405" → edge dropped (no artifact to name); auto GAP "R3 unmapped — usage exposure" → leaf bd-420
+- coverage-round-1 · canonical R-list: R1 "enforce per-tenant request quota", R2 "reject over-quota requests with 429", R3 "expose current quota usage to callers" · specsAt 4c5d6e7 · requirements: 3 · mapped: 2 · unmapped: 1 (R3) · auto GAP "no backpressure path" → leaf bd-417; auto ORPHAN "metrics exporter" → kept, goal element added; auto UNOWNED-SEAM "tenant-id propagation" → contract bd-418 / integration bd-419; auto unstated "bd-411<-bd-405" → edge dropped (no artifact to name); auto GAP "R3 unmapped — usage exposure" → leaf bd-420
 - coverage-amend-code-1 · auto GAP "quota middleware has no owner" → leaf bd-421
 
 parked:

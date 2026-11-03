@@ -555,7 +555,8 @@ every script below.
 the canonical requirement list: decompose the `## Requirement baseline` rows first (each R cites
 its B-id), then the root `## Goal` and root spec, into one observable outcome per requirement, numbered R1…Rn, and pass the same list to both reviewers. **R-ids are
 stable across rounds and resumes:** round 1 writes them into the run-state file's
-`coverage-round-1` record (no run-state file: the coverage ledger's round-1 header); round 2 (or
+`coverage-round-1` record (no run-state file: the coverage ledger's round-1 header), with
+` · specsAt <sha>`: HEAD captured when round 1 dispatches, before any round-1 fix; round 2 (or
 a resume) **reads that list back** rather than re-deriving it, appending any `R-new: <text>` a
 round-1 reviewer proposed as the next free id. An existing id is never renumbered or reused.
 After the reviewers return, save the canonical list (one `R<n> <text>` per line) and each
@@ -604,8 +605,8 @@ included, which means waiting for that subtree to finish designing. An amend's
 **The changed-since input.** Round 1's fixes are applied with no human in the path, and round 2
 is the only thing that will ever see them. Assemble round 2's `## Changes since the previous
 round` section (empty on round 1) naming every task round 1's applied fixes created or amended,
-each with the finding it answers, followed by `git log -p` of the spec files since the HEAD recorded in the
-`coverage-round-1` record as ` · specsAt <sha>` (the commit round 1's reviewers saw), whose commit messages carry each fix's `requirements:` accounting (§Adversarial Review
+each with the finding it answers, followed by `git log -p` of the spec files since the ` · specsAt <sha>` that
+round 1 recorded with its R-list (the commit round 1's reviewers saw), whose commit messages carry each fix's `requirements:` accounting (§Adversarial Review
 Loop, fix list item 2).
 
 **Divergence observation.** On round 2, before disposition, run `bash
