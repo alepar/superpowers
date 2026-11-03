@@ -1,0 +1,74 @@
+{
+ "run-01": {
+  "case": "case-2",
+  "rep": 2
+ },
+ "run-02": {
+  "case": "case-1",
+  "rep": 2
+ },
+ "run-03": {
+  "case": "case-4",
+  "rep": 2
+ },
+ "run-04": {
+  "case": "case-2",
+  "rep": 3
+ },
+ "run-05": {
+  "case": "case-5",
+  "rep": 1
+ },
+ "run-06": {
+  "case": "case-6",
+  "rep": 1
+ },
+ "run-07": {
+  "case": "case-5",
+  "rep": 2
+ },
+ "run-08": {
+  "case": "case-6",
+  "rep": 2
+ },
+ "run-09": {
+  "case": "case-5",
+  "rep": 3
+ },
+ "run-10": {
+  "case": "case-1",
+  "rep": 1
+ },
+ "run-11": {
+  "case": "case-4",
+  "rep": 3
+ },
+ "run-12": {
+  "case": "case-4",
+  "rep": 1
+ },
+ "run-13": {
+  "case": "case-2",
+  "rep": 1
+ },
+ "run-14": {
+  "case": "case-3",
+  "rep": 1
+ },
+ "run-15": {
+  "case": "case-6",
+  "rep": 3
+ },
+ "run-16": {
+  "case": "case-3",
+  "rep": 3
+ },
+ "run-17": {
+  "case": "case-3",
+  "rep": 2
+ },
+ "run-18": {
+  "case": "case-1",
+  "rep": 3
+ }
+}
