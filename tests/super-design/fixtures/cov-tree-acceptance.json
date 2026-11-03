@@ -1,0 +1,2 @@
+[{"id":"o","title":"Offline sheets","issue_type":"epic","description":"Root epic."},
+ {"id":"o.1","parent":"o","title":"Sheet cache","issue_type":"task","description":"Cache sheets on the tablet. Detail that must not reach the reviewer.\n- [ ] the night-before push writes the sheet to the cache\nowns: sheet cache","acceptance_criteria":"- [ ] the viewer opens a cached sheet with the network off\nProse acceptance that must not reach the reviewer."}]

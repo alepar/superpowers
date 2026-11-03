@@ -133,6 +133,8 @@ markers §Durable State already relies on. Anything half-made gets finished, not
 
 Root only. Invoke `superpowers:brainstorming` on the goal or raw idea handed to this invocation — no parent spec, no ancestor-goal chain, no sibling specs to hand in, since none exist yet. Brainstorming runs its full process (worktree, mode selection, questions or one-shot reasoning, design doc, self-review) and returns with a written, committed spec. It does **not** offer adversarial review to a caller-invoked run — that offer is this skill's, once, on the settled tree (§Adversarial Review Loop), so a run has exactly one design-mode roast. Take that spec forward into §Key Abstractions, then §Decomposition.
 
+**Requirement baseline.** When the caller hands in the human's literal request (and any requirements the human approved before launch), the root spec carries them in a `## Requirement baseline` section after `## Goal`: a `Source:` line saying where and when the human said it; `### Human request`, the words verbatim with every line prefixed `> `; `### Requirements`, one line per approved outcome, `- B<n> · "<the human's words>" · source: <where>`; and `### Human scope changes`, `- none` until a human changes scope. Only words a human said or approved go in, never an agent's gloss or spec text no human approved. Confirm the section is present before §Key Abstractions; without the handed-in words, the spec has no section and every check below behaves as before. Once committed, only the orchestrator appends to it, and only a row a human actually stated: `- S<n> · YYYY-MM-DD · "<the human's words>" · source: <where> · affects: <B<n>|new>`, in its own commit, while no amendment or fix is in progress. `B` rows are never rewritten. Designer, coverage reviewers, design roast and final reviewers all read this section; it is the standard they judge against.
+
 ## The run's root epic
 
 **One epic is the root, and there is exactly one way to get it:** a bead handed in as the starting
@@ -540,17 +542,18 @@ quality by the parallelism pass (§Parallelism Pass).
 sp:<root-epic-id> --all --json --limit 0` (not `--parent` — one level only in JSON mode; without
 `--limit 0` bd stops at 50), then run `bash <base>/scripts/coverage-inputs --from <dump>
 <root-epic-id> <root spec> <every subepic spec>` (`<base>` is this skill's base directory). It
-prints the `## Goals` section (root goal; each epic's Goal section and one-sentence summary) and
-the `## Task tree` section (one line per bead with its blocking deps, plus its `owns:` /
-`consumes:` / `boundary contract:` lines), and reports its byte count on stderr against a 60 KB
-target. Paste both sections verbatim. An `unmatched-spec:` line means a spec header does not name
+prints the root spec's `## Requirement baseline` when it has one, the `## Goals` section (root
+goal; each epic's Goal section and one-sentence summary) and the `## Task tree` section (one line
+per bead with its blocking deps, plus its `owns:` / `consumes:` / `boundary contract:` and `- [ ]`
+acceptance lines), and reports its byte count on stderr against a 60 KB target. Paste each
+section verbatim into its slot. An `unmatched-spec:` line means a spec header does not name
 its bead id — fix the header (§Conventions). If the script prints a line starting
 `JQ_UNAVAILABLE:`, follow its instruction and produce the same output format; this holds for
 every script below.
 
 **Canonical requirement list.** Before dispatch, the orchestrator — not any reviewer — derives
-the canonical requirement list: decompose the root `## Goal` and root spec into one observable
-outcome per requirement, numbered R1…Rn, and pass the same list to both reviewers. **R-ids are
+the canonical requirement list: decompose the `## Requirement baseline` rows first (each R cites
+its B-id), then the root `## Goal` and root spec, into one observable outcome per requirement, numbered R1…Rn, and pass the same list to both reviewers. **R-ids are
 stable across rounds and resumes:** round 1 writes them into the run-state file's
 `coverage-round-1` record (no run-state file: the coverage ledger's round-1 header); round 2 (or
 a resume) **reads that list back** rather than re-deriving it, appending any `R-new: <text>` a
@@ -601,7 +604,9 @@ included, which means waiting for that subtree to finish designing. An amend's
 **The changed-since input.** Round 1's fixes are applied with no human in the path, and round 2
 is the only thing that will ever see them. Assemble round 2's `## Changes since the previous
 round` section (empty on round 1) naming every task round 1's applied fixes created or amended,
-each with the finding it answers.
+each with the finding it answers, followed by `git log -p` of the spec files since round 1's
+dispatch, whose commit messages carry each fix's `requirements:` accounting (§Adversarial Review
+Loop, fix list item 2).
 
 **Divergence observation.** On round 2, before disposition, run `bash
 <base>/scripts/coverage-divergence <round-1 findings file> <round-2 findings file>` and put its
@@ -628,14 +633,19 @@ brainstorm in the run's design mode (Mode B when unattended) → its own super-d
 (tripwire stays armed). If the recommendation is ambiguous, take the reviewer's stated preference;
 if it states none, keep the tree as-is and record that.
 
-**One escalation, and only in an interactive run.** A run is interactive iff its design mode is A
-**and** it was not told the run is autonomous (§Inputs). The escalation is an `ORPHAN`:
+**Escalations, and only in an interactive run.** A run is interactive iff its design mode is A
+**and** it was not told the run is autonomous (§Inputs). The escalations are an `ORPHAN`:
 delete-as-scope-creep vs. add the missing goal element it serves is a question about the goal, not
-the tree. Non-interactive: apply the reviewer's proposed fix, deletion included, and name it in
-the round summary. Every other type applies silently, in every mode.
+the tree; and a baseline-row `GAP` with no safe task (below), a question about the human's scope.
+Non-interactive: apply the reviewer's proposed `ORPHAN` fix, deletion included, and name it in
+the round summary; park the baseline-row `GAP`. Every other type applies silently, in every mode.
 
 **The fixes, by type.** Verified `GAP`: small → leaf task added directly; big → a new subepic, as
-above. Any verified finding whose fix splits or shrinks an existing bead — moving scope out of it
+above. A verified `GAP` whose subject is a baseline row is fixed only by a task that delivers the
+outcome on a production path without widening a grant, inventing evidence or weakening a safety
+property a review confirmed; never by editing the baseline or narrowing a task. When no such task
+exists, park it as a `degraded-verdict` `requirement unmet — <row id>: <reason>` (unattended) or
+ask the human (interactive), so it reaches the hand-back. Any verified finding whose fix splits or shrinks an existing bead — moving scope out of it
 — follows §Splitting a Bead, dependents re-pointed included. Precheck `citation` `dependent` or
 `unwired`: restate the criterion in terms of an artifact that exists when the task completes
 (`bd update <id> --description` with the full amended text, keeping or adding the `(needs: <id>)`
@@ -799,6 +809,10 @@ recurrence; the delta stays an instance count.
    every applied redesign, not just this round's, so a patch does not reopen what an earlier round
    closed or undo a chosen redesign. A fix that touches a `## Key abstractions` section is applied
    and synced: commit the amended spec, then run the sync (§Decomposition, "Key abstractions sync").
+   With a `## Requirement baseline`, the fixer is given it, and every commit that changes a spec
+   (this fix list, or a coverage disposal) ends its message with a `requirements:` block in the
+   amend record's format (`./amend-prompt.md`): one line per affected baseline row, or
+   `requirements: none affected`. It travels with the diff to the next coverage round and roast.
 3. **Auto-decide re-roast by fix scope:**
    - Mechanical, single-file fixes with no design change → done, no re-roast.
    - Fixes that changed a design decision, changed data handling, or resolved multiple Blocking
@@ -997,8 +1011,9 @@ caller's bead context.
 6. **Coverage.** One extra round, recorded as `approvals · coverage-amend-<loop>-<K>` in the
    `coverage-round-<N>` line format, outside the two-round cap (§Coverage). It reuses
    `./coverage-reviewer-prompt.md` and `scripts/coverage-inputs` unchanged; its
-   `## Changes since the previous round` lists the amend's beads and the `amended:` sections. No new
-   coverage prompt.
+   `## Changes since the previous round` lists the amend's beads and the `amended:` sections, then
+   `git diff <lastGood> HEAD` of the spec files and the record's `requirements:` and `unchanged:`
+   fields in full. No new coverage prompt.
 7. **Return** `applied` with the amend record path, the filed bead ids and `amended:`. Amend Mode does not write state `applied`: the calling loop writes it once its own remaining steps are done (the design loop as soon as Amend Mode returns, §Adversarial Review Loop, Redesign cycle; the code loop at super-auto §Redesign cycle step 4, after the amend design roast and its fixes).
 
 **After the commit nothing aborts.** A step from step 4 through step 6 that fails is retried
@@ -1201,7 +1216,7 @@ skill's work instead of re-running all of it.
 - Run a third coverage round, or spend a fresh pair of rounds on a resume — the cap is two per run
   and the run-state file says how many are left (§Coverage, §Run-State File).
 - Ask the user to dispose of a coverage finding, or to confirm a recommended split or promotion.
-  Exactly one escalation exists — an `ORPHAN` — and only in an interactive run; every other type
+  Two escalations exist — an `ORPHAN`, and a baseline-row `GAP` with no safe task — and only in an interactive run; every other type
   applies without asking.
 - Apply a coverage finding without checking its evidence against the reviewers' inputs. The reviewers are
   instructed to over-report; the verify step is the only thing standing in for the human who used

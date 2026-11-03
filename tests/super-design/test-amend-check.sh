@@ -66,6 +66,25 @@ case_run cp code comma-pipe-keys.md spec-edit-ok.md
 assert_eq "$out" "ok" "covers: key containing ', ' and key containing ' | ' parsed whole, rN prefix stripped"
 assert_eq "$code" 0 "comma/pipe record exit 0"
 
+echo "amend-check: requirement baseline"
+BASE_SPEC=spec-baseline-base.md case_run bq code req-ok.md spec-baseline-ok.md
+assert_eq "$out" "ok" "a record accounting for the affected row passes"
+BASE_SPEC=spec-baseline-base.md case_run bn code req-none.md spec-baseline-ok.md
+assert_eq "$out" "ok" "requirements: none affected passes"
+BASE_SPEC=spec-baseline-base.md case_run bm code ok-code.md spec-baseline-ok.md
+assert_eq "$code" 3 "a baseline with no requirements: field: exit 3"
+assert_has "$out" "reject: requirements: the root spec has a requirement baseline and the record has no requirements: field" "missing accounting named"
+BASE_SPEC=spec-baseline-base.md case_run bb code req-bad.md spec-baseline-ok.md
+assert_has "$out" "reject: requirements: no baseline row B9" "unknown row named"
+assert_has "$out" "reject: requirements: not <id>: preserved|changed|unmet — <reason>: S1: changed" "missing reason named"
+assert_has "$out" "reject: requirements: not <id>: preserved|changed|unmet — <reason>: B1 kept" "malformed row named"
+BASE_SPEC=spec-baseline-base.md case_run be code req-ok.md spec-baseline-edited.md
+assert_has "$out" "reject: baseline: ## Requirement baseline changed in docs/spec.md" "an edited baseline row rejects"
+BASE_SPEC=spec-baseline-base.md case_run bx code req-ok.md spec-baseline-removed.md
+assert_has "$out" "reject: baseline: ## Requirement baseline changed in docs/spec.md" "a removed baseline rejects"
+case_run bl code ok-code.md spec-edit-ok.md
+assert_eq "$out" "ok" "a spec with no baseline needs no requirements: field"
+
 echo "amend-check: owners both ways"
 case_run mo code missing-open.md spec-edit-ok.md
 assert_eq "$code" 3 "missing open key: exit 3"

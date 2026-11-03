@@ -8,12 +8,14 @@
 #   running bd. A subepic spec is matched by its explicit Bead: owner in its first 15 lines,
 #   or its first exact tree id when unmarked (ambiguous headers warn)
 #   (§Conventions: each nested spec's header links its bead id).
-# Output (stdout), two sections ready to paste into the reviewer prompt:
+# Output (stdout), ready to paste into the reviewer prompt:
+#   ## Requirement baseline  the root spec's section verbatim, when it has one (nothing otherwise)
 #   ## Goals         root goal, then per epic: `### <id> — <title>`, its spec's Goal section (or
 #                    `(no spec)`), and `summary:` — the first sentence of the epic bead's description
 #   ## Task tree     one line per bead in tree order, indented by depth:
 #                    `- <id> · <title> · <first sentence> · deps: <blocking ids>|none`, epics marked
-#                    `(epic)`; under it, the bead's `owns:` / `consumes:` / `boundary contract:` lines
+#                    `(epic)`; under it, the bead's `owns:` / `consumes:` / `boundary contract:` lines,
+#                    then every `- [ ]` acceptance line of its description and acceptance_criteria
 # stderr: `coverage-inputs: <bytes> bytes (target ≤ 60000)`, plus `over-target:` when above it,
 #         `ambiguous-spec: <file>` for ambiguous ownership,
 #         and `unmatched-spec: <file>` for a subepic spec that names no bead in the tree.
@@ -36,7 +38,7 @@ shift 2
 for f in "$root_spec" "$@"; do [ -f "$f" ] || { echo "no such spec file: $f" >&2; exit 2; }; done
 
 command -v jq >/dev/null 2>&1 || {
-  echo "JQ_UNAVAILABLE: jq is not installed, so assemble the two sections by hand from \`bd list --label sp:${root} --all --json --limit 0\`. (1) \`## Goals\`: the \`## Goal\` section of ${root_spec} under \`### ${root} (root)\`; then for each epic bead other than ${root}, \`### <id> — <title>\`, the \`## Goal\` section of the spec file whose first 15 lines name that id (else \`(no spec)\`), and \`summary: <first sentence of the epic's description>\`. (2) \`## Task tree\`: every bead in tree order (children under their \`parent\`, indented two spaces per level), one line each: \`- <id> · <title> · <first sentence of description, at most 160 chars> · deps: <ids of its dependencies whose type is blocks, comma-separated, or none>\`, with \` (epic)\` after the title for epics; under a bead, copy its description lines that start with \`owns:\`, \`consumes:\` or \`boundary contract:\`. Keep the whole output near 60 KB."
+  echo "JQ_UNAVAILABLE: jq is not installed, so assemble the two sections by hand from \`bd list --label sp:${root} --all --json --limit 0\`. (1) \`## Goals\`: the \`## Goal\` section of ${root_spec} under \`### ${root} (root)\`; then for each epic bead other than ${root}, \`### <id> — <title>\`, the \`## Goal\` section of the spec file whose first 15 lines name that id (else \`(no spec)\`), and \`summary: <first sentence of the epic's description>\`. (0) when ${root_spec} has a \`## Requirement baseline\` section, print it verbatim first under that heading. (2) \`## Task tree\`: every bead in tree order (children under their \`parent\`, indented two spaces per level), one line each: \`- <id> · <title> · <first sentence of description, at most 160 chars> · deps: <ids of its dependencies whose type is blocks, comma-separated, or none>\`, with \` (epic)\` after the title for epics; under a bead, copy its description lines that start with \`owns:\`, \`consumes:\` or \`boundary contract:\`, then every \`- [ ]\` acceptance line of its description and acceptance_criteria. Keep the whole output near 60 KB."
   exit 4
 }
 
@@ -48,9 +50,9 @@ fi
 echo "$dump" | jq -e 'type == "array"' >/dev/null 2>&1 || { echo "bead dump is not a JSON array" >&2; exit 2; }
 echo "$dump" | jq -e --arg r "$root" 'any(.[]; .id == $r)' >/dev/null || { echo "root epic $root not in the dump" >&2; exit 2; }
 
-# The `## Goal` section of a spec file: from its heading to the next `## ` heading.
-goal_section() {
-  awk '/^## Goal[[:space:]]*$/ { on = 1; next } on && /^## / { exit } on { print }' "$1" |
+# A `## <name>` section of a spec file: from its heading to the next `## ` heading.
+section() {
+  awk -v want="## $2" '$0 ~ "^" want "[[:space:]]*$" { on = 1; next } on && /^## / { exit } on { print }' "$1" |
     sed -e '/./,$!d' | awk '{ lines[NR] = $0 } END { n = NR; while (n > 0 && lines[n] ~ /^[[:space:]]*$/) n--; for (i = 1; i <= n; i++) print lines[i] }'
 }
 
@@ -59,10 +61,17 @@ map=$(mktemp)
 trap 'rm -f "$out" "$map"' EXIT
 
 {
+  b=$(section "$root_spec" "Requirement baseline")
+  if [ -n "$b" ]; then
+    echo "## Requirement baseline"
+    echo
+    echo "$b"
+    echo
+  fi
   echo "## Goals"
   echo
   echo "### ${root} (root)"
-  g=$(goal_section "$root_spec")
+  g=$(section "$root_spec" Goal)
   if [ -n "$g" ]; then echo "$g"; else echo "(root spec has no ## Goal section)"; fi
 
   # An explicit Bead owner wins over incidental sibling references. Legacy headers
@@ -97,7 +106,7 @@ trap 'rm -f "$out" "$map"' EXIT
     echo "### ${id} — ${title}"
     spec=$(awk -F '\t' -v id="$id" '$1 == id { print $2; exit }' "$map")
     if [ -n "$spec" ]; then
-      g=$(goal_section "$spec")
+      g=$(section "$spec" Goal)
       if [ -n "$g" ]; then echo "$g"; else echo "(spec has no ## Goal section)"; fi
     else
       echo "(no spec)"
@@ -122,6 +131,7 @@ trap 'rm -f "$out" "$map"' EXIT
       | range(0; $labels | length) as $i
       | $line[$labels[$i].offset:($labels[$i + 1].offset // ($line | length))]
       | sub("[; \\t]+$"; ""));
+    def criteria: (. // "") | split("\n") | map(select(test("^\\s*- \\[[ xX]\\] ")) | sub("^\\s+"; ""));
     def idkey: split(".") | map(tonumber? // .);
     . as $all
     | (reduce $all[] as $b ({}; .[$b.id] = $b)) as $byid
@@ -133,7 +143,9 @@ trap 'rm -f "$out" "$map"' EXIT
             + (if $b.issue_type == "epic" then " (epic)" else "" end)
             + " · " + ($b.description | first_sentence)
             + " · deps: " + (if ($deps | length) == 0 then "none" else ($deps | join(", ")) end)),
-          ($b.description | decls[] | ($ind + "    " + .));
+          ($b.description | decls[] | ($ind + "    " + .)),
+          ($b.description | criteria[] | ($ind + "    " + .)),
+          ($b.acceptance_criteria | criteria[] | ($ind + "    " + .));
       def walk($b; $d): line($b; $d), (kids($b.id)[] | walk(.; $d + 1));
       walk($byid[$r]; 0),
       ([$all[] | select(.id != $r and ((.parent // "") as $p | $byid[$p] == null))] | sort_by(.id | idkey)[] | line(.; 0) | "(outside the root) " + .)'
@@ -142,4 +154,4 @@ trap 'rm -f "$out" "$map"' EXIT
 cat "$out"
 bytes=$(wc -c < "$out" | tr -d ' ')
 echo "coverage-inputs: ${bytes} bytes (target ≤ 60000)" >&2
-[ "$bytes" -le 60000 ] || echo "over-target: ${bytes} bytes — shorten the longest goal sections or titles, never drop beads" >&2
+[ "$bytes" -le 60000 ] || echo "over-target: ${bytes} bytes — shorten the longest goal sections or titles, never drop beads, acceptance lines or the requirement baseline" >&2

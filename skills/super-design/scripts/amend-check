@@ -9,7 +9,8 @@
 # the working tree, so the check runs before anything is committed.
 #
 # Owns: the record grammar and the rules a record must pass. A field header is a line at column 0
-# (`owners:`, `amended:`, `work:`, `supersedes:`, `unchanged:`); its items are the `- ` lines that follow.
+# (`owners:`, `amended:`, `work:`, `supersedes:`, `unchanged:`, `requirements:`); its items are the `- `
+# lines that follow.
 #   owners:    - <key> -> owner: <spec> §<section> | -> local | -> disputed: <reason>   (arrow ` → ` or ` -> `)
 #   amended:   - <spec> §<section>        (`amended: none` inline lists no section)
 #   work:      - <title> | <description> | <files> | covers: <key>, <key>
@@ -32,6 +33,12 @@
 #   goal      the `## Goal` body text (fence-aware) is identical between REV and the working tree,
 #             and no diff line falls inside it; a Goal present on one side only is a change
 #   unchanged the root spec has an `## Unchanged behavior` section
+#   baseline  the root spec's `## Requirement baseline` body is identical between REV and the working
+#             tree when REV has one (a human scope change is committed before the designer runs)
+#   requirements  when the root spec has a baseline, the record has `requirements:` with one
+#             `- <B<n>|S<n>>: preserved|changed|unmet — <reason>` per affected row of the baseline, or
+#             `requirements: none affected`. Shape only: whether the claim is true is the coverage
+#             reviewer's judgment, never this script's
 # Spec paths are compared normalised: `./docs/x.md` and `docs/x.md` are the same spec, in --specs and
 # in owners: and amended: alike. A spec absent from REV and untracked (one the amendment created) is diffed as
 # all-added, so its sections count as changed; its Goal is new, not edited, so the goal rule skips it.
@@ -246,14 +253,16 @@ ranges() {
 }
 # goal_body FILE: the lines strictly between the real `## Goal` heading (fence-aware) and the next
 # heading of level <= 2, trailing whitespace trimmed. Prints nothing when there is no Goal.
-goal_body() {
-  awk '
+goal_body() { section_body "$1" Goal; }
+# section_body FILE NAME: the same for any level-2 section.
+section_body() {
+  awk -v want="$2" '
     /^(```|~~~)/ { fence = !fence }
     !fence && /^#+[ \t]/ {
       match($0, /^#+/); l = RLENGTH
       t = substr($0, l + 1); sub(/^[ \t]+/, "", t); sub(/[ \t\r]+$/, "", t)
       if (ing && l <= 2) ing = 0
-      if (!ing && l == 2 && t == "Goal") { ing = 1; next }
+      if (!ing && l == 2 && t == want) { ing = 1; next }
     }
     ing { sub(/[ \t\r]+$/, ""); print }
   ' "$1"
@@ -301,6 +310,40 @@ for sp in "${specs[@]}"; do
     echo "reject: goal: ## Goal changed in $sp" >> "$rejects"
   fi
 done
+
+# --- check 5b: the root spec's ## Requirement baseline body is unchanged. Only a human scope
+# change may add to it, committed by the orchestrator before the designer runs, so it is in REV. ---
+nr=$(ranges "${specs[0]}" "Requirement baseline" 2 | tr '\n' ' ')
+br=$(ranges "$tmp/base.1" "Requirement baseline" 2 | tr '\n' ' ')
+if [ -n "$br" ] && { [ -z "$nr" ] || [ "$(touched "$tmp/diff.1" "$nr" "$br")" = 1 ] \
+     || [ "$(section_body "${specs[0]}" "Requirement baseline")" != "$(section_body "$tmp/base.1" "Requirement baseline")" ]; }; then
+  echo "reject: baseline: ## Requirement baseline changed in ${specs[0]}" >> "$rejects"
+fi
+
+# --- check 7: with a baseline, the record accounts for affected requirements. Shape only: the
+# claim is the designer's, and the coverage reviewer judges it. ---
+if [ -n "$nr" ]; then
+  section_body "${specs[0]}" "Requirement baseline" | sed -nE 's/^- ([BS][0-9]+) · .*/\1/p' > "$tmp/ids"
+  awk -v ids="$tmp/ids" '
+    BEGIN { while ((getline l < ids) > 0) known[l] = 1 }
+    { sub(/\r$/, "") }
+    /^requirements:/ { seen = 1; on = 1; rest = $0; sub(/^requirements:[ \t]*/, "", rest)
+      if (rest == "none affected") none = 1; else if (rest != "") print "reject: requirements: unrecognised inline value: " rest
+      next }
+    /^[A-Za-z][A-Za-z_-]*:/ { on = 0; next }
+    on && /^[ \t]*- / {
+      item = $0; sub(/^[ \t]*- /, "", item); n++
+      if (match(item, /^[BS][0-9]+: (preserved|changed|unmet) — /) == 0) { print "reject: requirements: not <id>: preserved|changed|unmet — <reason>: " item; next }
+      id = item; sub(/:.*/, "", id)
+      if (!(id in known)) print "reject: requirements: no baseline row " id
+      if (substr(item, RLENGTH + 1) ~ /^[ \t]*$/) print "reject: requirements: empty reason: " id
+    }
+    END {
+      if (!seen) print "reject: requirements: the root spec has a requirement baseline and the record has no requirements: field"
+      else if (none && n) print "reject: requirements: none affected beside listed rows"
+      else if (!none && !n) print "reject: requirements: empty; write the affected rows or requirements: none affected"
+    }' "$amend" >> "$rejects"
+fi
 
 # --- check 6: the root spec has ## Unchanged behavior ---
 [ -n "$(ranges "${specs[0]}" "Unchanged behavior")" ] || echo "reject: unchanged: root spec ${specs[0]} has no ## Unchanged behavior section" >> "$rejects"

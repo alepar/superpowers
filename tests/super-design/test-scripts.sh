@@ -159,6 +159,39 @@ summary: Persist per-tenant quotas.
   case "$out" in *"must not reach"*|*"must not appear"*) fail "spec prose and description detail stay out" ;;
     *) pass "spec prose and description detail stay out" ;; esac
 
+  run bash "$S/coverage-inputs" --from "$F/cov-tree-acceptance.json" o "$C/root-baseline.md"
+  assert_eq "$out" "## Requirement baseline
+
+Source: the human user in the planning session, 2026-11-03.
+
+### Human request
+
+> any driver can open today's route sheet even if the wifi is down
+
+### Requirements
+
+- B1 · \"open today's route sheet even if the wifi is down\" · source: approved design
+
+### Human scope changes
+
+- none
+
+## Goals
+
+### o (root)
+Drivers open today's route sheet with no network.
+
+## Task tree
+
+- o · Offline sheets (epic) · Root epic. · deps: none
+  - o.1 · Sheet cache · Cache sheets on the tablet. · deps: none
+      owns: sheet cache
+      - [ ] the night-before push writes the sheet to the cache
+      - [ ] the viewer opens a cached sheet with the network off" \
+    "a root baseline is copied verbatim first, and every acceptance line follows its bead"
+  case "$out" in *"must not reach"*) fail "prose outside the baseline and acceptance lines stays out" ;;
+    *) pass "prose outside the baseline and acceptance lines stays out" ;; esac
+
   set +e; err=$(bash "$S/coverage-inputs" --from "$F/cov-tree.json" q "$C/root.md" "$C/q1.md" "$C/stray.md" 2>&1 >/dev/null); set -e
   assert_eq "$(printf '%s\n' "$err" | grep -c '^unmatched-spec: .*stray.md$')" 1 "a spec naming no tree bead is reported"
   assert_eq "$(printf '%s\n' "$err" | grep -c '^coverage-inputs: [0-9]* bytes (target ≤ 60000)$')" 1 "byte count reported on stderr"

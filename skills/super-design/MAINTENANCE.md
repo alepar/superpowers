@@ -30,3 +30,7 @@ Added 2026-10-16 (super-auto run `2026-10-16-roast-findings-redesign-loop`, desi
 ## step-back-check (2026-10-16)
 
 `step-back-check` moved from `skills/super-auto/scripts/` to `skills/super-design/scripts/` because both roast fix loops (super-auto phase 5 and super-design's Adversarial Review Loop) use it. It gained `--ledger`, the `local|redesign` decision (`patch` is read as `local`), the `triggers:` field checked against the findings ledger's `triggers:` line, and keys matched in canonical form (`[SEV] <location>`, split on `, [`). Its tests moved to `tests/super-design/test-step-back-check.sh`.
+
+## Requirement baseline (2026-11-03)
+
+Design: `docs/superpowers/specs/2026-11-03-requirement-baseline-simple-design.md`. In a replayed run a redesign narrowed a human requirement while amend-check and coverage reported the Goal unchanged; old reviewer prompts caught the narrowing once given the human's words. So the change is transport of a root-spec `## Requirement baseline` to the designer, coverage reviewers and final reviewers, plus a `requirements:` accounting field. amend-check checks shape only, because semantic preservation is a reviewer judgment. A larger mechanism (reconcile helper, row lifecycle, new finding type) was built and set aside as historical evidence on `super-auto/requirement-preservation`.

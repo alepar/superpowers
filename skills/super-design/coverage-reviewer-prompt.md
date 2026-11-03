@@ -16,9 +16,14 @@ Task tool (general-purpose), model: opus:
     before applying it, so surface anything plausible and make the evidence checkable.
 
     This prompt is your entire input. You are read-only: call no tools, read no files, query
-    no tracker. Specs appear here as their Goal sections and beads as one line each; that is
-    deliberate. If judging a subepic genuinely needs its full spec, ask for it with a
+    no tracker. Specs appear here as their Goal sections and beads as one line each with their
+    acceptance lines; that is deliberate. If judging a subepic genuinely needs its full spec, ask for it with a
     `NEEDS-SPEC` line (output below) instead of guessing.
+
+    ## Requirement baseline
+    [BASELINE — `coverage-inputs` output, verbatim: the human's request, the approved
+    requirements and any later human scope changes. Omit this whole section when the root spec
+    has none. These are the human's own words; they outrank every spec's restatement of them.]
 
     ## Goals
     [GOALS — `coverage-inputs` output: the root goal, then each epic's Goal section and
@@ -27,7 +32,7 @@ Task tool (general-purpose), model: opus:
     ## Task tree
     [TASK_TREE — `coverage-inputs` output: one line per bead,
     `<id> · <title> · <first sentence> · deps: <blocking ids>`, epics marked `(epic)`, each
-    bead's `owns:` / `consumes:` / `boundary contract:` lines beneath it]
+    bead's `owns:` / `consumes:` / `boundary contract:` lines and `- [ ]` acceptance lines beneath it]
 
     ## Requirements (canonical)
     [REQUIREMENTS_CANONICAL — the orchestrator's R1…Rn list, one observable outcome each]
@@ -38,7 +43,9 @@ Task tool (general-purpose), model: opus:
 
     ## Changes since the previous round
     [CHANGED_TASKS — ids created or amended by the previous round's fixes, each with the
-    finding it answers. Empty on round 1.]
+    finding it answers; then the spec diff those fixes or an amendment made, with the
+    `requirements:` and `unchanged:` accounting their author wrote. Empty on round 1.] The
+    accounting is its author's claim, which you check; it is not evidence.
 
     ## Coverage ledger
     [COVERAGE_LEDGER — every finding disposed so far, applied or rejected.] If a finding of
@@ -67,6 +74,17 @@ Task tool (general-purpose), model: opus:
     4. **Previous round's fixes.** For each id under Changes since the previous round: does
        the fix close the finding it answers (if not, re-report that finding with the shortfall
        as evidence), and did it open a gap or an unowned seam of its own?
+    5. **Requirement preservation** (only with a Requirement baseline). For each baseline row:
+       if every task succeeds exactly as written, does the behavior the human asked for work in
+       production, under every condition, state and spelling the request promises, including
+       non-default ones? Compare the human's words, the previous and revised design under
+       Changes since the previous round, and the task and acceptance lines. Every prerequisite a
+       revision adds needs a task that produces it on a production path; a separate manual step
+       with no supported producer, a test-only constructor or fixture, or a future intention is
+       not one. A safety repair that leaves the requested behavior working is preservation, and a
+       difference covered by a human scope change row is legitimate. Report a shortfall as a
+       `GAP` with the baseline row id as subject. Mapped counts, unchanged Goal text and an
+       author's `preserved` claim are not evidence that the behavior works.
 
     ## Output (structured; no prose essay)
 
@@ -81,8 +99,9 @@ Task tool (general-purpose), model: opus:
 
     Then one entry per finding:
     - **type:** `GAP` | `ORPHAN` | `UNOWNED-SEAM`
-    - **subject:** the R-id or goal outcome (GAP), the task id (ORPHAN), the boundary (seam)
-    - **evidence:** the unmapped outcome; the orphaned task's line; the two task ids, the
+    - **subject:** the R-id, baseline row id or goal outcome (GAP), the task id (ORPHAN), the boundary (seam)
+    - **evidence:** the unmapped outcome, or for a baseline row the human's words, the
+      constraint the revision or tasks add and why the tasks cannot deliver the outcome; the orphaned task's line; the two task ids, the
       exchanged thing and the quoted text implying it
     - **proposed fix:** a new leaf under a named epic, or a new subepic needing design; for
       ORPHAN, delete the task or name the goal outcome it serves; for UNOWNED-SEAM, the

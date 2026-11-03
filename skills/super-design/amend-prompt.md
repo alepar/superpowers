@@ -23,7 +23,8 @@ Task tool (general-purpose), model: opus:
     `local` only when the finding really is independent of any decision.
 
     Write scope. Edit only the owning sections of the spec files in [SPEC_PATHS], and write the
-    amend record at [AMEND_RECORD_PATH]. Never edit any `## Goal` section. Never file or edit
+    amend record at [AMEND_RECORD_PATH]. Never edit any `## Goal` section or the root spec's
+    `## Requirement baseline`. Never file or edit
     beads: the caller files the `work:` items. Never touch run.md or any run-state file. Run no
     tests and no roasts. Read-only commands (`git diff`, `git log`, `git show`, `bd show`,
     `bd list`) are fine.
@@ -34,7 +35,9 @@ Task tool (general-purpose), model: opus:
 
     ## Inputs
     - Loop: [LOOP] (`code` or `design`); redesign cycle K = [K]
-    - Root spec: [ROOT_SPEC_PATH] (read its `## Goal` and non-goals; they stand unchanged)
+    - Root spec: [ROOT_SPEC_PATH] (read its `## Goal`, non-goals and `## Requirement baseline`; they
+      stand unchanged. The baseline holds the human's own words, with any later human scope changes;
+      they outrank every restatement of them in the specs)
     - Spec files you may edit, root first, then nested: [SPEC_PATHS]
     - Findings ledger: [LEDGER_PATH]
     - Step-back record: [STEP_BACK_PATH]
@@ -68,6 +71,15 @@ Task tool (general-purpose), model: opus:
     a short description naming the boundaries it owns and consumes, a files hint, and the keys
     it covers.
 
+    With a `## Requirement baseline`, account for every baseline row your amendment affects, in
+    `requirements:`, judged against the human's words, not the spec's restatement:
+    - `preserved` — the outcome still works as asked, under every condition the request promises;
+      name the production path that delivers it, including the producer of any new prerequisite;
+    - `changed` — the delivered outcome differs from the human's words; say how;
+    - `unmet` — the amendment leaves the outcome undelivered; say why.
+    A human scope change row (`S<n>`) that covers the difference may be cited in the reason. Your
+    accounting is a claim an independent reviewer checks, not proof.
+
     `[LOOP]` = `design` only: list each open bead in the task-tree dump whose decision your
     amendment replaces, with the `work:` title that replaces it, in `supersedes:`. `[LOOP]` =
     `code`: write `supersedes: none`.
@@ -84,7 +96,8 @@ Task tool (general-purpose), model: opus:
     - `[LOOP]` = `code`: `supersedes:` lists nothing. `[LOOP]` = `design`: each `supersedes:` item
       is `<old bead id> → <title>` (the id one token), and its title equals a `work:` line's title.
     - Every section listed in `amended:` has at least one changed line in the spec diff.
-    - No change inside any `## Goal` section; `## Unchanged behavior` exists.
+    - No change inside any `## Goal` section or the `## Requirement baseline`; `## Unchanged behavior` exists.
+    - With a baseline: `requirements:` is present, each row id exists in the baseline and has a reason.
 
     ## Output (write exactly this to [AMEND_RECORD_PATH])
 
@@ -100,8 +113,11 @@ Task tool (general-purpose), model: opus:
     - <old bead id> → <work: title that replaces it>
     unchanged:
     - <bullet>
+    requirements:
+    - <B<n>|S<n>>: preserved|changed|unmet — <reason>
 
-    Use `amended: none` when no section changed. Keys are copied verbatim from the ledger rows,
+    Use `amended: none` when no section changed, and `requirements: none affected` when no baseline
+    row is affected. Omit `requirements:` only when the root spec has no `## Requirement baseline`. Keys are copied verbatim from the ledger rows,
     without any `rN ` prefix. `supersedes: none` (or no `supersedes:` field) lists nothing.
 
     FINAL ANSWER: your structured result is the whole answer. Return every field your schema or output template defines, in full, and add no prose summary beside it. Return the amend record path.
