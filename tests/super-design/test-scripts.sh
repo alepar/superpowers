@@ -189,6 +189,12 @@ Drivers open today's route sheet with no network.
       - [ ] the night-before push writes the sheet to the cache
       - [ ] the viewer opens a cached sheet with the network off" \
     "a root baseline is copied verbatim first, and every acceptance line follows its bead"
+  fenced="$(mktemp)"
+  { printf '# x\n\n## Goal\n\nGo.\n\n## Notes\n\n```md\n## Requirement baseline\nexample only\n```\n\n'; sed -n '/^## Requirement baseline/,$p' "$C/root-baseline.md"; } > "$fenced"
+  run bash "$S/coverage-inputs" --from "$F/cov-tree-acceptance.json" o "$fenced"
+  slot=$(printf '%s\n' "$out" | sed '/^## Goals/,$d')
+  case "$slot" in *"example only"*) fail "a fenced example is not taken for the baseline" ;; *"Source: the human user"*) pass "a fenced example is not taken for the baseline" ;; *) fail "a fenced example is not taken for the baseline (real section missing)" ;; esac
+  rm -f "$fenced"
   case "$out" in *"must not reach"*) fail "prose outside the baseline and acceptance lines stays out" ;;
     *) pass "prose outside the baseline and acceptance lines stays out" ;; esac
 

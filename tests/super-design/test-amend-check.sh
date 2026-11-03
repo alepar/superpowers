@@ -79,9 +79,20 @@ assert_has "$out" "reject: requirements: no baseline row B9" "unknown row named"
 assert_has "$out" "reject: requirements: not <id>: preserved|changed|unmet — <reason>: S1: changed" "missing reason named"
 assert_has "$out" "reject: requirements: not <id>: preserved|changed|unmet — <reason>: B1 kept" "malformed row named"
 BASE_SPEC=spec-baseline-base.md case_run be code req-ok.md spec-baseline-edited.md
+assert_eq "$code" 3 "an edited baseline: exit 3"
 assert_has "$out" "reject: baseline: ## Requirement baseline changed in docs/spec.md" "an edited baseline row rejects"
 BASE_SPEC=spec-baseline-base.md case_run bx code req-ok.md spec-baseline-removed.md
+assert_eq "$code" 3 "a removed baseline: exit 3"
 assert_has "$out" "reject: baseline: ## Requirement baseline changed in docs/spec.md" "a removed baseline rejects"
+case_run bi code req-ok.md spec-baseline-ok.md
+assert_eq "$code" 3 "a baseline the amendment inserts: exit 3"
+assert_has "$out" "reject: baseline: ## Requirement baseline added to docs/spec.md; only the root brainstorm writes it" "an inserted baseline rejects"
+BASE_SPEC=spec-baseline-base.md case_run bs code req-none-space.md spec-baseline-ok.md
+assert_eq "$out" "ok" "requirements: none affected with a trailing space passes"
+BASE_SPEC=spec-baseline-base.md case_run bmx code req-none-mixed.md spec-baseline-ok.md
+assert_has "$out" "reject: requirements: none affected beside listed rows" "none affected beside rows rejects"
+BASE_SPEC=spec-baseline-base.md case_run ba code req-ascii.md spec-baseline-ok.md
+assert_eq "$out" "ok" "an ASCII dash before the reason passes"
 case_run bl code ok-code.md spec-edit-ok.md
 assert_eq "$out" "ok" "a spec with no baseline needs no requirements: field"
 

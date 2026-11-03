@@ -50,9 +50,10 @@ fi
 echo "$dump" | jq -e 'type == "array"' >/dev/null 2>&1 || { echo "bead dump is not a JSON array" >&2; exit 2; }
 echo "$dump" | jq -e --arg r "$root" 'any(.[]; .id == $r)' >/dev/null || { echo "root epic $root not in the dump" >&2; exit 2; }
 
-# A `## <name>` section of a spec file: from its heading to the next `## ` heading.
+# A `## <name>` section of a spec file: from its heading to the next `## ` heading, ignoring headings
+# inside code fences.
 section() {
-  awk -v want="## $2" '$0 ~ "^" want "[[:space:]]*$" { on = 1; next } on && /^## / { exit } on { print }' "$1" |
+  awk -v want="## $2" '/^(```|~~~)/ { fence = !fence } !fence && $0 ~ "^" want "[[:space:]]*$" { on = 1; next } !fence && on && /^## / { exit } on { print }' "$1" |
     sed -e '/./,$!d' | awk '{ lines[NR] = $0 } END { n = NR; while (n > 0 && lines[n] ~ /^[[:space:]]*$/) n--; for (i = 1; i <= n; i++) print lines[i] }'
 }
 

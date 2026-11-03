@@ -72,7 +72,7 @@ Every other ask in this skill is answered by its documented unattended default, 
 the run-state file (a parked escalation, beyond-cap item, qualifier, step-back redesign, or graph
 change; with
 no run-state file, in the round summaries), and surfaced in the final summary — never waited on:
-the top split (§Gates by Mode), the Key abstractions section (§Key Abstractions: applied as the designer returned it), coverage's `ORPHAN` escalation (§Coverage), the tripwire
+the top split (§Gates by Mode), the Key abstractions section (§Key Abstractions: applied as the designer returned it), coverage's `ORPHAN` escalation and baseline-row `GAP` park (§Coverage), the tripwire
 (§Tripwire), the recall-floor read-through (§Coverage), roast escalations, beyond-cap items,
 verdict qualifiers, step-back redesigns, loop exits and Capped Blocking (§Adversarial Review
 Loop), and the parallelism pass's unsafe changes (§Parallelism Pass). A protected resource you cannot reach, or a risky or destructive action that would need
@@ -604,8 +604,8 @@ included, which means waiting for that subtree to finish designing. An amend's
 **The changed-since input.** Round 1's fixes are applied with no human in the path, and round 2
 is the only thing that will ever see them. Assemble round 2's `## Changes since the previous
 round` section (empty on round 1) naming every task round 1's applied fixes created or amended,
-each with the finding it answers, followed by `git log -p` of the spec files since round 1's
-dispatch, whose commit messages carry each fix's `requirements:` accounting (§Adversarial Review
+each with the finding it answers, followed by `git log -p` of the spec files since the HEAD recorded in the
+`coverage-round-1` record as ` · specsAt <sha>` (the commit round 1's reviewers saw), whose commit messages carry each fix's `requirements:` accounting (§Adversarial Review
 Loop, fix list item 2).
 
 **Divergence observation.** On round 2, before disposition, run `bash
@@ -618,7 +618,7 @@ then applied; a finding this round already has a recorded disposition for (§Run
 replayed, not re-applied.
 
 **Verify, then apply.** Check each finding's evidence against the inputs the reviewers were
-given: the ids it cites resolve in the task tree, the text it quotes is really there, no ledger
+given: the ids it cites resolve in the task tree or the requirement baseline, the text it quotes is really there, no ledger
 entry already covers it (a `ledger:`-tagged finding with no new evidence is a duplicate: drop it
 without a new entry). A finding whose evidence does not hold is **rejected to the ledger with
 the one-line reason**, never applied and never escalated. This is a check against the assembled
