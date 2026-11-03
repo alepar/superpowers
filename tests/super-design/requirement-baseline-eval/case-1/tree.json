@@ -1,0 +1,101 @@
+[
+ {
+  "id": "rl",
+  "title": "relay agent permissions",
+  "issue_type": "epic",
+  "status": "open",
+  "labels": [
+   "sp:rl"
+  ],
+  "description": "`relay setup` installs harness permission rules so the agent runs relay commands without a prompt and `relay human` commands still prompt.",
+  "dependencies": []
+ },
+ {
+  "id": "rl.1",
+  "title": "Command forms",
+  "issue_type": "task",
+  "status": "closed",
+  "labels": [
+   "sp:rl"
+  ],
+  "description": "List the command forms the agent uses to invoke relay.\nowns: `command_forms(install_path)` in relay/forms.py\n- [ ] `command_forms(install_path)` returns `relay` and the real path of `install_path`",
+  "dependencies": [],
+  "parent": "rl"
+ },
+ {
+  "id": "rl.2",
+  "title": "Binary identity",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:rl"
+  ],
+  "description": "Add binary identity helpers so setup can tell whether a form runs the relay that is running setup.\nowns: `binary_digest(path)`, `resolve_form(form, path_env)` and `running_relay()` in relay/identity.py\n- [ ] `binary_digest(path)` is the SHA-256 hex digest of the file's bytes\n- [ ] `resolve_form(\"relay\", path_env)` is the real path of `relay` found on `path_env`, or `None`; an absolute form resolves to its own real path, or `None` when it is not a file\n- [ ] `running_relay()` is the real path of `sys.argv[0]`, looked up on `PATH` when it is not a file path",
+  "dependencies": [],
+  "parent": "rl"
+ },
+ {
+  "id": "rl.3",
+  "title": "Rule set by binary identity",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:rl"
+  ],
+  "description": "Rework `build_rules` in relay/rules.py to allow a form only when it runs the running relay (B1).\nowns: `build_rules(forms, running_digest, form_digest)` returning the rules and the forms left without an allow rule\nconsumes: digests from rl.2\n- [ ] every form F gets a prompt rule `F human *`\n- [ ] a form whose digest equals the running relay's digest also gets an allow rule `F *`\n- [ ] a form with another digest, or none, gets no allow rule and is returned as held",
+  "dependencies": [
+   {
+    "issue_id": "rl.3",
+    "depends_on_id": "rl.2",
+    "type": "blocks"
+   }
+  ],
+  "parent": "rl"
+ },
+ {
+  "id": "rl.4",
+  "title": "Setup allows both forms in one run",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:rl"
+  ],
+  "description": "Rework `run_setup` in relay/install.py so a default `relay setup` computes the running relay's digest and each form's digest and writes the rules in the same run (B1).\nowns: `run_setup(settings_path, install_path, running_path, path_env, out)` in relay/install.py; `relay setup` in relay/cli.py passes `running_relay()`\nconsumes: `command_forms` from rl.1, identity helpers from rl.2, `build_rules` from rl.3\n- [ ] on an ordinary install, a default `relay setup` writes allow rules for bare `relay` and the absolute path and a `human` prompt rule for each, in one run with no other step\n- [ ] for each held form, `relay setup` prints `relay setup: F does not resolve to the running relay; F stays prompted`\n- [ ] `relay setup` replaces only relay-owned rules and leaves rules of other tools unchanged; running it twice gives the same file",
+  "dependencies": [
+   {
+    "issue_id": "rl.4",
+    "depends_on_id": "rl.1",
+    "type": "blocks"
+   },
+   {
+    "issue_id": "rl.4",
+    "depends_on_id": "rl.2",
+    "type": "blocks"
+   },
+   {
+    "issue_id": "rl.4",
+    "depends_on_id": "rl.3",
+    "type": "blocks"
+   }
+  ],
+  "parent": "rl"
+ },
+ {
+  "id": "rl.5",
+  "title": "Tests for binary identity",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:rl"
+  ],
+  "description": "Cover binary identity and setup in tests/ (B1).\nconsumes: `run_setup` from rl.4, identity helpers from rl.2\n- [ ] a test installs one relay file, puts it on `PATH` and as `install_path`, runs `run_setup` with it as the running relay and checks both forms are allowed and `human` prompts in both (B1)\n- [ ] a test puts a different file named `relay` on `PATH` and checks the bare form gets only its prompt rule while the absolute form stays allowed\n- [ ] a test checks other tools' rules are kept and a second run gives the same file",
+  "dependencies": [
+   {
+    "issue_id": "rl.5",
+    "depends_on_id": "rl.4",
+    "type": "blocks"
+   }
+  ],
+  "parent": "rl"
+ }
+]

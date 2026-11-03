@@ -1,0 +1,106 @@
+[
+ {
+  "id": "rl",
+  "title": "relay agent permissions",
+  "issue_type": "epic",
+  "status": "open",
+  "labels": [
+   "sp:rl"
+  ],
+  "description": "`relay setup` installs harness permission rules so the agent runs relay commands without a prompt and `relay human` commands still prompt.",
+  "dependencies": []
+ },
+ {
+  "id": "rl.1",
+  "title": "Command forms",
+  "issue_type": "task",
+  "status": "closed",
+  "labels": [
+   "sp:rl"
+  ],
+  "description": "List the command forms the agent uses to invoke relay.\nowns: `command_forms(install_path)` in relay/forms.py\n- [ ] `command_forms(install_path)` returns `relay` and the real path of `install_path`",
+  "dependencies": [],
+  "parent": "rl"
+ },
+ {
+  "id": "rl.2",
+  "title": "Qualification record",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:rl"
+  ],
+  "description": "Add the qualification record that rules for a form are tied to.\nowns: `Qualification(form, state, digest)` with `Qualification.pending(form)` and `Qualification.qualified(form, digest)` in relay/qualify.py\n- [ ] `Qualification.pending(form)` has state `pending` and no digest\n- [ ] `Qualification.qualified(form, digest)` has state `qualified` and carries the digest",
+  "dependencies": [],
+  "parent": "rl"
+ },
+ {
+  "id": "rl.3",
+  "title": "Rule set from qualification records",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:rl"
+  ],
+  "description": "Rework `build_rules` in relay/rules.py to build rules from qualification records (B1).\nowns: `build_rules(records)` returning the rules and the forms left without rules\nconsumes: `Qualification` from rl.2\n- [ ] a `qualified` record for form F gives a prompt rule `F human *` and an allow rule `F *`\n- [ ] a record that is not `qualified` gives no rule, and its form is returned as left without rules",
+  "dependencies": [
+   {
+    "issue_id": "rl.3",
+    "depends_on_id": "rl.2",
+    "type": "blocks"
+   }
+  ],
+  "parent": "rl"
+ },
+ {
+  "id": "rl.4",
+  "title": "Setup writes qualified rules",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:rl"
+  ],
+  "description": "Rework `run_setup` in relay/install.py so setup creates a pending qualification record per command form, builds the rule set from the records and writes it (B1).\nowns: `run_setup(settings_path, install_path, out)` in relay/install.py\nconsumes: `command_forms` from rl.1, `Qualification.pending` from rl.2, `build_rules(records)` from rl.3\n- [ ] `relay setup` creates a `pending` record for each command form\n- [ ] for each form left without rules, `relay setup` prints `relay setup: F awaiting qualification; no rules written`\n- [ ] `relay setup` replaces only relay-owned rules and leaves rules of other tools unchanged; running it twice gives the same file",
+  "dependencies": [
+   {
+    "issue_id": "rl.4",
+    "depends_on_id": "rl.1",
+    "type": "blocks"
+   },
+   {
+    "issue_id": "rl.4",
+    "depends_on_id": "rl.2",
+    "type": "blocks"
+   },
+   {
+    "issue_id": "rl.4",
+    "depends_on_id": "rl.3",
+    "type": "blocks"
+   }
+  ],
+  "parent": "rl"
+ },
+ {
+  "id": "rl.5",
+  "title": "Tests for qualified rules",
+  "issue_type": "task",
+  "status": "open",
+  "labels": [
+   "sp:rl"
+  ],
+  "description": "Cover the qualified rule set and setup in tests/ (B1).\nconsumes: `Qualification.qualified` from rl.2, `build_rules` from rl.3, `run_setup` from rl.4\n- [ ] a test builds `qualified` records for `relay` and the absolute path with `Qualification.qualified` and checks `build_rules` gives allow rules for both forms and a `human` prompt rule for each (B1)\n- [ ] a test runs `run_setup` and checks it writes no relay rule while records are `pending`, prints the notice and keeps other tools' rules",
+  "dependencies": [
+   {
+    "issue_id": "rl.5",
+    "depends_on_id": "rl.3",
+    "type": "blocks"
+   },
+   {
+    "issue_id": "rl.5",
+    "depends_on_id": "rl.4",
+    "type": "blocks"
+   }
+  ],
+  "parent": "rl"
+ }
+]
