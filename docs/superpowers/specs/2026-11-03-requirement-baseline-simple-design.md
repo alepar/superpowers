@@ -49,4 +49,6 @@ No reconcile helper, root-acceptance requirement per row, revision-record files,
 
 ## Post-Implementation Notes
 
+**2026-11-03 — Changes vs. original design:** The human explicitly authorized merging and releasing the simplified implementation after receiving its validation limitations. The captured unreachable-prerequisite regression was caught in all six coverage/final-review runs, and delivered B1 behavior was recognized in all three final-review runs. Safe-change and human-scope-change behavior remain unestablished: fixture ambiguity, template residue and final-review setup defects limit the results. This integration accepts those stated limitations; it does not regrade the preserved results or incorporate the earlier reconciliation implementation.
+
 *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
