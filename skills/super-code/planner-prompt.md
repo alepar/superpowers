@@ -101,7 +101,9 @@ Task tool (general-purpose), model: opus:
            never sees the mapping table and needs the list here too — and `filesToRead` right
            after it.
          - The bead's `- [ ]` acceptance checklist, carried verbatim, item for item, and any
-           epic-level Global Constraints, carried verbatim.
+           epic-level Global Constraints, carried verbatim except a block between
+           `<!-- key-abstractions digest: begin -->` and `<!-- key-abstractions digest: end -->`,
+           which is historical and left out.
          - Bite-sized, TDD-structured implementation steps with complete content — no placeholders.
          - An independently testable deliverable, with the tests that exercise it named, since
            the implementer runs only the task-relevant tests. Don't write a review contract into

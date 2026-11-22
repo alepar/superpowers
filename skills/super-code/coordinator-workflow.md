@@ -1014,7 +1014,8 @@ beads tree (`bd show` on the epic and its ready/blocked descendants) and writes
    translation every downstream consumer of this file reads from, including the scheduler's
    hot-file cap described below.
 2. One `## Task <N>` section per row, headed by the **ordinal**, carrying the bead's acceptance
-   criteria and any Global Constraints from the epic body verbatim — the same content discipline
+   criteria and any Global Constraints from the epic body verbatim (less a historical
+   `key-abstractions digest` block) — the same content discipline
    `subagent-driven-development/SKILL.md` expects of a hand-written plan.
 
 `<workspace>` is this skill's `scripts/sdd-workspace <epicId>-plan.md`; because that script

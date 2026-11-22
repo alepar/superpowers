@@ -277,11 +277,12 @@ what consumers rely on. Its description carries `class: <P|V|N>` and
 It lands before its consumers: each consumer gets `bd dep add <consumer> <contract>`, the line
 `blocked-by <contract-id>: consumes boundary contract` and the line
 `boundary contract: <contract-id>`, and keeps its `owns:` and `consumes:` lines. It gets no
-`Seam integration:` bead; the root integration sweep crosses it. A seam contract that a rule
-below extracts (an edge justified by a question, a file not to split) or that §Coverage's
-`UNOWNED-SEAM` fix files is class P by construction: it records `class: P` and, as its
-obligation, the requirement those tasks serve and the tasks that could choose incompatibly. The
-`UNOWNED-SEAM` fix still adds its own `Seam integration:` bead (§Coverage).
+`Seam integration:` bead; the root integration sweep crosses it. Every other route that would
+create a new seam contract (an edge justified by a question, a file not to split, §Coverage's
+`UNOWNED-SEAM` fix) applies this same test, class and full obligation alike. A question or a
+shared file does not pass it by itself. When the test fails, the route's own disposition
+applies: decide the boundary in the spec, or give it to one owner bead whose `owns:` line names
+it, with `consumes:` lines on the beads that use it.
 
 **The tree stops at merge-ready.** Decompose only work that is finished when the code is written,
 reviewed, and merged. Operational follow-on — activating something in production, running a live
@@ -318,8 +319,8 @@ audits them — §Parallelism Pass):
 - **An edge you justify with a question instead of an artifact is a seam, not a dependency.**
   Chaining two tasks because nobody has decided which of them owns a piece of data does not answer
   the question — it hands the decision, implicitly, to whichever implementer runs first. Decide it
-  in the spec, or extract it as a seam contract (§Coverage's `UNOWNED-SEAM` machinery) and let
-  both tasks run in parallel against the decided boundary.
+  in the spec or give it to one owner, or, when the boundary passes the seam admission test
+  above, extract it as a seam contract and let both tasks run in parallel against it.
 - **Prefer leaf-level edges over epic-level edges.** An epic→epic edge claims every leaf under
   the dependent needs ALL of the blocking epic — and it is invisible to `bd ready` readers of the
   leaf graph, so nothing downstream re-audits it (measured live: one such edge idled a leaf whose
@@ -370,10 +371,10 @@ means the file should be split or assigned to a single bead. Decide which here, 
   `blocked-by <split-id>: consumes file split`), and point their files-touched hints at the new
   files.
 - **Don't split** when the leaves change the same logic in the file. That is a semantic conflict
-  a split cannot remove: give the logic to one owner bead the others depend on, or extract a
-  `Seam contract:` bead. Don't split an append-only registry either (a module list, a route
-  table, a variant enum): give its lines to one owner bead, or to the seam contract, which can
-  declare every entry up front.
+  a split cannot remove: give the logic to one owner bead the others depend on, or, when the
+  seam admission test above passes, a `Seam contract:` bead. Don't split an append-only registry
+  either (a module list, a route table, a variant enum): give its lines to one owner bead, or to
+  an admitted seam contract, which can declare every entry up front.
 
 §Parallelism Pass measures what remains on the settled tree and removes what it safely can; at
 decomposition, aim to need it little.
@@ -586,10 +587,13 @@ genuinely precedes the task; for `unwired`, add the missing edge (`bd dep add <t
 and, in the same `bd update --description`, the `blocked-by <cited>: consumes <artifact>` line.
 Verified `UNOWNED-SEAM`: **before creating either bead, check whether a `Seam contract:` /
 `Seam integration:` bead for this boundary already exists — including via a replayed disposition
-from the run-state file — and adopt it instead of duplicating it and its edges.** Otherwise create
-**two leaf tasks** with the standard flag triple, and wire the tree:
+from the run-state file — and adopt it instead of duplicating it and its edges.** Otherwise apply
+§Decomposition's seam admission test to the boundary. When it fails, fix the ownership instead:
+add the `owns:` line to the one bead that defines the boundary and `consumes:` lines to the beads
+that use it (wholesale `bd update --description`), deciding any open detail in the spec; no new
+bead. When it passes, create **two leaf tasks** with the standard flag triple, and wire the tree:
 
-- **`Seam contract: <boundary>`** — delivers **compilable boundary code**, not prose: the interface/types/signatures, the schema fields, and the wiring itself plumbed end-to-end as stubs or defaults (the value must flow even if inert-by-default). Its description carries `class: P` and an obligation naming the requirement the participants serve and the participants that could choose incompatibly. Acceptance: compiles, suite green, wiring present. Add a dependency edge from **every participant onto the contract bead** (`bd dep add <participant> <contract>`) — a genuine blocking edge by §Decomposition's own rule (the interface must exist first), not narrative order — and write `blocked-by <contract-id>: consumes boundary contract` into each participant's description (the fixed artifact token for this edge kind; see "Every blocking edge is paired with a reason line" above). Its files-touched hint deliberately spans both sides of the seam; execution merges it before its dependents by construction, so the overlap is expected.
+- **`Seam contract: <boundary>`** — delivers **compilable boundary code**, not prose: the interface/types/signatures, the schema fields, and the wiring itself plumbed end-to-end as stubs or defaults (the value must flow even if inert-by-default). Its description carries `class:` and the full obligation, as §Decomposition's admission test requires. Acceptance: compiles, suite green, wiring present. Add a dependency edge from **every participant onto the contract bead** (`bd dep add <participant> <contract>`) — a genuine blocking edge by §Decomposition's own rule (the interface must exist first), not narrative order — and write `blocked-by <contract-id>: consumes boundary contract` into each participant's description (the fixed artifact token for this edge kind; see "Every blocking edge is paired with a reason line" above). Its files-touched hint deliberately spans both sides of the seam; execution merges it before its dependents by construction, so the overlap is expected.
 - **`Seam integration: <boundary>`** — depends on that seam's participants only (`bd dep add <integration> <participant>` for each), with `blocked-by <participant-id>: consumes <that participant's owned boundary>` written into the integration bead's own description for each one. Delivers: verify the wiring end-to-end, write integration test(s) crossing the seam, see them pass. Small fixes inline; anything larger goes through execution's normal blocker path.
 - Append one line to **each participant's** bead description: `boundary contract: <contract-bead-id>`. **`bd update --description` replaces the description wholesale — there is no `--append-description`.** First `bd show <participant>` to read the current description, then re-send the full existing text with the pointer line appended; sending only the pointer line destroys the `owns:`/`consumes:` declarations the coverage reviewers and execution briefs depend on. The pointer flows into execution briefs through the planner with zero execution-side changes.
 

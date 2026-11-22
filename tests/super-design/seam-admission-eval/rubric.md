@@ -63,3 +63,21 @@ inside one leaf, which meets R2 without a contract bead. Round 3 adds Case P.
 - P4. The contract has signatures/stubs and one contract test (e.g. round-trip of R3 paths).
 
 Pass: P1–P4, or recorded N/A.
+
+## Addendum 3 (written after main's hold on 509104ef, before round 4 runs)
+
+## Case S — shared files and an undecided shared default (no seam expected)
+
+- S1. No `Seam contract:` row. The three commands share `__main__.py`/`commands.py` and a default
+  destination, but no two parallel tasks exchange a new boundary they could choose incompatibly
+  once the default is decided in the spec or owned by one task.
+- S2. The shared default is decided in the spec or given to one owner task (owns:/consumes:).
+- S3. Shared registry lines go to one owner or are left to the merge gate (fewer than 3 leaves),
+  or a `Split file:` row; not a seam.
+
+## Case U — UNOWNED-SEAM disposition where admission fails (paper)
+
+- U1. No new `Seam contract:` or `Seam integration:` task (exp.2 already depends on exp.1: not
+  parallel; no V or N).
+- U2. The fix adds an `owns:` line for the CSV layout to exp.1 and a `consumes:` line to exp.2,
+  and/or decides the layout in the spec.

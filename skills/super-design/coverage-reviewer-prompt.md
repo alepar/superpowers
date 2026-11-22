@@ -105,7 +105,7 @@ Task tool (general-purpose), model: opus:
       exchanged thing and the quoted text implying it
     - **proposed fix:** a new leaf under a named epic, or a new subepic needing design; for
       ORPHAN, delete the task or name the goal outcome it serves; for UNOWNED-SEAM, the
-      boundary to contract
+      boundary and which task should own it
 
     Last, at most two lines, only when a subepic cannot be judged from its Goal and task lines:
 
