@@ -11,7 +11,7 @@ Drive a goal or raw idea through brainstorming into a spec, recursively decompos
 
 ## When to Use
 
-Entered at the root with a goal or a raw idea to design out — no spec exists yet; this skill invokes `superpowers:brainstorming` itself to produce the root spec, then drives every iteration from there. Nested invocations are instead handed a freshly-written spec directly by the parent invocation's own nested-brainstorm step (§Nested Brainstorms) — they skip the root brainstorm and start at the Key abstractions step (§Key Abstractions), then decomposition.
+Entered at the root with a goal or a raw idea to design out — no spec exists yet; this skill invokes `superpowers:brainstorming` itself to produce the root spec, then drives every iteration from there. Nested invocations are instead handed a freshly-written spec directly by the parent invocation's own nested-brainstorm step (§Nested Brainstorms) — they skip the root brainstorm and start at decomposition (§Decomposition).
 
 Root vs. nested is **derived, not remembered**: nested iff this invocation was handed a spec directly rather than a goal/idea. Only the root invocation runs the coverage loop (§Coverage) and the final hand-off (§Hand-off). Base case for any invocation: no child qualifies for promotion → this subtree is done.
 
@@ -36,7 +36,7 @@ where it lands:
 
 This is the one statement of the design gates; other sections point here.
 
-| Run | Top-split gate (§The Process step 6) | Once the design is ready |
+| Run | Top-split gate (§The Process step 5) | Once the design is ready |
 |---|---|---|
 | Interactive: Mode A, not `autonomous` | **asks**: the human approves the child list and its `LEAF`/`PROMOTE` verdicts | hand-off (§Hand-off) |
 | One-shot: Mode B, not `autonomous` | **applied**: the recommended child list and verdicts are taken as they stand | **stop** for the human's design review, then hand-off |
@@ -72,7 +72,7 @@ Every other ask in this skill is answered by its documented unattended default, 
 the run-state file (a parked escalation, beyond-cap item, qualifier, step-back redesign, or graph
 change; with
 no run-state file, in the round summaries), and surfaced in the final summary — never waited on:
-the top split (§Gates by Mode), the Key abstractions section (§Key Abstractions: applied as the designer returned it), coverage's `ORPHAN` escalation and baseline-row `GAP` park (§Coverage), the tripwire
+the top split (§Gates by Mode), coverage's `ORPHAN` escalation and baseline-row `GAP` park (§Coverage), the tripwire
 (§Tripwire), the recall-floor read-through (§Coverage), roast escalations, beyond-cap items,
 verdict qualifiers, step-back redesigns, loop exits and Capped Blocking (§Adversarial Review
 Loop), and the parallelism pass's unsafe changes (§Parallelism Pass). A protected resource you cannot reach, or a risky or destructive action that would need
@@ -84,17 +84,16 @@ completion, not a stop.
 ## The Process
 
 1. **Produce the spec** (root only) — invoke `superpowers:brainstorming` on the goal or idea to produce the root spec — §Root Brainstorm. On a re-entry, adopt a spec that already exists — §Re-entry. Nested invocations skip this: they already hold the spec their parent's nested-brainstorm step wrote.
-2. **Key abstractions** (every invocation, root and nested) — dispatch a fresh designer on this level's committed spec, apply the `## Key abstractions` section it returns, and run the sync — §Key Abstractions. On a re-entry, adopt a section that already exists — §Re-entry.
-3. **Decompose** the spec into rough child tasks (title, short description, files-touched hint, blocking deps) — §Decomposition.
-4. **Promotion review** — dispatch a fresh-context reviewer, sanity-check its verdicts, fix any decomposition-verdict `ISSUES` — §Promotion Review.
-5. **Apply promotions** — §Applying Promotions.
-6. **Top-split gate** (root only) — before any descent, the top-level split (child list + promotion verdicts) is decided at one gate, at the most expensive level: asked or applied per §Gates by Mode, and replayed when the run-state file records a matching decision (§Run-State File).
-7. For each promoted child, **in dependency order, depth-first** (a child's entire subtree completes before the next sibling starts, so later siblings can read earlier siblings' finished specs): check the tripwire (§Tripwire), then run its nested brainstorm — §Nested Brainstorms — then invoke `superpowers:super-design` on the spec it wrote; that is the recursion.
-8. **Root only**, once the tree has settled (every subepic designed, every leaf decomposed, no pending promotions): run the coverage loop — §Coverage.
-9. **Root only, optional:** offer `superpowers:super-roast` on the settled tree; on a confirmed-findings verdict, run the fix + auto-re-roast loop — §Adversarial Review Loop.
-10. **Root only:** the parallelism pass — measure the settled graph and remove the edges that
+2. **Decompose** the spec into rough child tasks (title, short description, files-touched hint, blocking deps) — §Decomposition.
+3. **Promotion review** — dispatch a fresh-context reviewer, sanity-check its verdicts, fix any decomposition-verdict `ISSUES` — §Promotion Review.
+4. **Apply promotions** — §Applying Promotions.
+5. **Top-split gate** (root only) — before any descent, the top-level split (child list + promotion verdicts) is decided at one gate, at the most expensive level: asked or applied per §Gates by Mode, and replayed when the run-state file records a matching decision (§Run-State File).
+6. For each promoted child, **in dependency order, depth-first** (a child's entire subtree completes before the next sibling starts, so later siblings can read earlier siblings' finished specs): check the tripwire (§Tripwire), then run its nested brainstorm — §Nested Brainstorms — then invoke `superpowers:super-design` on the spec it wrote; that is the recursion.
+7. **Root only**, once the tree has settled (every subepic designed, every leaf decomposed, no pending promotions): run the coverage loop — §Coverage.
+8. **Root only, optional:** offer `superpowers:super-roast` on the settled tree; on a confirmed-findings verdict, run the fix + auto-re-roast loop — §Adversarial Review Loop.
+9. **Root only:** the parallelism pass — measure the settled graph and remove the edges that
     needlessly lengthen its longest chain — §Parallelism Pass.
-11. **Root only:** hand off to execution — §Hand-off. A standalone root invocation (when this invocation does not have a caller that owns the hand-off) then invokes `superpowers:upstream-feedback`; throughout the run, append friction events to `<artifact-directory>/friction.md` (or the enclosing run's log when nested) per that skill's format, the moment they happen.
+10. **Root only:** hand off to execution — §Hand-off. A standalone root invocation (when this invocation does not have a caller that owns the hand-off) then invokes `superpowers:upstream-feedback`; throughout the run, append friction events to `<artifact-directory>/friction.md` (or the enclosing run's log when nested) per that skill's format, the moment they happen.
 
 ## Re-entry (this skill can be invoked twice on the same goal)
 
@@ -104,12 +103,11 @@ is done-vs-not: check for the artifact a step would produce before producing it.
 
 | Step | Adopt instead of re-producing |
 |---|---|
-| §Root Brainstorm | a committed root spec already in the artifact directory (or named by the run-state file's spec pointer) — read it and go to §Key Abstractions, then §Decomposition |
-| §Key Abstractions | a committed spec that already has a `## Key abstractions` section — adopt it without re-dispatching the designer, and run the sync (§Decomposition); a committed spec without one (a crash between the brainstorm's commit and this step) runs the step before §Decomposition. A nested level's `sp:needs-design` is cleared only after its section is applied and the sync has run |
+| §Root Brainstorm | a committed root spec already in the artifact directory (or named by the run-state file's spec pointer) — read it and go to §Decomposition |
 | §Decomposition, root | an epic already labelled `sp:<its-own-id>` for this goal (or named by the run-state file's epic pointer) — adopt it; **never `bd create` a second root epic** |
 | §Decomposition, children | children already under that epic — decompose only what has none |
 | §Promotion Review | verdicts already applied (`-t epic` + `sp:needs-design`, or `sp:demoted-by-session`) — re-review only undecided children |
-| §The Process step 6 / §Coverage | a recorded top-split decision, and the coverage rounds already spent — see §Run-State File |
+| §The Process step 5 / §Coverage | a recorded top-split decision, and the coverage rounds already spent — see §Run-State File |
 | §Coverage, root integration sweep | an existing `Integration sweep:` bead for this root — adopt it; **never create a second** (two sweeps each fanning in on every leaf split the join) |
 | §Parallelism Pass | a recorded `graph-pass:` line (§Run-State File) — the pass has run; parked changes stay parked |
 | §Adversarial Review Loop, ledger and amend files | `findings-ledger-design.md`, `findings-overrides-design.md` and any `amend-design-<K>.md` in the artifact directory — adopt them (rebuild the ledger from the reports and overrides rather than starting one), and never reset `redesignCycles-design`; an amend file is acted on only after `amend-check` passes it, on resume too |
@@ -119,8 +117,8 @@ is done-vs-not: check for the artifact a step would produce before producing it.
 
 - A round with a `redesign-design-<K>` record (not `aborted — …`) resumes only through that record: the fix list's items 1–2 are not re-run for it, and its findings are not re-filed as per-finding tasks. A `stepBackDesign-round-<N>: redesign — applied: …` line with no record replays in place (the recorded redesign is applied from that line if its spec change is not yet committed) only when the run-state file (standalone, the round summaries) holds no `redesign-design-<K>` record anywhere, meaning the run predates the records. Otherwise the line is not replayed as a patch: re-run the round's Step 1 from item 5 on its saved step-back file (re-check, never re-dispatch).
 - `started`: with an amend file and a spec diff present, re-run `amend-check` on them; exit 0 continues from §Amend Mode's commit step; exit 3 restores the spec files to HEAD (`git checkout HEAD -- <spec paths>`) and re-runs §Amend Mode from its first step; exit 2 is a bad invocation or a git failure: fix it and re-run `amend-check`, never restoring. With no amend file, restore and re-run from the first step.
-- `amend-checked`: first check whether §Amend Mode step 3's commit already landed: `git diff --quiet <lastGood> HEAD -- <spec paths>` exits 1 when the specs at HEAD differ from the record's `lastGood` (the pre-amendment HEAD). Landed: do not re-run `amend-check` (against HEAD it sees an empty diff and rejects, and nothing aborts after the commit); rewrite the state to `specs-committed` and continue at that bullet, including step 3's sync. Not landed: re-run `amend-check` before committing anything; exit 0 → commit, exit 3 → restore the specs and rewrite the state to `aborted — amend rejected on resume`, then finish the abort as the `aborted — …` bullet does: remove this round's `dissolved@r<N>` lines from `findings-overrides-design.md`, rebuild the ledger and park the `degraded-verdict` `redesign aborted — amend rejected on resume`; exit 2 → fix and re-run, no restore.
-- `specs-committed`: first replay §Amend Mode step 3's Key Abstractions sync, then file the amend record's `work:` items missing from the beads labelled `sp:redesign-design-<K>`.
+- `amend-checked`: first check whether §Amend Mode step 3's commit already landed: `git diff --quiet <lastGood> HEAD -- <spec paths>` exits 1 when the specs at HEAD differ from the record's `lastGood` (the pre-amendment HEAD). Landed: do not re-run `amend-check` (against HEAD it sees an empty diff and rejects, and nothing aborts after the commit); rewrite the state to `specs-committed` and continue at that bullet. Not landed: re-run `amend-check` before committing anything; exit 0 → commit, exit 3 → restore the specs and rewrite the state to `aborted — amend rejected on resume`, then finish the abort as the `aborted — …` bullet does: remove this round's `dissolved@r<N>` lines from `findings-overrides-design.md`, rebuild the ledger and park the `degraded-verdict` `redesign aborted — amend rejected on resume`; exit 2 → fix and re-run, no restore.
+- `specs-committed`: file the amend record's `work:` items missing from the beads labelled `sp:redesign-design-<K>`.
 - `beads-filed`: write any missing dispute lines, run the coverage-amend round unless its approvals line exists, rewrite the state to `applied`, then run the post-amendment design roast (§Adversarial Review Loop, Redesign cycle).
 - `aborted — …`: the round runs `local`; before it does, finish the abort (the live abort writes this state first and then runs these same steps, so a crash anywhere in them replays here): park the `degraded-verdict` `redesign aborted — <reason>` unless the run-state file's `parked:` list (standalone, the round summaries) already holds it, and remove any `dissolved@r<N>` line for this round's record still in `findings-overrides-design.md` and rebuild the ledger. Both writes are idempotent: with the park present and no such line, nothing is written.
 - `applied`, `thrash — …`: nothing to replay; the loop continues from its other records.
@@ -129,11 +127,16 @@ is done-vs-not: check for the artifact a step would produce before producing it.
 an epic only if it carries its own `sp:` label — the label flip and the commit are the "done"
 markers §Durable State already relies on. Anything half-made gets finished, not adopted.
 
+**An older spec's `## Key abstractions` section is adopted as written history.** No step
+writes one into a spec, syncs one, files owner beads from one, or numbers one as a requirement
+(§Coverage). Leave the root epic's `## Global Constraints` as written, any `key-abstractions
+digest` block included, and treat an existing `owns: <Abstraction>` bead as an ordinary task.
+
 ## Root Brainstorm
 
-Root only. Invoke `superpowers:brainstorming` on the goal or raw idea handed to this invocation — no parent spec, no ancestor-goal chain, no sibling specs to hand in, since none exist yet. Brainstorming runs its full process (worktree, mode selection, questions or one-shot reasoning, design doc, self-review) and returns with a written, committed spec. It does **not** offer adversarial review to a caller-invoked run — that offer is this skill's, once, on the settled tree (§Adversarial Review Loop), so a run has exactly one design-mode roast. Take that spec forward into §Key Abstractions, then §Decomposition.
+Root only. Invoke `superpowers:brainstorming` on the goal or raw idea handed to this invocation — no parent spec, no ancestor-goal chain, no sibling specs to hand in, since none exist yet. Brainstorming runs its full process (worktree, mode selection, questions or one-shot reasoning, design doc, self-review) and returns with a written, committed spec. It does **not** offer adversarial review to a caller-invoked run — that offer is this skill's, once, on the settled tree (§Adversarial Review Loop), so a run has exactly one design-mode roast. Take that spec forward into §Decomposition.
 
-**Requirement baseline.** When the caller hands in the human's literal request (and any requirements the human approved before launch), the root spec carries them in a `## Requirement baseline` section after `## Goal`: a `Source:` line saying where and when the human said it; `### Human request`, the words verbatim with every line prefixed `> `; `### Requirements`, one line per approved outcome, `- B<n> · "<the human's words>" · source: <where>`; and `### Human scope changes`, `- none` until a human changes scope. Only words a human said or approved go in, never an agent's gloss or spec text no human approved. Confirm the section is present before §Key Abstractions; without the handed-in words, the spec has no section and every check below behaves as before. Once committed, only the orchestrator appends to it, and only a row a human actually stated: `- S<n> · YYYY-MM-DD · "<the human's words>" · source: <where> · affects: <B<n>|new>`, in its own commit, while no amendment or fix is in progress. `B` rows are never rewritten. Designer, coverage reviewers, design roast and final reviewers all read this section; it is the standard they judge against.
+**Requirement baseline.** When the caller hands in the human's literal request (and any requirements the human approved before launch), the root spec carries them in a `## Requirement baseline` section after `## Goal`: a `Source:` line saying where and when the human said it; `### Human request`, the words verbatim with every line prefixed `> `; `### Requirements`, one line per approved outcome, `- B<n> · "<the human's words>" · source: <where>`; and `### Human scope changes`, `- none` until a human changes scope. Only words a human said or approved go in, never an agent's gloss or spec text no human approved. Confirm the section is present before §Decomposition; without the handed-in words, the spec has no section and every check below behaves as before. Once committed, only the orchestrator appends to it, and only a row a human actually stated: `- S<n> · YYYY-MM-DD · "<the human's words>" · source: <where> · affects: <B<n>|new>`, in its own commit, while no amendment or fix is in progress. `B` rows are never rewritten. Designer, coverage reviewers, design roast and final reviewers all read this section; it is the standard they judge against.
 
 ## The run's root epic
 
@@ -156,49 +159,6 @@ Check a handed-in root at launch, before any design work. If it genuinely is not
 holds unrelated work, or is a standing tracker meant to outlive this run — that is a scoping
 problem to raise with the user before starting, not something to route around by rooting lower
 on your own.
-
-## Key Abstractions
-
-Every invocation, root and nested, runs this step on its own spec once the spec is committed,
-before §Decomposition: at the root after §Root Brainstorm, nested after the parent's nested
-brainstorm (§Nested Brainstorms). Agent-written code tends to miss abstractions and blur
-responsibilities; this step names them while the design is still text, so decomposition can
-give each one an owner.
-
-**Dispatch** `./key-abstractions-prompt.md` (fresh context, model opus, read-only), filling its
-placeholders:
-
-- `[SPEC_FILE_PATH — read it]`: this level's spec;
-- `[DISTILLATE_PATH — read it]`: `./design-distillate.md` (absolute path);
-- `[REPO_ROOT]`: the repository the spec changes;
-- `[KEY_ABSTRACTIONS_SO_FAR]`: every `## Key abstractions` section already committed anywhere
-  in the tree, in tree order (root first, then depth-first by `sp_order`), each headed by its
-  spec's path, with this level's ancestors marked as the frame it builds within; at the root,
-  `none — this is the root spec`.
-
-It returns the section as text: one entry per new or extended abstraction, then a `Digest:`
-block with one line per abstraction it adds. A change that needs nothing new comes back as
-`No new abstractions; extends <types>.` with no `Digest:` block.
-
-**Apply.** Insert the section into the spec immediately before `## Post-Implementation Notes`
-(at the end, when the spec has no such heading) and commit the spec. Then run the sync
-(§Decomposition, "Key abstractions sync"); at the root the epic does not exist yet, so the
-first sync runs when §Decomposition creates it.
-
-- Interactive (Mode A): show the section to the human before the commit; they may edit it.
-  It is part of the design dialog, like the top-split question. The committed section is the
-  one they settle on.
-- Unattended (§Unattended Runs): apply it as returned, without asking. The design roast
-  reviews it with the rest of the spec; there is no new stop.
-
-**Precedence.** The spec's explicit decisions win; the section fills gaps only. Where an
-explicit decision forces something that looks like a misstep, such as a deliberate per-caller
-branch, the section says so in one line and cites the spec section, and the code roast then
-reads it as intended rather than as leakage. A returned section that contradicts an explicit
-decision is corrected to the decision before the commit (interactive: point it out to the
-human).
-
-**Cost.** One opus dispatch per spec.
 
 ## Decomposition
 
@@ -253,8 +213,8 @@ catches only the bottleneck case, so Step A's job is to not fuse work that could
 - **One feature, one subsystem:** a leaf delivers one feature in one subsystem. Tightly coupled
   files (heavy mutual calls or imports) stay in one leaf; splitting them only moves the coupling
   into a seam two implementers must agree on. Siblings that share an interface name it as a
-  contract through the owns:/consumes: lines below, or a `Seam contract:` bead when the interface
-  must exist first.
+  contract through the owns:/consumes: lines below, or an admitted seam (below) when the
+  interface must exist first.
 - **Executable by one implementer:** super-code's implementer works alone and spawns no
   subagents, so work that needs fresh agents — behavioral probes, skill evals, scenario runs
   against a model — is not a leaf. Route it to the orchestrator's own phase (`super-auto`'s
@@ -289,67 +249,33 @@ paraphrase ("this child is responsible for…") reads as unowned and produces a 
 `UNOWNED-SEAM`. The mandate is scoped, not unconditional: a child that exchanges nothing with
 any sibling omits the declaration entirely — there is no `owns: none` filler to write.
 
-**Each abstraction the spec's `## Key abstractions` section adds gets one owner bead** — the
-bead that creates it in code. Until this level's children exist, this rule is the only creator
-of owner beads, and it adopts a bead that already says `owns: <Abstraction>` rather than
-creating a second. It builds the type (trait, interface or class), the place where
-kinds are chosen if there is one (a registry or factory), and the type's responsibility
-comment. Its description says `owns: <Abstraction>` and carries the section's full entry for
-it, kept current by the sync below. Its acceptance includes the comment on the type: what it
-owns, what it doesn't, where new behavior goes, and the pattern or role it plays. By the
-bottleneck rule it stays small and lands first, which is the shape of a `Seam contract:` bead;
-when several beads need it before it exists, the seam-contract machinery applies (§Coverage).
-Beads that use the abstraction say `consumes: <Abstraction>`. Owning doesn't lock the type: a
-bead that needs new per-kind behavior adds a method to the interface, which is where the
-comment says new behavior goes. An existing abstraction the section only extends has no owner
-bead; whichever bead changes its responsibilities updates its comment.
+**A new seam is admitted, never assumed.** No new abstraction is the default, and it needs no
+output. A seam here is an interface, type, registry or exchange format that does not exist yet.
+Decomposition adds one only when it falls in one of three classes:
 
-**Key abstractions sync.** Each spec's `## Key abstractions` section, with its `Digest:` block,
-is the only source; every other copy is regenerated from the committed sections, replacing
-what is there, never appended to. Run the sync whenever any section is applied or changed:
-§Key Abstractions' apply, a human's interactive edit, a design-roast fix or step-back redesign
-that touches a section (§Adversarial Review Loop), a redesign `super-auto`'s phase-5 code fix
-loop applies to a section (before it files that round's fix beads), an amend (§Amend Mode) that
-touches a `## Key abstractions` section, and re-entry (§Re-entry).
-It rewrites:
+- **P, parallel boundary:** two tasks this decomposition leaves free to run in parallel exchange
+  it (a type, a function, a file or wire format), and, built independently, they could choose
+  incompatibly.
+- **V, volatile dependency:** an out-of-process or nondeterministic dependency (clock,
+  randomness, filesystem, network, subprocess, terminal) that an accepted requirement's check
+  must control, because the direct check cannot be made runnable or deterministic without it.
+- **N, variation now:** accepted requirements need two implementations in this run, or several
+  existing call sites this change touches already branch on the same kind. Name both
+  implementations or list the call sites.
 
-- **The digest.** Collect the `Digest:` lines of every committed spec in tree order (root
-  first, then depth-first by `sp_order`; a section with no `Digest:` block contributes none).
-  In the root epic's description they sit under `## Global Constraints`, between two marker
-  lines:
+and only with its obligation stated: the accepted requirement it protects (a baseline row or a
+requirement of this spec), a worked failure without it under supported conditions, and the
+direct check tried first (decide the boundary inside one task, test the real dependency, branch
+once inline) with why that check falls short. A layer, a pattern, a single-implementation
+interface or a likely future change is not a seam; the implementer decides those.
 
-  ```
-  <!-- key-abstractions digest: begin -->
-  - <Abstraction>: <its digest line>
-  <!-- key-abstractions digest: end -->
-  ```
-
-  Replace only what lies between the markers and leave the rest of `## Global Constraints`
-  untouched. When the block is absent, whether decomposition just created the epic or the run
-  adopted a handed-in one, create it: under the existing `## Global Constraints` heading when
-  there is one, never a second heading, else under a new one. `bd update --description`
-  replaces the description wholesale: `bd show` the epic first and re-send its full text with
-  only the block changed.
-- **Owner beads.** Rewrite the entry text of each owner bead whose abstraction changed,
-  through the same wholesale `bd update --description` rule. The sync creates owner beads only
-  once the children of the level whose section adds the abstraction exist; before that (a
-  nested level's first sync, or the root's at epic creation) it creates none, and
-  §Decomposition's owner-bead rule above is the only creator. After that, an abstraction in
-  the digest that no bead owns, as after one is added or renamed, gets an owner on the spot:
-  an `owns:` line plus the comment acceptance on an existing bead that already builds it, or
-  a new owner bead made like an §Adversarial Review Loop step-1 fix task — §Decomposition's
-  flag triple (`--parent <that level's epic> --no-inherit-labels -l sp:<root-epic-id>`) and,
-  before hand-off, when an `Integration sweep:` bead already exists for this root,
-  `bd dep add <sweep> <owner>` paired with
-  `blocked-by <owner-id>: consumes all leaves (integration sweep)` in the sweep's
-  description. On a rename, re-key the beads'
-  `consumes:` lines to the new name. An owner bead whose abstraction is gone is restructured
-  like any other task under the roast loop's existing rule.
-- **No-beads plans** carry the same tree-wide set (§No-Beads Mode).
-
-super-code's planner already copies the epic's Global Constraints verbatim into every task
-brief, and its task reviewer checks the brief against them, so the digest reaches every
-implementer without a super-code change.
+Each admitted seam is a `Seam contract: <boundary>` bead, adopted when one for the boundary
+already exists, built and wired as §Coverage's `UNOWNED-SEAM` fix builds it: compilable boundary
+signatures with inert stubs, landing before its consumers, each of which depends on it with
+`blocked-by <contract-id>: consumes boundary contract`. Its acceptance adds one contract test
+stating what consumers rely on. Its description carries `class: <P|V|N>` and
+`obligation: requirement <id> · failure <the worked scenario> · direct check <what was tried>`.
+The tasks on either side keep their `owns:` and `consumes:` lines.
 
 **The tree stops at merge-ready.** Decompose only work that is finished when the code is written,
 reviewed, and merged. Operational follow-on — activating something in production, running a live
@@ -446,7 +372,7 @@ means the file should be split or assigned to a single bead. Decide which here, 
 §Parallelism Pass measures what remains on the settled tree and removes what it safely can; at
 decomposition, aim to need it little.
 
-- **Beads:** for every child, `bd create ... --parent <id> --no-inherit-labels -l sp:<root-epic-id>` — both flags together, every time. `--no-inherit-labels` alone still strips the wanted root label; without it, parent labels (including `sp:needs-design`) smear onto every leaf. The root invocation creates the epic first, labeled `sp:<its-own-id>`, then runs the first Key abstractions sync on it (§Key Abstractions) before it creates any child.
+- **Beads:** for every child, `bd create ... --parent <id> --no-inherit-labels -l sp:<root-epic-id>` — both flags together, every time. `--no-inherit-labels` alone still strips the wanted root label; without it, parent labels (including `sp:needs-design`) smear onto every leaf. The root invocation creates the epic first, labeled `sp:<its-own-id>`, before it creates any child.
 - **No beads:** the same fields as a task-table row — see §No-Beads Mode for the columns it must carry.
 
 ## Promotion Review
@@ -484,7 +410,7 @@ until its dependents are re-pointed:
 ## Applying Promotions
 
 - **Beads:** `bd update <id> -t epic` (in-place, same id — preserves existing deps), then `bd update <id> --set-metadata sp_depth=<N>` and `--set-metadata sp_order=<per-parent ordinal in dependency order>` (underscores — bd's metadata-key validator rejects hyphens), then label `sp:needs-design`.
-- **No beads:** mark the row `sub-plan: <spec path>` (or `needs-design` until the spec is written and its Key abstractions section is applied and synced).
+- **No beads:** mark the row `sub-plan: <spec path>` (or `needs-design` until the spec is written).
 
 Then run the nested brainstorm on the promoted child.
 
@@ -494,10 +420,9 @@ Run in the main session (interactive Mode A can't run in a subagent). Context ha
 
 - Inherits the session's design mode (always Mode B under `autonomous`); in an interactive run the user can override per-subepic with an explicit request.
 - Opens with its own local `## Goal`, seeded from the promotion rationale.
-- Builds within the ancestors' `## Key abstractions` sections: they are the frame the nested design extends and never redefines. An explicit decision of the nested spec that goes against one wins at that level, and that level's own section notes it (§Key Abstractions).
 - Does not re-offer super-roast (it is offered once, at the root, after coverage passes) and skips Mode B's per-spec review gate — a Mode B tree's human checkpoint is the design-ready stop (§Gates by Mode). Coverage disposes automatically in every mode, and in Mode B even its `ORPHAN` escalation applies without asking (§Coverage).
 - Does not create a new worktree; `using-git-worktrees` idempotently verifies the existing one.
-- Once it returns with a written, committed spec, invoke `superpowers:super-design` on that spec — §The Process, step 7; that is the recursion. The nested invocation runs step 2 on that spec itself.
+- Once it returns with a written, committed spec, invoke `superpowers:super-design` on that spec — §The Process, step 6; that is the recursion. The nested invocation decomposes that spec itself (step 2).
 
 ## Durable State
 
@@ -505,12 +430,12 @@ Run in the main session (interactive Mode A can't run in a subagent). Context ha
 |---|---|
 | Tree membership | label `sp:<root-epic-id>` on every issue in the tree, **including the root epic** (root detection: an epic whose own id equals its label's suffix) |
 | Depth / sibling order | metadata `sp_depth` (root's direct subepics = 1) and `sp_order` (per-parent ordinal, dependency order) on every promoted epic |
-| Design pending | label `sp:needs-design` until the nested brainstorm's spec is committed and its Key abstractions section is applied and synced (§Key Abstractions) |
+| Design pending | label `sp:needs-design` until the nested brainstorm's spec is committed |
 | Spec location | recorded on the issue once written |
 
 **Cursor is a query, not a memory:** an epic is eligible for design iff it carries `sp:needs-design` AND every lower-`sp_order` sibling's subtree is fully designed (no `sp:needs-design` anywhere under it). Next work item = the eligible epic, depth-first.
 
-**Write ordering:** commit the nested spec (+ INDEX row), then apply its Key abstractions section and run the sync, *before* clearing `sp:needs-design` — the label flip is the single "done" marker. No explicit commit step is needed after each `bd` write beyond that (default `--dolt-auto-commit=off` is durable per completed call; never switch to `batch` mode).
+**Write ordering:** commit the nested spec (+ INDEX row) *before* clearing `sp:needs-design` — the label flip is the single "done" marker. No explicit commit step is needed after each `bd` write beyond that (default `--dolt-auto-commit=off` is durable per completed call; never switch to `batch` mode).
 
 No beads: the same facts live as columns on the task-table rows — see §No-Beads Mode.
 
@@ -529,7 +454,7 @@ each choice with the tree snapshot as a qualifier.
 
 ## Coverage / Gap Loop (root only)
 
-Runs once the tree has settled (§The Process, step 8).
+Runs once the tree has settled (§The Process, step 7).
 
 **One root pass per round, two reviewers.** Coverage asks a high-level question — did the tree
 miss anything the goal needs, and does anything in it serve no goal — so it reads goals and a
@@ -553,7 +478,7 @@ every script below.
 
 **Canonical requirement list.** Before dispatch, the orchestrator — not any reviewer — derives
 the canonical requirement list: decompose the `## Requirement baseline` rows first (each R cites
-its B-id), then the root `## Goal` and root spec, into one observable outcome per requirement, numbered R1…Rn, and pass the same list to both reviewers. **R-ids are
+its B-id), then the root `## Goal` and root spec, into one observable outcome per requirement, numbered R1…Rn, and pass the same list to both reviewers. A legacy `## Key abstractions` section (§Re-entry) supplies no requirement. **R-ids are
 stable across rounds and resumes:** round 1 writes them into the run-state file's
 `coverage-round-1` record (no run-state file: the coverage ledger's round-1 header), with
 ` · specsAt <sha>`: HEAD captured when round 1 dispatches, before any round-1 fix; round 2 (or
@@ -808,8 +733,7 @@ recurrence; the delta stays an instance count.
    ones (a Mode B nested brainstorm when unattended; may itself promote/nest); a dispatched fixer
    (Sonnet-class is fine) for delegable work. Whoever fixes gets every round's report path and
    every applied redesign, not just this round's, so a patch does not reopen what an earlier round
-   closed or undo a chosen redesign. A fix that touches a `## Key abstractions` section is applied
-   and synced: commit the amended spec, then run the sync (§Decomposition, "Key abstractions sync").
+   closed or undo a chosen redesign. A fix that adds a new seam admits it as §Decomposition does.
    With a `## Requirement baseline`, the fixer is given it, and every commit that changes a spec
    (this fix list, or a coverage disposal) ends its message with a `requirements:` block in the
    amend record's format (`./amend-prompt.md`): one line per affected baseline row, or
@@ -884,9 +808,8 @@ its own rule above.
 ## Amend Mode
 
 The single redesign entry point both roast fix loops call: super-auto's phase-5 code loop and
-§Adversarial Review Loop's design loop. It is a Facade over spec amendment, the Key Abstractions
-sync (§Decomposition), bead filing (§Decomposition) and §Coverage. It owns the sequence below,
-restoring the specs to HEAD on every reject and abort, and being the single filer of the
+§Adversarial Review Loop's design loop. It is a Facade over spec amendment, bead filing (§Decomposition)
+and §Coverage. It owns the sequence below, restoring the specs to HEAD on every reject and abort, and being the single filer of the
 amendment's beads. It never counts or checks the redesign budget, never writes `redesignCycles-*`
 or any `redesign-*` field but `state`, never runs a roast, super-code or the next round, never
 routes on raw reports (the ledger is its input; read finding text by key through the ledger's
@@ -920,12 +843,7 @@ caller's bead context.
    the retry starts clean, then re-dispatch once with the reject lines as `[REJECTS]`. A second
    reject restores again and returns `aborted — amend rejected`.
 3. **Commit** the specs; state `specs-committed`. An abort is possible only before this commit
-   lands, and every abort restores the specs first. Then run the Key Abstractions sync
-   (§Decomposition, "Key abstractions sync") when a `## Key abstractions` section changed
-   from `lastGood` to HEAD. On `specs-committed` replay, re-run this sync from the committed sections
-   even if a previous attempt already completed it: replace the digest block and owner entry text,
-   and adopt existing owners under §Decomposition's rules. If sync fails, retain `specs-committed`
-   and the failure evidence; retry on resume before filing or advancing.
+   lands, and every abort restores the specs first.
 4. **File the `work:` items** with the filing sequence below. It does for a redesign round what
    super-auto §Step 3 does for a local round: reopen the epic (and the owning subepic) first, since
    a closed parent stays closed when a child is filed and super-code then stops at `root-closed`;
@@ -1103,7 +1021,7 @@ is the caller's to make: `super-code` in beads mode, or, in no-beads mode, `writ
 
 ## No-Beads Mode
 
-Same decomposition/promotion/coverage, on paper. Each task-table row needs: a stable id (`<epic-slug>.<ordinal>`), a **depth column**, and a **deps column listing blocker row-ids** — as table data, not prose, or the cursor rule above is unreconstructable. Promoted rows are marked `sub-plan: <spec path>` (or `needs-design` until the spec is written and its Key abstractions section is applied and synced). The cursor eligibility rule and tripwire counts run over these columns exactly as beads mode runs them over labels/metadata. Seam machinery included: an accepted `UNOWNED-SEAM` adds `Seam contract:` / `Seam integration:` rows to the task table with their own dependency columns, each participant row gains a `boundary contract: <row>` note, and the root sweep is a final row depending on every leaf row. Key abstractions travel the same way: when §Hand-off runs `writing-plans`, tell it to copy the tree-wide digest (the `Digest:` lines of every committed spec, in tree order, as the sync collects them in §Decomposition) into each plan's `## Global Constraints`; `writing-plans` itself does not change.
+Same decomposition/promotion/coverage, on paper. Each task-table row needs: a stable id (`<epic-slug>.<ordinal>`), a **depth column**, and a **deps column listing blocker row-ids** — as table data, not prose, or the cursor rule above is unreconstructable. Promoted rows are marked `sub-plan: <spec path>` (or `needs-design` until the spec is written). The cursor eligibility rule and tripwire counts run over these columns exactly as beads mode runs them over labels/metadata. Seam machinery included: an admitted seam (§Decomposition) adds a `Seam contract:` row carrying its class and obligation, an accepted `UNOWNED-SEAM` adds `Seam contract:` / `Seam integration:` rows to the task table with their own dependency columns, each participant row gains a `boundary contract: <row>` note, and the root sweep is a final row depending on every leaf row.
 
 ## Artifact Location
 
@@ -1157,7 +1075,7 @@ outer collection, retain the original reports and declare that collection gap fo
 ledger keys/statuses alone never establish complete source population or local dispositions.
 
 **Gate decisions are recorded, and replayed rather than re-made.** Before deciding the top split
-(§The Process step 6) or running a coverage round (§Coverage), check the run-state file for what
+(§The Process step 5) or running a coverage round (§Coverage), check the run-state file for what
 is already recorded:
 
 - **Top-split:** record the child ids with their `LEAF`/`PROMOTE` verdicts, marked `human` or
@@ -1241,7 +1159,7 @@ skill's work instead of re-running all of it.
 
 - Entered at the root with a goal or idea — by a user directly, or by an outer caller (e.g. `super-auto`); recurses into itself, nested, once each promoted subepic's brainstorm returns a spec.
 - Invokes `superpowers:brainstorming` — once at the root to produce the root spec (§Root Brainstorm), then once per promoted subepic (§Nested Brainstorms).
-- Dispatches `./key-abstractions-prompt.md` (handing it `./design-distillate.md`), `./promotion-reviewer-prompt.md`, `./coverage-reviewer-prompt.md`, `./step-back-prompt.md` (which `super-auto`'s phase-5 fix loop also dispatches, in code mode), and `./graph-pass-prompt.md`, and, in Amend Mode, `./amend-prompt.md` (the only dispatch Amend Mode makes besides the coverage-amend round's `./coverage-reviewer-prompt.md`).
+- Dispatches `./promotion-reviewer-prompt.md`, `./coverage-reviewer-prompt.md`, `./step-back-prompt.md` (which `super-auto`'s phase-5 fix loop also dispatches, in code mode), and `./graph-pass-prompt.md`, and, in Amend Mode, `./amend-prompt.md` (the only dispatch Amend Mode makes besides the coverage-amend round's `./coverage-reviewer-prompt.md`).
 - Runs `./scripts/amend-check` and `./scripts/findings-ledger` (the rebuild after disputes) in Amend Mode (§Amend Mode); `./scripts/coverage-inputs`, `./scripts/coverage-precheck`, `./scripts/requirements-tally`, and `./scripts/coverage-divergence` in the coverage loop (§Coverage), and `./scripts/graph-shape` in §Parallelism Pass; runs `./scripts/findings-ledger` and `./scripts/step-back-check` in §Adversarial Review Loop.
 - Offers `superpowers:super-roast` (root only, optional) once the coverage loop passes; consumes its report to drive the fix + auto-re-roast loop — §Adversarial Review Loop.
 - Hands off to `superpowers:super-code` (beads mode) or `superpowers:subagent-driven-development` (once per epic's plan in no-beads mode); no-beads mode also uses `superpowers:writing-plans`.

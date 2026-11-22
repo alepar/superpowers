@@ -69,7 +69,8 @@ Task tool (general-purpose), model: opus:
     amendment must not change. List every section you edited in `amended:`, and edit every
     section you list. Write one `work:` line per new work item, decomposition-ready: a title,
     a short description naming the boundaries it owns and consumes, a files hint, and the keys
-    it covers.
+    it covers. A new seam is a `Seam contract:` item only when super-design's §Decomposition
+    admits it, with its class and obligation in the description.
 
     With a `## Requirement baseline`, account for every baseline row your amendment affects, in
     `requirements:`, judged against the human's words, not the spec's restatement:

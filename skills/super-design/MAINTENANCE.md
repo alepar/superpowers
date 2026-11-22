@@ -4,6 +4,20 @@ History and evidence behind super-design's design choices. Maintenance-only; not
 
 ## Key abstractions step
 
+**Removed 2026-11-22** (bead `super-plan-9xz`, Design A of the Super Workflow research report
+`docs/research/I-key-abstractions/REPORT.md` in the super-workflow repository, approved by the
+human partner). In a baseline run the step turned an inline policy into a shared module that
+decomposition, coverage and review then treated as required work; the eval below never showed it
+finding an abstraction the brainstorm missed. Its two supported parts moved into §Decomposition:
+a new seam is admitted only as class P (parallel boundary), V (volatile dependency a requirement's
+check must control) or N (two implementations now, or existing kind-branching call sites this
+change touches), with an obligation (requirement, worked failure, direct check tried first), and
+lands as a `Seam contract:` bead with a contract test. Gone with it: the designer dispatch, the
+distillate, the sync and digest block, owner beads, the promotion reviewer's "Owned
+abstractions" check and nested specs' ancestor frame. Older specs keep their sections as
+history (§Re-entry). Fallback if under-structuring returns: the report's Design B, a slim seam
+ledger. The notes below describe the removed step.
+
 Added 2026-10-11 (super-auto run `2026-10-10-key-abstractions-design-step`, design: `docs/superpowers/runs/2026-10-10-key-abstractions-design-step/2026-10-10-key-abstractions-design-step-design.md`). It revisits option D-a in `TODO-OOP-RECOMMENDATIONS.md`, which rejected a separate super-auto phase after the design roast; this step runs inside super-design, before decomposition, so the design roast reviews it.
 
 **Motivation.** A CLI tool added a second and then a third agent-harness integration; its callers branched on harness-name strings in about 15 places, and even after a later run designed an adapter trait and registry, such branches grew to 18 across 11 files. Nothing said where per-harness behavior belonged.

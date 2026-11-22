@@ -1,5 +1,10 @@
 # Key abstractions eval
 
+**Historical.** super-design no longer has a Key abstractions step (removed 2026-11-22; see
+`skills/super-design/MAINTENANCE.md`). The prompt and distillate this eval dispatches were
+deleted; run it against commit `34fd607b`, where they still exist. It does not exercise any
+live stage.
+
 A small before/after check of super-design's Key abstractions step: does the designer
 (`skills/super-design/key-abstractions-prompt.md`, with `skills/super-design/design-distillate.md`)
 name the missing abstraction when a CLI adds a third integration, answer "no new

@@ -1,7 +1,7 @@
 flowchart TB
   goal([Goal or vision doc])
   subgraph design [super-design]
-    bs[Brainstorm a spec] --> ka[Name key abstractions] --> dec[Decompose into tasks]
+    bs[Brainstorm a spec] --> dec[Decompose into tasks]
     dec -. task too big .-> bs
     dec --> cov[Check tree against goal]
   end

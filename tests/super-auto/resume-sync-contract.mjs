@@ -1,5 +1,7 @@
 // Mechanical instruction-contract checks only. Agent-behavior evaluations are separate.
-// Catches replay bypassing sync, repeating it in two states, or advancing after sync failure.
+// Catches the redesign resume paths drifting apart: a landed amend-checked replay must reach the
+// same specs-committed boundary, which files missing work items and runs no Key abstractions
+// sync (that stage and its sync were removed), and the postcommit retry policy must stay.
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
@@ -15,21 +17,21 @@ function problems(texts) {
   const errors = [];
   for (const name of ['auto', 'design']) {
     const committed = bullet(texts[name], 'specs-committed');
-    if (!/Key Abstractions sync[\s\S]*then file/.test(committed)) {
-      errors.push(`${name}: specs-committed must replay sync before filing`);
+    if (!/^- `specs-committed`: file\b/.test(committed)) {
+      errors.push(`${name}: specs-committed must go straight to filing missing work items`);
     }
+    if (/sync/i.test(committed)) errors.push(`${name}: specs-committed must not replay a sync`);
     const checked = bullet(texts[name], 'amend-checked');
     if (!checked.includes('continue at that bullet') || checked.includes('finish step 3 from after its commit')) {
       errors.push(`${name}: landed amend-checked must use the same specs-committed boundary`);
     }
+    if (/sync/i.test(checked)) errors.push(`${name}: landed amend-checked must not run a sync`);
   }
-  const sync = step3(texts.design);
-  for (const required of ['committed sections', 'already completed', 'adopt existing owners',
-    'retain `specs-committed`', 'before filing or advancing']) {
-    if (!sync.includes(required)) errors.push(`producer sync missing: ${required}`);
-  }
+  const commit = step3(texts.design);
+  if (!commit) errors.push('producer: Amend Mode step 3 not found');
+  if (/sync/i.test(commit)) errors.push('producer: Amend Mode step 3 must not run a sync');
   if (!texts.design.includes('A step from step 4 through step 6 that fails')) {
-    errors.push('producer: postcommit degraded/applied policy must exclude sync');
+    errors.push('producer: postcommit degraded/applied policy must cover steps 4 through 6');
   }
   return errors;
 }
@@ -42,27 +44,26 @@ function test(name, fn) {
   catch (error) { failures++; console.error(`FAIL ${name}: ${error.message}`); }
 }
 
-test('both actual replay paths share an idempotent sync boundary before filing', () => {
+test('both actual replay paths share a sync-free boundary before filing', () => {
   assert.deepEqual(problems(sources), []);
 });
 
 // Independent literal positive control: confirms the checker accepts a complete contract
-// even when unrelated prose differs. This does not execute an agent or a tracker sync.
+// even when unrelated prose differs. This does not execute an agent or a tracker.
 const positive = {
   auto: '- `amend-checked`: landed: rewrite state and continue at that bullet.\n' +
-    '- `specs-committed`: replay Key Abstractions sync, then file missing items.\n',
+    '- `specs-committed`: file only the missing items.\n',
   design: '- `amend-checked`: landed: rewrite state and continue at that bullet.\n' +
-    '- `specs-committed`: replay Key Abstractions sync, then file missing items.\n' +
-    '3. **Commit** specs. Sync committed sections even if already completed; adopt existing owners. ' +
-    'On failure retain `specs-committed`; retry before filing or advancing.\n' +
+    '- `specs-committed`: file the missing items.\n' +
+    '3. **Commit** specs; state `specs-committed`.\n' +
     '4. **File** missing items.\nA step from step 4 through step 6 that fails is retried.\n',
 };
 test('literal complete contract is accepted', () => assert.deepEqual(problems(positive), []));
 for (const name of ['auto', 'design']) {
-  test(`${name}: missing-sync replay is detected`, () => {
+  test(`${name}: a resurrected sync in specs-committed is detected`, () => {
     const changed = { ...positive, [name]: positive[name].replace(
-      'replay Key Abstractions sync, then file', 'file') };
-    assert.ok(problems(changed).includes(`${name}: specs-committed must replay sync before filing`));
+      '`specs-committed`: file', '`specs-committed`: first replay the Key Abstractions sync, then file') };
+    assert.ok(problems(changed).some(e => e.startsWith(`${name}: specs-committed`)));
   });
   test(`${name}: sync repeated in amend-checked before the common boundary is detected`, () => {
     const changed = { ...positive, [name]: positive[name].replace('landed: rewrite state',
@@ -71,11 +72,10 @@ for (const name of ['auto', 'design']) {
   });
 }
 for (const [name, before, after, error] of [
-  ['already-completed replay lost', 'already completed', 'first attempt', 'already completed'],
-  ['owner adoption lost', 'adopt existing owners', 'create owners again', 'adopt existing owners'],
-  ['failed sync advances state', 'retain `specs-committed`', 'write `applied`', 'retain `specs-committed`'],
-  ['sync covered by degraded/applied policy', 'A step from step 4 through step 6 that fails',
-    "A step from step 3’s sync through step 6 that fails", 'exclude sync'],
+  ['sync restored in the commit step', 'state `specs-committed`.',
+    'state `specs-committed`. Then run the Key Abstractions sync.', 'step 3 must not run a sync'],
+  ['postcommit policy lost', 'A step from step 4 through step 6 that fails',
+    'A failing later step', 'postcommit'],
 ]) {
   test(name, () => {
     assert.ok(problems({ ...positive, design: positive.design.replace(before, after) })
