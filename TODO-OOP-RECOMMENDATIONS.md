@@ -2,7 +2,7 @@
 
 This is the actionable list from the 2026-10-07 research on three questions: how super-design and super-code can encourage good OOP and software design, how super-roast can enforce it, and whether contract-first decomposition (interface beads before parallel work) pays off. It covers every recommendation in the research plan, with the plan's evidence, ordering, evaluations and each item's status. The plan is v2, revised after an independent critique whose 14 objections were all accepted.
 
-Three Phase 0 measurement items have landed (0.1, 0.3 and 0.4), and item 2 has landed through the Key abstractions step (K), whose eval is pending. Nothing else in the plan has been implemented or evaluated. Every expected effect below is a hypothesis for the [evaluations](#evaluations).
+Three Phase 0 measurement items have landed (0.1, 0.3 and 0.4), and item 2 has landed; it shipped with the Key abstractions step (K), which was removed on 2026-11-22 while item 2 stays. Nothing else in the plan has been implemented or evaluated. Every expected effect below is a hypothesis for the [evaluations](#evaluations).
 
 ## Where the research lives
 
@@ -38,13 +38,13 @@ The raw files are not on `main`: the ledgers (`*.jsonl`, `*.json`), `research-pl
 | 1c | Design `[class]` tags at Minor in the task reviewer | §6.6 | open |
 | 1d | Planner/reviewer wording drift fix | A3-F16 | open |
 | 1e | Implementer error-contract line | §6.5 | open |
-| 2 | Probe R-c0: the spec path as stated intent for PR roasts | §5.2 | done (Key abstractions step); E3 open |
+| 2 | Probe R-c0: the spec path as stated intent for PR roasts | §5.2 | done (shipped with K, kept after K's removal); E3 open |
 | 3a | Contract digest and a shadow `contract-conformance` lane (R-c1) | §5.3 | open, only if 2 fails |
 | 3b | Error-propagation pilot inside `correctness` | §5.4 | open |
 | 3c | Minimal `simplicity-design` edits | §5.5 | open |
 | 4 | Cross-bead seam notes and a promotion-review criterion | §6.2, §6.3 | open |
 | 4L | Design-mode `interfaces-and-ownership` lens | §5.6 | decision (§13.3) |
-| K | Key abstractions step in super-design | [spec](docs/superpowers/runs/2026-10-10-key-abstractions-design-step/2026-10-10-key-abstractions-design-step-design.md) | implemented; eval passed (2026-10-11) |
+| K | Key abstractions step in super-design | [spec](docs/superpowers/runs/2026-10-10-key-abstractions-design-step/2026-10-10-key-abstractions-design-step-design.md) | removed 2026-11-22: replaced by seam admission in super-design §Decomposition |
 | 5a | Engine fix for stacked-consumer drift (C-b) | §8 Phase 5 | decision (§13.4), data-gated |
 | 5b | Proactive seam-contract triggers, Workflow mode only (C-a) | §4, §8 Phase 5 | deferred until 5a |
 | O1 | A second independent critique of the plan | refinement log | open, optional |
@@ -156,7 +156,7 @@ Each is its own branch and adds no run-time agents. E6, a directional evolvabili
 
 ### 2 Probe R-c0: the spec path as stated intent for PR roasts (done; E3 open)
 
-- **Status:** done by the Key abstractions step (K). super-auto's phase 4 now passes every spec in the run directory (root first, then nested) as super-roast's new optional PR-mode `stated intent` input, relayed into `assemble-args`' `--artifact` (`skills/super-roast/SKILL.md`, `skills/super-auto/SKILL.md` phase 4 row). E3, the evaluation, is still open.
+- **Status:** done; it shipped with the Key abstractions step (K) and was kept when K was removed. super-auto's phase 4 now passes every spec in the run directory (root first, then nested) as super-roast's new optional PR-mode `stated intent` input, relayed into `assemble-args`' `--artifact` (`skills/super-roast/SKILL.md`, `skills/super-auto/SKILL.md` phase 4 row). E3, the evaluation, is still open.
 - **Do:** have super-auto's phase-4 invocation (skills/super-auto/SKILL.md:164) pass the run's root spec path in the roast's `--artifact` text or PR description, as a pointer only (§5.2).
 - **Why:** PR judges already count "the change's stated intent" and can read the repository (skills/super-roast/judge-seat-prompts.md:146-150), yet PR roasts receive no design-time contracts (A4-F19; skills/super-roast/scripts/assemble-args.mjs:19-20). In recorded roasts, interface findings were confirmed when a written contract existed, while other design findings mostly ended rejected, demoted or unverified (A4-F18). super-code's final whole-epic review already reads the spec and checks cross-task seams (skills/super-code/coordinator.js:1877, was :1860); it stays the code-time backstop.
 - **Worked when:** E3: confirmations of contract-anchored findings rise and trap confirmations do not. The super-auto contract lint passes. If the probe works, 3a is unnecessary.
@@ -214,7 +214,7 @@ Independent branches. E4 guards all three against late-round noise: after round-
 - **Why:** in Parnas's method, the modular structure describes every decision that affects more than one module before independent work begins [1], and in field studies incomplete specifications hid divergent assumptions until integration [165]. Autonomous runs force Mode B specs (skills/super-design/SKILL.md:42), which have no component, interface or error section (skills/brainstorming/SKILL.md:266-272). The criterion rides the pass that already reads the full spec, as SPLIT did (docs/superpowers/specs/2026-08-26-leaf-sizing-design.md:13-15). The narrow trigger answers critique #5: v1's "Units and interfaces" section was a design ceremony in disguise.
 - **Worked when:** E8: on a 2–3-unit change against a control, no invented interfaces, and spec length and questions to the human stay within a pre-registered margin. The super-design tests and the super-auto contract-lint pointers pass.
 - **Cost:** no agents; short spec entries.
-- **Overlap:** the Key abstractions step (K) already gives each new abstraction one owner bead (`owns:` / `consumes:`) and adds an owned-abstractions criterion to the promotion review's decomposition verdict; reconcile the seam-note criterion with it rather than adding a second.
+- **Overlap:** K's owner beads and owned-abstractions criterion were removed on 2026-11-22; super-design §Decomposition now admits a seam only as class P, V or N with an obligation, as a `Seam contract:` bead. Reconcile the seam-note criterion with that rule rather than adding a second.
 
 ### 4L Design-mode `interfaces-and-ownership` lens (decision §13.3)
 
@@ -225,7 +225,7 @@ Independent branches. E4 guards all three against late-round noise: after round-
 
 ## Key abstractions step (revisits D-a)
 
-### K Key abstractions step in super-design (implemented; eval passed)
+### K Key abstractions step in super-design (implemented; eval passed; removed 2026-11-22)
 
 - **Do:** super-design runs a fresh-context designer on every spec it handles, root and nested, before decomposition. The designer writes a short `## Key abstractions` section: which abstractions the design needs, what each owns and must not do, what varies and the one place kinds are chosen, and a digest line per new abstraction. Decomposition gives each new abstraction one owner bead, which writes a responsibility comment on the type. One sync copies the digest into the root epic's Global Constraints, so every task brief carries it, and super-auto's code roast gets the run's specs as stated intent (item 2). [Spec](docs/superpowers/runs/2026-10-10-key-abstractions-design-step/2026-10-10-key-abstractions-design-step-design.md).
 - **Why:** agent-written code tends to miss abstractions and blur responsibilities (dossier D9). In the motivating case, kept generic here, a CLI tool added a second and then a third integration, and its callers branched on the integration's name in many places across its core files. Those branches kept growing after a later run designed a proper adapter and registry, because no written rule said where new per-integration behavior belonged. Nothing in the pipeline asked the abstraction questions before decomposition.

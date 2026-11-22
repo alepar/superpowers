@@ -251,7 +251,8 @@ any sibling omits the declaration entirely — there is no `owns: none` filler t
 
 **A new seam is admitted, never assumed.** No new abstraction is the default, and it needs no
 output. A seam here is an interface, type, registry or exchange format that does not exist yet.
-Decomposition adds one only when it falls in one of three classes:
+Judge it in Step B, once the edges show which tasks run in parallel. Decomposition adds one only
+when it falls in one of three classes:
 
 - **P, parallel boundary:** two tasks this decomposition leaves free to run in parallel exchange
   it (a type, a function, a file or wire format), and, built independently, they could choose
@@ -265,17 +266,21 @@ Decomposition adds one only when it falls in one of three classes:
 
 and only with its obligation stated: the accepted requirement it protects (a baseline row or a
 requirement of this spec), a worked failure without it under supported conditions, and the
-direct check tried first (decide the boundary inside one task, test the real dependency, branch
-once inline) with why that check falls short. A layer, a pattern, a single-implementation
+direct check tried first (the plainest way to meet and check that requirement without the
+seam) with why it falls short. A layer, a pattern, a single-implementation
 interface or a likely future change is not a seam; the implementer decides those.
 
-Each admitted seam is a `Seam contract: <boundary>` bead, adopted when one for the boundary
-already exists, built and wired as §Coverage's `UNOWNED-SEAM` fix builds it: compilable boundary
-signatures with inert stubs, landing before its consumers, each of which depends on it with
-`blocked-by <contract-id>: consumes boundary contract`. Its acceptance adds one contract test
-stating what consumers rely on. Its description carries `class: <P|V|N>` and
+Each admitted seam is one `Seam contract: <boundary>` bead, adopted when one for the boundary
+already exists: compilable boundary signatures with inert stubs, and one contract test stating
+what consumers rely on. Its description carries `class: <P|V|N>` and
 `obligation: requirement <id> · failure <the worked scenario> · direct check <what was tried>`.
-The tasks on either side keep their `owns:` and `consumes:` lines.
+It lands before its consumers: each consumer gets `bd dep add <consumer> <contract>`, the line
+`blocked-by <contract-id>: consumes boundary contract` and the line
+`boundary contract: <contract-id>`, and keeps its `owns:` and `consumes:` lines. It gets no
+`Seam integration:` bead; the root integration sweep crosses it. A seam contract that a rule
+below extracts (an edge justified by a question, a file not to split) or that §Coverage's
+`UNOWNED-SEAM` fix files is class P by construction: it records `class: P` and, as its
+obligation, the requirement those tasks serve and the tasks that could choose incompatibly.
 
 **The tree stops at merge-ready.** Decompose only work that is finished when the code is written,
 reviewed, and merged. Operational follow-on — activating something in production, running a live
@@ -858,7 +863,10 @@ caller's bead context.
    exists for the root, each filed bead gets `bd dep add <sweep> <id>` and the matching
    `blocked-by <id>: consumes all leaves (integration sweep)` line in the sweep's description (a
    wholesale `bd update --description` that keeps the old text), as §Decomposition's sweep wiring
-   and the loop table require; the code loop adds no sweep edges. State `beads-filed`.
+   and the loop table require; the code loop adds no sweep edges. A filed `Seam contract:` item is
+   wired as §Decomposition wires an admitted seam: every open bead, filed now or earlier, whose
+   description says `consumes: <that boundary>` gets the dependency and both lines, where missing. State
+   `beads-filed`.
 
    ```bash
    set -euo pipefail
