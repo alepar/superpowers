@@ -490,11 +490,18 @@ for(let i=0;i<args.length;i++){
 let text;try{text=fs.readFileSync(run,'utf8')}catch(e){console.error(e.message);process.exit(2)}
 const dir=path.dirname(path.resolve(run));
 function append(type,data){const line='- '+type+' · '+JSON.stringify(data);const prior=text.split('\n');if(type==='review-collection'){const previous=prior.filter(l=>{try{return l.startsWith('- review-collection · ')&&JSON.parse(l.slice('- review-collection · '.length)).invocationId===data.invocationId}catch{return false}}).at(-1);if(previous===line)return}else if(prior.includes(line))return;const lines=text.trimEnd().split('\n');let start=lines.indexOf('approvals:');if(start<0){lines.push('approvals:');start=lines.length-1}let end=start+1;while(end<lines.length&&!/^[A-Za-z][A-Za-z0-9-]*:/.test(lines[end]))end++;lines.splice(end,0,line);text=lines.join('\n')+'\n';const pending=run+'.collection-tmp-'+process.pid;fs.writeFileSync(pending,text);fs.renameSync(pending,run);}
-const {validCollection,recordHash,sameBundle,sameResult,collectionHistory}=require(path.join(scriptDir,'collection-records.cjs'));
+const {resolveRecordPath,validCollection,recordHash,sameBundle,sameResult,collectionHistory}=require(path.join(scriptDir,'collection-records.cjs'));
+// Committed records name the workspace relative to run.md's repo root, so no home or
+// host layout reaches Git. A path outside the repo (or no repo) stays absolute.
+const root=(()=>{try{return fs.realpathSync(cp.execFileSync('git',['rev-parse','--show-toplevel'],{cwd:dir,encoding:'utf8',stdio:['ignore','pipe','ignore']}).trim())}catch{return null}})();
+const canonical=p=>{let head=path.resolve(p),tail=[];for(;;){try{return path.join(fs.realpathSync(head),...tail)}catch{const up=path.dirname(head);if(up===head)return path.resolve(p);tail.unshift(path.basename(head));head=up}}};
+const resolved=p=>{const full=resolveRecordPath(root,p);return full===null?null:canonical(full)};
+const toRecord=abs=>{if(!root)return abs;const rel=path.relative(root,canonical(abs));return rel&&rel!=='..'&&!rel.startsWith('..'+path.sep)&&!path.isAbsolute(rel)?rel.split(path.sep).join('/'):abs};
 const {TYPE,validateFailedAssembly}=require(path.resolve(scriptDir,'../../super-code/scripts/assembly-archive.cjs'));
 const {latest,completed,errors}=collectionHistory(text),malformed=errors>0;
 // Reject every source symlink component before reading a recovered report or bundle.
-function sourcePath(workspace,relative){
+function sourcePath(recorded,relative){
+ const workspace=resolveRecordPath(root,recorded);if(workspace===null)throw Error('workspace unavailable');
  if(typeof relative!=='string'||relative===''||path.isAbsolute(relative)||relative.split(/[\\/]/).includes('..'))throw Error('unsafe bundle path');
  let full=workspace;if(fs.lstatSync(full).isSymbolicLink())throw Error('unsafe bundle path');
  for(const component of relative.split(path.sep)){full=path.join(full,component);if(fs.lstatSync(full).isSymbolicLink())throw Error('unsafe bundle path')}
@@ -504,9 +511,17 @@ function sourcePath(workspace,relative){
 }
 if(args.length){
  if(Object.keys(o).length!==4||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(o['--invocation']))usage();
- const r={invocationId:o['--invocation'],workspace:path.resolve(o['--workspace']),reviewPath:o['--review']==='none'?null:path.resolve(o['--review']),review:o['--verdict'],required,settled:true};
+ // A relative argument is the recorded repo-relative form: resolve it against the repo root, not the cwd.
+ const fromCli=p=>path.isAbsolute(p)||!root?path.resolve(p):path.join(root,p);
+ const old=latest.get(o['--invocation']),workspace=fromCli(o['--workspace']),review=o['--review']==='none'?null:fromCli(o['--review']);
+ // An invocation keeps the spelling its first record used (a legacy absolute record
+ // stays absolute) so replay compares like with like; new invocations are repo-relative.
+ const same=(recorded,abs)=>typeof recorded==='string'&&resolved(recorded)===canonical(abs);
+ const ws=old&&same(old.workspace,workspace)?old.workspace:toRecord(workspace);
+ const reviewPath=review===null?null:old&&same(old.reviewPath,review)?old.reviewPath:path.isAbsolute(ws)?review:toRecord(review);
+ const r={invocationId:o['--invocation'],workspace:ws,reviewPath,review:o['--verdict'],required,settled:true};
  if(!validCollection(r))usage();
- const old=latest.get(r.invocationId),deny=message=>{console.error('COLLECTION_GAP: '+message);process.exit(3)};
+ const deny=message=>{console.error('COLLECTION_GAP: '+message);process.exit(3)};
  if(recoverNull){
   // Caller-confirmed recovery is the sole supported settled-null transition. Its
   // digest links the exact retained null event; replay cannot relabel another source.
@@ -531,7 +546,7 @@ if(args.length){
  }
 }
 const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
-const hasBundle=(r,id)=>{const p='final-review-'+id;try{return fs.readdirSync(r.workspace).some(n=>n===p+'.md'||n===p+'.md.diff'||n.startsWith(p+'.cluster-'))||fs.existsSync(path.join(r.workspace,'assembled',p+'-final'))}catch{return false}};
+const hasBundle=(r,id)=>{const p='final-review-'+id,ws=resolveRecordPath(root,r.workspace);try{return fs.readdirSync(ws).some(n=>n===p+'.md'||n===p+'.md.diff'||n.startsWith(p+'.cluster-'))||fs.existsSync(path.join(ws,'assembled',p+'-final'))}catch{return false}};
 let gaps=malformed?1:0;if(malformed)console.error('COLLECTION_GAP: malformed collection record; retain sources');
 for(const previous of latest.values()){
  const r={...previous},id=r.invocationId,prefix='final-review-'+id,archive=path.join(dir,'reviews',id), problems=[];
@@ -559,7 +574,7 @@ for(const previous of latest.values()){
  else{
   const expected=path.join(r.workspace,prefix+'.md');
   if(r.reviewPath===null)gap('null review has recoverable bundle artifacts; reconcile returned result');
-  else if(path.resolve(r.reviewPath)!==path.resolve(expected))gap('reviewPath does not match persisted invocation');
+  else if(resolved(r.reviewPath)!==resolved(expected))gap('reviewPath does not match persisted invocation');
   const files=new Set(r.required);
   function walk(relative){try{const full=source(relative),st=fs.lstatSync(full);if(st.isSymbolicLink())throw Error('symlink');if(st.isDirectory())for(const name of fs.readdirSync(full).sort())walk(path.join(relative,name));else if(st.isFile())files.add(relative);else throw Error('not a regular file')}catch(e){gap('bundle unavailable: '+relative)}}
   files.add(prefix+'.md');
@@ -576,8 +591,9 @@ for(const previous of latest.values()){
   for(const rel of [...files].sort()){
    if(typeof rel!=='string'||path.isAbsolute(rel)||rel.split(/[\\/]/).some(p=>p==='..')||rel===''){gap('unsafe bundle path');continue}
    let dst;try{dst=destination(rel)}catch{continue}
-   const src=path.join(r.workspace,rel),saved=previous.files?.find(f=>f.path===rel);
-   let srcHash=null,dstHash=null;try{if(!fs.lstatSync(source(rel)).isFile())throw Error();srcHash=hash(src)}catch{}
+   let src=null;try{src=source(rel)}catch{}
+   const saved=previous.files?.find(f=>f.path===rel);
+   let srcHash=null,dstHash=null;try{if(!src||!fs.lstatSync(src).isFile())throw Error();srcHash=hash(src)}catch{}
    try{if(!fs.lstatSync(dst).isFile()||fs.lstatSync(dst).isSymbolicLink())throw Error();dstHash=hash(dst)}catch{}
    if((rel===prefix+'.md'||clusters.includes(rel)||/^final-review-.*\.cluster-\d+\.md$/.test(rel))&&srcHash){
     const logical=rel===prefix+'.md'?'final':rel.slice(prefix.length+1,-3);
@@ -600,7 +616,7 @@ for(const previous of latest.values()){
   try{
    const repo=cp.execFileSync('git',['rev-parse','--show-toplevel'],{cwd:dir,encoding:'utf8'}).trim();
    const git=(...args)=>cp.execFileSync('git',['--literal-pathspecs',...args],{cwd:repo,maxBuffer:64*1024*1024}).toString();
-   validateFailedAssembly({record:r,read:p=>fs.readFileSync(destination(p)),capturedSource:(base,head)=>{
+   validateFailedAssembly({record:r,root,read:p=>fs.readFileSync(destination(p)),capturedSource:(base,head)=>{
     for(const sha of [base,head])if(git('rev-parse','--verify',sha+'^{commit}').trim()!==sha)throw Error('captured commit unavailable');
     return {changed:git('diff','--no-renames','--name-only','-z',base+'..'+head).split('\0').filter(Boolean),diff:p=>git('diff','--no-renames',base+'..'+head,'--',p)};
    }});

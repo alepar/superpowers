@@ -784,4 +784,44 @@ for bad in 'design-review · approved' '- design-review approved' $'- decision �
   assert_eq "$code" 2 "append rejects a malformed record: ${bad%%$'\n'*}"
 done
 
+echo "=== report-status --collect: repo-relative paths in committed records ==="
+# run.md is committed: its collection records name the workspace relative to the repo
+# root, never a home directory. Legacy absolute records keep their spelling and still read.
+P="$T/relpaths/repo"; mkdir -p "$P/docs/runs/r" "$P/.superpowers/sdd/e-plan"
+git -C "$P" init -q
+PR="$P/docs/runs/r/run.md" PW="$P/.superpowers/sdd/e-plan"
+review_ready() { printf '## Verdict\nready\n## Must-fix\nnone\n## Deferred OK\nnone\n## Untested scope\nnone\n' > "$PW/final-review-$1.md"; }
+last_record() { node -e 'const r=require("fs").readFileSync(process.argv[1],"utf8").split("\n").filter(l=>l.startsWith("- review-collection · ")).map(l=>JSON.parse(l.slice(22))).filter(r=>r.invocationId===process.argv[2]).at(-1);console.log(r.workspace+" "+r.reviewPath+" "+r.complete)' "$PR" "$1"; }
+printf 'phase: code\napprovals:\n' > "$PR"
+review_ready inv-new
+run bash "$RS" --collect "$PR" --invocation inv-new --workspace "$PW" --review "$PW/final-review-inv-new.md" --verdict ready
+assert_eq "$code" 0 "absolute CLI paths collect inside the repo"
+assert_eq "$(last_record inv-new)" ".superpowers/sdd/e-plan .superpowers/sdd/e-plan/final-review-inv-new.md true" "new record is repo-relative"
+case "$(cat "$PR")" in *"$P"*|*"$HOME"*) fail "run.md carries no absolute local prefix" ;; *) pass "run.md carries no absolute local prefix" ;; esac
+cp "$PR" "$T/relpaths/before.md"
+run bash "$RS" --collect "$PR"
+assert_eq "$code" 0 "repo-relative record replays from another cwd"
+cmp -s "$PR" "$T/relpaths/before.md" && pass "replay of a repo-relative record changes nothing" || fail "replay of a repo-relative record changes nothing"
+printf -- '- review-collection · {"invocationId":"inv-rel","workspace":".superpowers/sdd/e-plan","reviewPath":".superpowers/sdd/e-plan/final-review-inv-rel.md","review":"pending","required":[],"settled":false}\n' >> "$PR"
+review_ready inv-rel
+ln -s "$P" "$T/relpaths/link"
+run bash "$RS" --collect "$PR" --invocation inv-rel --workspace "$T/relpaths/link/.superpowers/sdd/e-plan" --review "$T/relpaths/link/.superpowers/sdd/e-plan/final-review-inv-rel.md" --verdict ready
+assert_eq "$code" 0 "relative pending intent settles from a symlinked absolute spelling"
+assert_eq "$(last_record inv-rel)" ".superpowers/sdd/e-plan .superpowers/sdd/e-plan/final-review-inv-rel.md true" "settled intent keeps its repo-relative form"
+printf -- '- review-collection · {"invocationId":"inv-legacy","workspace":"%s","reviewPath":"%s/final-review-inv-legacy.md","review":"pending","required":[],"settled":false}\n' "$PW" "$PW" >> "$PR"
+review_ready inv-legacy
+run bash "$RS" --collect "$PR" --invocation inv-legacy --workspace "$PW" --review "$PW/final-review-inv-legacy.md" --verdict ready
+assert_eq "$code" 0 "legacy absolute intent still settles"
+assert_eq "$(last_record inv-legacy)" "$PW $PW/final-review-inv-legacy.md true" "legacy invocation keeps its absolute spelling"
+review_ready inv-cwd
+run bash -c 'cd "$1" && bash "$2" --collect "$3" --invocation inv-cwd --workspace .superpowers/sdd/e-plan --review .superpowers/sdd/e-plan/final-review-inv-cwd.md --verdict ready' _ "$T" "$RS" "$PR"
+assert_eq "$code" 0 "relative arguments from another cwd resolve against the repo root"
+assert_eq "$(last_record inv-cwd)" ".superpowers/sdd/e-plan .superpowers/sdd/e-plan/final-review-inv-cwd.md true" "relative arguments record the repo-relative form"
+run bash "$RS" "$PR"
+[[ "$out" != *'review collection gaps:'* ]] && pass "status reads mixed relative and legacy records without gaps" || fail "status reads mixed relative and legacy records without gaps"
+mkdir -p "$T/relpaths/outside"; printf '## Verdict\nready\n## Must-fix\nnone\n## Deferred OK\nnone\n## Untested scope\nnone\n' > "$T/relpaths/outside/final-review-inv-out.md"
+run bash "$RS" --collect "$PR" --invocation inv-out --workspace "$T/relpaths/outside" --review "$T/relpaths/outside/final-review-inv-out.md" --verdict ready
+assert_eq "$code" 0 "workspace outside the repo still collects"
+assert_eq "$(last_record inv-out)" "$T/relpaths/outside $T/relpaths/outside/final-review-inv-out.md true" "workspace outside the repo stays absolute"
+
 if [ "$FAILURES" -eq 0 ]; then echo "All super-auto script tests passed"; else echo "$FAILURES failure(s)"; exit 1; fi

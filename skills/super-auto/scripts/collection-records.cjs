@@ -1,8 +1,14 @@
 // Pure collection shape/provenance validation shared by collection and read-only gates.
 const path=require('node:path'),crypto=require('node:crypto');
+// workspace/reviewPath are repo-relative in committed records (resolved against the
+// git toplevel of run.md's directory); absolute paths are the legacy form, still read.
+// A leading `$`/`~` is a scrubbed placeholder (`$HOME/…`), not a repo path.
+const recordPath=p=>typeof p==='string' && p!=='' && (path.isAbsolute(p) ||
+ (!p.includes('\\') && !/^[$~]/.test(p) && p.split('/').every(s=>s!=='' && s!=='.' && s!=='..')));
+const resolveRecordPath=(root,p)=>path.isAbsolute(p)?p:root?path.join(root,p):null;
 const validCollection = r => r && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(r.invocationId) &&
- typeof r.workspace==='string' && path.isAbsolute(r.workspace) &&
- (r.reviewPath===null || (typeof r.reviewPath==='string' && path.isAbsolute(r.reviewPath))) &&
+ recordPath(r.workspace) &&
+ (r.reviewPath===null || recordPath(r.reviewPath)) &&
  typeof r.review==='string' && r.review.trim()!=='' && typeof r.settled==='boolean' &&
  Array.isArray(r.required) && r.required.every(f=>typeof f==='string' && f!=='' && !path.isAbsolute(f) && !f.split(/[\\/]/).includes('..')) &&
  (r.complete===undefined || typeof r.complete==='boolean') &&
@@ -46,4 +52,4 @@ for(const line of text.split('\n')){
 }
  return {latest,completed,errors};
 }
-module.exports={validCollection,recordHash,sameBundle,sameResult,collectionHistory};
+module.exports={recordPath,resolveRecordPath,validCollection,recordHash,sameBundle,sameResult,collectionHistory};

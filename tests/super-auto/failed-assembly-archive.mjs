@@ -14,7 +14,9 @@ const git=(...a)=>cp.execFileSync('git',['-c','maintenance.auto=false','-c','gc.
 const cli=(...a)=>cp.spawnSync('bash',[dt,'--ledger',ledger,...a],{cwd:repo,encoding:'utf8'});
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const record=r=>'- review-collection · '+JSON.stringify(r)+'\n';
-const intent=id=>({invocationId:id,workspace:ws,reviewPath:path.join(ws,'final-review-'+id+'.md'),review:'pending',required:[],settled:false});
+// Committed intents name the workspace repo-relative (run-state.md §Review collection records).
+const wsRel='.superpowers/sdd/fixture-plan';
+const intent=id=>({invocationId:id,workspace:wsRel,reviewPath:wsRel+'/final-review-'+id+'.md',review:'pending',required:[],settled:false});
 const launch=id=>write(ledger,'Launch: args '+JSON.stringify({epicId:'fixture',integrationBranch:'fixture',integrationWorktree:repo,invocationId:id,reviewRunFile:runRel})+'\n');
 let seq=0,passed=0,failed=0;
 const commit=()=>{git('add','.');git('commit','--allow-empty','-qm','snapshot '+seq++);return git('rev-parse','HEAD')};
@@ -30,7 +32,7 @@ const partial=select(base,sourceHead,path.join(ws,'assembled/final-review-bounde
 assert.equal(partial.status,3);assert.equal(partial.data.sourceAvailable,true);assert.equal(partial.data.omitted.length,0);
 const draft='## Verdict\nready\n## Must fix before landing\n- product.txt:1 — retained finding\n## Untested scope\nnone\n';
 write(path.join(partial.out,'bounded-draft.md'),draft);write(path.join(partial.out,'bounded-coverage.json'),JSON.stringify({inspected:[{path:'product.txt',hunks:['@@ -1 +1 @@']}]}));
-const report=intent('bounded').reviewPath;
+const report=path.join(ws,'final-review-bounded.md');
 const bounded=cli('bounded-review','--base',base,'--head',sourceHead,'--selection',path.join(partial.out,'review-inputs.json'),'--draft',path.join(partial.out,'bounded-draft.md'),'--coverage',path.join(partial.out,'bounded-coverage.json'),'--out',report);
 assert.equal(bounded.status,0,bounded.stderr);const verdict=JSON.parse(bounded.stdout).verdict,reportBytes=fs.readFileSync(report);
 const collected=cp.spawnSync('bash',[rs,'--collect',run,'--invocation','bounded','--workspace',ws,'--review',report,'--verdict',verdict],{cwd:repo,encoding:'utf8'});
@@ -38,6 +40,15 @@ assert.equal(collected.status,0,collected.stdout+collected.stderr);
 const collectionText=fs.readFileSync(run,'utf8'),collection=JSON.parse(collectionText.split('\n').filter(l=>l.startsWith('- review-collection · ')).at(-1).split(' · ')[1]);
 assert.equal(collection.files.length,6);assert(!collection.files.some(f=>f.path.endsWith('/digest.md')));
 const archiveRel='docs/run/reviews/bounded/',archive=path.join(repo,archiveRel);
+check('committed collection and archived report carry no absolute local path',()=>{
+ assert.equal(collection.workspace,wsRel);assert.equal(collection.reviewPath,wsRel+'/final-review-bounded.md');
+ for(const prefix of new Set([repo,fs.realpathSync(repo),tmp,os.homedir()])){
+  assert(!collectionText.includes(prefix),'run.md names '+prefix);
+  assert(!fs.readFileSync(path.join(archive,'final-review-bounded.md'),'utf8').includes(prefix),'archived report names '+prefix);
+ }
+ const e=JSON.parse(reportBytes.toString().match(/^Coverage record: (.+)$/m)[1]);
+ assert.deepEqual([e.selection,e.draft,e.coverage],['review-inputs.json','bounded-draft.md','bounded-coverage.json'].map(n=>'assembled/final-review-bounded-final/'+n));
+});
 fs.appendFileSync(run,record(intent('fresh')));launch('fresh');const freshText=fs.readFileSync(run,'utf8'),freshHead=commit();
 check('fresh invocation selects every preserved partial sidecar and keeps forced verdict',()=>{
  const s=select(base,freshHead);assert.equal(s.status,0,s.data.gaps.join('\n'));assert.equal(s.data.wholeRangeReady,false);assert.deepEqual(s.data.omitted,[]);
@@ -88,6 +99,12 @@ const resign=f=>{f.r.files=[...f.bytes].map(([p,b])=>({path:p,sha256:hash(b)}))}
 const bindSidecars=f=>evidence(f,e=>{for(const [key,name]of Object.entries({selection:'review-inputs.json',draft:'bounded-draft.md',coverage:'bounded-coverage.json'}))e[key+'Sha256']=hash(f.bytes.get(assembled+name))});
 const validate=f=>validateFailedAssembly({record:f.r,read:p=>{assert(f.bytes.has(p),'manifest bytes exist');return f.bytes.get(p)},capturedSource});
 check('producer marks authenticated failed bounded preservation',()=>assert.equal(collection.assemblyArchive,TYPE));
+// Reports written before repo-relative paths carry absolute evidence paths; they still
+// validate against a repo-relative record when the caller supplies the repo root.
+const legacyEvidence=f=>{evidence(f,e=>{for(const [key,name]of Object.entries({selection:'review-inputs.json',draft:'bounded-draft.md',coverage:'bounded-coverage.json'}))e[key]=path.join(fs.realpathSync(repo),f.r.workspace,assembled,name)});resign(f)};
+check('legacy absolute evidence validates against a repo-relative record with the repo root',()=>{const f=fixture();legacyEvidence(f);assert.equal(validateFailedAssembly({record:f.r,root:fs.realpathSync(repo),read:p=>f.bytes.get(p),capturedSource}).kind,TYPE)});
+check('legacy absolute evidence without the repo root is refused',()=>{const f=fixture();legacyEvidence(f);assert.throws(()=>validate(f),/bounded evidence path outside invocation/)});
+check('legacy absolute record with absolute evidence still validates',()=>{const f=fixture();f.r.workspace=path.join(fs.realpathSync(repo),wsRel);f.r.reviewPath=path.join(f.r.workspace,reportRel);legacyEvidence(f);evidence(f,e=>{for(const [key,name]of Object.entries({selection:'review-inputs.json',draft:'bounded-draft.md',coverage:'bounded-coverage.json'}))e[key]=path.join(f.r.workspace,assembled,name)});resign(f);assert.equal(validate(f).kind,TYPE)});
 check('strict legacy interpretation accepts identical untyped archived bytes',()=>{const f=fixture();delete f.r.assemblyArchive;assert.equal(validate(f).kind,TYPE)});
 check('optional coverage metadata accepts honest identity and source',()=>{const f=fixture();json(f,'bounded-coverage.json',v=>Object.assign(v,{version:1,invocationId:'bounded',base,head:sourceHead,wholeRangeReady:false,remaining:[],allOriginalGaps:partial.data.gaps,testsExecuted:['fixture'],note:'retained'}));bindSidecars(f);resign(f);assert.equal(validate(f).kind,TYPE)});
 const forgeries=[
@@ -273,8 +290,8 @@ check('successful assembly retains digest and split completeness requirements',(
  const selected=select(base,h,path.join(ws,'assembled/final-review-success-final'));assert.equal(selected.status,0,selected.data.gaps.join('\n'));
  write(path.join(selected.out,'digest.md'),'actual successful fixture assembly\n');
  write(path.join(selected.out,'clusters.json'),JSON.stringify({clusters:[{name:'fixture',slices:selected.data.slices.map(s=>s.slice)}]}));
- write(intent('success').reviewPath,draft);write(path.join(ws,'final-review-success.cluster-1.md'),draft);
- const result=cp.spawnSync('bash',[rs,'--collect',run,'--invocation','success','--workspace',ws,'--review',intent('success').reviewPath,'--verdict','ready'],{cwd:repo,encoding:'utf8'});assert.equal(result.status,0,result.stdout+result.stderr);
+ write(path.join(repo,intent('success').reviewPath),draft);write(path.join(ws,'final-review-success.cluster-1.md'),draft);
+ const result=cp.spawnSync('bash',[rs,'--collect',run,'--invocation','success','--workspace',ws,'--review',path.join(repo,intent('success').reviewPath),'--verdict','ready'],{cwd:repo,encoding:'utf8'});assert.equal(result.status,0,result.stdout+result.stderr);
  fs.appendFileSync(run,record(intent('next')));launch('next');const complete=fs.readFileSync(run,'utf8'),completeHead=commit();
  const admitted=select(base,completeHead);assert.equal(admitted.status,0,admitted.data.gaps.join('\n'));assert(admitted.data.omitted.some(p=>p.path.endsWith('/digest.md')));
  const successArchive=path.join(repo,'docs/run/reviews/success'),prefix='assembled/final-review-success-final/';

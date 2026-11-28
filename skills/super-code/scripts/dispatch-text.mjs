@@ -10,7 +10,7 @@
 // declared before the round loop. So a `return` of the builders goes just before the first top-level
 // `while (true) {`; the rest of the body stays in place, unreachable. Everything before the return runs
 // against an `agent` stub that returns null (the Resume ledger read degrades as on a null dispatch).
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, lstatSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, lstatSync, realpathSync } from 'node:fs'
 import { dirname, join, resolve, posix } from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
@@ -171,8 +171,10 @@ function reviewInputs(repo, base, head, out, current = null, excludes = [], keep
   const runGap = (run, text) => { if (buffering) pending.push({ run, text }); else classify(run, text) }
   let currentIdentity = null, currentHistoryPristine = true
   const pristine = record => Object.keys(record).every(k => ['invocationId', 'workspace', 'reviewPath', 'review', 'required', 'settled'].includes(k)) &&
-    record.invocationId === current?.invocationId && record.workspace === current?.workspace &&
-    record.reviewPath === current?.reviewPath && record.review === 'pending' && record.settled === false
+    record.invocationId === current?.invocationId &&
+    ((record.workspace === current?.workspace && record.reviewPath === current?.reviewPath) ||
+     (current?.repoWorkspace != null && record.workspace === current.repoWorkspace && record.reviewPath === current.repoReviewPath)) &&
+    record.review === 'pending' && record.settled === false
   function snapshot(revision, onlyRun = null) {
     let valid = true
     const snapshotGap = (run, text) => { valid = false; runGap(run, text) }
@@ -198,8 +200,10 @@ function reviewInputs(repo, base, head, out, current = null, excludes = [], keep
         try {
           if (!approvals || !line.startsWith('- review-collection · ')) throw Error('record outside approvals or invalid prefix')
           const r = JSON.parse(line.slice('- review-collection · '.length))
-          if (!r || !idOK(r.invocationId) || typeof r.workspace !== 'string' || !posix.isAbsolute(r.workspace) ||
-              !(r.reviewPath === null || (typeof r.reviewPath === 'string' && posix.isAbsolute(r.reviewPath))) ||
+          // Repo-relative is the current committed form; absolute is legacy.
+          const recordPath = p => typeof p === 'string' && (posix.isAbsolute(p) || (safe(p) && !/^[$~]/.test(p)))
+          if (!r || !idOK(r.invocationId) || !recordPath(r.workspace) ||
+              !(r.reviewPath === null || recordPath(r.reviewPath)) ||
               typeof r.review !== 'string' || !r.review.trim() || typeof r.settled !== 'boolean' ||
               !Array.isArray(r.required) || !r.required.every(safe) ||
               !(r.complete === undefined || typeof r.complete === 'boolean') ||
@@ -262,7 +266,7 @@ function reviewInputs(repo, base, head, out, current = null, excludes = [], keep
         if (r.reviewPath === null) {
           if (r.review !== 'no work landed' || files.size) collectionGap(run, context + ': invalid null-review bundle')
         } else {
-          if (!r.reviewPath.endsWith('/' + prefix + '.md') || !files.has(prefix + '.md')) collectionGap(run, context + ': incomplete claimed final report')
+          if (posix.basename(r.reviewPath) !== prefix + '.md' || !files.has(prefix + '.md')) collectionGap(run, context + ': incomplete claimed final report')
           for (const required of r.required) if (!files.has(required)) collectionGap(run, context + ': incomplete required bundle: ' + required)
         }
         if ((r.files || []).length !== files.size) collectionGap(run, context + ': conflicting duplicate manifest paths')
@@ -276,7 +280,7 @@ function reviewInputs(repo, base, head, out, current = null, excludes = [], keep
         try { boundedReportPresent = blob(posix.join(archive, prefix + '.md')).toString().startsWith('# Bounded captured-source review\n') } catch {}
         if (r.assemblyArchive !== undefined || boundedReportPresent || (inputs.length && !files.has(assembled + 'digest.md'))) {
           try {
-            validateFailedAssembly({ record: r, read: p => blob(posix.join(archive, p)), capturedSource: (b, h) => {
+            validateFailedAssembly({ record: r, root: (() => { try { return realpathSync(worktree) } catch { return worktree } })(), read: p => blob(posix.join(archive, p)), capturedSource: (b, h) => {
               for (const sha of [b, h]) if (git('rev-parse', '--verify', sha + '^{commit}').toString().trim() !== sha) throw Error('captured commit unavailable')
               return { changed: git('diff', '--no-renames', '--name-only', '-z', b + '..' + h).toString().split('\0').filter(Boolean), diff: p => git('diff', '--no-renames', b + '..' + h, '--', p).toString() }
             } })
@@ -523,6 +527,15 @@ if (reviewOutput) {
   }
   if (!boundSource && (!fullCommit(o.base) || !fullCommit(o.head))) fail('missing invocation source binding or full captured --base and --head; bind before artifact writes')
 }
+// The committed prelaunch record names the workspace relative to the integration worktree
+// (run-state.md §Review collection records); legacy records carry the absolute form.
+function repoForm(workspace, id) {
+  try {
+    const rel = posix.relative(realpathSync(worktree), realpathSync(workspace))
+    if (!rel || rel === '..' || rel.startsWith('../') || posix.isAbsolute(rel)) return {}
+    return { repoWorkspace: rel, repoReviewPath: posix.join(rel, 'final-review-' + id + '.md') }
+  } catch { return {} }
+}
 if (kind === 'review-inputs') {
   if (!o.base || !o.head || !o['out-dir']) fail('review-inputs needs --base, --head and --out-dir')
   // No inferred run path or command-line identity can replace persisted caller context.
@@ -531,7 +544,7 @@ if (kind === 'review-inputs') {
     run !== '' && !run.includes('\\') && !posix.isAbsolute(run) && run.split('/').every(s => s && s !== '.' && s !== '..') &&
     posix.basename(run) === 'run.md' && L.worktree === worktree &&
     typeof invocationId === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId)
-    ? { run, invocationId, workspace: ws, reviewPath: join(ws, 'final-review-' + invocationId + '.md') } : null
+    ? { run, invocationId, workspace: ws, reviewPath: join(ws, 'final-review-' + invocationId + '.md'), ...repoForm(ws, invocationId) } : null
   reviewInputs(worktree, o.base, o.head, resolve(o['out-dir']), current, o.exclude || [], o.keep || [])
 }
 // A bounded artifact is a new report, never a rewrite of an unavailable invocation.
@@ -568,7 +581,9 @@ if (kind === 'bounded-review') {
     if (extraction.kind !== 'final-review' || !/^## Verdict\r?$/m.test(draft) || !/^## Untested scope\r?$/m.test(draft)) throw Error('bounded draft must use strict final-review headings')
     const verdict = 'not ready (unreviewed: whole-epic coverage and omission provenance remain incomplete)'
     const hash = b => createHash('sha256').update(b).digest('hex')
-    const evidence = { base, head, selection: resolve(o.selection), selectionSha256: hash(bytes), draft: resolve(o.draft), draftSha256: hash(draft), coverage: resolve(o.coverage), coverageSha256: hash(readFileSync(o.coverage)), inspected: coverage.inspected, changed, unreviewedPaths: changed.filter(p => !seen.has(p)), gaps: selection.gaps, wholeRangeReady: false }
+    // Workspace-relative, so the committed archive copy names no home or host layout.
+    const inWs = p => { const rel = posix.relative(realpathSync(ws), realpathSync(p)); return rel && rel !== '..' && !rel.startsWith('../') && !posix.isAbsolute(rel) ? rel : resolve(p) }
+    const evidence = { base, head, selection: inWs(o.selection), selectionSha256: hash(bytes), draft: inWs(o.draft), draftSha256: hash(draft), coverage: inWs(o.coverage), coverageSha256: hash(readFileSync(o.coverage)), inspected: coverage.inspected, changed, unreviewedPaths: changed.filter(p => !seen.has(p)), gaps: selection.gaps, wholeRangeReady: false }
     const result = boundedReport(draft, evidence)
     writeFileSync(output, result, { flag: 'wx' })
     console.log(JSON.stringify({ verdict, path: output, wholeRangeReady: false }))

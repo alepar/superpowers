@@ -49,9 +49,12 @@ function boundedReport(draft,evidence){
   .replace(/^## Untested scope\r?$/m,'## Untested scope\n- whole-epic review incomplete; bounded inspected hunks only; all remaining hunks and provenance gaps remain unreviewed');
  return '# Bounded captured-source review\n\nCoverage record: '+JSON.stringify(evidence)+'\n\n'+body;
 }
-function validateFailedAssembly({record,read,capturedSource}){
+// workspace is repo-relative in current records and absolute in legacy ones; root
+// (the repo root, when the caller knows it) lets a legacy absolute Coverage record
+// match a repo-relative workspace.
+function validateFailedAssembly({record,read,capturedSource,root=null}){
  const {invocationId:id,workspace,reviewPath,files}=record;
- requireThat(/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(id)&&typeof workspace==='string'&&path.isAbsolute(workspace)&&path.normalize(workspace)===workspace,'invalid bounded identity');
+ requireThat(/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(id)&&typeof workspace==='string'&&(path.isAbsolute(workspace)||(safe(workspace)&&!/^[$~]/.test(workspace)))&&path.normalize(workspace)===workspace,'invalid bounded identity');
  const prefix='final-review-'+id,assembled='assembled/'+prefix+'-final/';
  requireThat(record.assemblyArchive===undefined||record.assemblyArchive===TYPE,'unknown assembly archive contract');
  requireThat(record.settled===true&&record.review===VERDICT&&reviewPath===path.join(workspace,prefix+'.md'),'bounded report identity or verdict mismatch');
@@ -72,7 +75,10 @@ function validateFailedAssembly({record,read,capturedSource}){
  const evidence=JSON.parse(match[1]);
  const refs={selection:'review-inputs.json',draft:'bounded-draft.md',coverage:'bounded-coverage.json'},bytes={};
  for(const [key,name]of Object.entries(refs)){
-  requireThat(evidence[key]===path.join(workspace,assembled,name),'bounded evidence path outside invocation: '+key);
+  // Current reports name evidence relative to the workspace; legacy ones absolutely.
+  const accepted=[path.join(assembled,name),path.join(workspace,assembled,name)];
+  if(root&&!path.isAbsolute(workspace))accepted.push(path.join(root,workspace,assembled,name));
+  requireThat(accepted.includes(evidence[key]),'bounded evidence path outside invocation: '+key);
   bytes[key]=get(assembled+name);requireThat(evidence[key+'Sha256']===sha(bytes[key]),'bounded evidence hash mismatch: '+key);
  }
  const selection=JSON.parse(text(bytes.selection)),coverage=JSON.parse(text(bytes.coverage)),draft=text(bytes.draft);
