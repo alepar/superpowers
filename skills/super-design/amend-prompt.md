@@ -62,6 +62,11 @@ Task tool (general-purpose), model: opus:
     - `owner: <spec path> §<section heading text>`: a design decision in that section owns it;
     - `local`: no design decision owns it; a local fix suffices;
     - `disputed: <reason>`: the finding is wrong or does not apply; give the evidence.
+    - `recovery: <reason>`: the finding is a review state, not a code defect: a whole-epic review
+      that did not complete, review or review-inputs provenance, a review collection gap, or a
+      final-review cluster left unreviewed. No bead can produce a review state, so never write a
+      `work:` line for one. super-auto §Review collection recovers it (for a missing cluster,
+      `re-review-cluster`), and the next whole-range review closes it.
 
     Edit the owning spec sections so the decision changes, concretely enough to build from. Keep
     each amendment targeted: change the one decision that generates the findings, not the whole
@@ -87,7 +92,9 @@ Task tool (general-purpose), model: opus:
 
     ## Coverage rule (amend-check enforces it)
     - Every open key appears in `owners:`, and every `owners:` key is an open ledger key.
-    - Every non-disputed open key appears in some `work:` line's `covers:`:
+    - A review-state key is routed `recovery:` and appears in no `work:` line's `covers:`; only a
+      review-state key may be routed `recovery:`.
+    - Every non-disputed, non-recovery open key appears in some `work:` line's `covers:`:
       - `[LOOP]` = `code`: always a `work:` line, since only a bead changes code. An `owner:`
         section in `amended:` does not cover a key.
       - `[LOOP]` = `design`: a `work:` line, or an `owner:` section listed in `amended:`. A
@@ -106,6 +113,7 @@ Task tool (general-purpose), model: opus:
     - <key> → owner: <spec path> §<section heading text>
     - <key> → local
     - <key> → disputed: <reason>
+    - <key> → recovery: <reason>
     amended:
     - <spec path> §<section heading text>
     work:

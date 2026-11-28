@@ -581,6 +581,8 @@ for(const previous of latest.values()){
   try{for(const name of fs.readdirSync(source('.')).sort())if(name===prefix+'.md.diff'||(name.startsWith(prefix+'.cluster-')&&/^\d+\.md$/.test(name.slice((prefix+'.cluster-').length))))files.add(name)}catch{if(!priorComplete)gap('workspace unavailable: '+r.workspace)}
   const assembled=path.join('assembled',prefix+'-final');
   try{source(assembled);walk(assembled)}catch{}
+  // A re-review of a missing cluster (dispatch-text re-review-cluster) keeps its parts here; archive them with the cluster file they compose.
+  try{for(const name of fs.readdirSync(source('re-review')).sort())if(name.startsWith(prefix+'.cluster-'))walk(path.join('re-review',name))}catch{}
   const clusters=[...files].filter(f=>f.startsWith(prefix+'.cluster-'));
   if(clusters.length){try{const m=JSON.parse(fs.readFileSync(source(path.join(assembled,'clusters.json')),'utf8'));if(!Array.isArray(m.clusters)||!m.clusters.length)throw Error();for(const [n,c]of m.clusters.entries()){files.add(prefix+'.cluster-'+(n+1)+'.md');if(!Array.isArray(c.slices))throw Error();for(const slice of c.slices)files.add(path.join(assembled,slice))}}catch{gap('split bundle manifest unavailable or incomplete')}}
   // A completed archive remains usable after the source worktree is intentionally removed.

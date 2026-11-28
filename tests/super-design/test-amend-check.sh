@@ -49,7 +49,7 @@ case_run() {
   cp "$F/$spec" "$d/docs/spec.md"
   for pair in ${EXTRA_WT:-}; do cp "$F/${pair#*=}" "$d/${pair%%=*}"; done
   set +e
-  out=$(cd "$d" && bash "$S/amend-check" --loop "$loop" --amend "$F/$record" --ledger "$F/ledger.md" --specs ${SPECS:-docs/spec.md} "$@" 2>&1)
+  out=$(cd "$d" && bash "$S/amend-check" --loop "$loop" --amend "$F/$record" --ledger "$F/${LEDGER:-ledger.md}" --specs ${SPECS:-docs/spec.md} "$@" 2>&1)
   code=$?
   set -e
 }
@@ -184,6 +184,18 @@ assert_has "$out" "reject: unchanged: root spec docs/nested.md has no ## Unchang
 SPECS="docs/spec.md docs/nested.md" EXTRA_BASE="docs/nested.md=spec-nested-base.md" EXTRA_WT="docs/nested.md=spec-nested-goal-edit.md" case_run mg code ok-code.md spec-edit-ok.md
 assert_eq "$code" 3 "## Goal change in the second spec: exit 3"
 assert_has "$out" "reject: goal: ## Goal changed in docs/nested.md" "nested Goal change named"
+
+echo "amend-check: review-state keys route to recovery, never to a bead"
+LEDGER=ledger-review-state.md case_run rg code recovery-gate-bead.md spec-edit-ok.md
+assert_eq "$code" 3 "a gate bead covering only review-state keys: exit 3"
+assert_has "$out" "reject: recovery: review-state key covered by work: Unbounded whole-epic review with complete provenance: [Must-fix] untested: whole-epic review incomplete (bounded hunks only)" "the whole-epic review key is named"
+assert_has "$out" "reject: recovery: review-state key covered by work: Unbounded whole-epic review with complete provenance: [Must-fix] untested: review-inputs provenance gap" "the provenance key is named"
+LEDGER=ledger-review-state.md case_run ro code recovery-ok.md spec-edit-ok.md
+assert_eq "$out" "ok" "review-state keys routed recovery: need no work: line; a path naming review-inputs is an ordinary code key"
+LEDGER=ledger-review-state.md case_run rm code recovery-misused.md spec-edit-ok.md
+assert_eq "$code" 3 "recovery: on a code finding: exit 3"
+assert_has "$out" "reject: recovery: not a review-state key: [Blocking] src/a.sh:10" "the misrouted code key is named"
+if printf '%s\n' "$out" | grep -q 'reject: reverse:'; then fail "a recovery: key is exempt from the reverse rule"; else pass "a recovery: key is exempt from the reverse rule"; fi
 
 echo "amend-check: bad input and git failure"
 case_run gf code ok-code.md spec-edit-ok.md --base no-such-rev

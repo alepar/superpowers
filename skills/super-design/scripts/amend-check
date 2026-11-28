@@ -11,7 +11,8 @@
 # Owns: the record grammar and the rules a record must pass. A field header is a line at column 0
 # (`owners:`, `amended:`, `work:`, `supersedes:`, `unchanged:`, `requirements:`); its items are the `- `
 # lines that follow.
-#   owners:    - <key> -> owner: <spec> §<section> | -> local | -> disputed: <reason>   (arrow ` → ` or ` -> `)
+#   owners:    - <key> -> owner: <spec> §<section> | -> local | -> disputed: <reason> | -> recovery: <reason>
+#              (arrow ` → ` or ` -> `)
 #   amended:   - <spec> §<section>        (`amended: none` inline lists no section)
 #   work:      - <title> | <description> | <files> | covers: <key>, <key>
 #   supersedes: - <old bead id> -> <work: title that replaces it>   (design loop only; `supersedes: none`, a `- none` item, or absent lists nothing)
@@ -23,7 +24,12 @@
 # Rules, checked in this order, each printing `reject: <rule>: <detail>`:
 #   owners    every open key is in owners:, and every owners: key is an open key, each key once
 #   work      every work: line covers at least one key
-#   reverse   every non-disputed open key is in some work: covers:; under --loop design a key that
+#   recovery  a review-state key (an `untested:`, `unreviewed:` or `final review` location naming a whole-epic review, review provenance,
+#             review-inputs, a review collection or collection gap, or an unreviewed final-review
+#             cluster) is routed `recovery:`, never covered by a work: line: no bead can produce a
+#             review state; super-auto §Review collection recovers it. Only a review-state key may
+#             be routed `recovery:`
+#   reverse   every non-disputed, non-recovery open key is in some work: covers:; under --loop design a key that
 #             is `owner:` a section listed in amended: also passes (a `local` key still needs a work:
 #             line); under --loop code it does not, since only a bead changes code
 #   supersedes under --loop code any item rejects; under --loop design each item is `<id> -> <title>`
@@ -143,13 +149,14 @@ awk -v dir="$tmp" '
       tail = substr(item, apos[j] + alen[j]); key = stripr(substr(item, 1, apos[j] - 1))
       if (tail ~ /^local[ \t\r]*$/) { print key "\tlocal\t\t" >> (dir "/owners.txt"); return }
       if (tail ~ /^disputed:/) { sub(/^disputed:[ \t]*/, "", tail); print key "\tdisputed\t\t" trim(tail) >> (dir "/owners.txt"); return }
+      if (tail ~ /^recovery:/) { sub(/^recovery:[ \t]*/, "", tail); print key "\trecovery\t\t" trim(tail) >> (dir "/owners.txt"); return }
       if (tail ~ /^owner:/) {
         sub(/^owner:[ \t]*/, "", tail)
         if (secsplit(tail, "owners")) print key "\towner\t" spec "\t" sec >> (dir "/owners.txt")
         return
       }
     }
-    reject("owners: line is not <key> -> owner: <spec> §<section> | local | disputed: <reason>: " item)
+    reject("owners: line is not <key> -> owner: <spec> §<section> | local | disputed: <reason> | recovery: <reason>: " item)
   }
   function work(item,   p, last, rest, title, c, k) {
     last = 0; rest = item; p = 0
@@ -207,20 +214,31 @@ while IFS=$'\t' read -r sp sec; do
   printf '%s\t%s\n' "$(spec_key "$sp")" "$sec"
 done < "$tmp/amended.txt" > "$tmp/amended.norm"
 
-# --- checks 1-3: owners both ways, work covers, reverse rule ---
+# --- checks 1-3: owners both ways, work covers, recovery, reverse rule ---
 awk -F'\t' -v loop="$loop" -v dir="$tmp" '
   function reject(r) { print "reject: " r >> (dir "/rejects") }
+  # A review state (a whole-epic review, its provenance, a collection, a cluster left unreviewed) is
+  # produced only by a review the orchestrator runs; a bead filed for one can never be met.
+  function reviewstate(k,   l) {
+    # Only a review-item location (`untested: …`, `unreviewed: …`, `final review …`), never a
+    # file path that happens to name review-inputs or provenance.
+    l = tolower(k); sub(/^\[[^]]*\][ \t]*/, "", l)
+    if (l !~ /^(untested|unreviewed|final review)/) return 0
+    return l ~ /whole-epic review|provenance|review[- ]inputs|review collection|collection gap|unreviewed:? cluster|cluster [0-9]+ \([^)]*\):? (over the window|review unavailable)/
+  }
   FILENAME == ARGV[1] { open[$0] = 1; order[++no] = $0; next }
   FILENAME == ARGV[2] { if (($1 in okind) && !($1 in dup)) { dup[$1] = 1; reject("owners: duplicate key: " $1) } okind[$1] = $2; ospec[$1] = $3; osec[$1] = $4; oorder[++nw] = $1; next }
   FILENAME == ARGV[3] { amended[$1 SUBSEP $2] = 1; next }
-  FILENAME == ARGV[4] { if ($2 == "") nocover[$1] = 1; else covered[$2] = 1; titles[++nt] = $1; next }
+  FILENAME == ARGV[4] { if ($2 == "") nocover[$1] = 1; else { covered[$2] = 1; wkey[++nwk] = $2; wtitle[nwk] = $1 } titles[++nt] = $1; next }
   END {
     for (i = 1; i <= no; i++) if (!(order[i] in okind)) reject("owners: open item missing from owners: " order[i])
     for (i = 1; i <= nw; i++) if (!(oorder[i] in open)) reject("owners: not an open ledger key: " oorder[i])
     for (i = 1; i <= nt; i++) if ((titles[i] in nocover) && !(titles[i] in shown)) { shown[titles[i]] = 1; reject("work: no covers: " titles[i]) }
+    for (i = 1; i <= nwk; i++) if (reviewstate(wkey[i])) reject("recovery: review-state key covered by work: " wtitle[i] ": " wkey[i] " (route it -> recovery: <reason>; super-auto Review collection recovers it, a bead cannot)")
+    for (i = 1; i <= nw; i++) if (okind[oorder[i]] == "recovery" && !reviewstate(oorder[i])) reject("recovery: not a review-state key: " oorder[i])
     for (i = 1; i <= no; i++) {
       k = order[i]
-      if (!(k in okind) || okind[k] == "disputed" || (k in covered)) continue
+      if (!(k in okind) || okind[k] == "disputed" || okind[k] == "recovery" || (k in covered)) continue
       if (loop == "design" && okind[k] == "owner" && ((ospec[k] SUBSEP osec[k]) in amended)) continue
       reject("reverse: open item not covered by a work: line: " k)
     }

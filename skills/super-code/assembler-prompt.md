@@ -55,7 +55,14 @@ Parameters: [CONSUMER], [INSTANCE], [OUT_DIR], [WORKTREE], [BASE], [HEAD], [SECT
 6. Run `[ASSEMBLED_SIZE] [OUT_DIR] --threshold [THRESHOLD]`. When [CLUSTERS] is yes and it prints
    `fits: no`, re-cluster once by subdirectory each cluster printed as `cluster-fits: <name> no`
    (update `clusters.json`), then run
-   `[ASSEMBLED_SIZE] [OUT_DIR] --threshold [THRESHOLD] --clusters-required`.
+   `[ASSEMBLED_SIZE] [OUT_DIR] --threshold [THRESHOLD] --clusters-required`. If a cluster still
+   prints `cluster-fits: <name> no`, split it once more by file: walk its files in order, filling
+   clusters named `<name>-1`, `<name>-2`, … and starting the next one when adding a file's slices
+   (their `size:` tokens) would pass [THRESHOLD]. A file over [THRESHOLD] on its own becomes a
+   cluster by itself; it still goes unreviewed, and the run fills that gap later with
+   `re-review-cluster`. Update `clusters.json` and run the `--clusters-required` command again. A
+   cluster left out of review costs every later review of the run, so never leave one over the
+   window when a split can fit it.
 7. Relay the LAST run of the size script unchanged: `exit` is its exit code (any exit code, including
    3 and 4, is relayed, not fixed), `fits` its `fits:` line verbatim, `clusterFits` its
    `cluster-fits:` lines verbatim (an empty list when it printed none), `clusters` the number of

@@ -953,7 +953,9 @@ caller's bead context.
    `<key> · disputed@r<N> (<reason>)` (canonical key `[SEV] <location>`; N is the round whose
    ledger the amend read), skipping a line already present. Then rebuild the ledger with the
    calling loop's findings-ledger invocation (an input); exit 2 is handled as that loop's Step 1
-   item 2. A disputed Blocking finding stays unresolved and is listed in Remaining.
+   item 2. A disputed Blocking finding stays unresolved and is listed in Remaining. A `recovery`
+   owner writes no override: the key stays open until the review it names closes it (super-auto
+   §Review collection).
 6. **Coverage.** One extra round, recorded as `approvals · coverage-amend-<loop>-<K>` in the
    `coverage-round-<N>` line format, outside the two-round cap (§Coverage). It reuses
    `./coverage-reviewer-prompt.md` and `scripts/coverage-inputs` unchanged; its
@@ -973,7 +975,7 @@ the next roast re-validates the open items.
 |---|---|---|
 | Bead wiring | post-hand-off beads, no sweep edges | wired under the existing `Integration sweep:` |
 | Supersede | none (no `supersedes:` lines) | the record's `supersedes:` lines, run in step 4 |
-| amend-check reverse rule | a `work:` line for every non-disputed open item | a `work:` line, or an amended owning section |
+| amend-check reverse rule | a `work:` line for every non-disputed, non-recovery open item | a `work:` line, or an amended owning section |
 | Bead context source | I3 flags + §Fix-bead template context lines | §Decomposition flag triple + `Integration sweep:` wiring |
 
 **Outcomes**

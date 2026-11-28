@@ -90,6 +90,7 @@ Run the tests and `bump-version.sh` inside this project's toolbox, `superpowers-
    - `bash tests/super-auto/test-contract-lint.sh`
    - `bash tests/super-auto/review-inputs-range-scope.sh`
    - `bash tests/super-auto/review-continuity-e2e.sh`
+   - `bash tests/super-auto/cluster-re-review.sh`
    - `bash tests/skill-scripts/test-bash-invocation.sh`
    - `bash tests/codex/test-marketplace-manifest.sh`
    - `bash tests/super-code/test-run-marker.sh`

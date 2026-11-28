@@ -10,7 +10,7 @@
 // declared before the round loop. So a `return` of the builders goes just before the first top-level
 // `while (true) {`; the rest of the body stays in place, unreachable. Everything before the return runs
 // against an `agent` stub that returns null (the Resume ledger read degrades as on a null dispatch).
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, lstatSync, realpathSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, lstatSync, realpathSync, copyFileSync } from 'node:fs'
 import { dirname, join, resolve, posix } from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
@@ -63,15 +63,23 @@ kinds and options:
                     Metrics: lines; cluster needs --dir --cluster --name; seam needs --dir --reviewed,
                     the clusters whose review returned a verdict; stub needs --reviewed --unreviewed;
                     --unreviewed F holds one unreviewed entry per line)
+  re-review-cluster --invocation-id PAST --cluster N (--threshold TOKENS | --combine --reviewed K1,K2|none)
+                    (fills one missing cluster review of a past invocation from its assembled inputs
+                    and persisted captured source; prints JSON. When the cluster fits, one cluster
+                    review writes final-review-PAST.cluster-N.md. Otherwise its files are packed into
+                    parts under <ledger dir>/re-review/final-review-PAST.cluster-N/, a file over the
+                    threshold alone stays an unreviewed part, and --combine then writes the dispatch
+                    whose review composes the parts' reviews into final-review-PAST.cluster-N.md)
 
 common options:
   --plan <file>        the plan file (default: <ledger dir>/<epic>-plan.md)
   --test-paths P1,P2   config.testPaths, when the run set one
   --run-tag T          groups the enclosing run (default: the Launch: line's runTag, else the epic)
-  --invocation-id I     must match the persisted Launch invocationId for review output
+  --invocation-id I     must match the persisted Launch invocationId for review output; only
+                       re-review-cluster and bind-review-source may name an earlier persisted Launch
   --epic, --branch, --worktree, --merge-check   override the Launch: line`
 
-const FLAGS = new Set(['stdout', 'reentry', 'recut', 'stacked', 'seam-cleared', 'capped', 'help', 'read'])
+const FLAGS = new Set(['stdout', 'reentry', 'recut', 'stacked', 'seam-cleared', 'capped', 'help', 'read', 'combine'])
 const REPEATED = new Set(['exclude', 'keep'])
 function fail(msg) { process.stderr.write(`dispatch-text: ${msg}\n`); process.exit(2) }
 function parse(argv) {
@@ -247,7 +255,7 @@ function reviewInputs(repo, base, head, out, current = null, excludes = [], keep
     }
     return { tree, blob, archives, claims, saved, collections, valid }
   }
-  function validateCollections(snapshot, revision, allowCurrent = true) {
+  function validateCollections(snapshot, revision, allowCurrent = true, healed = () => false) {
     let valid = true
     const collectionGap = (run, text) => { valid = false; runGap(run, text) }
     const { tree, blob, archives, claims, saved } = snapshot
@@ -262,6 +270,7 @@ function reviewInputs(repo, base, head, out, current = null, excludes = [], keep
         if (allowCurrent && current && run === current.run && pristine(r.record) &&
             currentHistoryPristine &&
             ![...tree.keys()].some(p => p.startsWith(archive + '/'))) continue
+        if (healed(run, r)) continue
         if (!r.complete || !r.settled || !Array.isArray(r.gaps) || r.gaps.length) collectionGap(run, context + ': incomplete claimed collection')
         if (r.reviewPath === null) {
           if (r.review !== 'no work landed' || files.size) collectionGap(run, context + ': invalid null-review bundle')
@@ -305,7 +314,9 @@ function reviewInputs(repo, base, head, out, current = null, excludes = [], keep
           catch (e) { collectionGap(run, context + ': ' + e.message) }
           if (!buffering && !relevant(run)) continue
           saved.set(p, { sha256 })
-          if (!bounded && (relative.startsWith(assembled) || relative === prefix + '.md.diff')) {
+          // A re-review's digest and slices are copies of this invocation's assembled inputs.
+          const reReviewInput = relative.startsWith('re-review/' + prefix + '.cluster-') && /^\d+\/(digest\.md|slices\/.+)$/.test(relative.slice(('re-review/' + prefix + '.cluster-').length))
+          if (!bounded && (relative.startsWith(assembled) || relative === prefix + '.md.diff' || reReviewInput)) {
             const claim = { path: p, sha256, revision, run, recordLine: r.line, invocationId: r.invocationId, archive, report: archive + '/' + prefix + '.md' }
             if (claims.has(p) && claims.get(p).sha256 !== sha256) collectionGap(run, context + ': conflicting payload claim: ' + p)
             claims.set(p, claim)
@@ -394,7 +405,17 @@ function reviewInputs(repo, base, head, out, current = null, excludes = [], keep
     authenticateOrigins(after, head, before, base, false)
     buffering = false
     for (const { run, text } of pending) classify(run, text)
-    validateCollections(before, base)
+    // A base-side record that was incomplete (a missing cluster review, filled later by
+    // re-review-cluster) is validated at the head instead when the head completes the same
+    // invocation and keeps every file the base claimed, with the same hash.
+    const healed = (run, r) => {
+      if (r.complete && Array.isArray(r.gaps) && !r.gaps.length) return false
+      const h = after.collections.find(c => c.run === run)?.latest.get(r.invocationId)
+      if (!h || !h.complete || !h.settled || !Array.isArray(h.gaps) || h.gaps.length || h.workspace !== r.workspace || h.reviewPath !== r.reviewPath) return false
+      const files = new Map((h.files || []).map(f => [f.path, f.sha256]))
+      return (r.files || []).every(f => files.get(f.path) === f.sha256)
+    }
+    validateCollections(before, base, true, healed)
     validateCollections(after, head)
     archives = after.archives
     for (const origin of collectionOrigins) {
@@ -473,10 +494,18 @@ const mergeCheck = o['merge-check'] ?? L.mergeCheck
 const testPaths = o['test-paths'] ? list(o['test-paths']) : L.testPaths
 const ws = dirname(resolve(o.ledger))
 const runTag = o['run-tag'] || L.runTag || epic
-const invocationId = L.invocationId
-const reviewOutput = kind === 'bounded-review' || kind === 'bind-review-source' || kind === 'final-review' || (kind === 'assemble' && o.consumer === 'final-review')
+// An earlier invocation is addressable only to fill its own missing cluster review: re-review-cluster,
+// and the bind-review-source write guard that review's prompts run. Every other kind writes for the
+// last Launch.
+const pastInvocation = o['invocation-id'] !== undefined && o['invocation-id'] !== L.invocationId
+if (pastInvocation) {
+  if (kind !== 're-review-cluster' && kind !== 'bind-review-source') fail('--invocation-id must match the persisted Launch invocationId')
+  if (!ledgerText.split('\n').some(l => l.trim().startsWith('Launch:') && launchFrom(l).invocationId === o['invocation-id'])) fail('--invocation-id names no persisted Launch in this ledger')
+}
+const invocationId = pastInvocation ? o['invocation-id'] : L.invocationId
+const reviewOutput = kind === 'bounded-review' || kind === 'bind-review-source' || kind === 'final-review' || kind === 're-review-cluster' || (kind === 'assemble' && o.consumer === 'final-review')
 if (reviewOutput && (typeof invocationId !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId))) fail('review output needs a persisted filesystem-safe Launch invocationId')
-if (o['invocation-id'] !== undefined && o['invocation-id'] !== invocationId) fail('--invocation-id must match the persisted Launch invocationId')
+if (kind === 're-review-cluster' && !pastInvocation && o['invocation-id'] === undefined) fail('re-review-cluster needs --invocation-id naming the invocation whose cluster review is missing')
 // Source facts use the existing compact Recovery transport (Launch lines are elided by digest).
 const fullCommit = v => typeof v === 'string' && /^[0-9a-f]{40,64}$/.test(v)
 let boundSource = null
@@ -507,6 +536,12 @@ if (reviewOutput) {
       process.exit(0)
     }
     if (!fullCommit(o.base) || !fullCommit(o.head)) fail('bind-review-source needs --base and --head as full captured commits (or --read)')
+    if (!boundSource && pastInvocation) fail('earlier invocation has no persisted source binding; a re-review never binds new source')
+    if (pastInvocation) {
+      const rel = o.artifact ? posix.relative(ws, resolve(o.artifact)) : ''
+      const p = 'final-review-' + invocationId + '.cluster-'
+      if (!(rel.startsWith(p) && /^\d+\.md$/.test(rel.slice(p.length))) && !(rel.startsWith('re-review/' + p) && /^\d+\/part-\d+\.md$/.test(rel.slice(('re-review/' + p).length)))) fail('an earlier invocation guards only a re-review artifact: its cluster file or a part review')
+    }
     if (!boundSource) {
       const prefix = 'final-review-' + invocationId
       const artifacts = readdirSync(ws).some(n => n === prefix + '.md' || n.startsWith(prefix + '.md.') || n.startsWith(prefix + '.cluster-'))
@@ -744,6 +779,81 @@ switch (kind) {
       label = `final-review-${invocationId}-stub`
     }
     break
+  }
+  case 're-review-cluster': {
+    // A missing cluster review leaves its invocation's collection incomplete for good, and every
+    // later range touching the run's records loses its provenance. This fills that one file from the
+    // invocation's own assembled selection and captured source; the original final report, seam
+    // review and other cluster reviews are never rewritten.
+    need('cluster')
+    if (!/^[1-9]\d*$/.test(String(o.cluster))) fail('--cluster is a positive integer')
+    if (!boundSource) fail('re-review-cluster needs the invocation persisted source binding')
+    const n = Number(o.cluster), source = { base: boundSource.base, head: boundSource.head }
+    const prefix = 'final-review-' + invocationId, dir = join(ws, 'assembled', prefix + '-final')
+    const target = join(ws, `${prefix}.cluster-${n}.md`), reDir = join(ws, 're-review', `${prefix}.cluster-${n}`)
+    const absent = p => { try { lstatSync(p); return false } catch (e) { if (e.code === 'ENOENT') return true; fail(e.message) } }
+    if (!absent(target)) fail(`cluster ${n} already has its review file; preserve it: ${target}`)
+    let manifest, selection
+    try { manifest = JSON.parse(readFileSync(join(dir, 'clusters.json'), 'utf8')); selection = JSON.parse(readFileSync(join(dir, 'review-inputs.json'), 'utf8')) } catch (e) { fail('invocation assembled inputs unavailable: ' + e.message) }
+    if (selection.base !== source.base || selection.head !== source.head) fail('assembled selection does not match the invocation captured source')
+    const cluster = Array.isArray(manifest.clusters) ? manifest.clusters[n - 1] : null
+    if (!cluster || typeof cluster.name !== 'string' || !Array.isArray(cluster.files) || !Array.isArray(cluster.slices)) fail(`cluster ${n} is not in ${dir}/clusters.json`)
+    const emit = (body, name) => { const p = join(ws, 'dispatch', `re-review-${invocationId}-cluster-${n}-${name}.md`); mkdirSync(dirname(p), { recursive: true }); writeFileSync(p, body + '\n'); return p }
+    const partsFile = join(reDir, 'parts.json')
+    if (o.combine) {
+      let saved
+      try { saved = JSON.parse(readFileSync(partsFile, 'utf8')) } catch (e) { fail('no saved split for this cluster; run re-review-cluster with --threshold first: ' + e.message) }
+      if (saved.invocationId !== invocationId || saved.cluster !== n || saved.base !== source.base || saved.head !== source.head || saved.name !== cluster.name || !Array.isArray(saved.parts) || !saved.parts.length) fail('saved split does not match this invocation, cluster or captured source; preserve it: ' + partsFile)
+      need('reviewed')
+      const reviewed = o.reviewed === 'none' ? [] : list(o.reviewed).map(Number)
+      if (reviewed.some(k => !saved.parts.some(p => p.part === k && p.fits))) fail('--reviewed names a part that has no review dispatch')
+      for (const k of reviewed) if (absent(saved.parts[k - 1].path)) fail(`part ${k} has no review file: ${saved.parts[k - 1].path}`)
+      const unreviewed = saved.parts.filter(p => !reviewed.includes(p.part)).map(p => `part ${p.part} (${p.name}): ${p.fits ? 'review unavailable' : p.files.join(', ') + ' over the window'}`)
+      const text = B.finalSeamReviewPrompt(reDir, reviewed.map(k => saved.parts[k - 1].path), target, epic, branch, worktree, unreviewed, source)
+      console.log(JSON.stringify({ mode: 'combine', path: target, dispatch: emit(text, 'combine'), unreviewed }))
+      process.exit(0)
+    }
+    need('threshold')
+    if (!/^\d+$/.test(o.threshold)) fail('--threshold is a non-negative integer')
+    // Token measure and threshold as assembled-size: bytes / 4; the cluster prompt also reads the digest.
+    const tokens = p => { try { return Math.floor(lstatSync(p).size / 4) } catch (e) { fail('assembled input unavailable: ' + e.message) } }
+    const budget = Number(o.threshold) - tokens(join(dir, 'digest.md'))
+    if (budget <= 0) fail('--threshold leaves no room beside the digest; use the final review\'s own threshold')
+    if (!cluster.slices.length) fail(`cluster ${n} lists no slices`)
+    const fileOf = new Map((selection.slices || []).map(x => [x.slice, x.path]))
+    const items = cluster.slices.map(slice => ({ slice, file: fileOf.get(slice), t: tokens(join(dir, slice)) }))
+    if (items.some(i => !i.file || !cluster.files.includes(i.file))) fail(`cluster ${n} lists a slice outside its selection mapping`)
+    const parts = []
+    let cur = null
+    for (const i of items) {
+      if (i.t > budget) { parts.push({ items: [i], t: i.t, fits: false }); cur = null; continue }
+      if (!cur || cur.t + i.t > budget) parts.push(cur = { items: [], t: 0, fits: true })
+      cur.items.push(i); cur.t += i.t
+    }
+    const plan = parts.length === 1 && parts[0].fits ? null : {
+      invocationId, cluster: n, name: cluster.name, base: source.base, head: source.head, threshold: Number(o.threshold),
+      parts: parts.map((p, k) => ({ part: k + 1, name: `${cluster.name}-part-${k + 1}`, fits: p.fits, tokens: p.t, files: [...new Set(p.items.map(i => i.file))], slices: p.items.map(i => i.slice), path: join(reDir, `part-${k + 1}.md`) })),
+    }
+    // A saved split governs its cluster: a repeat run must reproduce it, never replace it.
+    if (!absent(reDir)) {
+      let saved = null
+      try { saved = readFileSync(partsFile, 'utf8') } catch {}
+      if (saved === null || !plan || saved !== JSON.stringify(plan, null, 2) + '\n') fail(`a different re-review split of cluster ${n} already exists; preserve it: ${reDir}`)
+    }
+    if (!plan) {
+      const text = B.finalClusterReviewPrompt(n, cluster.name, dir, target, epic, branch, worktree, source)
+      console.log(JSON.stringify({ mode: 'single', path: target, dispatch: emit(text, 'single') }))
+      process.exit(0)
+    }
+    mkdirSync(join(reDir, 'slices'), { recursive: true })
+    copyFileSync(join(dir, 'digest.md'), join(reDir, 'digest.md'))
+    for (const i of items) { mkdirSync(dirname(join(reDir, i.slice)), { recursive: true }); copyFileSync(join(dir, i.slice), join(reDir, i.slice)) }
+    writeFileSync(join(reDir, 'clusters.json'), JSON.stringify({ changed: cluster.files, clusters: plan.parts.map(p => ({ name: p.name, files: p.files, slices: p.slices })) }) + '\n')
+    writeFileSync(partsFile, JSON.stringify(plan, null, 2) + '\n')
+    const out = plan.parts.map(p => ({ part: p.part, name: p.name, fits: p.fits, files: p.files, path: p.path,
+      dispatch: p.fits ? emit(B.finalClusterReviewPrompt(p.part, p.name, reDir, p.path, epic, branch, worktree, source), 'part-' + p.part) : null }))
+    console.log(JSON.stringify({ mode: 'split', parts: out, combine: `--invocation-id ${invocationId} re-review-cluster --cluster ${n} --combine --reviewed <the parts whose review returned a verdict, or none>` }))
+    process.exit(0)
   }
   default:
     fail(`unknown kind ${kind}\n${USAGE}`)
