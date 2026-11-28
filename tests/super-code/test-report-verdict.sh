@@ -846,5 +846,49 @@ rc_v "$T/v-nocount-orig.md" 'super-roast verdict: Should-fix' '[Should-fix] a.sh
 rc_v "$T/v-nocount-rep.md" 'super-roast verdict: Should-fix' '- [Should-fix] a.sh:1 — first claim'
 rc3 "verdict line with no count" 4 "$T/v-nocount-orig.md" "$T/v-nocount-rep.md" "(iii) verdict carries no confirmed count"
 
+echo "report-verdict: bare --- template delimiters (synthetic copies of a run's roast-pr-2..5)"
+# Each fixture keeps its source report's shape: a leading and a trailing `---` copied from the
+# reporter template, Escalations `- none` as the last item, and no final newline.
+for n in 2 3 4 5; do
+  fx="$FX/roast-pr-delimited-$n.md"
+  run bash "$R" --complete --source "roast-code/round-$n" "$fx"
+  assert_eq "$code" 0 "pr-$n: --complete exits 0"
+  want=$(sed -n 's/^super-roast verdict: [A-Za-z-]* (\([0-9]*\) confirmed).*/\1/p' "$fx")
+  assert_eq "$(occ "$out" | grep -c '^Confirmed findings')" "$want" "pr-$n: Confirmed occurrences equal the verdict count"
+  assert_eq "$(occ "$out" | grep -c '^Escalations')" 0 "pr-$n: Escalations - none gives no occurrence"
+  assert_eq "$(node -e 'console.log(JSON.parse(process.argv[1]).occurrences.filter(o => /---/.test(o.text)).length)' "$out")" 0 "pr-$n: no occurrence text carries ---"
+  grep -vx -- '---' "$fx" > "$T/pr-$n-stripped.md"
+  run bash "$R" --repair-check "$fx" "$T/pr-$n-stripped.md"
+  assert_eq "$code:$(cat "$T/err")" "0:" "pr-$n: --repair-check accepts the repair that strips the delimiters"
+  run bash "$R" --repair-check "$fx" "$fx"
+  assert_eq "$code" 0 "pr-$n: --repair-check accepts the unchanged report"
+done
+FX2="$FX/roast-pr-delimited-2.md"
+# A delimiter after a real last item (the source run's pr-1 shape) ends that item.
+awk '{ l[NR] = $0 } END { for (i = 1; i <= NR; i++) { if (i == NR - 1 && l[i] == "- none") l[i] = "- escalated entry\n  reason: open"; printf "%s%s", l[i], (i < NR ? "\n" : "") } }' "$FX2" > "$T/delim-item.md"
+run bash "$R" --complete --source x "$T/delim-item.md"
+assert_eq "$code" 0 "delimiter after a real item: exits 0"
+assert_eq "$(node -e 'const o = JSON.parse(process.argv[1]).occurrences.at(-1); console.log(JSON.stringify([o.section.split(" ")[0], o.text]))' "$out")" '["Escalations","escalated entry\n  reason: open"]' "delimiter after a real item: item text stops before ---"
+# Inside a code fence, --- is finding text, and a repair may not drop it.
+awk '{ print } /^- \[Should-fix\] src\/file1.rs:10/ { print "  ```"; print "  ---"; print "  ```" }' "$FX2" > "$T/delim-fence.md"
+run bash "$R" --complete --source x "$T/delim-fence.md"
+assert_eq "$code" 0 "fenced ---: exits 0"
+assert_eq "$(node -e 'console.log(JSON.parse(process.argv[1]).occurrences[0].text.includes("\n  ---\n"))' "$out")" true "fenced ---: kept in the item text"
+grep -vx -- '  ---' "$T/delim-fence.md" > "$T/delim-fence-drop.md"
+rc_pair "repair drops a fenced ---" 4 "$T/delim-fence.md" "$T/delim-fence-drop.md"
+bash "$R" --classify "$T/delim-fence.md" > "$T/delim-fence.md.cls"
+assert_eq "$(cls "$T/delim-fence.md" '---' role | sort -u)" "break" "--classify: bare --- is a break"
+assert_eq "$(cls "$T/delim-fence.md" '  ---' role)" "fenced" "--classify: fenced --- stays fenced"
+# Ignoring delimiters does not relax (ii) for any other header line.
+grep -vx -- '---' "$FX2" | sed 's/^inputs: synthetic value$/inputs: changed/' > "$T/delim-hdr.md"
+run bash "$R" --repair-check "$FX2" "$T/delim-hdr.md"
+assert_eq "$code:$(cat "$T/err")" "4:report-verdict: --repair-check: (ii) header lines differ" "stripped delimiters plus an edited header line: (ii) rejects"
+# The strictDraft copy of the grammar treats a bare --- the same way.
+printf -- '---\n## Verdict\nnot ready (x)\n## Must fix before landing\n- none\n---\n## Untested scope\n- a\n---' > "$T/delim-fr.md"
+run bash "$R" --complete --source x "$T/delim-fr.md"
+assert_eq "$code:$(occ "$out")" "0:Untested scope|1|a" "final-review draft with --- delimiters: --complete exits 0, - none stays empty"
+run node "$T/strict.cjs" "$AA" "$T/delim-fr.md"
+assert_eq "$out" "ok" "final-review draft with --- delimiters: strictDraft accepts"
+
 if [ "$FAILURES" -gt 0 ]; then echo "report-verdict: $FAILURES failure(s)"; exit 1; fi
 echo "report-verdict: all tests passed"

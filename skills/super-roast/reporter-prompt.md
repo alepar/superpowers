@@ -239,8 +239,11 @@ Copy these two lines verbatim into the report header; do not recompute or reform
   the `seat-agreement:` line out of the report entirely.
 
 ## Step 6 — Assemble the report
-Render the full report using this template verbatim (fill the bracketed parts; keep every
-heading exactly as written). The `independence:` line is `{{INDEPENDENCE}}` exactly as the
+Render the full report using the template below verbatim (fill the bracketed parts; keep every
+heading exactly as written). The template is the lines from `super-roast verdict:` through the
+`## Prior findings` section. The report's first line is its `super-roast verdict:` line and its
+last line is the last line of its last section; write no `---` line before or after them.
+The `independence:` line is `{{INDEPENDENCE}}` exactly as the
 orchestrator rendered it from the seats it actually dispatched — **never write a model family
 from assumption**: if the token reached you unrendered (the literal text `{{INDEPENDENCE}}`),
 write `independence: unknown — orchestrator did not render the seat roster`, which a caller
@@ -253,7 +256,6 @@ reviewer can scan: short sentences, one fact per line, no metaphor or flourish.
 
 Every section of the report body below (Confirmed findings, both Not verified sections, Beyond remainder cap, Rejected, Unverified nits, Escalations, Prior findings) holds only `- ` items, each with optional indented continuation lines, or the single item `- none`: no prose preamble, sub-headings or bold labels inside a section. An explanatory sentence goes outside the recognized sections.
 
----
 super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean (n nits)> [low coverage] [panel-capped: N unverified] [review readiness incomplete] [converged]
 mode: design | PR        iteration: N of 3
 profile (assumed): <2–4 sentence inferred profile>
@@ -289,7 +291,6 @@ independence: {{INDEPENDENCE}}
 
 ## Prior findings (no current packet)   ← iterations ≥ 2 only: prior confirmed and still-unjudged findings this round's packets do not carry
 - [SEV] <location> — <claim> (resolved | unjudged (open) | punch-listed (open))   (or: - none)
----
 
 Notes on filling it in:
 - `mode`, `iteration`, `inputs` come from the "## Run context" section above, verbatim. Do

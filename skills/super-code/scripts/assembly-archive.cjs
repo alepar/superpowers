@@ -32,6 +32,7 @@ function strictDraft(draft){
    const atx=line.match(/^(#+)[ \t]+/),lvl=atx?atx[1].length:0;
    requireThat(!(active&&content)||recognized||(atx&&(level===0||lvl<=level)),'draft sub-heading inside a finding section');
    close();active=recognized;level=lvl;content=false;continue}
+  if(!f&&fence===null&&/^ {0,3}-{3,}[ \t]*$/.test(line)){flush();continue}
   if(!active)continue;
   const bullet=line.match(/^ ?(?:[-*]|[0-9]+[.)])[ \t]+(.*)$/);
   if(bullet){flush();requireThat(bullet[1].trim(),'empty draft finding item');item=[bullet[1]];content=true}
