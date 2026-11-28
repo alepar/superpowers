@@ -18,6 +18,10 @@ back for those steps.
   handoff carries the `superpowers-dev` membership rule, the relevant source
   documents, and the cleanup expectation below. The coordinator routes, reviews and
   lands; it does not fix code itself.
+- Every handoff brief also says: stop only processes you started, by exact PID; never
+  `pkill -f`, `killall` or any pattern kill. Other projects run lanes with the same models
+  and commands on this host (2026-11-27: `pkill -f gpt-6.1-terra` killed another project's
+  session).
 - Use `--nudge` on any message a tab must act on: a plain send never wakes an idle tab.
 - For anything non-trivial, ask the owner tab for a finding first and relay it to
   whoever decides before anything gets built.
