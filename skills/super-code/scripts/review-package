@@ -1,0 +1,136 @@
+#!/usr/bin/env bash
+# super-code's review package: subagent-driven-development's review-package (commit list, stat
+# summary, net diff with extended context, one file the reviewer reads in one call) with run
+# records, evidence and vendored trees out of review scope, matching the globs the coordinator
+# passes to `dispatch-text review-inputs`. SDD's script stays byte-identical to upstream, so the
+# scoping lives here.
+#
+# Usage: review-package [--exclude GLOB]... [--keep GLOB]... PLAN_FILE BASE HEAD [OUTFILE]
+# Default OUTFILE: <repo-root>/.superpowers/sdd/<plan-basename>/review-<base7>..<head7>.diff
+#
+# Out of scope by default: docs/superpowers/runs/** (except a run's dated *-design.md specs,
+# which are stated intent), evidence/**, vendor/**, third_party/**. --exclude and --keep add to
+# those defaults; globs are git pathspec globs from the repository top. A changed path matching an
+# exclude glob, and no keep glob, is left out of the stat and diff; each excluded tree that changed
+# gets one "excluded: <tree>/ (N files changed)" line. When every changed path is excluded, the
+# change under review is itself in those trees: the package then covers the whole range and says so.
+set -euo pipefail
+
+excludes=('docs/superpowers/runs/**' 'evidence/**' 'vendor/**' 'third_party/**')
+keeps=('docs/superpowers/runs/*/[0-9]*-design.md')
+args=()
+while [ $# -gt 0 ]; do
+  case $1 in
+    --exclude|--keep)
+      [ $# -ge 2 ] && [ -n "$2" ] || { echo "$1 needs a GLOB" >&2; exit 2; }
+      if [ "$1" = --exclude ]; then excludes+=("$2"); else keeps+=("$2"); fi
+      shift 2 ;;
+    --) shift; args+=("$@"); break ;;
+    -*) echo "unknown option: $1" >&2; exit 2 ;;
+    *) args+=("$1"); shift ;;
+  esac
+done
+set -- "${args[@]+"${args[@]}"}"
+
+if [ $# -lt 3 ] || [ $# -gt 4 ]; then
+  echo "usage: review-package [--exclude GLOB]... [--keep GLOB]... PLAN_FILE BASE HEAD [OUTFILE]" >&2
+  exit 2
+fi
+
+plan=$1
+base=$2
+head=$3
+[ -f "$plan" ] || { echo "no such plan file: $plan" >&2; exit 2; }
+
+git rev-parse --verify --quiet "$base" >/dev/null || { echo "bad BASE: $base" >&2; exit 2; }
+git rev-parse --verify --quiet "$head" >/dev/null || { echo "bad HEAD: $head" >&2; exit 2; }
+
+# Range guards (exit 3): a wrong-branch HEAD yields a range that is empty or not rooted at BASE;
+# either would silently produce a bogus review package.
+git merge-base --is-ancestor "$base" "$head" || { echo "HEAD is not a descendant of BASE: ${base}..${head}" >&2; exit 3; }
+[ "$(git rev-list --count "${base}..${head}")" -gt 0 ] || { echo "empty commit range: ${base}..${head}" >&2; exit 3; }
+
+# A range whose net diff is empty yields a header-only package, which a reviewer reviews as clean.
+if git diff --quiet "${base}..${head}"; then
+  echo "EMPTY RANGE: ${base}..${head} has no diff (HEAD resolved in $(pwd) as $(git rev-parse --short "$head")) — nothing to review; refusing to write a header-only package. Run this from the task worktree whose tip you mean to review." >&2
+  exit 3
+fi
+
+if [ $# -eq 4 ]; then
+  out=$4
+else
+  # Invoke via bash rather than direct exec: some extractors (Python zipfile) strip Unix exec
+  # bits when unpacking marketplace packages (#2040).
+  sdd="$(cd "$(dirname "$0")/../../subagent-driven-development/scripts" && pwd)"
+  dir=$("${BASH:-bash}" "$sdd/sdd-workspace" "$plan")
+  out="$dir/review-$(git rev-parse --short "$base")..$(git rev-parse --short "$head").diff"
+fi
+
+changed_matching() {  # NUL-separated changed paths matching one glob
+  git diff --no-renames --name-only -z "${base}..${head}" -- ":(top,glob)$1"
+}
+
+# Paths kept despite an exclude, then one count per exclude glob (a path counts once, under the
+# first glob that matches it).
+declare -A kept=() taken=()
+for g in "${keeps[@]}"; do
+  while IFS= read -r -d '' p; do kept[$p]=1; done < <(changed_matching "$g")
+done
+excluded_lines=()
+for g in "${excludes[@]}"; do
+  n=0
+  while IFS= read -r -d '' p; do
+    [ -n "${kept[$p]+x}" ] || [ -n "${taken[$p]+x}" ] && continue
+    taken[$p]=1; n=$((n + 1))
+  done < <(changed_matching "$g")
+  if [ "$n" -gt 0 ]; then
+    case $g in *'/**') label=${g%\*\*} ;; *) label=$g ;; esac
+    case ${label%/} in *[*?[]*) label=$g ;; esac
+    excluded_lines+=("excluded: ${label} (${n} files changed)")
+  fi
+done
+
+total=$(git diff --no-renames --name-only -z "${base}..${head}" | tr -cd '\0' | wc -c | tr -d ' ')
+# Scoped pathspecs: everything but the exclude and keep globs, then the kept paths on their own
+# (git pathspecs cannot express "excluded unless kept" in one set).
+scope=(':(top)')
+for g in "${excludes[@]}" "${keeps[@]}"; do scope+=(":(top,exclude,glob)$g"); done
+keep_scope=()
+for g in "${keeps[@]}"; do keep_scope+=(":(top,glob)$g"); done
+whole=false
+[ "${#taken[@]}" -lt "$total" ] || whole=true
+
+section() {  # $1: git diff options; runs over the scoped pathspecs, or the whole range
+  if $whole || [ "${#excluded_lines[@]}" -eq 0 ]; then
+    git diff "$@" "${base}..${head}"
+  else
+    git diff "$@" "${base}..${head}" -- "${scope[@]}"
+    if [ "${#kept[@]}" -gt 0 ]; then git diff "$@" "${base}..${head}" -- "${keep_scope[@]}"; fi
+  fi
+}
+
+{
+  echo "# Review package: ${base}..${head}"
+  echo
+  echo "## Commits"
+  git log --oneline "${base}..${head}"
+  echo
+  echo "## Files changed"
+  section --stat
+  if [ "${#excluded_lines[@]}" -gt 0 ]; then
+    echo
+    echo "## Out of review scope"
+    if $whole; then
+      echo "Every changed path is in an out-of-scope tree, so the change under review is itself in it: this package covers the whole range."
+    else
+      echo "Changed, but neither in the stat above nor in the diff below: run records, evidence and vendored trees are not code under review."
+    fi
+    printf -- '- %s\n' "${excluded_lines[@]}"
+  fi
+  echo
+  echo "## Diff"
+  section -U10
+} > "$out"
+
+commits=$(git rev-list --count "${base}..${head}")
+echo "wrote ${out}: ${commits} commit(s), $(wc -c < "$out" | tr -d ' ') bytes${excluded_lines[0]+, ${#taken[@]} path(s) out of scope$($whole && echo ' (kept: all changed paths were out of scope)')}"

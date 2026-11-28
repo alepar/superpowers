@@ -1009,7 +1009,7 @@ async function main() {
 
     const review = promptOf(out.trace, 'review:bd-101')
     check(review?.includes(`${TPL}/task-reviewer-prompt.md`), 'task-review prompt names the reviewer template by absolute path', review)
-    for (const [param, val] of [['BRIEF_FILE', `${PLANDIR}/task-1-brief.md`], ['REPORT_FILE', `${PLANDIR}/task-1-report.md`], ['DIFF_FILE', `${PLANDIR}/task-1-review-initial.diff`], ['REVIEW_FILE', `${PLANDIR}/task-1-review.md`], ['PLAN_FILE', PLANPATH], ['BASE', SHA('a')], ['SDD_SCRIPTS', SDD]]) {
+    for (const [param, val] of [['BRIEF_FILE', `${PLANDIR}/task-1-brief.md`], ['REPORT_FILE', `${PLANDIR}/task-1-report.md`], ['DIFF_FILE', `${PLANDIR}/task-1-review-initial.diff`], ['REVIEW_FILE', `${PLANDIR}/task-1-review.md`], ['PLAN_FILE', PLANPATH], ['BASE', SHA('a')], ['CODE_SCRIPTS', `${TPL}/scripts`]]) {
       check(review?.includes(`[${param}] = ${val}`), `task-review prompt fills [${param}]`, review)
     }
     check(review?.includes("[TEST_PATHSPECS] = 'tests/**'") && review?.includes("'**/*_test.*'"), 'task-review prompt passes the default test pathspecs', review)
@@ -1681,7 +1681,7 @@ async function main() {
       assertNoThrow(out)
       check(same(frLabels(out), ['assemble:final', 'ledger-append:metrics', 'final-review']), 'single review after the null assemble', JSON.stringify(frLabels(out)))
       check(out.trace.length === 22, `22 agent dispatches (got ${out.trace.length})`)
-      check(promptOf(out.trace, 'final-review')?.includes('review-package') && !promptOf(out.trace, 'final-review')?.includes('digest.md'), 'direct inputs: the review package, no digest')
+      check(promptOf(out.trace, 'final-review')?.includes('/super-code/scripts/review-package ') && !promptOf(out.trace, 'final-review')?.includes('subagent-driven-development/scripts/review-package') && !promptOf(out.trace, 'final-review')?.includes('digest.md'), 'direct inputs: super-code\'s scoped review package, no digest')
       check(frLedger(out) === 'Final review: single (assembler unavailable)', 'ledger line', frLedger(out))
       check(out.result?.review === 'ready' && out.result?.reviewPath === REVIEW_PATH, 'verdict not capped', JSON.stringify([out.result?.review, out.result?.reviewPath]))
     }

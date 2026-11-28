@@ -96,9 +96,10 @@ super-code owns the epic-level machinery and its per-task prompts; it uses
 
 | super-code owns | Uses from `subagent-driven-development` |
 |---|---|
-| The Workflow coordinator (`./coordinator.js`) or the ordinary-subagent loop (`./coordinator-subagents.md`) | The helper scripts `scripts/task-brief`, `scripts/review-package`, `scripts/sdd-workspace`, always invoked as `bash <abs path>/scripts/<name>` |
+| The Workflow coordinator (`./coordinator.js`) or the ordinary-subagent loop (`./coordinator-subagents.md`) | The helper scripts `scripts/task-brief` and `scripts/sdd-workspace`, always invoked as `bash <abs path>/scripts/<name>` |
 | The per-task pipeline: implementer (workspace setup and `task-brief`, then implementation) → `review-package` → one task review → at most one fix pass → merge — four agents for a clean task | The plan-scoped workspace and ledger header format |
 | Its implementer and task-reviewer prompts (`./implementer-prompt.md`, `./task-reviewer-prompt.md`), adapted from SDD's | |
+| `./scripts/review-package`: SDD's review package with run records, evidence and vendored trees out of review scope | |
 | The epic-scoped `bd ready` loop, refilled to a fixpoint | |
 | Sliding-window parallel dispatch (concurrency cap + hot-file cap), mid-round readiness computed from the dependency graph, and early unblock (dependents start at their blocker's implementation) | |
 | Per-task worktrees off the epic integration branch + single-flight merge-back | |

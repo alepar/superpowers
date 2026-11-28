@@ -959,8 +959,13 @@ with open in-tree dependents is split right after its implementer's commit (earl
 coordinator loop" step 4), so its dependents start while this pipeline continues.
 
 `task-brief` needs a `PLAN_FILE` a beads epic doesn't have on its own — the planner (opus)
-produces it; see "Plan materialization". The SDD scripts are always run as
-`bash <skillsRoot>/subagent-driven-development/scripts/<name>`.
+produces it; see "Plan materialization". The SDD scripts (`task-brief`, `sdd-workspace`) are always run as
+`bash <skillsRoot>/subagent-driven-development/scripts/<name>`. `review-package` is super-code's own
+(`bash <skillsRoot>/super-code/scripts/review-package`): SDD's package with the out-of-scope globs
+the final review's `review-inputs` gets (run records except a run's dated `*-design.md` specs,
+`evidence/`, `vendor/`, `third_party/`), each excluded tree that changed listed as one
+`excluded: <tree>/ (N files changed)` line. A task whose every changed path is in those trees is
+packaged whole.
 
 Rules the dispatched agents carry, each from a measured failure:
 
@@ -1827,7 +1832,7 @@ something the code did not do, and the risk a maintainer reintroduces it outlive
 ## What autonomous mode changes (summary)
 
 super-code runs its own per-task pipeline (one light review, at most one fix pass, no per-merge
-tests beyond a build-only merged-tree check, a full-suite sweep at Finish) with prompts it owns, on top of SDD's brief, review-package
+tests beyond a build-only merged-tree check, a full-suite sweep at Finish) with prompts it owns and its own scoped review-package, on top of SDD's brief
 and workspace scripts. Kept from this skill's predecessor:
 
 - Per-task worktrees branched off the **epic integration branch** (not off `main` and not off a

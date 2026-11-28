@@ -47,7 +47,12 @@ when `[COMPLETION_KIND]` is `implementation`.
 `git rev-parse --verify <sha>^{commit}`; a missing or unresolved identity is INVALID.
 The captured commits define the review even if the caller's branch advances. Then run:
 
-`bash [SDD_SCRIPTS]/review-package [PLAN_FILE] [BASE] [HEAD] [DIFF_FILE]`
+`bash [CODE_SCRIPTS]/review-package [PLAN_FILE] [BASE] [HEAD] [DIFF_FILE]`
+
+Run records, evidence and vendored trees are out of review scope: the package lists each one that
+changed as an `excluded: <tree>/ (N files changed)` line under "## Out of review scope", and its
+stat and diff leave them out. When every changed path is in such a tree, the package covers the
+whole range and says so.
 
 If that exits 3 (an empty range, or a [HEAD] that doesn't descend from [BASE]), or the package's
 "## Files changed" section lists no files, stop there: return status INVALID with `finding` set to
