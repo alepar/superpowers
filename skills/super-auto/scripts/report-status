@@ -649,7 +649,8 @@ case "$stalled" in
   *) echo "not a stallable phase: $stalled" >&2; exit 2 ;;
 esac
 [ -z "$tip" ] || [[ "$tip" =~ ^[0-9a-f]{7,40}$ ]] || { echo "not a commit SHA: $tip" >&2; exit 2; }
-rundir=$(CDPATH= cd -- "$(dirname -- "$run")" && pwd)
+case "$run" in */*) rundir=${run%/*}; rundir=${rundir:-/} ;; *) rundir=. ;; esac  # no dirname: bash and awk only
+rundir=$(CDPATH= cd -- "$rundir" && pwd)
 
 continuity=''
 if awk '/^- (finding-|review-collection)/ { found=1; exit } END { exit !found }' "$run"; then

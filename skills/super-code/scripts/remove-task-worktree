@@ -38,7 +38,7 @@ sweep_verified=
 
 
 exclude_tmp() {  # task temp state lives in <worktree>/.tmp/; it must never read as uncommitted work
-  local ex; ex="$(git -C "$1" rev-parse --git-common-dir)/info/exclude"
+  local ex; ex="$(git -C "$1" rev-parse --path-format=absolute --git-common-dir)/info/exclude"
   mkdir -p "$(dirname "$ex")"
   grep -qx '/.tmp/' "$ex" 2>/dev/null || echo '/.tmp/' >> "$ex"
 }
@@ -79,7 +79,7 @@ remove_one() {  # $1 mode (default|keep-branch|discard) $2 worktree $3 branch $4
     echo "kept: $wt — not a directory (already removed?)"; return 3
   fi
   wt=$(cd "$wt" && pwd -P)
-  case "$(pwd -P)/" in "$wt"/*) cd "$(git -C "$wt" rev-parse --git-common-dir)/.." ;; esac
+  case "$(pwd -P)/" in "$wt"/*) cd "$(git -C "$wt" rev-parse --path-format=absolute --git-common-dir)/.." ;; esac
   exclude_tmp "$wt"
   if [ "$mode" != discard ]; then
     if [ -n "$(git -C "$wt" status --porcelain 2>/dev/null)" ]; then

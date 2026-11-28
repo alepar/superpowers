@@ -42,6 +42,17 @@ done
 contains() {  # $1 root, $2 path: true when path is the root or inside it
   case "$2" in "$1"|"$1"/*) return 0 ;; esac; return 1
 }
+# A .git that may hold repository data: a gitfile or symlink, an unreadable directory, or one with
+# any repository entry. An empty .git directory (any process can leave one in /tmp) holds none.
+git_meta() {
+  [ -L "$1" ] && return 0
+  [ -e "$1" ] || return 1
+  [ -d "$1" ] || return 0
+  { [ -r "$1" ] && [ -x "$1" ]; } || return 0
+  local e
+  for e in HEAD objects refs commondir gitdir config index packed-refs; do { [ -e "$1/$e" ] || [ -L "$1/$e" ]; } && return 0; done
+  return 1
+}
 # Refuse a root holding a parent worktree (one with other worktrees nested under it).
 for r in "${roots[@]}"; do
   [ -d "$r" ] || continue
@@ -55,7 +66,7 @@ for r in "${roots[@]}"; do
     metadata=0
     parent=$(cd "$r" && pwd -P)
     while :; do
-      if [ ! -r "$parent" ] || [ ! -x "$parent" ] || [ -e "$parent/.git" ] || [ -L "$parent/.git" ] || { [ -d "$parent/objects" ] && { [ -e "$parent/HEAD" ] || [ -d "$parent/refs" ]; }; }; then metadata=1; break; fi
+      if [ ! -r "$parent" ] || [ ! -x "$parent" ] || git_meta "$parent/.git" || { [ -d "$parent/objects" ] && { [ -e "$parent/HEAD" ] || [ -d "$parent/refs" ]; }; }; then metadata=1; break; fi
       [ "$parent" != / ] || break
       parent=$(dirname "$parent")
     done
@@ -161,6 +172,30 @@ add() {  # $1 pid $2 reason
   eval "why_$1=\$2"
 }
 
+# A same-uid process whose cwd, executable or environment cannot be read is unknown, except a
+# zombie, which is ignored, or one this user is denied (a non-dumpable process such as systemd
+# --user, sd-pam or sshd-session, or a host process seen from a container). Those are deferred: after discovery,
+# one is ignored when it is in another terminal session than this process and its parent chain
+# reaches PID 1 or 0 without passing a match, and is unknown otherwise. A denied process that
+# left the task's session and tree (setsid, then reparented) is not seen. Judged by re-reading
+# the cwd: a failed executable or environment read with a readable cwd stays unknown.
+# True when the process is gone or deferred.
+deferred=""
+uninspectable() {  # $1 pid $2 what failed
+  local state err
+  # Probe, then read the state, then check absence: an exiting process loses its cwd before it
+  # becomes a zombie, and by the later checks it is a zombie or gone.
+  err=$(LC_ALL=C readlink -v "/proc/$1/cwd" 2>&1 >/dev/null) || true
+  state=$(awk '/^State:/{print $2; exit}' "/proc/$1/status" 2>/dev/null) || state=""
+  case "$state:$err" in
+    Z:*|X:*) return 0 ;;  # a zombie holds no cwd or files and cannot be signalled
+    *': Permission denied') deferred="$deferred $1"; eval "what_$1=\$2"; return 0 ;;
+  esac
+  absent "$1" && return 0
+  unknown_roots "process $1 $2 inspection failed"
+  return 1
+}
+
 if [ -d /proc/self ] && [ -r /proc/self/environ ]; then
   for d in /proc/[0-9]*; do
     pid=${d#/proc/}
@@ -171,12 +206,12 @@ if [ -d /proc/self ] && [ -r /proc/self/environ ]; then
     [ "$owner" = "$uid" ] || continue
     if path=$(readlink "$d/cwd" 2>/dev/null); then
       [ -n "$path" ] && under "$path" && { add "$pid" "cwd $path"; continue; }
-    else absent "$pid" || unknown_roots "process $pid cwd inspection failed"; fi
+    else uninspectable "$pid" cwd && continue; fi
     if path=$(readlink "$d/exe" 2>/dev/null); then
       [ -n "$path" ] && under "$path" && { add "$pid" "exe $path"; continue; }
-    else absent "$pid" || unknown_roots "process $pid executable inspection failed"; fi
+    else uninspectable "$pid" executable && continue; fi
     if ! env=$(tr '\0' '\n' 2>/dev/null < "$d/environ"); then
-      absent "$pid" || unknown_roots "process $pid environment inspection failed"
+      uninspectable "$pid" environment || true
       continue
     fi
     env=$(grep -E '^(HOME|TMPDIR)=' <<<"$env" || true)
@@ -232,6 +267,28 @@ else
     fi
   done <<<"$processes"
 fi
+
+session_of() { awk '{ sub(/.*\) /, ""); print $4 }' "/proc/$1/stat" 2>/dev/null; }
+own_session=$(session_of $$)
+for pid in $deferred; do
+  eval "what=\$what_$pid"
+  # This script's terminal session is where an agent's shells start task processes directly.
+  if ! sess=$(session_of "$pid") || [ -z "$sess" ] || [ -z "$own_session" ] || [ "$sess" = "$own_session" ]; then
+    absent "$pid" || unknown_roots "process $pid $what inspection failed (in this session)"
+    continue
+  fi
+  q=$pid n=0
+  while :; do
+    if ! q=$(ppid_of "$q"); then
+      absent "$pid" || unknown_roots "process $pid $what inspection failed"
+      break
+    fi
+    case "$q" in 0|1) break ;; esac
+    case " $matches " in *" $q "*) unknown_roots "process $pid $what inspection failed (descends from match $q)"; break ;; esac
+    n=$((n + 1))
+    [ "$n" -lt 64 ] || { unknown_roots "process $pid $what inspection failed"; break; }
+  done
+done
 
 # Interactive work is never stopped: a match with a controlling terminal, or one hosting a
 # terminal (a descendant has one, e.g. a terminal multiplexer server with live panes), is

@@ -99,6 +99,9 @@ Run the tests and `bump-version.sh` inside this project's toolbox, `superpowers-
    - `bash tests/super-code/test-assembled-size.sh`
    - `bash tests/super-code/test-review-package.sh`
    - `bash tests/super-code/test-added-bytes.sh`
+   - `bash tests/super-code/test-stop-run-processes-uninspectable.sh`
+   - `bash tests/super-code/test-stop-run-processes-inventory.sh`
+   - `bash tests/super-code/test-remove-task-worktree-exclude.sh`
    - `bash tests/hooks/test-session-start.sh`
    - `bash tests/hooks/test-run-block.sh`
    - `bash tests/hooks/test-reinject-smoke.sh`

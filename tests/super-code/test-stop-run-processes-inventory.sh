@@ -24,7 +24,7 @@ class Inventory(unittest.TestCase):
         self.write('ps', '#!/bin/bash\ncase "$*" in\n "-A -o pid=,ppid="|"-A -o pid=,ppid=,tty=") echo "$PPID 1 ??";;\n "-o ppid= -p "*) echo 1;;\n "-Eww -U "*) :;;\n *) exit 9;;\nesac\n')
         self.write('lsof', '#!/bin/bash\ncase "$*" in *"-u "*) :;; *) echo n/fixture-outside;; esac\n')
         bash_env = self.path / 'bash-env'
-        bash_env.write_text('function [ { if [[ "$*" == "-d /proc/self" ]]; then return 1; fi; builtin [ "$@"; }\nkill() { echo "$*" >> "$SIGNAL_LOG"; return 99; }\n')
+        bash_env.write_text('function [ { if [[ "$*" == "-d /proc/self ]" ]]; then return 1; fi; builtin [ "$@"; }\nkill() { echo "$*" >> "$SIGNAL_LOG"; return 99; }\n')
         self.env['BASH_ENV'] = str(bash_env)
 
     def write(self, name, value):
@@ -75,6 +75,13 @@ class Inventory(unittest.TestCase):
         # Git uses this diagnostic for an ordinary temp root on a separate mount.
         self.write('git', '#!/bin/bash\nif [[ "$*" == *"rev-parse --git-dir" ]]; then printf "%s\\n" "fatal: not a git repository (or any parent up to mount point /tmp)" "Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set)." >&2; fi\nexit 128\n')
         self.run_helper(0)
+
+    def test_empty_git_directory_above_a_temp_root_is_not_metadata(self):
+        # Any process can leave an empty .git (or .git/info) in a shared temp parent.
+        (self.path/'.git'/'info').mkdir(parents=True)
+        self.run_helper(0)
+        (self.path/'.git'/'refs').mkdir()
+        self.run_helper(4)
 
     def test_corrupt_bare_repository_is_unknown(self):
         self.git('init', '--bare', '-q')

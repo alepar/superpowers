@@ -4939,7 +4939,7 @@ esac
         const bin = path.join(d, 'bin'); mkdirSync(bin)
         const setup = path.join(d, 'bash-env')
         // Force the lsof branch on Linux too; every signal is intercepted before reaching kill.
-        writeFileSync(setup, `function [ { if [[ "$*" == '-d /proc/self' ]]; then return 1; fi; builtin [ "$@"; }\nkill() { "$FIXTURE_BIN/kill" "$@"; }\n`)
+        writeFileSync(setup, `function [ { if [[ "$*" == '-d /proc/self ]' ]]; then return 1; fi; builtin [ "$@"; }\nkill() { "$FIXTURE_BIN/kill" "$@"; }\n`)
         writeFileSync(path.join(bin, 'ps'), `#!/bin/bash
 case "$*" in
   '-A -o pid=,ppid=') if [ "$FIXTURE_CASE" = ancestry-discovery-denied ]; then exit 1; fi; printf '%s 1\\n990002 1\\n' "$PPID"; if [ "$FIXTURE_CASE" != ancestry-denied ]; then echo '990001 1'; fi ;;
