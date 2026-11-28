@@ -184,6 +184,23 @@ per triaged domain exactly as it fills seat and dedupe prompts. Without this, na
 would both suppress `config.widenLenses` **and** yield undispatchable scouts — making a triage
 that found domains strictly weaker than one that found none.
 
+**`args.scope`** — `{root, exclude, keep, include, sources}` from `assemble-args`: the
+repo-relative out-of-scope globs (git glob pathspec syntax), the globs that keep a path in
+(including every `--include` opt-out, which `include` repeats for the report header), the
+repository root an absolute location is relative to, and where the exclusions came from. The
+engine drops a raw finding before dedupe when every `;`-separated part of its `location` is a
+bare repo path (optionally backticked, with a `:12`, `:12-20`, `:L5` or `#L3` suffix, or
+absolute under `root`) that matches an `exclude` glob and no `keep` glob; any other part (a spec
+section, prose, a comma list) keeps the finding. The matcher follows git glob pathspecs, and a
+wildcard-free glob also matches the paths under it. A dropped finding is never judged, never counted (raw funnel,
+lane yield, Confirmed), never on a punch list; it appears only in the engine-appended
+`## Out of scope (dropped — not counted)` section and the `outOfScope` return field, and
+`coverage.outOfScopeDropped` counts it. A prior report's Blocking entry at an out-of-scope
+location does not withhold `[converged]`, and the reporter's unjudged (open) Blocking count loses
+the out-of-scope Blocking entries the reporter itself lists as unjudged (open) under
+`## Prior findings`, since the reporter does not apply the rule. The engine writes a
+`scope:` header line. Without `args.scope` nothing is dropped and no scope line is written.
+
 **`{{MODE}}` / `{{ITERATION}}` / `{{INPUTS}}`** carry the three report-header facts the reporter
 cannot derive from packets: `args.mode`, `args.iteration` rendered as `N of <cap>` for a number
 and passed through verbatim otherwise (a caller running a whole-branch roast after its fix
@@ -317,6 +334,47 @@ const fill = (template, vars) => {
 }
 const omit = (o, ...keys) => Object.fromEntries(Object.entries(o).filter(([k]) => !keys.includes(k)))
 
+// Git glob pathspec semantics: `**/` spans zero or more directories, a trailing `/**` everything
+// inside, any other `**` and `*` and `?` stay within one path segment, `[...]` is a class, `\`
+// escapes; a glob with no wildcard also matches everything under it, as a pathspec prefix does.
+function globRe(g) {
+  let re = '', i = 0
+  const lit = c => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  while (i < g.length) {
+    if (g.startsWith('**/', i)) { re += '(?:.*/)?'; i += 3 }
+    else if (g.startsWith('/**', i) && i + 3 === g.length) { re += '/.*'; i += 3 }
+    else if (g[i] === '*') { re += '[^/]*'; while (g[i] === '*') i++ }
+    else if (g[i] === '?') { re += '[^/]'; i++ }
+    else if (g[i] === '[' && g.indexOf(']', i + 2) > 0) {
+      const j = g.indexOf(']', i + 2), body = g.slice(i + 1, j)
+      re += '[' + (body[0] === '!' ? '^' + body.slice(1) : body).replace(/\\/g, '\\\\') + ']'; i = j + 1
+    }
+    else if (g[i] === '\\' && i + 1 < g.length) { re += lit(g[i + 1]); i += 2 }
+    else { re += lit(g[i]); i++ }
+  }
+  return new RegExp('^' + re + (/[*?[]/.test(g) ? '' : '(?:/.*)?') + '$')
+}
+const scopeArgs = A.scope && Array.isArray(A.scope.exclude) ? A.scope : null
+const scopeEx = (scopeArgs?.exclude ?? []).map(globRe)
+const scopeKeep = (scopeArgs?.keep ?? []).map(globRe)
+const scopeRoot = scopeArgs?.root ? String(scopeArgs.root).replace(/\/+$/, '') + '/' : null
+// The repo-relative path one location part names, or null. Strict on purpose: only a part that is
+// nothing but a path with an optional line suffix (`a/b.js`, `a/b.js:12`, `a/b.js:12-20`,
+// `a/b.js#L3`, backticked, or absolute under the scope root) is placed. Prose, lists or anything
+// else names no path, and an unplaced part keeps the finding.
+function pathOf(part) {
+  let s = String(part).trim().replace(/^`(.*)`$/, '$1').trim()
+  s = s.replace(/(?::L?\d+(?:[-–:]L?\d+)*|#L\d+(?:-L?\d+)?)$/, '')
+  if (scopeRoot && s.startsWith(scopeRoot)) s = s.slice(scopeRoot.length)
+  s = s.replace(/^\.\//, '')
+  return /^[\w.@+-][\w./@+-]*$/.test(s) && !s.includes('//') && !s.endsWith('/') && /\/|\.[A-Za-z0-9]+$/.test(s) ? s : null
+}
+const outOfScope = loc => {
+  if (!scopeEx.length) return false
+  const paths = String(loc ?? '').split(';').map(pathOf)
+  return paths.length > 0 && paths.every(p => p && scopeEx.some(r => r.test(p)) && !scopeKeep.some(r => r.test(p)))
+}
+
 // Domain scouts are named at runtime from open-ended triage output, so `prompts.scouts[name]`
 // can never hold them; they resolve from the single `prompts.scoutDomainTemplate` string. Every
 // scout prompt gets {{PRIOR_REPORT}}. An unresolvable name yields null → a dead scout (coverage
@@ -375,7 +433,14 @@ const deadScouts = scoutNames.filter((_, i) => !scoutResults[i])
 const scoutsDead = deadScouts.length
 // category is stamped with the dispatching scout's name: lane attribution and keepsSeverity
 // must not rest on a model-reported string.
-const raw = scoutResults.flatMap((r, i) => (r?.findings ?? []).map(f => ({ ...f, category: scoutNames[i] })))
+const scouted = scoutResults.flatMap((r, i) => (r?.findings ?? []).map(f => ({ ...f, category: scoutNames[i] })))
+// Review scope (args.scope, from assemble-args): a finding whose every location part names a repo
+// path that matches an exclude glob and no keep glob is dropped here, before dedupe. It is listed
+// in the report as out-of-scope (dropped), never judged, counted, punch-listed or held against
+// convergence. A location part that names no repo path (a spec section, prose) keeps the finding.
+const raw = scouted.filter(f => !outOfScope(f.location))
+const droppedOutOfScope = scouted.filter(f => outOfScope(f.location))
+if (droppedOutOfScope.length) log(`scope: ${droppedOutOfScope.length} out-of-scope finding(s) dropped: ${droppedOutOfScope.map(f => f.location).join('; ')}`)
 const fixesChecked = scoutResults.flatMap((r, i) => (r?.fixesChecked ?? []).map(c => ({ ...c, lane: scoutNames[i] })))
 log(`scouts: ${scoutNames.length - scoutsDead}/${scoutNames.length} returned · raw findings ${raw.length}${fixesChecked.length ? ` · fix checks ${fixesChecked.length}` : ''}`)
 
@@ -589,7 +654,7 @@ const coverage = {
   panelCount: judged.filter(j => j.tier === 'panel').length,
   spotCount: judged.filter(j => j.tier === 'spot').length,
   promotedCount: judged.filter(j => j.tier === 'promoted').length,
-  judgeLost, spotLost, laneYield,
+  judgeLost, spotLost, laneYield, outOfScopeDropped: droppedOutOfScope.length,
   judgeCompletionPct: totalSeats ? Math.round(100 * validSeats / totalSeats) : 0,
   lowCoverage, panelCappedTag, emptyLateRound, reviewReadiness,
   convergenceEligible: lateRound && sourceReady && !lowCoverage && !panelCappedTag,
@@ -641,6 +706,12 @@ const escalationLine = p => `${p.finding.location} — ${p.finding.claim} (${p.d
 const engineEscalated = packets.filter(p => p.defaultRoute.startsWith('escalate:'))
 const pipelineLossLine = p => `- [${p.finding.suggestedSeverity ? `suggested ${p.finding.suggestedSeverity}` : 'unrated'}] ${p.finding.location} — ${p.finding.claim} (${p.defaultRoute === 'not-verified:judge-lost' ? 'judge lost' : 'dedupe failed'})`
 
+// The scope header line and the dropped-findings section; both absent when args carry no scope.
+const scopeLine = scopeArgs ? `scope: out of scope ${scopeArgs.exclude.join(', ') || 'none'} · kept ${scopeArgs.keep.join(', ') || 'none'} · included (opt-out) ${(scopeArgs.include ?? []).join(', ') || 'none'} · dropped ${droppedOutOfScope.length}` : null
+const outOfScopeLines = droppedOutOfScope.length
+  ? ['', '## Out of scope (dropped — not counted)', ...droppedOutOfScope.map(f => `- [out-of-scope (dropped)] ${f.location} — ${f.claim} [lanes: ${f.category}]`)]
+  : []
+
 // Reporter dead on both tries: render a minimal report from the default routes instead of
 // returning an empty one. Always [low coverage]; seat severities, no profile conditioning.
 function fallbackReport() {
@@ -658,6 +729,7 @@ function fallbackReport() {
     `profile (assumed): ${profile ?? 'not supplied'} — NOT applied: the reporter failed; severities are raw seat severities and routes are the engine defaults`,
     `inputs: ${inputs || 'not supplied'}`,
     coverageLine,
+    ...(scopeLine ? [scopeLine] : []),
     `independence: ${indep ?? 'unknown — reporter failed'}`,
     ...(seatAgreement ? [seatAgreement] : []),
     laneYieldLine,
@@ -668,6 +740,7 @@ function fallbackReport() {
     ...section('## Rejected (with reason)', of('rejected').map(p => `${line(p, 'rejected')} — 2-of-3 REJECT`)),
     ...section('## Unverified nits (spot-checked)', [...nits.map(p => line(p, 'Nit/FYI')), ...lostSpots.map(p => `${line(p, 'Nit/FYI')} (spot check lost)`)]),
     ...section('## Escalations (need human)', escalations.map(e => `- ${e}`)),
+    ...outOfScopeLines,
   ].join('\n')
   return { verdict, reportMarkdown, confirmedCount: confirmed.length, escalations }
 }
@@ -687,7 +760,9 @@ const priorBlockingLocs = new Set()
 }
 const heldLocs = new Set(fixesChecked.filter(c => c.held === true).map(c => locOf(c.prior)))
 const judgedLocs = new Set(packets.filter(p => p.valid > 0).map(p => p.finding.location))
-const unjudgedPriorBlocking = [...priorBlockingLocs].filter(l => !heldLocs.has(l) && !judgedLocs.has(l) && !punchedLocs.has(l))
+// A prior Blocking located out of scope is not held against this round.
+const priorOutOfScope = [...priorBlockingLocs].filter(outOfScope)
+const unjudgedPriorBlocking = [...priorBlockingLocs].filter(l => !heldLocs.has(l) && !judgedLocs.has(l) && !punchedLocs.has(l) && !outOfScope(l))
 
 // Live reporter output: the engine's facts win. Header lines are overwritten with engine values,
 // escalate routes the reporter left out are added back, and a preExisting finding placed above
@@ -705,7 +780,15 @@ function enforce(rep) {
   // A prior Blocking the round produced no evidence about is not a fixed one: no convergence. The
   // engine's count is the floor; the reporter's delta term can only raise it.
   const deltaLine = lines.slice(0, firstSection < 0 ? undefined : firstSection).find(l => l.startsWith('delta vs prior:')) ?? ''
-  const reporterUnjudged = Number((deltaLine.match(/(\d+) unjudged \(open\) \((\d+) Blocking\)/) ?? [])[2] ?? 0)
+  // The reporter does not apply the scope rule: its count loses the out-of-scope prior Blocking
+  // entries it lists as unjudged (open) under `## Prior findings`.
+  let priorSection = false
+  const reporterOutOfScope = lines.filter(l => {
+    if (l.startsWith('## ')) priorSection = l.startsWith('## Prior findings')
+    const m = priorSection && l.includes('(unjudged (open))') && l.match(/^- \[Blocking\] (.+?) — /)
+    return m && outOfScope(m[1])
+  }).length
+  const reporterUnjudged = Math.max(0, Number((deltaLine.match(/(\d+) unjudged \(open\) \((\d+) Blocking\)/) ?? [])[2] ?? 0) - reporterOutOfScope)
   const unjudgedBlocking = Math.max(unjudgedPriorBlocking.length, reporterUnjudged)
   let verdict = qualify(rep.verdict, unjudgedBlocking === 0, reporterLow, reporterReadinessIncomplete)
   if (unjudgedBlocking) enforcement.push(`converged: withheld, ${unjudgedBlocking} prior Blocking unjudged (open)${unjudgedPriorBlocking.length ? `: ${unjudgedPriorBlocking.join('; ')}` : ''}`)
@@ -765,6 +848,7 @@ function enforce(rep) {
   put('coverage:', coverageLine, ['super-roast verdict:', 'mode:', 'profile (assumed):', 'inputs:', 'delta vs prior:'])
   // Keep reporter source limitations attributed separately from the authoritative stage metrics.
   if (reporterCoverage.length) put('reporter coverage:', `reporter coverage: ${reporterCoverage.join(' | ')}`, ['coverage:'])
+  if (scopeLine) put('scope:', scopeLine, ['reporter coverage:', 'coverage:'])
   if (indep) put('independence:', `independence: ${indep}`, ['coverage:'])
   put('seat-agreement:', seatAgreement || null, ['independence:', 'coverage:'])
   put('lane-yield', laneYieldLine, ['seat-agreement:', 'independence:', 'coverage:'])
@@ -776,6 +860,8 @@ function enforce(rep) {
     lines.push('', '## Escalations the reporter omitted (engine-added — escalate routes are final)', ...missing.map(p => `- ${escalationLine(p)}`))
     enforcement.push(`escalations: ${missing.length} engine-added`)
   }
+  if (outOfScopeLines.length) { lines.push(...outOfScopeLines); enforcement.push(`scope: ${droppedOutOfScope.length} out-of-scope finding(s) listed as dropped`) }
+  if (priorOutOfScope.length) enforcement.push(`scope: ${priorOutOfScope.length} prior Blocking out of scope, not held against convergence: ${priorOutOfScope.join('; ')}`)
   const confirmedRoutes = packets.filter(p => p.defaultRoute === 'confirmed').length
   if (rep.confirmedCount !== confirmedRoutes)
     enforcement.push(`confirmedCount ${rep.confirmedCount} vs ${confirmedRoutes} confirmed default routes (overrules account for the gap)`)
@@ -792,6 +878,7 @@ return {
   reporterFailed: !rep,
   enforcement,
   fixRegressions: packets.filter(p => isFixRegression(p.finding)).map(p => ({ location: p.finding.location, claim: p.finding.claim, defaultRoute: p.defaultRoute })),
+  outOfScope: droppedOutOfScope.map(f => ({ location: f.location, claim: f.claim, lane: f.category })),
   coverage, routeCounts, seatAgreement,
 }
 ```
@@ -882,7 +969,9 @@ This exercises affirmative qualifier routing without claiming a real source revi
 readiness instead appends `[low coverage] [review readiness incomplete]` to each expected verdict; counts
 and stage `lowCoverage` stay the same. The design-mode variants below use the same fixture.
 `node tests/super-roast/test-convergence-readiness.mjs` runs all five documented scenarios
-locally with deterministic structured-output stubs (22/23/22/12/13 calls).
+locally with deterministic structured-output stubs (22/23/22/12/13 calls), plus the canonical
+scenario with the assembler's default `args.scope` (22 calls, nothing dropped: no stub location
+is out of scope).
 
 - triage: 1 call, dispatched concurrently with the 3 core scouts.
 - scouts: 4 calls (3 core-configured + 1 triage-activated `data-migrations`).
@@ -942,11 +1031,12 @@ should cover, beyond the canonical topology and the two variants above:
 | triage overlap | triage resolves only after a core scout is dispatched | core scouts dispatched before the activated lane |
 | fix-regression | round 2: a `regression` scout finding and a core finding, both confirmed; the reporter returns plain entry lines | only the regression entry ends `[fix-regression]`; `fixRegressions` names it; seat prompts carry no `lanes` |
 | punch-listed regression | round 2: two `regression` findings, one at a `punchListed` key's location; the reporter also lists one under `## Prior findings` | only the other entry ends `[fix-regression]` and only it is in `fixRegressions`; the `## Prior findings` line is unchanged |
+| review scope | round 1 with `args.scope`: findings at a `**/*.log` path and a run record + vendored path, plus findings at a kept run spec, a mixed in-scope/out-of-scope location and a location naming no path; a dead reporter variant; round 2 whose prior report's only Blocking is at an out-of-scope path and whose reporter counts it `unjudged (open)` | the two out-of-scope findings reach no dedupe or seat prompt and appear only as `- [out-of-scope (dropped)] <location> — <claim> [lanes: <lane>]` under `## Out of scope (dropped — not counted)` (both report paths); raw funnel and lane yield exclude them; `scope:` header line before the first section; round 2 converges with a `scope:` enforcement entry |
 | lane attribution | two lanes flag one location; a merged group; a REJECTed panel; a dead scout; a dead reporter | each Confirmed entry carries the union of its location's lanes; a shared finding counts confirmed but not unique; the rejected lane counts refuted; `<lane> dead`; the fallback report tags Confirmed entries only; agent count unchanged |
 
 `tests/super-roast/test-assemble-args.sh` runs the assembled round-1/round-2 PR and round-1
 design scripts through such a mock (`tests/super-roast/engine-mock.mjs`), including the
-fix-regression and lane-attribution cases.
+fix-regression, lane-attribution and review-scope cases.
 
 ### Passing baseline (recorded, not illustrative)
 

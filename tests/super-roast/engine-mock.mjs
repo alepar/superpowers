@@ -1,7 +1,8 @@
 // Runs a super-roast engine script produced by `assemble-args --script` against a mock agent()
 // and checks how the assembled prompts reach each stage. Usage: node engine-mock.mjs <script> <scenario>
 // Scenarios: pr-r1, pr-r1-yield, pr-r1-preexisting[-fallback], pr-r2, pr-r2-empty,
-// pr-r2-unjudged[-misformat|-held] (prior report lists `[Blocking] b.js:4`), design-r1. Prints PASS/FAIL lines; exits 1 on any failure.
+// pr-r2-unjudged[-misformat|-held] (prior report lists `[Blocking] b.js:4`), pr-r1-scope[-fallback],
+// pr-r2-scope-prior (prior report lists `[Blocking] build.log:1`), design-r1. Prints PASS/FAIL lines; exits 1 on any failure.
 import { readFileSync } from 'node:fs'
 import assert from 'node:assert/strict'
 
@@ -22,6 +23,19 @@ const agent = async (prompt, o) => {
   const pre = scenario.startsWith('pr-r1-preexisting')
   if (o.label === 'triage') return { lanes: pre ? ['testing', 'test-suite-cost', 'test-isolation-environment'] : scenario.startsWith('pr') ? ['testing'] : [], domains: scenario.startsWith('design') ? ['queueing'] : [] }
   if (scenario === 'pr-r2-empty' && o.label.startsWith('scout:')) return { findings: [] }
+  // Scope: run records, a log and a vendored path are out of scope; a run's design spec, a mixed
+  // location and a location naming no path stay in.
+  if (scenario.startsWith('pr-r1-scope') && o.label === 'scout:correctness') return { findings: [
+    F('core defect', 'c.js:1', 'correctness'), F('log noise', '`build.log:12`', 'correctness'),
+    F('run record typo', 'docs/superpowers/runs/2026-01-01-x/run.md:3; vendor/lib/lib.go:9', 'correctness'),
+    F('spec gap', 'docs/superpowers/runs/2026-01-01-x/2026-01-01-x-design.md:4', 'correctness'),
+    F('caller breaks', 'vendor/lib/lib.go:2; c.js:7', 'correctness'), F('overall layering', 'the module boundary', 'correctness'),
+    F('listed callers', 'vendor/lib/lib.go:9, c.js:7', 'correctness'), F('prose first', 'docs/superpowers/runs/ handling in coordinator.js', 'correctness'),
+    F('line-prefixed log', 'logs/build.log:L5', 'correctness')] }
+  if (scenario.startsWith('pr-r1-scope') && o.label === 'reporter' && scenario.endsWith('-fallback')) return null
+  if (scenario === 'pr-r2-scope-prior' && o.label.startsWith('scout:')) return { findings: [] }
+  if (scenario === 'pr-r2-scope-prior' && o.label === 'reporter')
+    return { verdict: 'clean (0 nits) [converged]', reportMarkdown: ['super-roast verdict: clean (0 nits) [converged]', 'delta vs prior: 0 new confirmed (0 Blocking) · 0 resolved · 1 unjudged (open) (1 Blocking)', '## Confirmed findings', '- none', '## Prior findings (no current packet)', '- [Blocking] build.log:1 — noisy log (unjudged (open))'].join('\n'), confirmedCount: 0, escalations: [] }
   const unj = scenario.startsWith('pr-r2-unjudged')
   if (unj && o.label.startsWith('scout:')) return { findings: [], ...(scenario.endsWith('-held') && o.label === 'scout:regression' ? { fixesChecked: [{ prior: '[Blocking] b.js:4', held: true, evidence: 'b.js:4 now guards the null' }] } : {}) }
   // The reporter claims convergence and omits (or misformats) the unjudged (open) delta term.
@@ -174,6 +188,38 @@ if (scenario === 'pr-r2-unjudged-held') {
   check('a held fix check resolves the prior Blocking: converged', () => {
     assert.ok(r.verdict.endsWith('[converged]'), r.verdict)
     assert.ok(!r.enforcement.some(e => e.startsWith('converged: withheld')), r.enforcement.join('; '))
+  })
+}
+if (scenario.startsWith('pr-r1-scope')) {
+  const dropped = ['`build.log:12`', 'docs/superpowers/runs/2026-01-01-x/run.md:3; vendor/lib/lib.go:9', 'logs/build.log:L5']
+  check('out-of-scope findings never reach dedupe or a judge', () => {
+    const rawIn = JSON.parse(by('dedupe')[0].prompt.match(/<findings>\n([\s\S]*?)\n<\/findings>/)[1]).map(f => f.location)
+    for (const d of dropped) assert.ok(!rawIn.includes(d), d)
+    for (const k of ['c.js:1', 'docs/superpowers/runs/2026-01-01-x/2026-01-01-x-design.md:4', 'vendor/lib/lib.go:2; c.js:7', 'the module boundary',
+      'vendor/lib/lib.go:9, c.js:7', 'docs/superpowers/runs/ handling in coordinator.js']) assert.ok(rawIn.includes(k), `kept: ${k}`)
+    assert.ok(!seen.some(s => (s.label.startsWith('judge:') || s.label.startsWith('spot#')) && (s.prompt.includes('build.log') || s.prompt.includes('run.md:3'))))
+  })
+  check('dropped findings are listed, not counted', () => {
+    const lines = r.reportMarkdown.split('\n')
+    const at = lines.indexOf('## Out of scope (dropped — not counted)')
+    assert.ok(at > 0, r.reportMarkdown)
+    assert.deepEqual(lines.slice(at + 1), dropped.map((d, i) => `- [out-of-scope (dropped)] ${d} — ${['log noise', 'run record typo', 'line-prefixed log'][i]} [lanes: correctness]`))
+    assert.equal(r.coverage.outOfScopeDropped, 3)
+    assert.equal(r.coverage.rawFindings, 7, 'six in-scope correctness findings plus premortem')
+    assert.equal(r.coverage.laneYield.correctness.found, 6)
+    assert.deepEqual(r.outOfScope.map(f => f.location), dropped)
+    assert.ok(!lines.slice(lines.indexOf('## Confirmed findings'), at).some(l => l.includes('build.log') || l.includes('run.md:3')))
+  })
+  check('scope header line records exclusions, keeps, opt-outs and the drop count', () => {
+    const line = r.reportMarkdown.split('\n').find(l => l.startsWith('scope: '))
+    assert.ok(line && line.startsWith('scope: out of scope docs/superpowers/runs/**, evidence/**, vendor/**, third_party/**, **/*.log, **/*.jsonl · kept docs/superpowers/runs/*/[0-9]*-design.md · included (opt-out) none · dropped 3'), line)
+    assert.ok(r.reportMarkdown.split('\n').indexOf(line) < r.reportMarkdown.split('\n').findIndex(l => l.startsWith('## ')))
+  })
+}
+if (scenario === 'pr-r2-scope-prior') {
+  check('an out-of-scope prior Blocking does not withhold convergence, even in the reporter delta', () => {
+    assert.ok(r.verdict.endsWith('[converged]'), `${r.verdict} | ${r.enforcement.join('; ')}`)
+    assert.ok(r.enforcement.includes('scope: 1 prior Blocking out of scope, not held against convergence: build.log:1'), r.enforcement.join('; '))
   })
 }
 if (scenario === 'design-r1') {

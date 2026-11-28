@@ -75,14 +75,23 @@ In PR mode with a stated intent (Inputs), pass `--artifact "<branch@sha> vs <bas
 1. **Pre-flight** — resolve mode, inputs, and the project's environment profile (blast radius:
    prototype / internal / production / regulated). For PR source, pass `--repo`, `--base` and
    `--head` together: the assembler resolves both refs once to verified commit identities and
-   renders all diff/source commands from them. Also pass the out-of-scope globs, `--exclude
-   'docs/superpowers/runs/**' --keep 'docs/superpowers/runs/*/[0-9]*-design.md' --exclude
-   'evidence/**' --exclude 'vendor/**' --exclude 'third_party/**'`: the review covers code,
-   prompts and skills, never run records, evidence or vendored trees (a run's dated
-   `*-design.md` specs are stated intent and stay in). Each excluded tree that changed reaches
-   triage and the scouts as one `excluded: <tree>/ (N files changed)` line, never as a diff.
-   When the change under review is itself in one of those trees (most of the changed files are
-   under it, or the caller or PR says so), drop that glob for this roast.
+   renders all diff/source commands from them. **Review scope is enforced, not judged.** The
+   review covers code, prompts and skills (`skills/*.md` prose included), never run records,
+   evidence, vendored trees, logs or other run output. `assemble-args` applies the out-of-scope
+   globs itself, with no flags: `docs/superpowers/runs/**` (a run's dated `*-design.md` specs
+   are stated intent and stay in), `evidence/**`, `vendor/**`, `third_party/**`, `**/*.log`,
+   `**/*.jsonl`, changed paths the base commit's `.gitattributes` sets `linguist-generated` or
+   `linguist-vendored`, and the globs in the base commit's `.super-roast-scope` file (one git
+   glob per line; `dir/` means the whole directory). Rules come from the base, so the change
+   under review cannot exempt itself. Rules are by path, never by file type. Each excluded tree
+   that changed reaches triage and the scouts as one `excluded: <tree>/ (N files changed)` line,
+   never as a diff; the engine drops any finding located only on out-of-scope paths and lists it under
+   `## Out of scope (dropped — not counted)`, outside every count, the punch list and
+   convergence. A finding is dropped only when its location is nothing but out-of-scope paths.
+   To review an excluded path, pass `--include '<glob>'` (the report's `scope:` header line
+   records it): when the caller or your human partner asks for it, or when `assemble-args`
+   warns `scope: every changed path is out of scope` (the change itself lives in an excluded
+   tree; include that tree). Never drop an exclusion on your own judgement otherwise.
    A PR number is resolved via `gh` when available.
    Supplied `--diff-stat` patch data remains supported; repository reads require captured commits.
    Filesystem views and mutable reproductions use unique review-owned detached worktrees at the
@@ -234,7 +243,7 @@ lane-yield (found/confirmed/unique/refuted): correctness 5/2/1/1 · security 0/0
 - [SEV] <location> — <claim> (resolved | unjudged (open) | punch-listed (open))   (or: - none)
 ```
 
-Every section of the report body below (Confirmed findings, both Not verified sections, Beyond remainder cap, Rejected, Unverified nits, Escalations, Prior findings) holds only `- ` items, each with optional indented continuation lines, or the single item `- none`: no prose preamble, sub-headings or bold labels inside a section. An explanatory sentence goes outside the recognized sections.
+Every section of the report body below (Confirmed findings, both Not verified sections, Beyond remainder cap, Rejected, Unverified nits, Escalations, Prior findings, and the engine-appended Out of scope (dropped — not counted)) holds only `- ` items, each with optional indented continuation lines, or the single item `- none`: no prose preamble, sub-headings or bold labels inside a section. An explanatory sentence goes outside the recognized sections.
 
 The report is written to `docs/superpowers/reviews/YYYY-MM-DD-<topic>-roast-<mode>-N.md`
 (`<mode>` = `design` or `pr`, N = iteration) by the orchestrator, after the engine returns

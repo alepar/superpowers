@@ -216,12 +216,14 @@ async function topology(variant) {
     mode: design ? 'design' : 'pr', dryRun: true, iteration: 1, reviewReadiness: { ...ready, basis: 'Synthetic topology fixture only.' },
     prompts: { stubs, dedupe: '', seats: { reproduce: '', refute: '', ground: '' }, reporter: '' },
     config: { coreLanes: names, coreLenses: names, widenLenses: ['security', 'maintainer'], remainderCap: 3 },
+    // The assembler's default scope: no stub location is out of scope, so the topology is unchanged.
+    ...(variant === 'canonical-scoped' ? { scope: { root: '/repo', exclude: ['docs/superpowers/runs/**', 'evidence/**', 'vendor/**', 'third_party/**', '**/*.log', '**/*.jsonl'], keep: ['docs/superpowers/runs/*/[0-9]*-design.md'], include: [], sources: ['defaults'] } } : {}),
   }
   const agent = async (prompt, o) => { calls.push(o); assert.equal(o.effort, 'low'); const json = prompt.split('structured output: ')[1]; return json ? JSON.parse(json) : null }
   const parallel = fns => Promise.all(fns.map(f => Promise.resolve().then(f).catch(() => null)))
   return { result: await run(args, agent, parallel, () => {}, () => {}), calls }
 }
-for (const variant of ['canonical', 'dead-reporter', 'unsettled', 'design-domain', 'design-widen']) test(`documented dryRun topology: ${variant}`, async () => {
+for (const variant of ['canonical', 'canonical-scoped', 'dead-reporter', 'unsettled', 'design-domain', 'design-widen']) test(`documented dryRun topology: ${variant}`, async () => {
   const { result, calls } = await topology(variant)
   const design = variant.startsWith('design')
   assert.equal(calls.length, design ? (variant === 'design-domain' ? 12 : 13) : variant === 'dead-reporter' ? 23 : 22)
@@ -237,7 +239,8 @@ for (const variant of ['canonical', 'dead-reporter', 'unsettled', 'design-domain
   assert.equal(result.reporterFailed, variant === 'dead-reporter')
   assert.equal(result.verdict, variant === 'dead-reporter' ? 'Blocking (5 confirmed) [low coverage]' : 'Blocking (1 confirmed)')
   assert.ok(result.reportMarkdown.startsWith(`super-roast verdict: ${result.verdict}`))
-  if (variant === 'canonical') assert.equal(result.seatAgreement, 'seat-agreement: panels 5 · rr 0.60 · rg 1.00 · fg 0.60 · unanimous 0.60 · ground-loo 1.00 (n=3) · reproduce 5/0/0 · refute 3/2/0 · ground 5/0/0')
+  if (variant === 'canonical-scoped') assert.equal(result.coverage.outOfScopeDropped, 0)
+  if (variant.startsWith('canonical')) assert.equal(result.seatAgreement, 'seat-agreement: panels 5 · rr 0.60 · rg 1.00 · fg 0.60 · unanimous 0.60 · ground-loo 1.00 (n=3) · reproduce 5/0/0 · refute 3/2/0 · ground 5/0/0')
   if (variant === 'unsettled') assert.equal(result.escalations.length, 2)
   if (design) assert.equal(calls.some(o => o.label === 'scout:security'), variant === 'design-widen')
 })

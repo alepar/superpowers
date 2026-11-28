@@ -19,6 +19,7 @@ q() { node -e "const d=JSON.parse(require('fs').readFileSync('$1','utf8')); cons
 printf 'super-roast verdict: Should-fix (1 confirmed)\nPRIOR-REPORT-MARKER\n## Confirmed findings\n- [Should-fix] c.js:1 — old\n' > "$T/prior.md"
 printf '[Should-fix] c.js:1\n\n[Nit] d.js:2; e.js:3\n' > "$T/punch.txt"
 printf 'super-roast verdict: Blocking (1 confirmed)\nPRIOR-REPORT-MARKER\n## Confirmed findings\n- [Blocking] b.js:4 — unguarded null\n' > "$T/prior-blocking.md"
+printf 'super-roast verdict: Blocking (1 confirmed)\n## Confirmed findings\n- [Blocking] build.log:1 — noisy log\n' > "$T/prior-scope.md"
 
 echo "assemble-args: shape"
 run bash "$A" --mode pr --inputs "b@1 vs m@0" --diff-stat "M a.js" --out "$T/pr1.json" --script "$T/pr1.js" \
@@ -34,6 +35,9 @@ run bash "$A" --mode pr --inputs "b@2 vs m@0" --iteration 2 --prior-report "$T/p
 run bash "$A" --mode pr --inputs "b@2 vs m@0" --iteration 2 --prior-report "$T/prior-blocking.md" --diff-stat "M b.js" --out "$T/pr2u.json" --script "$T/pr2u.js" \
   --review-readiness '{"coverage":"complete","provenance":"available","basis":"Captured b@2 vs m@0 and full changed-hunk inventory."}'
 assert_eq "$code" 0 "pr round 2 with a prior Blocking exits 0"
+run bash "$A" --mode pr --inputs "b@2 vs m@0" --iteration 2 --prior-report "$T/prior-scope.md" --diff-stat "M b.js" --out "$T/pr2s.json" --script "$T/pr2s.js" \
+  --review-readiness '{"coverage":"complete","provenance":"available","basis":"Captured b@2 vs m@0 and full changed-hunk inventory."}'
+assert_eq "$code" 0 "pr round 2 with an out-of-scope prior Blocking exits 0"
 assert_eq "$code" 0 "pr round 2 exits 0"
 assert_eq "$(q "$T/pr2.json" "d.config.coreLanes.includes('regression') && !!d.prompts.scouts.regression")" "true" "round 2 adds the regression lane"
 assert_eq "$(q "$T/pr2.json" "Object.values(d.prompts.scouts).every(p => p.includes('## Materiality bar') && !p.includes('## High recall'))")" "true" "round 2: every scout carries one policy, the materiality bar"
@@ -156,8 +160,10 @@ console.log('  [PASS] captured PR inputs survive caller advancement; independent
 NODE
 
 echo "assemble-args: excluded trees"
-# Breaks caught: run records or vendored trees in the scouts' diff or triage's stat; an excluded
-# tree dropped without a trace; the run's design spec excluded with its run records.
+# Breaks caught: run records, vendored trees, logs or linguist-generated files in the scouts' diff
+# or triage's stat without any flag; an excluded tree dropped without a trace; the run's design
+# spec excluded with its run records; the project scope file ignored; --include not honoured or
+# not recorded.
 set +e
 node --input-type=module - "$A" "$T" <<'NODE'
 import assert from 'node:assert/strict'
@@ -166,43 +172,112 @@ import { execFileSync, spawnSync } from 'node:child_process'
 const [assembler, dir] = process.argv.slice(2)
 const repo = `${dir}/excludes`
 const run = `${repo}/docs/superpowers/runs/2026-01-01-x`
-mkdirSync(`${run}/reviews/i`, { recursive: true }); mkdirSync(`${repo}/vendor/lib`, { recursive: true })
+for (const d of [`${run}/reviews/i`, `${repo}/vendor/lib`, `${repo}/gen`, `${repo}/scratch`]) mkdirSync(d, { recursive: true })
 const git = (...args) => execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8' }).trim()
 git('init', '-q'); git('config', 'user.email', 'test@example.com'); git('config', 'user.name', 'Test')
-writeFileSync(`${repo}/product.txt`, 'base\n'); git('add', '.'); git('commit', '-qm', 'base')
+writeFileSync(`${repo}/product.txt`, 'base\n')
+writeFileSync(`${repo}/.gitattributes`, '*.pb.go linguist-generated\ngen/hand.pb.go -linguist-generated\n/top.gen linguist-vendored=true\nthird_party/** -linguist-vendored\n*.sh text eol=lf\n')
+writeFileSync(`${repo}/.super-roast-scope`, '# project scope\n/scratch/\n')
+git('add', '.'); git('commit', '-qm', 'base')
 const base = git('rev-parse', 'HEAD')
 writeFileSync(`${repo}/product.txt`, 'reviewed\n')
 for (const f of ['run.md', 'reviews/i/final-review-i.md', 'findings-ledger-design.md']) writeFileSync(`${run}/${f}`, 'canary\n')
 writeFileSync(`${run}/2026-01-01-x-design.md`, 'spec\n')
 writeFileSync(`${repo}/vendor/lib/lib.go`, 'canary\n')
+writeFileSync(`${repo}/build.log`, 'canary\n'); writeFileSync(`${repo}/gen/events.jsonl`, 'canary\n')
+writeFileSync(`${repo}/gen/api.pb.go`, 'canary\n'); writeFileSync(`${repo}/gen/hand.pb.go`, 'handwritten\n')
+writeFileSync(`${repo}/scratch/notes.txt`, 'canary\n')
+writeFileSync(`${repo}/top.gen`, 'canary\n'); writeFileSync(`${repo}/sub.top.gen`, 'kept\n')
+mkdirSync(`${repo}/third_party/x`, { recursive: true }); writeFileSync(`${repo}/third_party/x/x.c`, 'canary\n')
+// The change under review tries to exempt its own code: rules come from the base commit, so it can't.
+writeFileSync(`${repo}/.super-roast-scope`, '# project scope\n/scratch/\nproduct.txt\n')
+writeFileSync(`${repo}/.gitattributes`, 'product.txt linguist-generated\n')
 git('add', '.'); git('commit', '-qm', 'reviewed')
 const head = git('rev-parse', 'HEAD')
-const flags = ['--exclude', 'docs/superpowers/runs/**', '--keep', 'docs/superpowers/runs/*/[0-9]*-design.md', '--exclude', 'evidence/**', '--exclude', 'vendor/**']
-const result = spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', 'x', '--repo', repo, '--base', base, '--head', head, ...flags], { encoding: 'utf8' })
-assert.equal(result.status, 0, result.stderr)
-const args = JSON.parse(result.stdout)
-const cmd = args.prompts.scouts.correctness.match(/all diffs use `([^`]*)`/)[1]
-const diff = execFileSync('bash', ['-c', cmd], { encoding: 'utf8' })
-assert.ok(diff.includes('product.txt') && diff.includes('2026-01-01-x-design.md'), 'the diff keeps product code and the run spec')
-assert.ok(!diff.includes('canary'), 'the diff leaves run records and the vendored tree out')
-assert.equal(diff.split('\n').filter(l => l.startsWith('diff --git')).length, 2, 'each kept path appears once')
+const assemble = (...extra) => {
+  const r = spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', 'x', '--repo', repo, '--base', base, '--head', head, ...extra], { encoding: 'utf8' })
+  assert.equal(r.status, 0, r.stderr)
+  return JSON.parse(r.stdout)
+}
+const diffOf = args => execFileSync('bash', ['-c', args.prompts.scouts.correctness.match(/all diffs use `([^`]*)`/)[1]], { encoding: 'utf8' })
+const args = assemble()
+const diff = diffOf(args)
+assert.ok(['product.txt', '2026-01-01-x-design.md', 'hand.pb.go', 'sub.top.gen', '.gitattributes', '.super-roast-scope'].every(p => diff.includes(p)), 'the diff keeps product code, the run spec, unset and unanchored linguist paths, and a head-side self-exemption')
+assert.ok(!diff.includes('canary'), 'with no flags the diff leaves run records, vendor, third_party (an unset attribute does not re-include it), logs, JSONL, linguist-set and scope-file paths out')
+assert.equal(diff.split('\n').filter(l => l.startsWith('diff --git')).length, 6, 'each kept path appears once')
 const fileCmd = args.prompts.scouts.correctness.match(/To view one file's diff, run `([^`]*)`/)[1]
 assert.ok(fileCmd.endsWith(' -- <path>'), 'the per-file form takes one path')
 const fileDiff = execFileSync('bash', ['-c', fileCmd.replace('<path>', 'product.txt')], { encoding: 'utf8' })
 assert.equal(fileDiff.split('\n').filter(l => l.startsWith('diff --git')).length, 1, 'the per-file form shows only that file')
 for (const text of [args.prompts.triage, args.prompts.scouts.correctness]) {
-  assert.ok(text.includes('excluded: docs/superpowers/runs/ (3 files changed)'), 'run records are summarized')
-  assert.ok(text.includes('excluded: vendor/ (1 files changed)'), 'the vendored tree is summarized')
+  for (const line of ['excluded: docs/superpowers/runs/ (3 files changed)', 'excluded: vendor/ (1 files changed)', 'excluded: **/*.log (1 files changed)',
+    'excluded: **/*.jsonl (1 files changed)', 'excluded: scratch/ (1 files changed)', 'excluded: third_party/ (1 files changed)',
+    'excluded: linguist-generated/vendored paths (.gitattributes) (2 files changed)'])
+    assert.ok(text.includes(line), `summary line: ${line}`)
   assert.ok(!text.includes('excluded: evidence/'), 'a tree without changes gets no line')
 }
-assert.ok(!/canary|lib\.go|run\.md/.test(args.prompts.triage), 'triage stat names no excluded path')
-const supplied = spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', 'x', '--repo', repo, '--base', base, '--head', head, '--diff-stat', 'M product.txt', ...flags], { encoding: 'utf8' })
-assert.equal(supplied.status, 0, supplied.stderr)
-assert.ok(JSON.parse(supplied.stdout).prompts.triage.includes('M product.txt\nexcluded: docs/superpowers/runs/ (3 files changed)'), 'a supplied stat gains the summary lines')
-const plain = JSON.parse(spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', 'x', '--repo', repo, '--base', base, '--head', head], { encoding: 'utf8' }).stdout)
-assert.ok(plain.prompts.triage.includes('vendor/lib/lib.go') && !plain.prompts.triage.includes('excluded:'), 'without --exclude nothing is left out')
-assert.ok(!plain.prompts.scouts.correctness.includes('To view one file'), 'without --exclude the plain diff command already takes a path')
-console.log('  [PASS] excluded globs leave the diff and stat, one summary line per changed tree; kept specs stay')
+assert.ok(!/canary|lib\.go|run\.md|build\.log|events\.jsonl|api\.pb\.go|notes\.txt|x\.c\b/.test(args.prompts.triage.replace(/Review scope:.*/s, '')), 'triage stat names no excluded path')
+assert.ok(args.prompts.scouts.correctness.includes('Review scope: a finding located only on a path matching docs/superpowers/runs/**'), 'scouts are told the engine scope rule')
+assert.ok(args.prompts.seats.refute.includes('Review scope:'), 'seats are told the engine scope rule')
+assert.deepEqual(args.scope.sources, ['defaults', '.super-roast-scope (1)', '.gitattributes linguist (2)'])
+assert.ok(['scratch/**', 'top.gen', 'gen/api.pb.go'].every(g => args.scope.exclude.includes(g)), 'scope-file directory entry, anchored and set linguist paths are excluded')
+assert.ok(!args.scope.exclude.includes('product.txt') && !args.scope.exclude.includes('sub.top.gen') && !args.scope.exclude.includes('gen/hand.pb.go'))
+assert.deepEqual(args.scope.keep, ['docs/superpowers/runs/*/[0-9]*-design.md'], 'an unset attribute adds no keep')
+assert.equal(args.scope.root, repo)
+const supplied = assemble('--diff-stat', 'M product.txt')
+assert.ok(supplied.prompts.triage.includes('M product.txt\nexcluded: docs/superpowers/runs/ (3 files changed)'), 'a supplied stat gains the summary lines')
+const opted = assemble('--include', 'vendor/**', '--include', '**/*.log')
+const optedDiff = diffOf(opted)
+assert.ok(optedDiff.includes('lib.go') && optedDiff.includes('build.log') && !optedDiff.includes('events.jsonl'), '--include brings exactly its paths back')
+assert.ok(!opted.prompts.triage.includes('excluded: vendor/') && opted.prompts.triage.includes('excluded: **/*.jsonl'), 'an included tree gets no summary line')
+assert.deepEqual(opted.scope.include, ['vendor/**', '**/*.log'], 'the opt-out is recorded for the report header')
+const vrepo = `${dir}/vendor-only`
+mkdirSync(`${vrepo}/vendor`, { recursive: true })
+const vgit = (...a) => execFileSync('git', ['-C', vrepo, ...a], { encoding: 'utf8' }).trim()
+vgit('init', '-q'); vgit('config', 'user.email', 't@example.com'); vgit('config', 'user.name', 'T')
+writeFileSync(`${vrepo}/a.txt`, 'a\n'); vgit('add', '.'); vgit('commit', '-qm', 'b')
+writeFileSync(`${vrepo}/vendor/v.go`, 'v\n'); vgit('add', '.'); vgit('commit', '-qm', 'h')
+const vonly = spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', 'x', '--repo', vrepo, '--base', 'HEAD~1', '--head', 'HEAD'], { encoding: 'utf8' })
+assert.equal(vonly.status, 0, vonly.stderr)
+assert.ok(vonly.stderr.includes('scope: every changed path is out of scope (1)'), 'a change confined to excluded trees is flagged')
+const vin = spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', 'x', '--repo', vrepo, '--base', 'HEAD~1', '--head', 'HEAD', '--include', 'vendor/**'], { encoding: 'utf8' })
+assert.ok(!vin.stderr.includes('every changed path'), 'no warning once included')
+const design = JSON.parse(spawnSync('bash', [assembler, '--mode', 'design', '--inputs', 'x', '--spec', `${run}/run.md`], { encoding: 'utf8' }).stdout)
+assert.ok(design.scope.keep.includes('docs/superpowers/runs/2026-01-01-x/run.md') && design.scope.root === repo, 'design mode keeps the spec under review in scope')
+assert.ok(design.scope.exclude.includes('scratch/**'), 'design mode reads the scope file from the working tree')
+console.log('  [PASS] default, scope-file and linguist exclusions leave the diff and stat with one summary line each; kept specs and --include paths stay')
+NODE
+rc=$?
+set -e
+[ "$rc" -eq 0 ] || FAILURES=$((FAILURES + 1))
+
+echo "assemble-args: shared review-scope defaults"
+# Break caught: super-roast and super-code's review packages drift apart on what is out of scope.
+# super-code's lists may be a subset (no logs/JSONL there); every glob they name must be a super-roast
+# default, and the run-spec keep must match exactly.
+set +e
+node --input-type=module - "$REPO_ROOT" <<'NODE'
+import assert from 'node:assert/strict'
+import { readFileSync, existsSync } from 'node:fs'
+const [root] = process.argv.slice(2)
+const src = readFileSync(`${root}/skills/super-roast/scripts/assemble-args.mjs`, 'utf8')
+const list = name => JSON.parse(src.match(new RegExp(`^const ${name} = (\\[.*\\])$`, 'm'))[1].replaceAll("'", '"'))
+const ex = list('DEFAULT_EXCLUDES'), keep = list('DEFAULT_KEEPS')
+const pairs = text => { const out = { exclude: [], keep: [] }; for (const m of text.matchAll(/'--(exclude|keep)', '([^']+)'/g)) out[m[1]].push(m[2]); return out }
+const coord = pairs(readFileSync(`${root}/skills/super-code/coordinator.js`, 'utf8').match(/^ *const scope = \['--exclude'.*$/m)[0])
+const pkgPath = `${root}/skills/super-code/scripts/review-package`
+const consumers = { 'coordinator.js': coord }
+if (existsSync(pkgPath)) {
+  const pkg = readFileSync(pkgPath, 'utf8')
+  const arr = name => [...(pkg.match(new RegExp(`^${name}=\\(([^)]*)\\)`, 'm'))?.[1] ?? '').matchAll(/'([^']+)'/g)].map(m => m[1])
+  consumers['review-package'] = { exclude: arr('excludes'), keep: arr('keeps') }
+}
+for (const [name, c] of Object.entries(consumers)) {
+  assert.ok(c.exclude.length >= 4, `${name}: exclusion list found`)
+  for (const g of c.exclude) assert.ok(ex.includes(g), `${name} excludes ${g}, which is not a super-roast default`)
+  assert.deepEqual(c.keep, keep, `${name} keeps`)
+}
+console.log(`  [PASS] review-scope defaults agree: super-roast and ${Object.keys(consumers).join(', ')}`)
 NODE
 rc=$?
 set -e
@@ -319,7 +394,7 @@ assert_eq "$code" 4 "missing node exits 4"
 assert_eq "$(printf '%s' "$out" | cut -c1-17)" "NODE_UNAVAILABLE:" "missing node prints the manual-assembly line"
 
 echo "engine run of the assembled script (mock agents)"
-for s in pr-r1:pr1 pr-r1-yield:pr1 pr-r1-preexisting:pr1 pr-r1-preexisting-fallback:pr1 pr-r2:pr2 pr-r2-empty:pr2 pr-r2-unjudged:pr2u pr-r2-unjudged-misformat:pr2u pr-r2-unjudged-held:pr2u design-r1:d1; do
+for s in pr-r1:pr1 pr-r1-yield:pr1 pr-r1-preexisting:pr1 pr-r1-preexisting-fallback:pr1 pr-r2:pr2 pr-r2-empty:pr2 pr-r2-unjudged:pr2u pr-r2-unjudged-misformat:pr2u pr-r2-unjudged-held:pr2u pr-r1-scope:pr1 pr-r1-scope-fallback:pr1 pr-r2-scope-prior:pr2s design-r1:d1; do
   set +e; node "$SCRIPT_DIR/engine-mock.mjs" "$T/${s#*:}.js" "${s%%:*}"; rc=$?; set -e
   [ "$rc" -eq 0 ] || FAILURES=$((FAILURES + 1))
 done

@@ -1,12 +1,18 @@
 // assemble-args.mjs — build super-roast's engine `args` from this skill's own prompt files.
 // Invoked through ./assemble-args (bash wrapper, checks for node). Usage: --help.
 // Exit codes: 0 ok, 2 bad input, 3 prompt-file drift (a block or marker the assembly expects is missing).
-import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync, realpathSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const SKILL = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+// Review-scope defaults: run records (a run's dated *-design.md specs are stated intent and stay
+// in), evidence, vendored trees, logs and JSONL streams. The first four excludes and the keep match
+// super-code's task and final review packages; tests/super-roast/test-assemble-args.sh checks that.
+const DEFAULT_EXCLUDES = ['docs/superpowers/runs/**', 'evidence/**', 'vendor/**', 'third_party/**', '**/*.log', '**/*.jsonl']
+const DEFAULT_KEEPS = ['docs/superpowers/runs/*/[0-9]*-design.md']
+const SCOPE_FILE = '.super-roast-scope'
 const USAGE = `usage: assemble-args --mode pr|design --inputs <header inputs> [options]
 
   --iteration <N|post-cap audit>  round number (default 1); rounds >= 2 require --prior-report
@@ -22,12 +28,19 @@ const USAGE = `usage: assemble-args --mode pr|design --inputs <header inputs> [o
                                   PR mode: captures verified commits for diff/source commands
                                   and computes triage's stat
   --diff-stat <text|@file>        PR mode: triage input instead of computing it with git
-  --exclude <glob>                PR mode, repeatable: a repo-root-relative glob (git pathspec
-                                  :(top,exclude,glob)) left out of the diff command and the
-                                  computed stat; with --repo, each glob that matched changes adds
-                                  one \`excluded: <tree>/ (N files changed)\` line instead
-  --keep <glob>                   PR mode, repeatable: a path matching it stays in review even
-                                  when an --exclude glob matches it
+  --exclude <glob>                repeatable: a repo-root-relative glob (git pathspec
+                                  :(top,exclude,glob)) added to the review-scope exclusions
+  --include <glob>                repeatable: opt a path back into review scope although an
+                                  exclusion matches it; recorded in the report's scope: line
+  --keep <glob>                   repeatable: same effect as --include, for callers' fixed keeps
+
+  Review scope. Always out of scope: ${DEFAULT_EXCLUDES.join(', ')}
+  (kept: ${DEFAULT_KEEPS.join(', ')}); with --repo, also the
+  base commit's ${SCOPE_FILE} globs (one per line, # comments) and the changed paths
+  its .gitattributes sets linguist-generated or linguist-vendored. In design mode the --spec path stays in
+  scope. PR mode with --repo leaves excluded paths out of the diff command and the computed
+  stat; each exclusion that matched changes adds one \`excluded: <tree>/ (N files changed)\`
+  line instead. In both modes the engine drops any finding located only on out-of-scope paths.
   --artifact <text>               PR mode: how scouts/judges name the change (default: --inputs)
   --independence <text>           independence label (default: derived from config.models.judge,
                                   ending \` · rung: Workflow\` with --script, else
@@ -45,7 +58,7 @@ const drift = msg => die(3, `prompt-file drift: ${msg}`)
 
 // ---- argv ----
 const opt = {}
-const excludes = [], keeps = []
+const excludes = [...DEFAULT_EXCLUDES], keeps = [...DEFAULT_KEEPS], includes = []
 const argv = process.argv.slice(2)
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i]
@@ -54,6 +67,7 @@ for (let i = 0; i < argv.length; i++) {
   if (!a.startsWith('--') || i + 1 >= argv.length) die(2, `bad argument '${a}'\n${USAGE}`)
   if (a === '--exclude') { excludes.push(argv[++i]); continue }
   if (a === '--keep') { keeps.push(argv[++i]); continue }
+  if (a === '--include') { includes.push(argv[++i]); continue }
   opt[a.slice(2).replace(/-([a-z])/g, (_, c) => c.toUpperCase())] = argv[++i]
 }
 const known = ['mode','inputs','iteration','priorReport','punchListed','profile','spec','context','repo','base','head','diffStat','artifact','independence','reviewReadiness','config','seatsSafe','reportDir','topic','date','out','script']
@@ -153,36 +167,93 @@ if (mode === 'pr' && (opt.repo || opt.base || opt.head)) {
     source = { repo: resolve(opt.repo), base: commit(opt.base), head: commit(opt.head) }
   } catch (e) { die(2, `cannot resolve PR source commits: ${e.message.split('\n')[0]}`) }
 }
-// Out-of-scope globs: the diff covers the tree minus every --exclude and --keep glob, then the
-// --keep globs on their own, so a kept path appears once whether or not an exclude matched it.
-const scope = excludes.length ? [':(top)', ...[...excludes, ...keeps].map(g => `:(top,exclude,glob)${g}`)] : []
-const keepScope = excludes.length ? keeps.map(g => `:(top,glob)${g}`) : []
+// ---- review scope: defaults, flags, the project's scope file and linguist attributes ----
+const globEscape = p => p.replace(/[*?[\\]/g, '\\$&')
+// The repository the scope rules are relative to: the captured PR source, or the spec's own
+// repository in design mode. Project files come from the BASE commit, so the change under review
+// cannot widen its own exclusions; in design mode, from the spec's working tree.
+let scopeRoot = source?.repo ?? null
+if (!scopeRoot && mode === 'design') {
+  try { scopeRoot = realpathSync(execFileSync('git', ['-C', dirname(realpathSync(opt.spec)), 'rev-parse', '--show-toplevel'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim()) } catch { scopeRoot = null }
+}
+const projectFile = name => {
+  try {
+    if (source) return execFileSync('git', ['-C', source.repo, 'show', `${source.base}:${name}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
+    if (scopeRoot && existsSync(join(scopeRoot, name))) return readFileSync(join(scopeRoot, name), 'utf8')
+  } catch { /* absent at base */ }
+  return ''
+}
+const scopeSources = ['defaults']
+// Scope-file lines are git glob pathspecs from the repository top; a leading `/` is dropped and a
+// trailing `/` means the whole directory.
+{
+  const lines = projectFile(SCOPE_FILE).split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#'))
+    .map(l => l.replace(/^\/+/, '').replace(/\/$/, '/**')).filter(Boolean)
+  excludes.push(...lines)
+  if (lines.length) scopeSources.push(`${SCOPE_FILE} (${lines.length})`)
+}
+// linguist-generated / linguist-vendored, resolved by git itself (patterns, macros, last match
+// wins) against the base commit's attributes, for the changed paths: each set path is excluded.
+const linguistPaths = (() => {
+  if (!source) return []
+  try {
+    const changed = execFileSync('git', ['-C', source.repo, 'diff', '--name-only', '-z', `${source.base}...${source.head}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).split('\0').filter(Boolean)
+    if (!changed.length) return []
+    const out = execFileSync('git', ['-C', source.repo, 'check-attr', '-z', '--source', source.base, '--stdin', 'linguist-generated', 'linguist-vendored'], { input: changed.join('\0') + '\0', encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }).split('\0')
+    const set = new Set()
+    for (let i = 0; i + 2 < out.length; i += 3) if (out[i + 2] === 'set' || out[i + 2] === 'true') set.add(out[i])
+    return [...set]
+  } catch (e) { die(2, `git check-attr failed: ${e.message.split('\n')[0]}`) }
+})()
+const LINGUIST_LABEL = 'linguist-generated/vendored paths (.gitattributes)'
+const linguistGlobs = new Set(linguistPaths.map(globEscape))
+excludes.push(...linguistGlobs)
+if (linguistPaths.length) scopeSources.push(`.gitattributes linguist (${linguistPaths.length})`)
+if (mode === 'design' && opt.spec) {
+  let abs = resolve(opt.spec)
+  try { abs = realpathSync(abs) } catch { /* missing spec: keep as given */ }
+  keeps.push(globEscape(scopeRoot && abs.startsWith(scopeRoot + '/') ? abs.slice(scopeRoot.length + 1) : opt.spec))
+}
+keeps.push(...includes)
+const uniqList = xs => [...new Set(xs)]
+const scopeArgs = { root: scopeRoot, exclude: uniqList(excludes), keep: uniqList(keeps), include: uniqList(includes), sources: scopeSources }
+// The diff covers the tree minus every exclude and keep glob, then the keep globs on their own,
+// so a kept path appears once whether or not an exclude matched it.
+const scope = [':(top)', ...[...scopeArgs.exclude, ...scopeArgs.keep].map(g => `:(top,exclude,glob)${g}`)]
+const keepScope = scopeArgs.keep.map(g => `:(top,glob)${g}`)
 const diffOf = spec => `git -C ${shell(source.repo)} diff ${source.base}...${source.head}${spec.length ? ' -- ' + spec.map(shell).join(' ') : ''}`
 const diffCmd = source ? diffOf(scope) + (keepScope.length ? ' && ' + diffOf(keepScope) : '') : null
 const gitLines = (...args) => execFileSync('git', ['-C', opt.repo, ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim()
 // One line per excluded tree that had changes, so reviewers know it exists.
 function excludedLines() {
-  if (!source || !excludes.length) return []
+  if (!source) return []
   const range = `${source.base}...${source.head}`
   const names = g => gitLines('diff', '--name-only', range, '--', g).split('\n').filter(Boolean)
   try {
-    const kept = new Set(keeps.flatMap(g => names(`:(top,glob)${g}`))), taken = new Set(), lines = []
-    for (const g of excludes) {
+    const kept = new Set(scopeArgs.keep.flatMap(g => names(`:(top,glob)${g}`))), taken = new Set(), lines = []
+    const counts = new Map()
+    for (const g of scopeArgs.exclude) {
       const files = names(`:(top,glob)${g}`).filter(p => !kept.has(p) && !taken.has(p))
       files.forEach(p => taken.add(p))
-      const tree = g.endsWith('/**') && !/[*?[]/.test(g.slice(0, -3)) ? g.slice(0, -2) : g
-      if (files.length) lines.push(`excluded: ${tree} (${files.length} files changed)`)
+      const tree = linguistGlobs.has(g) ? LINGUIST_LABEL : g.endsWith('/**') && !/[*?[]/.test(g.slice(0, -3)) ? g.slice(0, -2) : g
+      if (files.length) counts.set(tree, (counts.get(tree) ?? 0) + files.length)
     }
+    const all = names(':(top)')
+    if (all.length && all.every(p => taken.has(p)))
+      process.stderr.write(`assemble-args: scope: every changed path is out of scope (${all.length}); if the change under review is itself in an excluded tree, re-run with --include '<glob>'\n`)
+    for (const [tree, n] of counts) lines.push(`excluded: ${tree} (${n} files changed)`)
     return lines
   } catch (e) { die(2, `git diff failed: ${e.message.split('\n')[0]}`) }
 }
 const excluded = excludedLines()
 const excludedNote = excluded.length ? `\nOut of review scope (not in the diff; review no finding there): ${excluded.join('; ')}.` : ''
-const sourceInput = source
+// Every PR scout and seat sees the rule the engine enforces, so no effort goes to a finding it drops.
+const scopeRule = `\nReview scope: a finding located only on a path matching ${scopeArgs.exclude.join(', ')} (unless it also matches ${scopeArgs.keep.join(', ')}) is out of scope and the engine drops it.`
+const sourceInput = (source
   ? `Captured source: base ${source.base}, head ${source.head}. Read source with \`git -C ${shell(source.repo)} show ${source.head}:<path>\`; all diffs use \`${diffCmd}\`.`
-  + (scope.length ? ` To view one file's diff, run \`git -C ${shell(source.repo)} diff ${source.base}...${source.head} -- <path>\` instead (a path appended to the command above still shows the whole diff).` : '')
+  + ` To view one file's diff, run \`git -C ${shell(source.repo)} diff ${source.base}...${source.head} -- <path>\` instead (a path appended to the command above still shows the whole diff).`
   + excludedNote
-  : 'The caller supplied patch data without a repository source pair. Review that data; obtain captured base/head commit identities before opening repository source or running a reproduction.'
+  : 'The caller supplied patch data without a repository source pair. Review that data; obtain captured base/head commit identities before opening repository source or running a reproduction.') + scopeRule
 const artifact = opt.artifact ?? opt.inputs
 function triageInput() {
   if (mode === 'design') return `Spec file: ${opt.spec} — read it.`
@@ -335,7 +406,7 @@ const priorReport = opt.priorReport ? readFileSync(opt.priorReport, 'utf8') : ''
 const args = {
   mode, profile: opt.profile ?? 'not supplied by the caller — infer it from the repository and state it',
   inputs: opt.inputs, iteration: numbered ? Number(iteration) : iteration,
-  priorReport, punchListed, independence, prompts, config, reviewReadiness,
+  priorReport, punchListed, independence, prompts, config, reviewReadiness, scope: scopeArgs,
   ...(source ? { source } : {}),
 }
 const json = JSON.stringify(args, null, 2)
