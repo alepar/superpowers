@@ -38,6 +38,10 @@ contract, and scope — not against an imagined stricter system.** A behavior th
 accepts as a tradeoff (with or without mitigation) is not a gap; a demand for guarantees
 or scale the spec explicitly bounds away is not a gap. Do not rubber-stamp, and do not
 reject reflexively — judge on the merits.
+For a finding about text with a format (escaping, splitting, ids, path spellings, parsing),
+the breaking input is reachable when it can come from model output, user data, file names or
+paths: do not reject it as theoretical. Reject it when that input cannot occur, for example
+when a type or constructor already excludes it and the finding shows no path around that.
 
 ## Spec
 [SPEC_FILE_PATH — read the whole spec, not just the cited section]

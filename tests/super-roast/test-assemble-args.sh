@@ -24,8 +24,8 @@ run bash "$A" --mode pr --inputs "b@1 vs m@0" --diff-stat "M a.js" --out "$T/pr1
   --report-dir docs/superpowers/reviews --topic demo --date 2026-10-01
 assert_eq "$code" 0 "pr round 1 exits 0"
 assert_eq "$(printf '%s\n' "$out" | grep '^report:')" "report: docs/superpowers/reviews/2026-10-01-demo-roast-pr-1.md" "report path carries mode and round"
-assert_eq "$(q "$T/pr1.json" "d.config.coreLanes.join(',')")" "correctness,security,premortem,simplicity-design,hot-path-perf,concurrency-async" "pr core lanes from triage-prompt.md"
-assert_eq "$(q "$T/pr1.json" "Object.keys(d.prompts.scouts).length")" "16" "pr round 1: 16 lane prompts, no regression"
+assert_eq "$(q "$T/pr1.json" "d.config.coreLanes.join(',')")" "correctness,security,premortem,simplicity-design,hot-path-perf,concurrency-async,text-formats" "pr core lanes from triage-prompt.md"
+assert_eq "$(q "$T/pr1.json" "Object.keys(d.prompts.scouts).length")" "17" "pr round 1: 17 lane prompts, no regression"
 assert_eq "$(q "$T/pr1.json" "d.priorReport === '' && d.iteration === 1")" "true" "round 1: empty prior report, numeric iteration"
 assert_eq "$(q "$T/pr1.json" "d.prompts.seatsSafe === undefined")" "true" "seatsSafe only on request"
 

@@ -92,12 +92,12 @@ if (scenario === 'pr-r1') {
     for (const l of lines) assert.ok(l.endsWith('[lanes: correctness, premortem]'), l)
   })
   check('lane-yield header line and coverage.laneYield', () => {
-    assert.ok(r.reportMarkdown.split('\n').includes('lane-yield (found/confirmed/unique/refuted): correctness 1/1/1/0 · security 0/0/0/0 · premortem 1/1/1/0 · simplicity-design 0/0/0/0 · hot-path-perf 0/0/0/0 · concurrency-async 0/0/0/0 · testing 0/0/0/0'))
+    assert.ok(r.reportMarkdown.split('\n').includes('lane-yield (found/confirmed/unique/refuted): correctness 1/1/1/0 · security 0/0/0/0 · premortem 1/1/1/0 · simplicity-design 0/0/0/0 · hot-path-perf 0/0/0/0 · concurrency-async 0/0/0/0 · text-formats 0/0/0/0 · testing 0/0/0/0'))
     assert.deepEqual(r.coverage.laneYield.premortem, { found: 1, confirmed: 1, unique: 1, refuted: 0 })
   })
 }
 if (scenario === 'pr-r1-yield') {
-  check('agent count unchanged: 7 scouts + triage + dedupe + 2 panels + 2 reporter tries', () => assert.equal(seen.length, 1 + 7 + 1 + 6 + 2))
+  check('agent count unchanged: 8 scouts + triage + dedupe + 2 panels + 2 reporter tries', () => assert.equal(seen.length, 1 + 8 + 1 + 6 + 2))
   check('merged finding: shared lanes count confirmed, not unique; dead scout and refuted lane shown', () => {
     assert.deepEqual(r.coverage.laneYield.correctness, { found: 1, confirmed: 1, unique: 0, refuted: 0 })
     assert.deepEqual(r.coverage.laneYield.testing, { found: 1, confirmed: 0, unique: 0, refuted: 1 })

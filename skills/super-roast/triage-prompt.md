@@ -30,9 +30,9 @@ assumptions most apply. These pick the domain-expert scouts.
 
 ## PR mode: activate conditional lanes
 Core lanes (`correctness`, `security`, `premortem`, `simplicity-design`, `hot-path-perf`,
-`concurrency-async`) always run and are supplied by config — they are not your concern. Given
-the diff's file list and stat summary, decide which of the following conditional lanes to
-activate:
+`concurrency-async`, `text-formats`) always run and are supplied by config — they are not your
+concern. Given the diff's file list and stat summary, decide which of the following conditional
+lanes to activate:
 - `data-migrations` — schema/migration files touched, or model/entity changes.
 - `deploy-safety` — CI/deploy/infra files touched, or a behavior change gated by a flag.
 - `api-contract` — exported/public API surface changed, or a wire format (request/response,

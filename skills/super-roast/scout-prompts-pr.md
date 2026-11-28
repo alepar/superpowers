@@ -3,7 +3,7 @@
 Sourced from the vendored taxonomy at `docs/superpowers/specs/references/pr-review-taxonomy.md`,
 condensed to a scout's checklist rather than a literature review. Scouts surface findings, they
 do not rate them: no scout assigns severity — the dedup-and-rank role suggests it, judges rate
-it provisionally, and the reporter makes the final call. **Model: opus.** One scout per lane (6
+it provisionally, and the reporter makes the final call. **Model: opus.** One scout per lane (7
 core lanes always run; the conditional lanes activated by triage from the remaining 10 join them).
 The scout works in isolated context with diff + repo access, and never authored the PR.
 
@@ -407,6 +407,52 @@ would do, a full mutex on a contended path) when they sit on a hot or genuinely 
 on a rarely-contended path is usually fine as-is — you may report it, and if you do, put why
 contention is low in `evidence`. In single-threaded/non-async code,
 route by language/runtime — don't invent a race that can't occur.
+```
+
+## Lane: text-formats
+
+```
+**Scope:** Text that carries structure: ids, keys, labels, paths, command lines, URLs, queries,
+templates, markup, one-line lists and records, and the output a program or model writes for
+another program to read. Wherever the change builds or reads such text, name its producer and
+every parser or sink, then look for content that makes them disagree. The producer need not be
+an attacker: the program's own data, file names, user input and model output all count.
+
+**Hunt list:**
+1. Ad hoc framing: structure encoded with separators or positions that the content can contain
+   (`tags.join(",")` then `split(",")`, with a tag `a,b`; one record per line, with a value that
+   holds a newline).
+2. Unneutralized embedding: text placed into another grammar (shell, path, SQL, HTML or
+   Markdown, regex, template, label, identifier) without that grammar's encoding or a
+   structured API, including a value read as a template placeholder or a flag
+   (`"git checkout " + branch` run through a shell, with branch `--detach; id`; `parent + "[" + key + "]"`
+   with a key holding `]`).
+3. Unstable derived identifier: a key computed from prose (a title, message, location) that
+   another party must reproduce exactly (`slug(title)` as a lookup key after the title is
+   edited; a hash of a sentence that a rewording changes).
+4. Non-canonical comparison: one value in two spellings compared without normalising both sides
+   (`path.startswith(root)` against `../`, a symlink or a relative path; short vs full hash;
+   NFC vs NFD; case; CRLF; ANSI codes).
+5. Format drift: one format written or read in more than one place, language or document, and
+   they disagree, including a prompt or spec that describes an output differently from the
+   schema or parser that reads it, or a free-string field where a type is meant (the prompt asks
+   for a comma-separated list, the parser wants a JSON array; Go and Python readers of one file
+   disagree on duplicate keys).
+6. Conflated or permissive absence: missing, empty and malformed handled alike, or malformed
+   input turned into a default (`except JSONDecodeError: return []`, so a corrupt state file
+   reads as "no tasks").
+7. Shotgun or misordered validation: checks scattered through processing, run after side
+   effects, run before canonicalising, or blaming the wrong party (half a batch written before
+   the bad record is rejected; a path checked, then resolved; a correct answer rejected because
+   the request sent to its producer was built wrong).
+8. Deciding from text meant for people: matching a log line, terminal screen, rendered
+   Markdown, error message or another tool's private files, or a typed outcome flattened to a
+   string (`if "not found" in str(err)`; parsing `git status` without `--porcelain`).
+
+**Report:** for each lead, put in the evidence the producer, the parser or sink, a concrete
+input that breaks it, where that input can come from, and what goes wrong. When no realistic
+producer can emit the input (a constant, a closed enum, a value already built by a validating
+constructor or passed through a structured API), say so: that is hardening, not a defect.
 ```
 
 ## Lane: data-migrations

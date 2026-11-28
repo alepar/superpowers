@@ -151,6 +151,13 @@ not assign severity at all; leave it out entirely.
 ```
 Missing requirements, undefined interfaces, missing non-functional requirements, unhandled
 error/edge cases, integration points not covered.
+
+Text formats: a design that introduces a text format, id scheme or line protocol (a key built
+from fields, a list on one line, a marker in Markdown, an id derived from a title) without
+naming its one producer, its one parser and what its fields may contain is a gap. So is a design
+that decides from text meant for people (screens, logs, rendered Markdown, another tool's
+private files), or that compares one value in two spellings (relative vs absolute path, short vs
+full hash). Name the content that would break it.
 ```
 
 ## Lens: yagni
