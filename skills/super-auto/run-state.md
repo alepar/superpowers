@@ -141,6 +141,8 @@ The schema home for `run.md`: every field's name and line format. The numbered i
 
 7. **Design decisions** — each made once, by the human or by the run per `super-design` §Gates by Mode; a resume replays a recorded decision instead of re-making it.
 
+   Every `- <type> · …` record in the `approvals:` block, here and in the sections below, is written with `bash <super-auto skill dir>/scripts/report-status --append RUN_MD '<record line>'`, which inserts it at the end of the block. Never append one to the end of the file by hand: a record after a later key (`graph-pass:`, `roastDesignExit:`, …) belongs to that key, and collection and acceptance reject it as outside approvals. When `--append` prints `APPEND_REFUSED:`, or `report-status --placement RUN_MD` prints `MISPLACED:`, a record is outside its block; move it into `approvals:` before the next write.
+
    An approval is bound to what it approved, and a record that cannot be checked is not an approval. Record enough to tell whether the thing changed:
 
    - `top-split · human | auto` — the child ids and their `LEAF`/`PROMOTE` verdicts,

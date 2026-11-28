@@ -702,4 +702,86 @@ else
   fail "collection-dependent archive/projection/status assertions unmeasured"
 fi
 
+echo "report-status --placement / --append"
+mkdir -p "$T/place"
+cat > "$T/place/clean.md" <<'R'
+# super-auto run — x
+
+idea: three outputs
+- win rate
+- draw rate
+phase: code
+
+approvals:
+- run-mode · user · "go"
+- top-split · human · x.1 LEAF
+
+roastDesignRound: 2
+roast-design:
+- x-roast-design-1.md
+graph-pass: depth 6→6 · applied 0
+R
+run bash "$RS" --placement "$T/place/clean.md"
+assert_eq "$code" 0 "placement accepts records in their blocks and bullets in the verbatim idea"
+assert_eq "$out" 'placement: ok' "placement prints ok"
+
+# The 2026-11-26 run's shape: records appended by hand after the graph-pass scalar.
+cp "$T/place/clean.md" "$T/place/scalar.md"
+printf '%s\n' '- design-review · approved' '- review-collection · {"invocationId":"inv-a"}' >> "$T/place/scalar.md"
+run bash "$RS" --placement "$T/place/scalar.md"
+assert_eq "$code" 2 "placement fails a record after a later scalar key"
+assert_has "$(cat "$T/err")" 'scalar.md:16: `- design-review` falls under `graph-pass:` (line 15), not approvals:' "placement names the record line and the key it falls under"
+assert_has "$(cat "$T/err")" 'scalar.md:17: `- review-collection`' "placement reports every misplaced record"
+
+cp "$T/place/clean.md" "$T/place/list.md"
+sed -i 's/^graph-pass:.*$//' "$T/place/list.md"
+printf '%s\n' '- finding-route · {"ref":"r","owner":"x"}' >> "$T/place/list.md"
+run bash "$RS" --placement "$T/place/list.md"
+assert_eq "$code" 2 "placement fails an approvals record under another list block"
+assert_has "$(cat "$T/err")" '`- finding-route` falls under `roast-design:` (line 13)' "placement names the block that holds it"
+
+printf '%s\n' 'idea: two parts' 'Requirements: fast' '- one' 'phase: code' 'approvals:' '- run-mode · user · "go"' > "$T/place/idea.md"
+run bash "$RS" --placement "$T/place/idea.md"
+assert_eq "$code" 0 "placement ignores non-record bullets, even after a Key: line in the verbatim idea"
+
+printf '%s\n' 'phase: code' 'approvals:  ' '- top-split · human · x.1 LEAF' > "$T/place/ws.md"
+run bash "$RS" --placement "$T/place/ws.md"
+assert_eq "$code" 2 "placement fails a record whose block line is not exactly approvals:, as the readers do"
+
+cp "$T/place/clean.md" "$T/place/append.md"
+run bash "$RS" --append "$T/place/append.md" '- design-review · approved'
+assert_eq "$code" 0 "append writes a record into a clean run.md"
+assert_eq "$(sed -n 10,12p "$T/place/append.md")" '- top-split · human · x.1 LEAF
+- design-review · approved' "append inserts after the block's last record"
+assert_eq "$(sed -n 12p "$T/place/append.md")" '' "append keeps the blank line before later keys"
+assert_eq "$(sed 11d "$T/place/append.md")" "$(cat "$T/place/clean.md")" "append changes nothing else"
+run bash "$RS" --placement "$T/place/append.md"
+assert_eq "$code" 0 "appended run.md passes placement"
+
+cp "$T/place/scalar.md" "$T/place/refused.md"
+run bash "$RS" --append "$T/place/refused.md" '- decision · orchestrator · x'
+assert_eq "$code" 2 "append refuses a run.md that already has misplaced records"
+assert_has "$(cat "$T/err")" 'APPEND_REFUSED' "append names the refusal"
+assert_eq "$(cat "$T/place/refused.md")" "$(cat "$T/place/scalar.md")" "refused append leaves run.md unchanged"
+
+printf 'phase: design\nspec: s.md\n' > "$T/place/noblock.md"
+run bash "$RS" --append "$T/place/noblock.md" '- run-mode · user · "go"'
+assert_eq "$code" 0 "append adds a missing approvals block"
+assert_eq "$(cat "$T/place/noblock.md")" 'phase: design
+spec: s.md
+approvals:
+- run-mode · user · "go"' "missing block is added at the end with the record"
+
+printf 'phase: design\napprovals:\nspec: s.md' > "$T/place/empty.md"
+run bash "$RS" --append "$T/place/empty.md" '- run-mode · user · "go"'
+assert_eq "$(cat "$T/place/empty.md")" 'phase: design
+approvals:
+- run-mode · user · "go"
+spec: s.md' "append fills an empty block in a file without a final newline"
+
+for bad in 'design-review · approved' '- design-review approved' $'- decision · a\n- decision · b'; do
+  run bash "$RS" --append "$T/place/clean.md" "$bad"
+  assert_eq "$code" 2 "append rejects a malformed record: ${bad%%$'\n'*}"
+done
+
 if [ "$FAILURES" -eq 0 ]; then echo "All super-auto script tests passed"; else echo "$FAILURES failure(s)"; exit 1; fi

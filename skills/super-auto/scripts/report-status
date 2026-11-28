@@ -64,7 +64,62 @@
 # Additive finding/collection records use Node for the shared projection; unavailability
 # is an explicit qualifier. --collect is the settled-bundle write mode (usage below):
 # exit 0 preserved, 3 evidence gaps, 2 bad input, 4 Node unavailable.
+#
+#   report-status --placement RUN_MD
+#   report-status --append RUN_MD '- <type> · <body>'
+#
+# --placement checks the approvals record types the skills write (run-mode, top-split,
+# design-review, decision, coverage-round-N, coverage-amend-<loop>-N, review-collection,
+# finding-*, source-correspondence, root-acceptance): the readers attribute each line to the
+# last top-level key line above it and accept a record only when that line is exactly
+# `approvals:`, so a record appended after a later key (`graph-pass: ...`) is otherwise found
+# only when collection or acceptance rejects it. One MISPLACED: RUN_MD:<line>: <reason> line on
+# stderr per misplaced record. Other `- ` lines (pointer lists, parked items, verbatim idea
+# text) are not checked. Exit 0 ok, 2 misplaced or bad input. --append inserts one record after
+# the last line of the `approvals:` block (adding the block at the end when absent), refusing
+# with APPEND_REFUSED: a RUN_MD that already fails --placement, then re-checks placement.
+# Exit 0 written, 2 refused or bad input. Both need only Bash and awk.
 set -euo pipefail
+
+placement_check() {
+  awk -v file="$1" '
+    function bad(reason) { printf "MISPLACED: %s:%d: %s\n", file, NR, reason > "/dev/stderr"; n++ }
+    /^[A-Za-z][A-Za-z0-9-]*:/ { owner = $0; key = $0; sub(/:.*/, ":", key); ownerLine = NR; next }
+    /^- (run-mode|top-split|design-review|decision|coverage-(round|amend-(code|design))-[0-9]+|review-collection|finding-(source|route|link|disposition)|source-correspondence|root-acceptance) · / {
+      if (owner == "approvals:") next
+      type = substr($0, 3); sub(/ · .*/, "", type)
+      if (owner == "") bad("`- " type "` comes before any key; approvals records belong in the approvals: block")
+      else bad("`- " type "` falls under `" key "` (line " ownerLine "), not approvals:")
+    }
+    END { exit n ? 2 : 0 }
+  ' "$1"
+}
+
+if [ "${1:-}" = --placement ]; then
+  [ "$#" -eq 2 ] && [ -f "$2" ] || { echo 'usage: report-status --placement RUN_MD' >&2; exit 2; }
+  placement_check "$2" || exit 2
+  echo 'placement: ok'
+  exit 0
+fi
+
+if [ "${1:-}" = --append ]; then
+  usage='usage: report-status --append RUN_MD '"'"'- <type> · <body>'"'"
+  [ "$#" -eq 3 ] && [ -f "$2" ] || { echo "$usage" >&2; exit 2; }
+  case "$3" in *$'\n'*|*$'\r'*) echo "$usage (one line)" >&2; exit 2 ;; esac
+  printf '%s\n' "$3" | grep -Eq '^- [A-Za-z][A-Za-z0-9-]* · .*[^ ]' || { echo "$usage" >&2; exit 2; }
+  placement_check "$2" || { echo 'APPEND_REFUSED: RUN_MD already has misplaced records; move them into their blocks first' >&2; exit 2; }
+  pending="$2.append-tmp-$$"
+  awk -v rec="$3" '
+    /^[A-Za-z][A-Za-z0-9-]*:/ { inBlock = ($0 == "approvals:"); if (inBlock) found = 1 }
+    { lines[NR] = $0; if (inBlock && $0 ~ /[^ \t]/) last = NR }
+    END {
+      for (i = 1; i <= NR; i++) { print lines[i]; if (i == last) print rec }
+      if (!found) { print "approvals:"; print rec }
+    }
+  ' "$2" > "$pending" && mv "$pending" "$2" || { rm -f "$pending"; exit 2; }
+  placement_check "$2" || exit 2
+  exit 0
+fi
 
 # This is a read-only root-close gate. Requirements and producer facts live in the
 # existing approvals block; neither completed leaves nor the latest verdict supplies them.
