@@ -379,7 +379,8 @@ const TRIAGE  = { type: 'object', properties: { decision: {type:'string', enum: 
 // `Merge:` line. `ledgerAppended`: the agent wrote its success-path ledger lines itself.
 // `alreadyMerged`: the task had landed before this merge began; nothing was merged.
 // `notes`: each edit the conflict resolution made outside the conflicted hunks and each test it
-// changed, with why; the seam review reads it.
+// changed, with why; the seam review reads it, and any attempt's notes no seam review read go on a
+// `Merge-notes:` ledger line.
 const MERGE   = { type: 'object', properties: { notes:{type:'string'}, id:{type:'string'}, merged:{type:'boolean'}, blockerBead:{type:'string'}, head:{type:'string'}, mergeBase:{type:'string'}, authRefused:{type:'string'}, seamOverlap:{ type:'array', items:{type:'string'} }, rebaseConflictFiles:{type:'number'}, check:{type:'string', enum:['pass','fail','aborted','none']}, checkOutput:{type:'string'}, mergeExit:{type:'number'}, mergeHead:{type:'boolean'}, dirty:{ type:'array', items:{type:'string'} }, detachedHead:{type:'string'}, removedIdentical:{ type:'array', items:{type:'string'} }, ledgerAppended:{type:'boolean'}, cleanup:{ type:'array', items:{type:'string'} }, alreadyMerged:{type:'boolean'} }, required: ['id','merged'] }
 // Edge-audit return shape (edgeAuditPrompt): openLeaves and depth from scripts/tree-shape;
 // `changes` use super-design's graph-pass vocabulary, each judged safe or not. Only
@@ -1245,6 +1246,18 @@ while (true) {
     // `seamOutcome` feeds the `Merge:` ledger line's `seam-review` field — `none` unless the seam
     // branch below runs, `cleared` if the scoped review came back CLEAN, `fixed` if its one fix ran.
     let seamOutcome = 'none'
+    // Merge-agent notes (edits outside the conflicted hunks, changed tests) that no seam review read:
+    // the attempt that stops for the seam review hands its notes to that review; every other attempt
+    // (a first merge with no overlap, the seam-cleared, check-retry and check-fixed re-dispatches,
+    // whose re-rebase can conflict again) would drop them, so they go on a `Merge-notes:` line.
+    const unreviewedNotes = []
+    const keepNotes = mm => {
+      const t = mm && typeof mm.notes === 'string' ? mm.notes.replace(/\s+/g, ' ').trim() : ''
+      if (!t || unreviewedNotes.includes(t)) return
+      unreviewedNotes.push(t)
+      log(`merge:${r.id} notes outside any seam review: ${t.slice(0, 2000)}`)
+    }
+    const notesLedger = () => { if (unreviewedNotes.length) noteLedger(r.id, `Merge-notes: ${r.id} — not seam-reviewed: ${unreviewedNotes.join(' | ').slice(0, 2000)}`, `Merge-notes: ${r.id} — not seam-reviewed: text elided — see the run log`) }
     if (integrationBlocked) { log(`merge:${r.id} not attempted — the merge lane is held: ${integrationBlocked}; ${r.id} stays unsettled for the relaunch`); return }
     // Composed review: an in-tree blocker this task consumes that landed after the task branched (not
     // a stack parent, whose code it was cut on) gets the seam review even with no shared file — the
@@ -1253,6 +1266,7 @@ while (true) {
     if (composedWith.length) r = { ...r, composedWith }
     let m = await dispatch(() => mergePrompt(r, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand, mergeLedger(r, 'none', false)), `merge:${r.id}`,
       { label: `merge:${r.id}`, phase: 'Integrate', ...tier('reviewer'), schema: MERGE })
+    if (!(m && !m.merged && Array.isArray(m.seamOverlap) && m.seamOverlap.length)) keepNotes(m)
     // Post-rebase seam check: a rebase onto sibling changes in the same files gets one scoped seam
     // review (and at most one fix) before merging, then the merge re-dispatches with `seamCleared`.
     if (m && !m.merged && Array.isArray(m.seamOverlap) && m.seamOverlap.length) {
@@ -1276,6 +1290,7 @@ while (true) {
       }
       m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand, mergeLedger(r, seamOutcome, false)), `merge:${r.id}:seam-cleared`,
         { label: `merge:${r.id}:seam-cleared`, phase: 'Integrate', ...tier('reviewer'), schema: MERGE })
+      keepNotes(m)
       if (!m) { log(`merge for ${r.id} after its seam review unavailable (null dispatch) — no merge happened; leaving ${r.id} unsettled this round`); return }
     }
     // Null merge: no merge happened and it is not the blocker path; the bead stays open and re-enters
@@ -1288,7 +1303,7 @@ while (true) {
     // neither a failed merge nor blocker-worthy. Log, quarantine, continue; see handleAuthRefusal.
     // A refused merge still gets its `Merge:` line (an unresolved rebase conflict counts), ending
     // `→ auth-refused`, so Metrics see every attempt.
-    const authMerge = mm => { noteLedger(r.id, `Merge: ${r.id} — rebase ${mm.rebaseConflictFiles ? 'conflict: ' + mm.rebaseConflictFiles + ' files' : 'clean'} · seam-review ${seamOutcome} · check none → auth-refused`); return () => handleAuthRefusal(r, mm.authRefused) }
+    const authMerge = mm => { noteLedger(r.id, `Merge: ${r.id} — rebase ${mm.rebaseConflictFiles ? 'conflict: ' + mm.rebaseConflictFiles + ' files' : 'clean'} · seam-review ${seamOutcome} · check none → auth-refused`); notesLedger(); return () => handleAuthRefusal(r, mm.authRefused) }
     if (!m.merged && m.authRefused) return authMerge(m)
     const holdLane = mm => {
       const held = typeof mm.detachedHead === 'string' && mm.detachedHead.trim() ? `integration worktree ${integrationWorktree} not on ${integrationBranch} (${mm.detachedHead.trim()})`
@@ -1301,6 +1316,7 @@ while (true) {
       log(`INTEGRATION BLOCKED at merge:${r.id} — ${held}. No merge was attempted and no bead closed; the merge lane is held for the rest of this run (no per-task blocker beads), no new task starts, and the run stops at the round boundary with stopReason 'integration-blocked'`)
       noteSlowness(`integration blocked: ${held} → merge lane held; clear it and relaunch`)
       noteLedger(r.id, `Merge: ${r.id} — rebase ${mm.rebaseConflictFiles ? 'conflict: ' + mm.rebaseConflictFiles + ' files' : 'clean'} · seam-review ${seamOutcome} · check none → held: ${held}`)
+      notesLedger()
       return true
     }
     if (holdLane(m)) return
@@ -1310,6 +1326,7 @@ while (true) {
       log(`merge check for ${r.id} was killed before its verdict (${String(m.checkOutput || 'no detail').replace(/\s+/g, ' ').slice(0, 200)}) — no result, not a failure; re-dispatching the merge once`)
       m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand, mergeLedger(r, seamOutcome, false)), `merge:${r.id}:check-retry`,
         { label: `merge:${r.id}:check-retry`, phase: 'Integrate', ...tier('reviewer'), schema: MERGE })
+      keepNotes(m)
       if (!m) { log(`merge for ${r.id} after an aborted check unavailable (null dispatch) — leaving ${r.id} unsettled this round`); return }
       if (!m.merged && m.authRefused) return authMerge(m)
       if (holdLane(m)) return
@@ -1363,6 +1380,7 @@ while (true) {
           } else {
             m = await dispatch(() => mergePrompt({ ...r, seamCleared: true }, integrationBranch, integrationWorktree, blockerBeadOf.get(r.id), mergeCheckCommand, mergeLedger(r, seamOutcome, true)), `merge:${r.id}:check-fixed`,
               { label: `merge:${r.id}:check-fixed`, phase: 'Integrate', ...tier('reviewer'), schema: MERGE })
+            keepNotes(m)
             if (!m) { log(`merge for ${r.id} after its merge-check fix unavailable (null dispatch) — no merge happened; leaving ${r.id} unsettled this round`); return }
             if (!m.merged && m.authRefused) return authMerge(m)
             if (holdLane(m)) return
@@ -1404,6 +1422,7 @@ while (true) {
         noteLedger(r.id, [`Merge: ${r.id} — rebase ${rebaseText} · seam-review ${seamOutcome} · check ${checkText}`, ...(removed.length ? [`Merge-cleanup: ${r.id} — removed byte-identical untracked copies from the integration worktree before merging: ${removed.join(', ')}`] : [])])
         if (closureOkay && !r.parkReason) noteLedger(r.id, ledgerLine(r.n, r.id, `complete (${range}, ${r.fixPass ? 'fix pass' : 'review clean'})`))
       }
+      notesLedger()
       // Minors are written at the merge gate — a minor deferred on a task that never merges is part
       // of a blocked task's open state, which the blocker path already carries. One line per minor.
       const taskMinors = r.minors ?? []
@@ -1430,6 +1449,7 @@ while (true) {
     // carried so the blocker's ledger line can cite the plan ordinal.
     warnRejectedAppend(mergeEvidenceBad ? null : m)
     noteLedger(r.id, `Merge: ${r.id} — rebase ${rebaseText} · seam-review ${seamOutcome} · check ${checkText} → blocker`)
+    notesLedger()
     return () => handleBlocker({ id: r.id, n: r.n, blockerBead: m.blockerBead, finding: blockerFinding }, planned.planPath, onResolve)
   }
   // Already-merged re-entry: close the task bead (and its RESOLVEd blocker bead), settle completed,

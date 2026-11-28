@@ -1281,7 +1281,7 @@ independent by definition):
    keeping both sides' intent. It works within those hunks by default, makes the adjacent edits the
    resolution needs (an import, a renamed caller, a test of the conflicting code), may run the
    tests the conflicted files touch, and lists each edit outside the hunks and each test it changed
-   in `notes`, which the seam review reads.
+   in `notes`, which the seam review reads (notes no seam review read go on a `Merge-notes:` line).
 2. **Seam check:** if the integration branch moved since the task branched *and* the sibling
    commits it moved onto touched files this task also changed, the merge agent stops before
    merging and reports the overlap. The coordinator runs **one scoped seam review** of the rebased
@@ -1372,7 +1372,10 @@ flush, before the blocker outcome. It is raw rather than built by `ledgerLine()`
 `Task <N> (<id>):` prefix names a task outcome; this line names a merge attempt). `rebase` is the merge agent's `rebaseConflictFiles`
 report (0 → `clean`); `seam-review` is `none` unless step 2 ran (`cleared` when it came back CLEAN,
 `fixed` when its one fix ran); a merge that removed byte-identical untracked copies first adds a
-`Merge-cleanup: <id> — removed … : <paths>` line in the same dispatch; `check` is the merge check's result: `pass`, `fail→fixed` (failed, the
+`Merge-cleanup: <id> — removed … : <paths>` line in the same dispatch; merge-agent `notes`
+(edits outside the conflicted hunks, changed tests) that no seam review read, from any attempt
+including a seam-cleared re-rebase that conflicted again, go on a `Merge-notes: <id> — not
+seam-reviewed: …` line in the task's flush, on every path that writes a `Merge:` line; `check` is the merge check's result: `pass`, `fail→fixed` (failed, the
 merge-check fix and its review passed, the re-run passed), `fail` (failed and went to the blocker
 path), or `none` (no check declared, or the attempt failed before reaching it). A merge the
 coordinator rejects after its agent reported writing success lines (missing merge evidence, a
