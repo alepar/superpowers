@@ -10,6 +10,40 @@ this space. Request a reviewed integration branch from each fix owner. Own the
 final integration into main and the release cut; fix-owner tabs hand their work
 back for those steps.
 
+## Session start and habits
+
+- On session start run `herdr-threads nudge-threshold 1`, and stay a member of
+  `superpowers-dev` and `psa-global`.
+- Execution goes to dedicated tabs via `herdr-threads handoff --new-tab`. Each
+  handoff carries the `superpowers-dev` membership rule, the relevant source
+  documents, and the cleanup expectation below. The coordinator routes, reviews and
+  lands; it does not fix code itself.
+- Use `--nudge` on any message a tab must act on: a plain send never wakes an idle tab.
+- For anything non-trivial, ask the owner tab for a finding first and relay it to
+  whoever decides before anything gets built.
+- Attribute every claimed human decision to its source: received in this pane, or
+  relayed by a named coordinator.
+- Before going idle, check that nothing is still waiting on you.
+
+## Landing an integration branch
+
+Your human partner's rule: each integration branch lands on main as one squash
+commit. The owner tab finishes the whole feature on its branch (design notes,
+implementation, tests, every review fix), then reports it ready. Design notes and
+review fixes never land separately ahead of the code.
+
+1. Squash in a fresh land worktree under `.worktrees/`, never in the main checkout.
+   Rebase the branch onto current main and squash it into one commit.
+2. Rerun the release test list below yourself; don't rely on the tab's report alone.
+   Print each command's exit code, since a passing tail line can hide a failure.
+   Never export `GIT_*` variables in a shell that runs tests.
+3. Commit message: reuse the tab's `type(area): what changed`. For a multi-commit
+   branch, summarize the whole feature in the body. Copy SHAs from git output.
+4. Fast-forward main. No merge commits. Published main history is never
+   rewritten; fix forward with a new commit.
+5. Cut a release after each landing that users need. Batch docs-only or test-only
+   landings into the next release.
+
 ## Coordinating delegated runs
 
 - When research or a proposal becomes implementation, give your human partner two options before launch: the smallest change covering every element of their literal request, and the full proposal. Give each its files, rough size and new abstractions. In every brief, quote their literal request separately from your own elaborations.
@@ -22,14 +56,20 @@ back for those steps.
 After a fix is accepted and merged, ask its owner tab to clean up its own
 worktrees, temporary resources, and owned processes, preserving required evidence
 and unrelated work. The owner reports cleanup completion or concrete retained
-resource blockers. Once cleanup is confirmed and no work remains, close that tab.
+resource blockers. Delete its branch only if it is merge-proof, meaning
+`git diff <landed commit> <branch>` is empty. Close its bead. Once cleanup is
+confirmed and no follow-up is queued, close that tab.
 
 Include the cleanup expectation in future handoffs. Keep unmerged fixes and
 active research or replay tabs open.
 
 ## Cutting a Fork Release (alepar/superpowers)
 
-This repository is the `alepar` fork. Its versions are `<upstream version>-alepar<major>.<minor>`, e.g. `6.4.2-alepar4.1`. Bump the minor by default. Bump the major only when your human partner asks.
+This repository is the `alepar` fork. Its versions are `<upstream version>-alepar<major>.<minor>`, e.g. `6.4.2-alepar4.1`. There is no patch component. Bump the minor by default (`6.9` → `6.10`). Bump the major only when your human partner asks.
+
+Run the tests and `bump-version.sh` inside this project's toolbox, `superpowers-dev`
+(`toolbox run -c superpowers-dev ...`). It provides `yq`, `shasum`, `zip`, `jq` and
+`node`, which the host lacks.
 
 1. **Verify on a clean `main`.** Run the tests:
    - `node tests/super-code/replay-harness.mjs`
