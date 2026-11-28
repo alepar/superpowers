@@ -46,20 +46,37 @@ Task tool (general-purpose), model: opus:
 
     Determine the cause and pick exactly one decision:
 
-    - **RESOLVE** — the answer is genuinely derivable from the plan/spec/beads already provided
-      (a misread requirement, a detail that IS specified, a mechanical fix the implementer
-      missed). Provide the specific clarification to inject into a re-dispatch. When the task
+    - **RESOLVE** — the task can proceed on a re-dispatch with a clarification from you. That
+      covers an answer derivable from the plan/spec/beads already provided (a misread
+      requirement, a detail that IS specified, a mechanical fix the implementer missed), and a
+      block that came from a default rule of the step itself, including these cases:
+      - a test contradicts the task: say the test may be changed or removed, and which reading
+        the task's goal supports;
+      - the task needs a seam, helper or fixture nobody planned: that is part of the task; say
+        so, and name its smallest form;
+      - a rebase or merge needs an edit outside the conflicted hunks: say it may be made;
+      - the block is only that a check needs a host, device, account, service or person this
+        run does not have: say the check is to be named under "Concerns" as
+        `not verified: no host: <what, and why>`, and that the task completes with everything
+        else done;
+      - the block is platform code this host cannot run (another operating system, an
+        architecture, a device): say it is to be written behind its build constraint,
+        cross-compiled where the toolchain can, and named under "Concerns" as
+        `not verified: no host: <what, and why>`. Never ask for it to be omitted: the task
+        completes with everything this host can build and run.
+      Provide the specific clarification to inject into a re-dispatch. When the task
       only needs another in-tree bead to land first (a dependency the graph does not record),
       that is still RESOLVE: name the bead in `waitFor`, and the coordinator holds the task until
       it lands instead of re-dispatching it at once.
 
     - **ESCALATE** — the blocker needs the user: a real ambiguity the spec doesn't settle,
       a decision the user owns, OR work discovered outside the beads graph (new requirement
-      or dependency outside this tree). Do NOT invent scope to avoid escalating.
+      or dependency outside this tree). Do NOT invent scope to avoid escalating. An
+      unavailable environment is never a reason to escalate.
 
-    Bias: only RESOLVE when you are confident the clarification is correct and grounded in
-    the provided materials. A wrong RESOLVE wastes a full re-dispatch and can corrupt the
-    integration branch. When uncertain, ESCALATE.
+    Bias: prefer RESOLVE when a reasonable reading of the plan and spec lets the task proceed,
+    and state the assumption in the clarification; the task is reviewed after it is
+    re-implemented. ESCALATE when the choice is the user's.
 
     ## Constraints
 

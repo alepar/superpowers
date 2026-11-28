@@ -131,7 +131,7 @@ your path and complete them in order.
 8. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
 9. **User reviews written spec** *(Mode B only)* — ask the user to review the spec file before proceeding. Mode A skips this: you reviewed section by section as you went
 10. **Offer adversarial review** *(optional)* — offer to run `superpowers:super-roast` on the spec before implementation; on a confirmed-findings verdict (Blocking/Should-fix) loop back to revise the spec; on a **clean** verdict with no qualifier, or if declined, continue; on a **clean** verdict carrying `[low coverage]` or `[panel-capped: N unverified]`, surface the qualifier and let the user decide whether to proceed or dig further (see "Adversarial Review" below)
-11. **Transition to implementation** — invoke `superpowers:writing-plans` to create an implementation plan (a caller-invoked run stops at step 10 and returns the spec — see "Invocation By Another Skill")
+11. **Transition to implementation** — invoke `superpowers:writing-plans` to create an implementation plan (a caller-invoked run stops after step 8 and returns the committed spec — see "Invocation By Another Skill")
 
 ## Process Flow
 
@@ -249,7 +249,7 @@ is the whole process.
 - Open every spec with a `## Goal` section: one or two sentences stating an observable outcome (e.g. "a playable game").
 - End every spec with a `## Post-Implementation Notes` section containing this standing instruction verbatim, so note-taking fires later even though brainstorming has handed off:
   > *As this design is implemented and iterated on — bug fixes, adjustments, anything that diverged from the assumptions above — append a dated note here, whether or not a formal debugging skill was used.*
-- Add a row for the new spec to `docs/superpowers/specs/INDEX.md` with status `draft` (date · title · relative link · one-line summary · status · tags). If `INDEX.md` does not exist, create it from the format documented at the top of that file.
+- Add a row for the new spec to `docs/superpowers/specs/INDEX.md` with status `draft` (date · title · relative link · one-line summary · status · tags). If `INDEX.md` does not exist, create it with a purpose line, the status values `draft`, `implemented` and `superseded-by: <file>`, and a table with the columns Date | Title | Spec | Summary | Status | Tags.
 - Use elements-of-style:writing-clearly-and-concisely skill if available
 - Commit the design document and `INDEX.md` to git
 

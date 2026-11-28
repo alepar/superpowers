@@ -124,5 +124,29 @@ PROV="$T/out-$n/generated-input-provenance.md"
 TOTAL=$(jq_ 'j.outOfRange.length')
 grep -q "^- Outside captured range: $TOTAL informational entries .*review-inputs.json" "$PROV" && pass "N count line names the total and review-inputs.json" || fail "N provenance count line"
 
+echo "Excluded trees"
+# Breaks caught: run records or a vendored dependency tree sliced into review inputs; an
+# excluded tree dropped without a trace; the run's design spec excluded with its run records.
+new_repo
+mkdir -p vendor/example.com/lib docs/superpowers/runs/2026-01-01-x/reviews/i evidence
+echo 'package lib // excluded-canary' >vendor/example.com/lib/lib.go
+echo '# example.com/lib v1.0.0' >vendor/modules.txt
+echo 'excluded-canary' >docs/superpowers/runs/2026-01-01-x/run.md
+echo 'excluded-canary' >docs/superpowers/runs/2026-01-01-x/reviews/i/final-review-i.md
+echo 'excluded-canary' >docs/superpowers/runs/2026-01-01-x/findings-ledger-design.md
+echo 'spec-intent' >docs/superpowers/runs/2026-01-01-x/2026-01-01-x-design.md
+echo vendored >product.txt; g add -A; g commit -qm excluded; X=$(g rev-parse HEAD)
+sel "$PRIOR" "$X" --exclude 'docs/superpowers/runs/**' --keep 'docs/superpowers/runs/*/[0-9]*-design.md' --exclude 'evidence/**' --exclude 'vendor/**'
+expect "X a range with run records and a vendored tree" 0
+[ "$(jq_ 'j.changed.join(" ")')" = "docs/superpowers/runs/2026-01-01-x/2026-01-01-x-design.md product.txt" ] && pass "X only product paths and the kept spec are selected" || fail "X selected $(jq_ 'j.changed.join(" ")')"
+[ "$(jq_ 'JSON.stringify(j.excluded.map(x=>x.tree+":"+x.files))')" = '["docs/superpowers/runs/:3","vendor/:2"]' ] && pass "X each excluded tree with changes is counted once" || fail "X excluded $(jq_ 'JSON.stringify(j.excluded)')"
+if grep -rq 'excluded-canary\|vendor/' "$T/out-$n/slices" "$T/out-$n/diffstat.txt"; then fail "X an excluded file reached the slices or diffstat"; else pass "X no excluded file is sliced or in the diffstat"; fi
+grep -q 'x-design.md' "$T/out-$n/diffstat.txt" && pass "X the kept spec is in the diffstat" || fail "X kept spec missing from diffstat"
+PROV="$T/out-$n/generated-input-provenance.md"
+grep -qx -- '- excluded: vendor/ (2 files changed)' "$PROV" && grep -qx -- '- excluded: docs/superpowers/runs/ (3 files changed)' "$PROV" && pass "X provenance has one summary line per excluded tree" || fail "X provenance summary lines"
+grep -q 'evidence/' "$PROV" && fail "X a tree without changes got a summary line" || pass "X no summary line for an unchanged tree"
+sel "$PRIOR" "$X"
+[ "$(jq_ 'j.changed.length+" "+j.excluded.length')" = "7 0" ] && pass "X without --exclude every path is selected" || fail "X unexcluded selection $(jq_ 'j.changed.length')"
+
 [ "$FAILURES" -eq 0 ] || { echo "FAILURES: $FAILURES"; exit 1; }
 echo "review-inputs-range-scope: all passed"

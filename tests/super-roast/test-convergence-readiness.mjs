@@ -18,7 +18,8 @@ const vote = (verdict = 'CONFIRM', severity = 'Should-fix') => ({ verdict, sever
 const report = (verdict = 'clean (0 nits)', body = '') => ({ verdict, reportMarkdown: `super-roast verdict: ${verdict}\ncoverage: reporter supplied\n\n${body}`, confirmedCount: 0, escalations: [] })
 
 async function execute(options = {}) {
-  const names = Array.from({ length: options.scouts ?? 9 }, (_, i) => `core${i + 1}`)
+  const lane = options.lane ?? 'core1'
+  const names = options.lane ? [lane] : Array.from({ length: options.scouts ?? 9 }, (_, i) => `core${i + 1}`)
   const calls = [], reporterPrompts = []
   const args = {
     mode: 'pr', iteration: 2, priorReport: 'prior report', profile: 'local tooling', inputs: 'captured audit', independence: 'same-family (test) · rung: manual fan-out',
@@ -26,12 +27,12 @@ async function execute(options = {}) {
     config: { coreLanes: names },
     ...options.args,
   }
-  args.prompts.reporter ??= '{{COVERAGE_JSON}}\n{{COVERAGE_LINE}}\n{{PACKETS_JSON}}'
+  args.prompts.reporter ??= '{{COVERAGE_JSON}}\n{{COVERAGE_LINE}}\n{{PACKETS_JSON}}\n{{FIXES_CHECKED}}'
   if ('readiness' in options) args.reviewReadiness = options.readiness
   const agent = async (prompt, o) => {
     calls.push(o.label)
     if (o.label === 'triage') return { lanes: [], domains: [] }
-    if (o.label.startsWith('scout:')) return options.deadScout && o.label === 'scout:core1' ? null : { findings: o.label === 'scout:core1' ? options.findings ?? [] : [] }
+    if (o.label.startsWith('scout:')) return options.deadScout && o.label === `scout:${lane}` ? null : { findings: o.label === `scout:${lane}` ? options.findings ?? [] : [], ...(o.label === `scout:${lane}` && options.fixesChecked ? { fixesChecked: options.fixesChecked } : {}) }
     if (o.label === 'dedupe') return { groups: (options.findings ?? []).map((_, i) => ({ ids: [i], suggestedSeverity: 'Should-fix', rank: i })) }
     if (o.label.startsWith('judge:')) return vote()
     if (o.label === 'reporter') { reporterPrompts.push(prompt); return options.reporterFailed ? null : options.report ?? report() }
@@ -140,6 +141,27 @@ test('dead scout, panel cap and reporter failure retain independent stage guards
 test('nonempty packets need reporter judgment; affirmative readiness alone never forces convergence', async () => {
   noConvergence((await execute({ readiness: ready, findings: [finding()], report: report('Should-fix (1 confirmed)') })).result)
   assert.ok((await execute({ readiness: ready, findings: [finding()], report: report('Should-fix (1 confirmed) [converged]') })).result.verdict.includes('[converged]'))
+})
+test('an unjudged prior Blocking withholds convergence; fix checks reach the reporter', async () => {
+  const delta = n => `delta vs prior: 0 new confirmed (0 Blocking) · 0 carried (0 Blocking) · 0 resolved · 0 regressed (0 Blocking) · 0 punch-listed (open) · ${n} unjudged (open) (${n} Blocking)`
+  for (const verdict of ['clean (0 nits)', 'clean (0 nits) [converged]']) {
+    const { result } = await execute({ readiness: ready, report: report(verdict, delta(1)) })
+    noConvergence(result)
+    assert.ok(result.enforcement.some(e => e.includes('1 prior Blocking unjudged (open)')), result.enforcement.join('; '))
+  }
+  const fixesChecked = [{ prior: '[Blocking] a.js:1', held: true, evidence: 'a.js:1 now guards the null' }]
+  const { result, reporterPrompts } = await execute({ readiness: ready, fixesChecked, report: report('clean (0 nits) [converged]', delta(0)) })
+  assert.ok(result.verdict.includes('[converged]'), result.verdict)
+  assert.ok(reporterPrompts[0].includes(JSON.stringify([{ ...fixesChecked[0], lane: 'core1' }])), reporterPrompts[0])
+})
+test('fix-regression tag skips punch-listed keys and touches only Confirmed findings', async () => {
+  const body = '## Confirmed findings\n- [Nit] a.js:1 — defect 0\n- [Should-fix] a.js:2 — defect 1\n## Prior findings (no current packet)\n- [Should-fix] a.js:2 — defect 1 (unjudged (open))\n'
+  const { result } = await execute({ lane: 'regression', findings: [finding(0), finding(1)], report: report('Should-fix (2 confirmed)', body), args: { punchListed: '[Nit] a.js:1', config: { coreLanes: ['regression'] } } })
+  const lines = result.reportMarkdown.split('\n')
+  assert.ok(lines.includes('- [Nit] a.js:1 — defect 0 [lanes: regression]'), result.reportMarkdown)
+  assert.ok(lines.includes('- [Should-fix] a.js:2 — defect 1 [lanes: regression] [fix-regression]'), result.reportMarkdown)
+  assert.ok(lines.includes('- [Should-fix] a.js:2 — defect 1 (unjudged (open))'), result.reportMarkdown)
+  assert.deepEqual(result.fixRegressions.map(f => f.location), ['a.js:2'])
 })
 test('Blocking verdict cannot carry reporter-supplied convergence', async () => {
   for (const findings of [[], [finding()]]) noConvergence((await execute({ readiness: ready, findings, report: report('Blocking (1 confirmed) [converged]') })).result)

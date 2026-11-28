@@ -66,8 +66,8 @@ Spend the rest of your budget on what the report missed.
 
 ## Required structured output (do NOT write a prose essay)
 
-Findings, and nothing else — there is no free-text section, so anything you write outside a
-finding is discarded. In particular, a load-bearing assumption the design silently takes for
+Findings, and nothing else (the regression lens also returns `fixesChecked`, as its block
+says) — there is no free-text section, so anything you write outside a finding is discarded. In particular, a load-bearing assumption the design silently takes for
 granted is not a preamble: it is a finding of kind `UNVERIFIED-ASSUMPTION`, whose `evidence`
 names the spec text that leans on it and says what would have to be true.
 
@@ -131,8 +131,9 @@ appear useful.
 "No material findings" is a valid and expected outcome at this stage. Report a finding only if
 it is:
 (a) NEW — not a restatement, re-slicing, or wording-variant of anything the prior report lists
-    in any of its sections (a re-surfaced rejection whose evidence changed is the one exception;
-    see "Prior report"); and
+    in any of its sections. Two exceptions: a re-surfaced rejection whose evidence changed (see
+    "Prior report"), and a prior finding whose claimed fix is absent or failed, which you report
+    again with current evidence; and
 (b) one you would defend as causing a wrong implementation, a missed stated requirement, a
     contradiction between sections, or rework an implementer would otherwise hit — not a
     could-be-slightly-better observation.
@@ -198,8 +199,20 @@ and the spec as it now stands, and hunt ONLY for damage the fixes did:
    spawned work nothing depends on.
 4. **Claimed-but-absent** — the prior report's finding is marked resolved, but the current
    text does not actually reflect the fix.
-Anything that was already true before the prior round's fixes is out of your lane — earlier
-rounds covered that ground; do not report it.
+Check each finding the prior report lists under "Confirmed findings", and each entry its
+"Prior findings (no current packet)" section marks `unjudged (open)`, where its defect
+manifests, including unchanged text and findings the prior report never marked resolved. A
+prior finding whose fix is absent or failed is in your lane: report it again with current
+evidence. Re-report a prior finding only when a fix for it was claimed (the spec changed to
+address it, or the prior report marks it resolved). A prior finding nobody tried to fix, such
+as one the caller punch-listed, is not damage: give it a `fixesChecked` entry and do not report
+it. Anything else that was already true before the prior round's fixes is out of your
+lane — earlier rounds covered that ground; do not report it.
+Besides findings, return `fixesChecked`: one entry per prior finding you checked,
+`{prior, held, evidence}`, where `prior` is its `[SEV] <location>` key from the prior report,
+`held` is true when the current text shows the defect fixed or gone and false when it does not,
+and `evidence` quotes the current text that decides it. Leave out a finding you could not
+check; an unchecked prior finding stays open.
 ```
 
 Dispatched **only on iterations ≥ 2**: the orchestrator appends `regression` to

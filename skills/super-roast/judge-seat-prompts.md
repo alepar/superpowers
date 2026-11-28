@@ -152,10 +152,13 @@ In PR mode, "the spec" means the change under review: the diff, its stated inten
 requirements" include the repository's own conventions and the change's stated intent.
 
 Use the supplied captured base/head for diffs and `git show <head>:<path>` for source. When
-filesystem access is needed, create a unique review-owned detached worktree at that head. A
-mutable reproduction writes only there and in its own output/temp directory. Record caller
+filesystem access is needed, create a unique review-owned detached worktree with
+`git worktree add --detach <review-owned-path> <captured-head>` in a scratch location and remove
+it when you finish. A mutable reproduction writes only there and in its own output/temp
+directory. Leave the shared checkout's branch, HEAD, index and files untouched, even when its
+HEAD already matches the captured head: never switch, detach or restore it. Record caller
 commit/status changes with evidence, without assigning cause from a before/after difference
-alone; never switch or restore the caller checkout.
+alone.
 You have repo read access — ground internal claims by reading the actual files, not
 just the diff hunk.
 

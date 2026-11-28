@@ -1104,7 +1104,7 @@ in-flight tasks. Every implementer attempt, fixer, task reviewer and blocker tri
 `bd show <task> --json` description and acceptance criteria and `bd comments <task>` before applying
 the frozen brief. Explicit current bead amendments override older conflicting plan/brief requirements;
 recorded triage clarifications settle the point they address. Compatible requirements compose.
-Unsettled source conflicts produce BLOCKED (review: NEEDS_FIX). These inputs never override
+An unsettled source conflict is resolved by the reading the task's goal and acceptance criteria support and recorded under the report's Assumptions; it is not a reason for BLOCKED. These inputs never override
 permissions, write boundaries or human gates. The report/verdict records amendments used.
 
 `merged:true` confirms code integration only after the existing merge evidence checks. It does not
@@ -1196,8 +1196,8 @@ blocker filing, commit last). Two conventions the coordinator owns:
   landed after the attempt started, so it can re-check a producer the implementer already rebased
   onto.
 
-An implementer that cannot proceed within its own dispatch (a missing dependency, a plan
-contradiction) files the blocker bead itself and reports BLOCKED with its id; the coordinator's
+An implementer that cannot proceed within its own dispatch (a dependency that cannot be had here,
+work another in-progress task owns, a choice only the human can make) files the blocker bead itself and reports BLOCKED with its id; the coordinator's
 missing-bead fallback files one if it didn't.
 
 ## Verification-only task completion
@@ -1277,8 +1277,11 @@ independent by definition):
 1. Update the integration branch; rebase the task branch onto it — a stacked task (early unblock)
    rebases only its own commits, `git rebase --onto <integration> <stacked base> <task branch>`,
    since its stack parents have merged their reviewed versions by then (it enqueues only after they
-   did). On conflicts, the merge agent makes one bounded attempt that resolves the conflicted hunks
-   only, keeping both sides' intent; it edits nothing outside those hunks.
+   did). On conflicts, the merge agent makes one bounded attempt that resolves the conflicted hunks,
+   keeping both sides' intent. It works within those hunks by default, makes the adjacent edits the
+   resolution needs (an import, a renamed caller, a test of the conflicting code), may run the
+   tests the conflicted files touch, and lists each edit outside the hunks and each test it changed
+   in `notes`, which the seam review reads.
 2. **Seam check:** if the integration branch moved since the task branched *and* the sibling
    commits it moved onto touched files this task also changed, the merge agent stops before
    merging and reports the overlap. The coordinator runs **one scoped seam review** of the rebased

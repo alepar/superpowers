@@ -288,6 +288,7 @@ assert_has "$out" "diffstat" "roast-code section: diffstat"
 assert_lacks "$out" "report summaries" "roast-code carries no report summaries"
 assert_lacks "$out" "concerns" "roast-code carries no concerns"
 assert_has "$out" "[CLUSTERS] = no" "roast-code asks for no clusters"
+assert_has "$out" "--out-dir '$AW/roast-code-rt-1-r3' --exclude 'docs/superpowers/runs/**' --keep 'docs/superpowers/runs/*/[0-9]*-design.md' --exclude 'evidence/**' --exclude 'vendor/**' --exclude 'third_party/**'" "review-inputs leaves run records, evidence and vendored trees out of scope, keeping the run's specs"
 last=$(printf '%s\n' "$out" | awk 'NF{l=$0} END{print l}')
 case "$last" in *"$SCHEMA_RULE") pass "assemble roast-code ends with the final-answer rule" ;; *) fail "assemble roast-code ends with the final-answer rule" ;; esac
 run bash "$D" --ledger "$T/ws/rt.md" --stdout assemble --consumer roast-code --instance r3 --spec docs/a.md,docs/b.md
@@ -314,7 +315,9 @@ run bash "$D" --ledger "$L" --stdout assemble --consumer final-review --instance
 assert_has "$out" "assembled/final-review-ep-final" "final-review assembly uses the persisted identity without runTag"
 ASMT="$REPO_ROOT/skills/super-code/assembler-prompt.md"
 has_f "assembler-prompt.md states it judges nothing" "judges nothing" "$ASMT"
-has_f "assembler-prompt.md empties the instance dir first" 'rm -rf [OUT_DIR] && mkdir -p [OUT_DIR]/slices' "$ASMT"
+has_f "assembler-prompt.md starts from an empty instance dir" 'mkdir -p [OUT_DIR]/slices' "$ASMT"
+has_f "assembler-prompt.md moves a stale instance dir aside" 'mv [OUT_DIR] [OUT_DIR].stale-' "$ASMT"
+if grep -qE '\brm -(r|f|rf|fr)\b' "$ASMT"; then fail "assembler-prompt.md asks the agent to run no rm"; else pass "assembler-prompt.md asks the agent to run no rm"; fi
 has_f "assembler-prompt.md relays the exit code and the fits: line" 'its `fits:` line verbatim' "$ASMT"
 for m in opus sonnet haiku gpt; do lacks_f "assembler-prompt.md names no model ($m)" "$m" "$ASMT"; done
 run bash "$D" --ledger "$L" --stdout assemble --consumer bogus --instance final

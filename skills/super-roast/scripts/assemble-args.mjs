@@ -22,6 +22,12 @@ const USAGE = `usage: assemble-args --mode pr|design --inputs <header inputs> [o
                                   PR mode: captures verified commits for diff/source commands
                                   and computes triage's stat
   --diff-stat <text|@file>        PR mode: triage input instead of computing it with git
+  --exclude <glob>                PR mode, repeatable: a repo-root-relative glob (git pathspec
+                                  :(top,exclude,glob)) left out of the diff command and the
+                                  computed stat; with --repo, each glob that matched changes adds
+                                  one \`excluded: <tree>/ (N files changed)\` line instead
+  --keep <glob>                   PR mode, repeatable: a path matching it stays in review even
+                                  when an --exclude glob matches it
   --artifact <text>               PR mode: how scouts/judges name the change (default: --inputs)
   --independence <text>           independence label (default: derived from config.models.judge,
                                   ending \` · rung: Workflow\` with --script, else
@@ -39,12 +45,15 @@ const drift = msg => die(3, `prompt-file drift: ${msg}`)
 
 // ---- argv ----
 const opt = {}
+const excludes = [], keeps = []
 const argv = process.argv.slice(2)
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i]
   if (a === '--help' || a === '-h') { console.log(USAGE); process.exit(0) }
   if (a === '--seats-safe') { opt.seatsSafe = true; continue }
   if (!a.startsWith('--') || i + 1 >= argv.length) die(2, `bad argument '${a}'\n${USAGE}`)
+  if (a === '--exclude') { excludes.push(argv[++i]); continue }
+  if (a === '--keep') { keeps.push(argv[++i]); continue }
   opt[a.slice(2).replace(/-([a-z])/g, (_, c) => c.toUpperCase())] = argv[++i]
 }
 const known = ['mode','inputs','iteration','priorReport','punchListed','profile','spec','context','repo','base','head','diffStat','artifact','independence','reviewReadiness','config','seatsSafe','reportDir','topic','date','out','script']
@@ -144,20 +153,47 @@ if (mode === 'pr' && (opt.repo || opt.base || opt.head)) {
     source = { repo: resolve(opt.repo), base: commit(opt.base), head: commit(opt.head) }
   } catch (e) { die(2, `cannot resolve PR source commits: ${e.message.split('\n')[0]}`) }
 }
-const diffCmd = source ? `git -C ${shell(source.repo)} diff ${source.base}...${source.head}` : null
+// Out-of-scope globs: the diff covers the tree minus every --exclude and --keep glob, then the
+// --keep globs on their own, so a kept path appears once whether or not an exclude matched it.
+const scope = excludes.length ? [':(top)', ...[...excludes, ...keeps].map(g => `:(top,exclude,glob)${g}`)] : []
+const keepScope = excludes.length ? keeps.map(g => `:(top,glob)${g}`) : []
+const diffOf = spec => `git -C ${shell(source.repo)} diff ${source.base}...${source.head}${spec.length ? ' -- ' + spec.map(shell).join(' ') : ''}`
+const diffCmd = source ? diffOf(scope) + (keepScope.length ? ' && ' + diffOf(keepScope) : '') : null
+const gitLines = (...args) => execFileSync('git', ['-C', opt.repo, ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim()
+// One line per excluded tree that had changes, so reviewers know it exists.
+function excludedLines() {
+  if (!source || !excludes.length) return []
+  const range = `${source.base}...${source.head}`
+  const names = g => gitLines('diff', '--name-only', range, '--', g).split('\n').filter(Boolean)
+  try {
+    const kept = new Set(keeps.flatMap(g => names(`:(top,glob)${g}`))), taken = new Set(), lines = []
+    for (const g of excludes) {
+      const files = names(`:(top,glob)${g}`).filter(p => !kept.has(p) && !taken.has(p))
+      files.forEach(p => taken.add(p))
+      const tree = g.endsWith('/**') && !/[*?[]/.test(g.slice(0, -3)) ? g.slice(0, -2) : g
+      if (files.length) lines.push(`excluded: ${tree} (${files.length} files changed)`)
+    }
+    return lines
+  } catch (e) { die(2, `git diff failed: ${e.message.split('\n')[0]}`) }
+}
+const excluded = excludedLines()
+const excludedNote = excluded.length ? `\nOut of review scope (not in the diff; review no finding there): ${excluded.join('; ')}.` : ''
 const sourceInput = source
   ? `Captured source: base ${source.base}, head ${source.head}. Read source with \`git -C ${shell(source.repo)} show ${source.head}:<path>\`; all diffs use \`${diffCmd}\`.`
+  + (scope.length ? ` To view one file's diff, run \`git -C ${shell(source.repo)} diff ${source.base}...${source.head} -- <path>\` instead (a path appended to the command above still shows the whole diff).` : '')
+  + excludedNote
   : 'The caller supplied patch data without a repository source pair. Review that data; obtain captured base/head commit identities before opening repository source or running a reproduction.'
 const artifact = opt.artifact ?? opt.inputs
 function triageInput() {
   if (mode === 'design') return `Spec file: ${opt.spec} — read it.`
-  if (opt.diffStat) return textArg(opt.diffStat).trim()
+  const tail = excluded.length ? '\n' + excluded.join('\n') : ''
+  if (opt.diffStat) return textArg(opt.diffStat).trim() + tail
   if (!diffCmd) die(2, 'PR mode needs --diff-stat, or --repo/--base/--head to compute it')
   try {
     const range = `${source.base}...${source.head}`
-    const names = execFileSync('git', ['-C', opt.repo, 'diff', '--name-status', range], { encoding: 'utf8' }).trim()
-    const stat = execFileSync('git', ['-C', opt.repo, 'diff', '--shortstat', range], { encoding: 'utf8' }).trim()
-    return `Diff ${range}:\n${names}\n${stat}`
+    const of = (flag, spec) => gitLines('diff', flag, range, ...(spec.length ? ['--', ...spec] : []))
+    const both = flag => [of(flag, scope), ...(keepScope.length ? [of(flag, keepScope)] : [])].filter(Boolean).join('\n')
+    return `Diff ${range}:\n${both('--name-status')}\n${both('--shortstat')}${tail}`
   } catch (e) { die(2, `git diff failed: ${e.message.split('\n')[0]}`) }
 }
 

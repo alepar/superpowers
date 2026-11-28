@@ -49,7 +49,10 @@ kinds and options:
   assemble          --consumer final-review|roast-code|history|assess --instance I
                     [--threshold N] [--base SHA] [--head SHA] [--spec P1,P2]
   review-inputs     --base SHA --head SHA --out-dir DIR [--review-run-file captured/run.md]
-                    (captured-Git selection, slices and generated-input provenance; exit 3 unavailable)
+                    [--exclude GLOB]... [--keep GLOB]...
+                    (captured-Git selection, slices and generated-input provenance; exit 3 unavailable;
+                    a changed path matching an --exclude glob, as git pathspec :(top,exclude,glob),
+                    is not sliced and is counted once per glob, unless a --keep glob matches it)
   bounded-review   --base SHA --head SHA --selection FILE --draft FILE --coverage FILE --out FILE
                     (preserve bounded draft and coverage; write a forced incomplete final report)
   bind-review-source --read | --base SHA --head SHA [--artifact PATH]
@@ -69,6 +72,7 @@ common options:
   --epic, --branch, --worktree, --merge-check   override the Launch: line`
 
 const FLAGS = new Set(['stdout', 'reentry', 'recut', 'stacked', 'seam-cleared', 'capped', 'help', 'read'])
+const REPEATED = new Set(['exclude', 'keep'])
 function fail(msg) { process.stderr.write(`dispatch-text: ${msg}\n`); process.exit(2) }
 function parse(argv) {
   const o = { _: [] }
@@ -78,7 +82,7 @@ function parse(argv) {
     const k = a.slice(2)
     if (FLAGS.has(k)) { o[k] = true; continue }
     if (i + 1 >= argv.length) fail(`${a} needs a value`)
-    o[k] = argv[++i]
+    o[k] = REPEATED.has(k) ? [...(o[k] || []), argv[++i]] : argv[++i]
   }
   return o
 }
@@ -127,8 +131,14 @@ function loadBuilders(cfg) {
 
 // Mechanical captured-Git selection only. This path exits before loading Workflow builders.
 // Collection metadata remains the authority; directory names alone never grant an exemption.
-function reviewInputs(repo, base, head, out, current = null) {
+function reviewInputs(repo, base, head, out, current = null, excludes = [], keeps = []) {
   const git = (...args) => execFileSync('git', ['--literal-pathspecs', ...args], { cwd: repo, maxBuffer: 64 * 1024 * 1024 })
+  // Out-of-scope globs (run records, evidence, vendored trees) use git's own glob pathspec
+  // semantics; --literal-pathspecs would disable that magic, so these calls go without it.
+  const globbed = (...args) => execFileSync('git', args, { cwd: repo, maxBuffer: 64 * 1024 * 1024 })
+  const matched = new Map()
+  const matching = g => matched.get(g) ?? matched.set(g, new Set(globbed('diff', '--no-renames', '--name-only', '-z', base + '..' + head, '--', ':(top,glob)' + g).toString().split('\0').filter(Boolean))).get(g)
+  const treeLabel = g => g.endsWith('/**') && !/[*?[]/.test(g.slice(0, -3)) ? g.slice(0, -2) : g
   const hash = bytes => createHash('sha256').update(bytes).digest('hex')
   const safe = p => typeof p === 'string' && p !== '' && !p.includes('\\') && !p.includes('\0') && !posix.isAbsolute(p) && p.split('/').every(s => s && s !== '.' && s !== '..')
   const idOK = id => typeof id === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(id)
@@ -371,7 +381,7 @@ function reviewInputs(repo, base, head, out, current = null) {
     const valid = new Set(collectionOrigins.filter(o => o.revision === revision).map(o => o.run))
     endpoint.collections = endpoint.collections.filter(c => !valid.has(c.run))
   }
-  let selected = changed, omitted = [], archives = [], slices = [], sourceAvailable = false
+  let selected = changed, omitted = [], archives = [], slices = [], sourceAvailable = false, excluded = []
   try {
     // Capture and validate current identity history at BOTH endpoints before any
     // pending-intent deferral; a settled identity cannot become fresh by replacement.
@@ -396,10 +406,26 @@ function reviewInputs(repo, base, head, out, current = null) {
       omitted = changed.filter(p => after.claims.has(p)).map(p => after.claims.get(p))
       selected = changed.filter(p => !after.claims.has(p))
     }
+    // An excluded path is never sliced; the selection reports one count per glob that matched.
+    if (excludes.length) {
+      const kept = new Set(keeps.flatMap(g => [...matching(g)])), taken = new Set()
+      for (const g of excludes) {
+        const files = selected.filter(p => !kept.has(p) && !taken.has(p) && matching(g).has(p))
+        files.forEach(p => taken.add(p))
+        if (files.length) excluded.push({ glob: g, tree: treeLabel(g), files: files.length })
+      }
+      selected = selected.filter(p => !taken.has(p))
+    }
     sourceAvailable = true
-    // With zero omissions selected is the full captured range; a redundant long
-    // path argv can exceed ARG_MAX even though the Git source is readable.
-    writeFileSync(join(out, 'diffstat.txt'), selected.length ? git('diff', '--no-renames', '--stat', base + '..' + head, ...(omitted.length ? ['--', ...selected] : [])) : '')
+    // With zero omissions selected is the full captured range less the excluded globs; a
+    // redundant long path argv can exceed ARG_MAX even though the Git source is readable.
+    const scope = [':(top)', ...[...excludes, ...keeps].map(g => ':(top,exclude,glob)' + g)]
+    const keptSelected = selected.filter(p => keeps.length && keeps.some(g => matching(g).has(p)))
+    const stat = () => omitted.length ? git('diff', '--no-renames', '--stat', base + '..' + head, '--', ...selected)
+      : !excluded.length ? git('diff', '--no-renames', '--stat', base + '..' + head)
+      : Buffer.concat([globbed('diff', '--no-renames', '--stat', base + '..' + head, '--', ...scope),
+        ...(keptSelected.length ? [git('diff', '--no-renames', '--stat', base + '..' + head, '--', ...keptSelected)] : [])])
+    writeFileSync(join(out, 'diffstat.txt'), selected.length ? stat() : '')
     if (!gaps.length) {
       mkdirSync(join(out, 'slices'), { recursive: true })
       for (const [n, p] of selected.entries()) {
@@ -409,8 +435,8 @@ function reviewInputs(repo, base, head, out, current = null) {
         slices.push({ path: p, slice })
       }
     }
-  } catch (e) { sourceAvailable = false; gap('captured input extraction unavailable: ' + e.message); selected = changed; omitted = [] }
-  const result = { base, head, sourceAvailable, wholeRangeReady: false, status: gaps.length ? 'unavailable' : 'complete', changed: selected, slices, archives, collectionOrigins, omitted, gaps, outOfRange }
+  } catch (e) { sourceAvailable = false; gap('captured input extraction unavailable: ' + e.message); selected = changed; omitted = []; excluded = [] }
+  const result = { base, head, sourceAvailable, wholeRangeReady: false, status: gaps.length ? 'unavailable' : 'complete', changed: selected, slices, archives, collectionOrigins, omitted, excluded, gaps, outOfRange }
   writeFileSync(join(out, 'review-inputs.json'), JSON.stringify(result, null, 2) + '\n')
   writeFileSync(join(out, 'generated-input-provenance.md'), [
     '## Generated-input provenance',
@@ -419,6 +445,8 @@ function reviewInputs(repo, base, head, out, current = null) {
     'diffstat.txt describes selected product/input paths. Reports, findings and collection metadata remain ordinary review inputs.',
     ...collectionOrigins.map(o => '- Collection origin: ' + JSON.stringify(o)),
     ...omitted.map(o => '- ' + JSON.stringify(o)),
+    ...(excluded.length ? ['Out of review scope (the --exclude globs): changed, but neither sliced nor in diffstat.txt; one line per excluded tree:'] : []),
+    ...excluded.map(x => '- excluded: ' + x.tree + ' (' + x.files + ' files changed)'),
     ...gaps.map(g => '- Selection/evidence gap (unavailable): ' + g),
     ...(outOfRange.length ? ['- Outside captured range: ' + outOfRange.length + ' informational entries (neither selected nor waived); the first ' + Math.min(outOfRange.length, OUT_OF_RANGE_SAMPLE) + ' are listed; the full list is review-inputs.json outOfRange.'] : []),
     ...outOfRange.slice(0, OUT_OF_RANGE_SAMPLE).map(g => '- Outside captured range (informational; neither selected nor waived): ' + g),
@@ -504,7 +532,7 @@ if (kind === 'review-inputs') {
     posix.basename(run) === 'run.md' && L.worktree === worktree &&
     typeof invocationId === 'string' && /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/.test(invocationId)
     ? { run, invocationId, workspace: ws, reviewPath: join(ws, 'final-review-' + invocationId + '.md') } : null
-  reviewInputs(worktree, o.base, o.head, resolve(o['out-dir']), current)
+  reviewInputs(worktree, o.base, o.head, resolve(o['out-dir']), current, o.exclude || [], o.keep || [])
 }
 // A bounded artifact is a new report, never a rewrite of an unavailable invocation.
 // The writer rechecks captured source and inventory; sidecar claims alone grant no authority.

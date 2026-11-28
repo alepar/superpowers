@@ -75,11 +75,21 @@ In PR mode with a stated intent (Inputs), pass `--artifact "<branch@sha> vs <bas
 1. **Pre-flight** — resolve mode, inputs, and the project's environment profile (blast radius:
    prototype / internal / production / regulated). For PR source, pass `--repo`, `--base` and
    `--head` together: the assembler resolves both refs once to verified commit identities and
-   renders all diff/source commands from them. A PR number is resolved via `gh` when available.
+   renders all diff/source commands from them. Also pass the out-of-scope globs, `--exclude
+   'docs/superpowers/runs/**' --keep 'docs/superpowers/runs/*/[0-9]*-design.md' --exclude
+   'evidence/**' --exclude 'vendor/**' --exclude 'third_party/**'`: the review covers code,
+   prompts and skills, never run records, evidence or vendored trees (a run's dated
+   `*-design.md` specs are stated intent and stay in). Each excluded tree that changed reaches
+   triage and the scouts as one `excluded: <tree>/ (N files changed)` line, never as a diff.
+   When the change under review is itself in one of those trees (most of the changed files are
+   under it, or the caller or PR says so), drop that glob for this roast.
+   A PR number is resolved via `gh` when available.
    Supplied `--diff-stat` patch data remains supported; repository reads require captured commits.
    Filesystem views and mutable reproductions use unique review-owned detached worktrees at the
-   captured head plus separate output/temp directories. Record caller commit/status differences
-   with evidence, without assigning cause from differences alone; never switch or restore it.
+   captured head (`git worktree add --detach <path> <head>` in a scratch location, removed after)
+   plus separate output/temp directories. Leave the shared checkout's branch, HEAD, index and
+   files untouched, even when its HEAD already matches the captured head. Record caller
+   commit/status differences with evidence, without assigning cause from differences alone.
    Profile is auto-detected and stated in the report header — never asked.
 2. **Triage (sonnet, 1)** — design mode: name 1–3 domains for domain-expert scouts. PR mode:
    activate conditional lanes on top of the always-on core lanes. It runs alongside the core
@@ -190,7 +200,7 @@ super-roast verdict: <Blocking (n confirmed) | Should-fix (n confirmed) | clean 
 mode: design | PR        iteration: N of <cap>
 profile (assumed): <2–4 sentence inferred profile>
 inputs: <spec paths | branch@sha vs base@sha [+dirty] | PR#>
-delta vs prior: <X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed (<wB> Blocking) · <P> punch-listed (open)   ← iterations ≥ 2 only
+delta vs prior: <X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed (<wB> Blocking) · <P> punch-listed (open) · <U> unjudged (open) (<uB> Blocking)   ← iterations ≥ 2 only
 coverage: <lanes ran> · <raw → deduped → panel/spot-checked counts> · <judge completion %> · remainder-capped: N
 independence: <derived from the seats as invoked: same-family (<family>) — seat-differentiated panel | cross-family (<families>) — seat-differentiated panel | partial (subagent scouts, inline verification) | none (inline)> · rung: <Workflow | manual fan-out | inline>
 seat-agreement: panels N · rr 0.78 · rg 0.89 · fg 0.67 · unanimous 0.56 · ground-loo 0.83 (n=6) · reproduce 7/2/0 · refute 5/4/0 · ground 6/3/0   ← omitted entirely when N == 0
@@ -219,9 +229,12 @@ lane-yield (found/confirmed/unique/refuted): correctness 5/2/1/1 · security 0/0
 
 ## Escalations (need human)      ← UNVERIFIED externals, incomplete panels, unsettled panels, material dissent
 - <entry>   (or: - none)
+
+## Prior findings (no current packet)   ← iterations ≥ 2 only: prior confirmed and still-unjudged findings this round's packets do not carry
+- [SEV] <location> — <claim> (resolved | unjudged (open) | punch-listed (open))   (or: - none)
 ```
 
-Every section of the report body below (Confirmed findings, both Not verified sections, Beyond remainder cap, Rejected, Unverified nits, Escalations) holds only `- ` items, each with optional indented continuation lines, or the single item `- none`: no prose preamble, sub-headings or bold labels inside a section. An explanatory sentence goes outside the recognized sections.
+Every section of the report body below (Confirmed findings, both Not verified sections, Beyond remainder cap, Rejected, Unverified nits, Escalations, Prior findings) holds only `- ` items, each with optional indented continuation lines, or the single item `- none`: no prose preamble, sub-headings or bold labels inside a section. An explanatory sentence goes outside the recognized sections.
 
 The report is written to `docs/superpowers/reviews/YYYY-MM-DD-<topic>-roast-<mode>-N.md`
 (`<mode>` = `design` or `pr`, N = iteration) by the orchestrator, after the engine returns
@@ -247,15 +260,19 @@ The report is written to `docs/superpowers/reviews/YYYY-MM-DD-<topic>-roast-<mod
 
 **`[fix-regression]`** ends a finding's entry line when a `regression` scout (rounds ≥ 2) raised
 it: damage the previous round's fixes did. The engine adds the tag, not the reporter, and returns
-the same findings as `fixRegressions`. A caller's fix loop uses it to tell self-inflicted defects
+the same findings as `fixRegressions`. A finding at a punch-listed key's location gets no tag: it
+was left unfixed, so no fix damaged it. A caller's fix loop uses it to tell self-inflicted defects
 from the rest of a converged round's punch list.
 
 **`delta vs prior` and `[converged]` are the loop's convergence signal** (iterations ≥ 2
 only; both absent on iteration 1). The delta line counts confirmed findings as new / carried /
-resolved / regressed / punch-listed (open) against the prior report, with Blocking sub-counts.
-A punch-listed (open) finding was left unfixed on purpose: it never counts as resolved for any
-convergence or thrash reading, and, being sub-Blocking by construction, leaves `[converged]`
-unchanged. `[converged]` additionally requires caller-supplied `reviewReadiness` (Inputs table, review readiness row) with coverage
+resolved / regressed / punch-listed (open) / unjudged (open) against the prior report, with
+Blocking sub-counts. A prior finding is resolved only on current checked evidence that it is
+fixed (a regression scout's `fixesChecked` entry or seat evidence); one this round produced no
+evidence about is unjudged (open), because a scout told not to restate a prior finding proves
+nothing by its silence. A punch-listed (open) finding was left unfixed on purpose: it never counts
+as resolved for any convergence or thrash reading, and, being sub-Blocking by construction,
+leaves `[converged]` unchanged. An unjudged (open) Blocking prevents `[converged]`. `[converged]` additionally requires caller-supplied `reviewReadiness` (Inputs table, review readiness row) with coverage
 `complete`, provenance `available`, and a nonempty source-evidence basis. Pass that object with
 `assemble-args --review-readiness <json|@file>`; omission or malformed readiness is unknown,
 adds `[low coverage] [review readiness incomplete]`, and prevents convergence. The existing
@@ -264,11 +281,11 @@ any reporter readiness-incomplete veto also carries both qualifiers. Source read
 from stage `lowCoverage` and is returned in `coverage.reviewReadiness` and the coverage header.
 Successful scouts, selected paths and zero candidates do not establish it.
 `[converged]` appears on the verdict when that source-ready, non-degraded round ≥ 2 confirms **zero Blocking of any provenance** —
-no new, no regressed, no carried — and is never emitted alongside `[low coverage]` or
+no new, no regressed, no carried, no unjudged — and is never emitted alongside `[low coverage]` or
 `[panel-capped]` (a degraded round finding nothing is absence of evidence, not convergence).
 A round ≥ 2 whose scouts all returned and found nothing is marked `emptyLateRound`; the engine
 sets `[converged]` only when source readiness is affirmative and the reporter supplied no
-`[low coverage]` limitation. The engine preserves a reporter coverage limitation on every round,
+`[low coverage]` limitation and its delta line reports no unjudged (open) Blocking. The engine preserves a reporter coverage limitation on every round,
 including an empty late round, and retains bounded-source prose and historical/native holds.
 It tells the caller's fix loop to stop iterating and treat any remaining sub-Blocking
 confirmations as a punch list instead of running another round into diminishing returns.
@@ -324,7 +341,7 @@ Reasoning effort is set per stage through `config.effort` (defaults: triage `low
   manufacturing marginal findings against an already-hardened artifact; skipping them is how
   round 3 turns into noise a human has to shut down.
 - Emit `[converged]` on iteration 1, on a `[low coverage]`/`[panel-capped]` round, or while
-  any Blocking (new, carried, or regressed) is confirmed — a wrong `[converged]` ends the
+  any Blocking is confirmed (new, carried, or regressed) or unjudged (open) — a wrong `[converged]` ends the
   caller's fix loop with real work still open.
 - CONFIRM an external-fact claim without a resolved citation — if it can't be grounded via
   WebSearch/WebFetch, return UNVERIFIED, don't confirm from memory.

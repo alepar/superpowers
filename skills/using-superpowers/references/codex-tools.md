@@ -39,6 +39,77 @@ disagree.
   spawn allowlist — V2 accepts only V2-capable presets and hard-errors
   on the rest.
 
+## Approval and sandbox in unattended runs
+
+Children run under their coordinator's approval policy and sandbox.
+Codex copies the spawning turn's live `approval_policy` and sandbox onto
+every `spawn_agent` child, after any role file is applied. A role file
+(`[agents.<role>] config_file`), a spawn argument or a profile cannot
+set them per child (Codex 0.169). A child's approval prompt is shown in
+the child's thread only: the coordinator never sees it, so in a run
+nobody is watching, one prompt hangs the run.
+
+So launch the coordinator of an unattended run (super-auto, super-code,
+an eval) with no approvals inside a write-limited sandbox:
+
+```toml
+approval_policy = "never"
+sandbox_mode = "workspace-write"
+
+[sandbox_workspace_write]
+writable_roots = ["<each resolved root below>"]
+```
+
+Every child inherits it. A command outside the writable roots then
+fails, and the model sees the failure: a visible error beats an
+invisible prompt. The writable roots must cover every place the run
+writes routinely, resolved from the repo, not guessed: in a linked
+worktree `.git` is a pointer file, and the writes land elsewhere.
+
+- the run's worktree, its task worktrees and the plan workspace;
+- `git rev-parse --path-format=absolute --git-common-dir` (objects,
+  refs and `worktrees/`), and for a linked worktree
+  `git rev-parse --absolute-git-dir` (its index and HEAD);
+- the bd store: the first line of `bd where`;
+- the project's build and test caches (for example, in a Go repo,
+  `go env GOCACHE GOMODCACHE`);
+- `TMPDIR` (else `/tmp`).
+
+Add each as a root, or point it inside the run's roots before launch
+(for example `GOCACHE`, `GOMODCACHE` and `TMPDIR` under the run dir). In
+interactive `codex`, pass each root as `--add-dir <path>` with
+`-a never -s workspace-write`. With approvals off, a child cannot
+escalate: a command the sandbox blocks is a blocked failure, reported
+as such. Sessions a person drives and answers stay on `on-request`.
+
+### Commands Codex refuses with approvals off
+
+Codex's own dangerous-command check runs before the sandbox and ignores
+paths. With `approval_policy = "never"` it refuses outright a command
+that `on-request` would have asked about (Codex 0.169):
+
+- `rm` with a force option before `--`: `--force`, or any short cluster
+  holding `f` (`-f`, `-rf`, `-fr`, `-r -f`, `rm x -f`, `/bin/rm -rf`).
+  Codex answers:
+  `` `<command>` rejected: rm -f style commands are not permitted. Use a safer approach ``.
+  One such line anywhere in a
+  `bash -c` / `-lc` script (a newline, `&&`, an `if` body, `$(...)`)
+  refuses the whole script, as does one reached through `sudo`, `env`
+  or `trap`.
+- A command nested more than eight wrappers deep:
+  `` rejected: blocked by policy ``.
+
+Everything else runs inside the sandbox, `git` included. When the
+rejection is the `rm -f` one, it refuses the form of the command, not
+the cleanup: if the same effect on the same files is still authorized,
+use the equivalent on exactly those files and carry on: `rm` without
+`-f` (`rm`, `rm -r`, `rmdir`), `git restore <paths>`, or
+`git clean -f -- <paths>`. Never a bare `git clean` over the worktree,
+which deletes untracked work the cleanup was not about. Any other refusal stands.
+A refused command is never a request for user authorization, since
+nobody is there to grant one; when no equivalent applies, report the
+refusal verbatim as the blocker cause.
+
 ## Waiting on children
 
 `wait_agent` is an event subscription, not a poll: a long wait wakes
@@ -96,7 +167,7 @@ BRANCH=$(git branch --show-current)
 - `BRANCH` empty → detached HEAD (cannot branch/push/PR from sandbox)
 
 See `using-git-worktrees` Step 0 and `finishing-a-development-branch`
-Step 1 for how each skill uses these signals.
+Step 2 for how each skill uses these signals.
 
 ## Codex App Finishing
 

@@ -192,6 +192,20 @@ command or entry point for each), and that leaf must not be only the terminal re
 release-only defects in unexercised modes otherwise survive every per-bead gate. When one
 existing bead can absorb the exercise without becoming a bottleneck, extend it instead.
 
+**Acceptance holds only checks an agent can run in this run.** A check that needs a person, or a
+host, device, account or service this run does not have (another operating system, real
+hardware, a live external service, credentials), is a recorded limitation, not acceptance. Keep
+on the task what this host can build and prove (for example, a live check on this platform and a
+cross-compile for the others), and move each unavailable check to one follow-up filed with no
+parent: `bd create ... -l verify-elsewhere -l verify-for:<root-epic-id>`, titled
+`not verified: no host: <what, and why it needs that host>` and recording the evidence it owes.
+It has no `--parent`, no `sp:<root-epic-id>` label and no edges; the run does not execute it or
+gate work on it, and the run report lists it under **Not verified in this environment**. Before
+an acceptance line asks for a library capability on every platform (a terminal mode, an input
+API, a file-system call), check what the library offers on each platform the spec targets. Where
+it lacks the capability on a platform, keep the criterion as written and name the gap in the
+task's description so coverage raises it: never rewrite the acceptance to fit a fallback.
+
 **Decompose in two explicit steps.** **Step A — split:** carve the spec into minimal
 logically-cohesive chunks per the sizing bar below, ignoring narrative/build order while splitting.
 **Step B — connect, as a first approximation:** add blocking deps per the edge rules further

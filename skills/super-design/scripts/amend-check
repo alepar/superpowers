@@ -17,7 +17,7 @@
 #   supersedes: - <old bead id> -> <work: title that replaces it>   (design loop only; `supersedes: none` or absent lists nothing)
 #   unchanged: - <bullet>
 # Keys are canonical `[SEV] <location>` (a leading `rN ` is stripped everywhere; `; ` multi-location
-# keys are kept whole). Open ledger rows are those with status `open` or `open (returned rN)`, roast
+# keys are kept whole). Open ledger rows are those with status `open`, `open (returned rN)` or `open (fix not landed)`, roast
 # and final-review alike. `covers:` is the last ` | ` field of a work: line, so a ` | ` inside a key
 # is safe; its keys split only on `, [`.
 # Rules, checked in this order, each printing `reject: <rule>: <detail>`:
@@ -114,7 +114,7 @@ awk '
     rest = substr(rest, p + 3)
     p = index(rest, " · ")
     status = trim(p ? substr(rest, 1, p - 1) : rest)
-    if (status == "open" || status ~ /^open \(returned r[0-9]+\)$/) { key = trim(key); sub(/^r[0-9]+ /, "", key); print key }
+    if (status == "open" || status ~ /^open \((returned r[0-9]+|fix not landed)\)$/) { key = trim(key); sub(/^r[0-9]+ /, "", key); print key }
   }
 ' "$ledger" | awk '!seen[$0]++' > "$tmp/open.txt"
 

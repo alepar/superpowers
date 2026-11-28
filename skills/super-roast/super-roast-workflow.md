@@ -31,8 +31,9 @@ with a friction log invoked the roast, is appended to that log.
 - **`Workflow` tool available → dynamic workflow (preferred).** Run the engine script below
   via the tool. Triage → scout fan-out → dedupe → tiered judge panels → reporter, each phase
   model-tiered per role. Build its `args` with `bash <this skill's dir>/scripts/assemble-args`
-  (mode, inputs, iteration, the prior report on rounds ≥ 2, the spec or diff range; `--help` for
-  the rest): it assembles every prompt from this skill's files by round and fills the
+  (mode, inputs, iteration, the prior report on rounds ≥ 2, the spec or diff range, in PR mode
+  the out-of-scope `--exclude`/`--keep` globs from SKILL.md's Pre-flight; `--help` for the
+  rest): it assembles every prompt from this skill's files by round and fills the
   orchestrator-rendered markers. `--script <file>` writes the engine with those args embedded, to
   run as `Workflow({scriptPath: <file>})`; `--report-dir`/`--topic` print the report path.
 - **Subagents but no Workflow → manual fan-out**, same stage order, same prompts (dispatch the
@@ -72,7 +73,8 @@ with a friction log invoked the roast, is appended to that log.
      `coverage: unavailable — manual run, no coverage object` and `[low coverage]` on the
      verdict, never an omitted line: the caller reads a missing line as a clean run.
   5. Dispatch one reporter subagent (fable) with the packets, the profile, the coverage values,
-     the prior report and the punch-listed keys (if any); re-dispatch once on failure, then fall
+     the prior report, the punch-listed keys (if any) and every scout's `fixesChecked` entries
+     (each tagged with its scout's `lane`); re-dispatch once on failure, then fall
      back to the engine's `fallbackReport` rendering. Apply the engine's `enforce` step to a live report (header
      lines, omitted escalations, preExisting → FYI except test-lane findings).
 
@@ -111,15 +113,20 @@ full panel/promoted-tier packets, printed immediately after `independence:` and 
 entirely when there are none — then `lane-yield:`, the engine's per-lane
 found/confirmed/unique/refuted counts (below). Every rung writes every applicable line; `delta vs prior:` is
 `<X> new confirmed (<xB> Blocking) · <Y> carried (<yB> Blocking) · <Z> resolved · <W> regressed
-(<wB> Blocking) · <P> punch-listed (open)`, where `punch-listed (open)` counts prior confirmed
-findings on the caller's punch-listed list (`args.punchListed`) that this round did not
-re-surface: they are not resolved. The engine renders the `coverage:` and `seat-agreement:` lines
+(<wB> Blocking) · <P> punch-listed (open) · <U> unjudged (open) (<uB> Blocking)`, where
+`punch-listed (open)` counts prior confirmed findings on the caller's punch-listed list
+(`args.punchListed`) that this round did not re-surface, and `unjudged (open)` counts prior
+confirmed findings this round produced no current evidence about: neither is resolved. A prior
+finding is resolved only on current checked evidence, a `held: true` entry in a scout's
+`fixesChecked` or seat evidence on a current packet. The engine withholds `[converged]` when the
+reporter's delta line counts any unjudged (open) Blocking. The engine renders the `coverage:` and `seat-agreement:` lines
 and re-applies the coverage-derived verdict qualifiers. The reporter copies the lines verbatim,
 and after it returns the engine overwrites the `super-roast verdict:`, `coverage:`,
 `independence:` and `seat-agreement:` lines with its own values anyway (inserting any that are
 missing), so a miscopied header line cannot reach the caller. It also inserts `lane-yield:` and
 tags each `## Confirmed findings` entry `[lanes: <a>, <b>]` with the lanes of every finding at
-that location (before any `[fix-regression]` tag).
+that location (before any `[fix-regression]` tag). Its entry rewrites (lane and
+`[fix-regression]` tags, preExisting → FYI) touch only `## Confirmed findings` lines.
 
 **Lane attribution** measures which lanes earn their cost. Each merged finding's `lanes` is
 stripped before the seats judge, and both outputs are computed after judging. Per lane:
@@ -161,7 +168,7 @@ inserted value is never re-scanned for later tokens):
 | `prompts.dedupe` | `{{FINDINGS_JSON}}` (the raw findings, each with an `id` — its position — which the deduper's groups refer to) |
 | `prompts.seats.reproduce` / `.refute` / `.ground` | `{{FINDING_JSON}}` (without `suggestedSeverity` / `previouslyRejected` — judges rate blind) |
 | `prompts.seatsSafe.<seat>` (optional) | `{{FINDING_JSON}}` — the seat's static-review wording (artifact presented as text to analyse, no adversarial verbs, same method and output contract), used for the one re-dispatch of a seat that returned nothing; absent, the re-dispatch repeats `prompts.seats.<seat>` |
-| `prompts.reporter` | `{{PACKETS_JSON}}`, `{{PROFILE}}`, `{{PRIOR_REPORT}}`, `{{PUNCH_LISTED}}` (`args.punchListed`: the prior round's punch-listed keys, one `[SEV] <location>` per line, or empty), `{{COVERAGE_JSON}}`, `{{COVERAGE_LINE}}`, `{{SEAT_AGREEMENT}}`, `{{MODE}}`, `{{ITERATION}}`, `{{INPUTS}}` — plus `{{INDEPENDENCE}}`, which the **orchestrator** renders before the script runs (the script never sees model families; the orchestrator chose them), from the seat roster as actually configured: `same-family (<family>) — seat-differentiated panel`, `cross-family (<families>) — seat-differentiated panel`, `partial (subagent scouts, inline verification)`, or `none (inline)`, followed by ` · rung: <rung>`. Left unrendered, the literal token reaches the report — visibly wrong, which is the intended failure over a silently wrong family. The orchestrator also passes the same rendered string as `args.independence`, which the engine's fallback report uses if the reporter fails (it falls back to reading the rendered prompt only when the arg is absent) |
+| `prompts.reporter` | `{{PACKETS_JSON}}`, `{{PROFILE}}`, `{{PRIOR_REPORT}}`, `{{PUNCH_LISTED}}` (`args.punchListed`: the prior round's punch-listed keys, one `[SEV] <location>` per line, or empty), `{{FIXES_CHECKED}}` (every scout's `fixesChecked` entries, each `{prior, held, evidence, lane}`, or `[]`), `{{COVERAGE_JSON}}`, `{{COVERAGE_LINE}}`, `{{SEAT_AGREEMENT}}`, `{{MODE}}`, `{{ITERATION}}`, `{{INPUTS}}` — plus `{{INDEPENDENCE}}`, which the **orchestrator** renders before the script runs (the script never sees model families; the orchestrator chose them), from the seat roster as actually configured: `same-family (<family>) — seat-differentiated panel`, `cross-family (<families>) — seat-differentiated panel`, `partial (subagent scouts, inline verification)`, or `none (inline)`, followed by ` · rung: <rung>`. Left unrendered, the literal token reaches the report — visibly wrong, which is the intended failure over a silently wrong family. The orchestrator also passes the same rendered string as `args.independence`, which the engine's fallback report uses if the reporter fails (it falls back to reading the rendered prompt only when the arg is absent) |
 
 **`prompts.scoutDomainTemplate` is why design-mode domain scouts work at all.** Domain names are
 open-ended free text produced by triage **at runtime**, but `args.prompts` is assembled by the
@@ -262,8 +269,11 @@ const FINDING_PROPS = {
   kind:{enum:['GAP','UNVERIFIED-ASSUMPTION','ISSUE']}, evidence:{type:'string'}, spike:{type:'string'},
   previouslyRejected:{type:'boolean'},
 }
+// fixesChecked: the regression scout's per-prior-finding check, the only evidence that resolves one.
 const FINDINGS = { type:'object', properties:{ findings:{ type:'array', items:{ type:'object', properties:FINDING_PROPS,
-  required:['claim','location','category','external','evidence'] } } }, required:['findings'] }
+  required:['claim','location','category','external','evidence'] } },
+  fixesChecked:{ type:'array', items:{ type:'object', properties:{ prior:{type:'string'}, held:{type:'boolean'}, evidence:{type:'string'} },
+  required:['prior','held','evidence'] } } }, required:['findings'] }
 // Dedupe returns groups of raw-finding ids, not rewritten findings; the engine assembles each merged
 // finding from its members, so no claim, location or evidence is lost in transcription.
 const GROUPS = { type:'object', properties:{ groups:{ type:'array', items:{ type:'object', properties:{
@@ -362,7 +372,8 @@ const scoutsDead = deadScouts.length
 // category is stamped with the dispatching scout's name: lane attribution and keepsSeverity
 // must not rest on a model-reported string.
 const raw = scoutResults.flatMap((r, i) => (r?.findings ?? []).map(f => ({ ...f, category: scoutNames[i] })))
-log(`scouts: ${scoutNames.length - scoutsDead}/${scoutNames.length} returned · raw findings ${raw.length}`)
+const fixesChecked = scoutResults.flatMap((r, i) => (r?.fixesChecked ?? []).map(c => ({ ...c, lane: scoutNames[i] })))
+log(`scouts: ${scoutNames.length - scoutsDead}/${scoutNames.length} returned · raw findings ${raw.length}${fixesChecked.length ? ` · fix checks ${fixesChecked.length}` : ''}`)
 
 // Dedupe — groups raw findings by id, suggests a severity, ranks. Skipped when there is nothing to
 // merge; re-dispatched once on a dead response.
@@ -439,7 +450,10 @@ const lanesOf = f => f.lanes ?? [f.category]
 const TEST_LANES = ['test-causality-lifecycle', 'test-isolation-environment', 'test-suite-cost']
 const keepsSeverity = f => lanesOf(f).some(l => TEST_LANES.includes(l))
 const demoted = p => p.preExisting && !keepsSeverity(p.finding)
-const isFixRegression = f => lanesOf(f).includes('regression')
+// A punch-listed prior finding was left unfixed on purpose: no fix, so no fix damage. Its key's
+// location keeps it untagged, and the reporter can still mark it punch-listed (open).
+const punchedLocs = new Set(String(punchListed).split('\n').map(k => k.trim().replace(/^\[[^\]]+\] /, '')).filter(Boolean))
+const isFixRegression = f => lanesOf(f).includes('regression') && !punchedLocs.has(f.location)
 
 // site: 'panel' | 'spot' — stub keys are call-site qualified (seat:<name>:<site>) so one canned
 // value per key stays deterministic. The re-dispatch uses `prompts.seatsSafe[name]` when supplied
@@ -604,6 +618,7 @@ const reporterPrompt = fill(prompts.reporter, {
   '{{PROFILE}}': profile,
   '{{PRIOR_REPORT}}': priorReport,
   '{{PUNCH_LISTED}}': punchListed,
+  '{{FIXES_CHECKED}}': JSON.stringify(fixesChecked),
   '{{COVERAGE_JSON}}': JSON.stringify(coverage),
   '{{COVERAGE_LINE}}': coverageLine,
   '{{SEAT_AGREEMENT}}': seatAgreement,
@@ -665,12 +680,23 @@ function enforce(rep) {
   const firstSection = lines.findIndex(l => l.startsWith('## '))
   const reporterCoverage = lines.slice(0, firstSection < 0 ? undefined : firstSection)
     .filter(l => l.startsWith('coverage:') && l !== coverageLine).map(l => l.slice('coverage:'.length).trimStart())
-  let verdict = qualify(rep.verdict, true, reporterLow, reporterReadinessIncomplete)
+  // A prior Blocking the round produced no evidence about is not a fixed one: no convergence.
+  const deltaLine = lines.slice(0, firstSection < 0 ? undefined : firstSection).find(l => l.startsWith('delta vs prior:')) ?? ''
+  const unjudgedBlocking = Number((deltaLine.match(/(\d+) unjudged \(open\) \((\d+) Blocking\)/) ?? [])[2] ?? 0)
+  let verdict = qualify(rep.verdict, unjudgedBlocking === 0, reporterLow, reporterReadinessIncomplete)
+  if (unjudgedBlocking) enforcement.push(`converged: withheld, ${unjudgedBlocking} prior Blocking unjudged (open)`)
+  // Entry rewrites touch `## Confirmed findings` only; `## Prior findings` lines stay as written.
+  const confirmedRange = () => {
+    const start = lines.findIndex(l => l.startsWith('## Confirmed findings'))
+    const end = start < 0 ? -1 : lines.findIndex((l, i) => i > start && l.startsWith('## '))
+    return i => start >= 0 && i > start && (end < 0 || i < end)
+  }
   // preExisting → FYI, matched on the `- [SEV] <location> — ` entry line.
   let rewrote = 0
   for (const p of packets.filter(demoted)) {
     const re = new RegExp(`^(\\s*- )\\[(Blocking|Should-fix|Nit)\\] (${p.finding.location.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} — )`)
-    lines = lines.map(l => re.test(l) ? (rewrote++, l.replace(re, '$1[FYI] $3')) : l)
+    const inConfirmed = confirmedRange()
+    lines = lines.map((l, i) => inConfirmed(i) && re.test(l) ? (rewrote++, l.replace(re, '$1[FYI] $3')) : l)
   }
   if (rewrote) {
     enforcement.push(`preExisting: ${rewrote} entr${rewrote === 1 ? 'y' : 'ies'} rewritten to FYI`)
@@ -696,7 +722,8 @@ function enforce(rep) {
   let tagged = 0
   for (const p of packets.filter(p => isFixRegression(p.finding))) {
     const re = entryRe(p.finding.location)
-    lines = lines.map(l => re.test(l) && !l.includes('[fix-regression]') ? (tagged++, `${l} [fix-regression]`) : l)
+    const inConfirmed = confirmedRange()
+    lines = lines.map((l, i) => inConfirmed(i) && re.test(l) && !l.includes('[fix-regression]') ? (tagged++, `${l} [fix-regression]`) : l)
   }
   if (tagged) enforcement.push(`fix-regression: ${tagged} entr${tagged === 1 ? 'y' : 'ies'} tagged`)
   // Header lines live above the first `## ` section.
@@ -883,12 +910,14 @@ should cover, beyond the canonical topology and the two variants above:
 | empty raw | every scout returns `[]` | no dedupe call, 6 agents |
 | empty late round | round 2 with prior report, every scout returns `[]`, reporter adds `[low coverage]` | `emptyLateRound` true; reporter `[low coverage]` preserved, never `[converged]`; unknown/nonready source also adds `[review readiness incomplete]` |
 | source readiness | empty late round, complete/available readiness with nonempty evidence basis, reporter has no coverage limitation | `[converged]`; bounded/unknown/malformed/missing readiness prevents convergence and is written in the coverage header |
+| unjudged prior Blocking | source-ready empty late round; the reporter's delta line counts `1 unjudged (open) (1 Blocking)` | never `[converged]`, even when the reporter added it; `enforcement` names the withheld convergence; a scout's `fixesChecked` entries reach the reporter prompt tagged with its lane |
 | dedupe orphans | groups claim only ids 0, 1, 4 (plus an out-of-range id) | `dedupeOrphans` 5, `dedupedFindings` 7 |
 | reporter enforcement | refute seats CONFIRM with `preExisting`; reporter returns a made-up `coverage:` line and Blocking entries | entries rewritten to `[FYI]`, verdict severity recomputed, header lines overwritten, `enforcement` non-empty |
 | real path | `dryRun: false`, `prompts.seatsSafe`, first seat dispatch returns null | retry uses the safe wording; seat prompt has no `suggestedSeverity`; dedupe prompt carries numbered ids; effort `low`/`medium`/`high` on triage/spot/reporter; lanes enum from `prompts.scouts` |
 | design domains | triage returns `q, q, r, s, t` | 3 domain scouts (Set-deduped), `domainsDropped` `["t"]`, no widening; dryRun effort `low` on every call |
 | triage overlap | triage resolves only after a core scout is dispatched | core scouts dispatched before the activated lane |
 | fix-regression | round 2: a `regression` scout finding and a core finding, both confirmed; the reporter returns plain entry lines | only the regression entry ends `[fix-regression]`; `fixRegressions` names it; seat prompts carry no `lanes` |
+| punch-listed regression | round 2: two `regression` findings, one at a `punchListed` key's location; the reporter also lists one under `## Prior findings` | only the other entry ends `[fix-regression]` and only it is in `fixRegressions`; the `## Prior findings` line is unchanged |
 | lane attribution | two lanes flag one location; a merged group; a REJECTed panel; a dead scout; a dead reporter | each Confirmed entry carries the union of its location's lanes; a shared finding counts confirmed but not unique; the rejected lane counts refuted; `<lane> dead`; the fallback report tags Confirmed entries only; agent count unchanged |
 
 `tests/super-roast/test-assemble-args.sh` runs the assembled round-1/round-2 PR and round-1

@@ -151,6 +151,59 @@ assert.equal(bad.status, 2, 'unresolved source is rejected even with a supplied 
 console.log('  [PASS] captured PR inputs survive caller advancement; independent mutable reproductions preserve caller and sibling')
 NODE
 
+echo "assemble-args: excluded trees"
+# Breaks caught: run records or vendored trees in the scouts' diff or triage's stat; an excluded
+# tree dropped without a trace; the run's design spec excluded with its run records.
+set +e
+node --input-type=module - "$A" "$T" <<'NODE'
+import assert from 'node:assert/strict'
+import { mkdirSync, writeFileSync } from 'node:fs'
+import { execFileSync, spawnSync } from 'node:child_process'
+const [assembler, dir] = process.argv.slice(2)
+const repo = `${dir}/excludes`
+const run = `${repo}/docs/superpowers/runs/2026-01-01-x`
+mkdirSync(`${run}/reviews/i`, { recursive: true }); mkdirSync(`${repo}/vendor/lib`, { recursive: true })
+const git = (...args) => execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8' }).trim()
+git('init', '-q'); git('config', 'user.email', 'test@example.com'); git('config', 'user.name', 'Test')
+writeFileSync(`${repo}/product.txt`, 'base\n'); git('add', '.'); git('commit', '-qm', 'base')
+const base = git('rev-parse', 'HEAD')
+writeFileSync(`${repo}/product.txt`, 'reviewed\n')
+for (const f of ['run.md', 'reviews/i/final-review-i.md', 'findings-ledger-design.md']) writeFileSync(`${run}/${f}`, 'canary\n')
+writeFileSync(`${run}/2026-01-01-x-design.md`, 'spec\n')
+writeFileSync(`${repo}/vendor/lib/lib.go`, 'canary\n')
+git('add', '.'); git('commit', '-qm', 'reviewed')
+const head = git('rev-parse', 'HEAD')
+const flags = ['--exclude', 'docs/superpowers/runs/**', '--keep', 'docs/superpowers/runs/*/[0-9]*-design.md', '--exclude', 'evidence/**', '--exclude', 'vendor/**']
+const result = spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', 'x', '--repo', repo, '--base', base, '--head', head, ...flags], { encoding: 'utf8' })
+assert.equal(result.status, 0, result.stderr)
+const args = JSON.parse(result.stdout)
+const cmd = args.prompts.scouts.correctness.match(/all diffs use `([^`]*)`/)[1]
+const diff = execFileSync('bash', ['-c', cmd], { encoding: 'utf8' })
+assert.ok(diff.includes('product.txt') && diff.includes('2026-01-01-x-design.md'), 'the diff keeps product code and the run spec')
+assert.ok(!diff.includes('canary'), 'the diff leaves run records and the vendored tree out')
+assert.equal(diff.split('\n').filter(l => l.startsWith('diff --git')).length, 2, 'each kept path appears once')
+const fileCmd = args.prompts.scouts.correctness.match(/To view one file's diff, run `([^`]*)`/)[1]
+assert.ok(fileCmd.endsWith(' -- <path>'), 'the per-file form takes one path')
+const fileDiff = execFileSync('bash', ['-c', fileCmd.replace('<path>', 'product.txt')], { encoding: 'utf8' })
+assert.equal(fileDiff.split('\n').filter(l => l.startsWith('diff --git')).length, 1, 'the per-file form shows only that file')
+for (const text of [args.prompts.triage, args.prompts.scouts.correctness]) {
+  assert.ok(text.includes('excluded: docs/superpowers/runs/ (3 files changed)'), 'run records are summarized')
+  assert.ok(text.includes('excluded: vendor/ (1 files changed)'), 'the vendored tree is summarized')
+  assert.ok(!text.includes('excluded: evidence/'), 'a tree without changes gets no line')
+}
+assert.ok(!/canary|lib\.go|run\.md/.test(args.prompts.triage), 'triage stat names no excluded path')
+const supplied = spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', 'x', '--repo', repo, '--base', base, '--head', head, '--diff-stat', 'M product.txt', ...flags], { encoding: 'utf8' })
+assert.equal(supplied.status, 0, supplied.stderr)
+assert.ok(JSON.parse(supplied.stdout).prompts.triage.includes('M product.txt\nexcluded: docs/superpowers/runs/ (3 files changed)'), 'a supplied stat gains the summary lines')
+const plain = JSON.parse(spawnSync('bash', [assembler, '--mode', 'pr', '--inputs', 'x', '--repo', repo, '--base', base, '--head', head], { encoding: 'utf8' }).stdout)
+assert.ok(plain.prompts.triage.includes('vendor/lib/lib.go') && !plain.prompts.triage.includes('excluded:'), 'without --exclude nothing is left out')
+assert.ok(!plain.prompts.scouts.correctness.includes('To view one file'), 'without --exclude the plain diff command already takes a path')
+console.log('  [PASS] excluded globs leave the diff and stat, one summary line per changed tree; kept specs stay')
+NODE
+rc=$?
+set -e
+[ "$rc" -eq 0 ] || FAILURES=$((FAILURES + 1))
+
 echo "assemble-args: validation"
 run bash "$A" --mode pr --inputs x --iteration 2 --diff-stat x
 assert_eq "$code" 2 "round 2 without a prior report exits 2"

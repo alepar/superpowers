@@ -57,8 +57,11 @@ happened; it is never a clean review.
 ## Test changes
 
 In [WORKTREE], run `git diff --stat [BASE]..[HEAD] -- [TEST_PATHSPECS]` and
-`git diff [BASE]..[HEAD] -- [TEST_PATHSPECS]`. A test deleted, skipped, or loosened, or whose expected
-values were edited to match the implementation, with no justification in the brief, is Important.
+`git diff [BASE]..[HEAD] -- [TEST_PATHSPECS]`, and read the test diff. A changed or removed test is
+fine when the brief or the implementer's report gives the reason (the task changes the behavior the
+test pinned, or the test was wrong). A test deleted, skipped, loosened, or whose expected values
+were edited, with no reason given, or one changed to pass over a product defect (the product
+behaves wrongly and the test was changed to pass anyway), is Important.
 "Test changes: none" is valid only with the command you ran stated; if the diff command errors,
 return INVALID, as for an empty package.
 
@@ -99,6 +102,9 @@ For explicitly required live checks, return `requiredLiveChecks` entries contain
 simulated/fallback success leaves it outstanding. Failed and unavailable remain separate outcomes.
 Missing fields are evidence gaps when required. Judge coverage from the task's requirements;
 the coordinator's exact identity/kind/outcome classification does not establish semantic coverage.
+A check the report names under "Concerns" as `not verified: no host: ...` (it needs a host, device,
+account or service this run does not have) is a recorded limitation, not a finding and not missing
+evidence. Flag it only when the check could plainly have run here.
 A failure the report calls pre-existing, unrelated, identical at base, environment-dependent or flaky
 is glossed over unless the report also shows that test's result at [BASE] (or, for flaky, repeated
 runs): without it, Important.
@@ -110,9 +116,10 @@ Important when the leaked process is a daemon or server, or when it survived bei
 ## What to check
 
 1. Spec: a requirement the diff doesn't implement (Missing), a feature built the wrong way
-   (Misunderstood), or significant unrequested work (Extra). If the brief lists several files, each
-   with its own change, every listed file needs its hunk. A requirement you cannot verify from the
-   diff alone is a ⚠️ item; don't widen your search for it.
+   (Misunderstood), or unrequested work that adds risk or behavior the task did not want (Extra).
+   A seam, helper, fixture or test change the task needed, listed in the report, is not Extra. If
+   the brief lists several files, each with its own change, every listed file needs its hunk. A
+   requirement you cannot verify from the diff alone is a ⚠️ item; don't widen your search for it.
 2. Correctness later tasks depend on: wrong or fragile behavior, swallowed errors, tests that assert
    nothing.
 3. Reachability, when the task touches a shared boundary, an authority check, a durability
@@ -156,7 +163,8 @@ baseline/owner histories remain explicit gaps for reconciliation rather than rep
   including a path that loses or overwrites user data.
 - **Important:** the task can't be trusted until it is fixed: a missed requirement, incorrect or
   fragile behavior, missing or implausible test evidence, a weakened test — including a test marked
-  ignored or skipped because the product behaves wrongly. If the plan or brief
+  ignored or skipped because the product behaves wrongly — or output that silently drops, truncates
+  or alters input the task must preserve. If the plan or brief
   explicitly mandates something this rubric calls a defect, report it as Important and label it
   plan-mandated.
   A violation of an explicit project or brief constraint, commit-message policy included, is a missed requirement: Important, not style.

@@ -197,9 +197,9 @@ The schema home for `run.md`: every field's name and line format. The numbered i
      punch-listed`, written by `super-auto` in the same phase-5 step — not by the scope-filter
      pass itself. A resume matches each round's findings against this record exactly on the
      `[SEV] <location>` key and replays the disposition rather than re-dispatching the filter.
-   - `regressionPass-round-<N>` — the one regression-only fix pass a `[converged]` round with
-     `[fix-regression]` findings gets (SKILL.md §Regression-only pass): the count filed, each finding's
-     `[SEV] <location>` key verbatim, and `no re-roast`:
+   - `regressionPass-round-<N>` — the one last fix pass a `[converged]` round gets, once per run
+     (SKILL.md §Last fix pass): its `[fix-regression]` findings and its in-scope Should-fix findings.
+     It holds the count filed, each finding's `[SEV] <location>` key verbatim, and `no re-roast`:
 
      ```
      regressionPass-round-2: 2 filed · [Should-fix] src/client/seat.ts:41, [Should-fix] src/rejections.ts:88 · no re-roast

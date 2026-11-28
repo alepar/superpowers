@@ -3,7 +3,8 @@
 # roast fix loops (super-auto phase 5 code loop, super-design's design loop) route on.
 #
 #   findings-ledger --loop code|design --out LEDGER --report ROUND=PATH [--report ROUND=PATH ...]
-#                   [--final-review ROUND=KEYS_FILE ...] [--punch-list FILE] [--overrides FILE]
+#                   [--final-review ROUND=KEYS_FILE ...] [--punch-list FILE] [--unlanded FILE]
+#                   [--overrides FILE]
 #
 # Role. The ledger owns per-key identity across rounds, each key's status and the one
 # status-resolution table, the report pointers (`source`, `text`), the degraded-round rule, the
@@ -34,6 +35,11 @@
 #                           stays open. The header is never a key row. They never feed the mechanical triggers. A round given twice
 #                           is bad input (exit 2), as for --report.
 #   --punch-list FILE       keys the reporter punch-listed, one per line (leading `rN ` allowed).
+#   --unlanded FILE         (code loop) keys whose fix was filed but never proven merged, one per line
+#                           (leading `rN ` allowed): their fix never landed, so absence from a later
+#                           round does not resolve them, and a round that confirms them again does
+#                           not hide it: they stay `open (fix not landed)` either way (never
+#                           `returned`, since no fix landed for them to come back from).
 #   --overrides FILE        see "Overrides file".
 #
 # Absent, empty, degraded. Each per-round input says what those mean, and a round with no real review
@@ -52,6 +58,7 @@
 #                     or empty means no review. A no-review round is treated like a degraded one.
 #   --punch-list      absent or empty: no key is `punch-listed`. The caller passes the latest existing
 #                     punch list, because a redesign round writes none.
+#   --unlanded        absent or empty: every fix is taken as landed.
 #
 # Canonical key form: `[SEV] <location>`, the text `report-verdict --keys` prints (`[SEV]` is
 # Blocking, Should-fix, Nit or Must-fix; `<location>` is the text before the finding's first ` — `).
@@ -75,7 +82,8 @@
 # Statuses: `open` (confirmed in the latest round); `open (returned r<N>)` (confirmed in latest round
 # N, confirmed earlier, absent from the nearest preceding non-degraded round, and first raised before that round); `resolved@r<K>`
 # (confirmed earlier, absent from non-degraded round K, the first such round after its last
-# confirmation, not punch-listed); `punch-listed`; `dissolved@r<N>`; `disputed@r<N> (<reason>)`.
+# confirmation, not punch-listed); `open (fix not landed)` (any key on the --unlanded list that
+# would otherwise be open, returned or resolved); `punch-listed`; `dissolved@r<N>`; `disputed@r<N> (<reason>)`.
 #
 # Status resolution, in order (the one table):
 #   1. an overrides line whose key no input report or final-review file contains (mis-keyed, or held
@@ -85,10 +93,14 @@
 #   3. `disputed@rN` stands until a later override line for that key (sticky);
 #   4. `dissolved@rN` stands unless the key is confirmed in a round later than N, where the computed
 #      `open` / `open (returned rN)` wins;
-#   5. otherwise the computed status (`open`, `open (returned rN)`, `resolved@rK`, `punch-listed`).
+#   5. otherwise the computed status (`open`, `open (returned rN)`, `open (fix not landed)`,
+#      `resolved@rK`, `punch-listed`).
 # Degraded round: a verdict line carrying `[low coverage]` or `[panel-capped: ...]`. Absence from a
 # degraded round changes no status (the key keeps its previous status) and the key-absence signals
 # (no-progress, the `returned` half of recurrence) are not computed across one.
+# Unjudged in a round: a key the round's report lists under `## Prior findings (no current packet)`
+# as `unjudged (open)` (the reporter had no current evidence either way). That round does not
+# resolve the key, as if it were degraded for that key alone; it stays open.
 #
 # Output (written beside --out, then moved into place):
 #   # findings ledger — <loop> — through r<N>
@@ -114,17 +126,17 @@
 #                counts and not-computable=regressed. (b) a Blocking or Should-fix key whose final
 #                status is `open (returned rN)`; not computed when N-1 is degraded or missing.
 #
-# Exit 0 on success; 2 on bad input (a missing or unreadable report, keys file, punch list or
+# Exit 0 on success; 2 on bad input (a missing or unreadable report, keys file, punch list, unlanded list or
 # overrides file; a report kind with no keys, i.e. report-verdict --keys exit 3; a bad argument),
 # with `findings-ledger: bad input: <path>: <why>` on stderr naming the input so the loop can drop it.
 set -euo pipefail
 
 die() { echo "findings-ledger: $*" >&2; exit 2; }
-usage() { die "usage: findings-ledger --loop code|design --out LEDGER --report ROUND=PATH ... [--final-review ROUND=KEYS_FILE ...] [--punch-list FILE] [--overrides FILE]"; }
+usage() { die "usage: findings-ledger --loop code|design --out LEDGER --report ROUND=PATH ... [--final-review ROUND=KEYS_FILE ...] [--punch-list FILE] [--unlanded FILE] [--overrides FILE]"; }
 
 RV="$(cd "$(dirname "$0")/../.." && pwd)/super-code/scripts/report-verdict"
 
-loop='' out='' punch='' overrides=''
+loop='' out='' punch='' unlanded='' overrides=''
 reports=() finals=()
 while [ $# -gt 0 ]; do
   [ $# -ge 2 ] || usage
@@ -134,6 +146,7 @@ while [ $# -gt 0 ]; do
     --report) reports+=("$2") ;;
     --final-review) finals+=("$2") ;;
     --punch-list) punch=$2 ;;
+    --unlanded) unlanded=$2 ;;
     --overrides) overrides=$2 ;;
     *) usage ;;
   esac
@@ -146,6 +159,7 @@ if [ "$loop" = design ] && [ "${#finals[@]}" -gt 0 ]; then die "--final-review i
 
 readable() { [ -f "$1" ] && [ -r "$1" ] || die "bad input: $1: not a readable file"; }
 [ -z "$punch" ] || readable "$punch"
+[ -z "$unlanded" ] || readable "$unlanded"
 [ -z "$overrides" ] || readable "$overrides"
 [ -d "$(dirname "$out")" ] || die "bad input: $out: output directory does not exist"
 
@@ -187,6 +201,16 @@ while IFS=$'\t' read -r round path; do
   printf '%s\n' "$keys" | while IFS= read -r k; do
     [ -z "$k" ] || printf 'R\t%s\t%s\t%s\n' "$round" "$path" "$k"
   done >> "$stream"
+  # Prior findings the round's reporter marked `unjudged (open)` (no current evidence either way):
+  # that round does not resolve them.
+  awk -v r="$round" '
+    { sub(/\r$/, "") }
+    /^## / { insec = ($0 ~ /^## Prior findings \(no current packet\)/); next }
+    insec && /^- \[[^]]+\] / && /\(unjudged \(open\)\)[ \t]*$/ {
+      sub(/^- /, ""); i = index($0, " — "); if (i > 0) $0 = substr($0, 1, i - 1)
+      sub(/[ \t]+$/, ""); print "J\t" r "\t" $0
+    }
+  ' "$path" >> "$stream"
 done <<EOF
 $sorted
 EOF
@@ -233,6 +257,9 @@ fi
 if [ -n "$punch" ]; then
   while IFS= read -r k || [ -n "$k" ]; do [ -z "$k" ] || printf 'P\t%s\n' "$k"; done < "$punch" >> "$stream"
 fi
+if [ -n "$unlanded" ]; then
+  while IFS= read -r k || [ -n "$k" ]; do [ -z "$k" ] || printf 'U\t%s\n' "$k"; done < "$unlanded" >> "$stream"
+fi
 if [ -n "$overrides" ]; then
   while IFS= read -r k || [ -n "$k" ]; do [ -z "$k" ] || printf 'O\t%s\n' "$k"; done < "$overrides" >> "$stream"
 fi
@@ -271,6 +298,8 @@ awk -v loop="$loop" '
     next
   }
   $1 == "P" { k = canon($2); if (k != "") punched[k] = 1; next }
+  $1 == "U" { k = canon($2); if (k != "") unlanded[k] = 1; next }
+  $1 == "J" { k = canon($3); if (k != "") unj[$2 + 0, k] = 1; next }
   $1 == "O" { olines[++no] = $2; next }
   END {
     # Overrides (status-resolution rules 1 and 2).
@@ -289,14 +318,17 @@ awk -v loop="$loop" '
       k = ord[i]
       if (src[k] == "final-review") {
         s0 = (frmax == 0 || conf[frmax, k]) ? "open" : "resolved@r" frmax
+        if (k in unlanded) s0 = "open (fix not landed)"
       } else if (conf[N, k]) {
         p = 0
         for (j = nr; j >= 1; j--) if (rounds[j] < N && !deg[rounds[j]]) { p = rounds[j]; break }
-        if (first[k] < N && p && first[k] < p && !conf[p, k]) s0 = "open (returned r" N ")"; else s0 = "open"
+        if (first[k] < N && p && first[k] < p && !conf[p, k] && !unj[p, k]) s0 = "open (returned r" N ")"; else s0 = "open"
+        if (k in unlanded) s0 = "open (fix not landed)"
       } else {
         s0 = ""
-        for (j = 1; j <= nr; j++) if (rounds[j] > last[k] && !deg[rounds[j]]) { s0 = "resolved@r" rounds[j]; break }
+        for (j = 1; j <= nr; j++) if (rounds[j] > last[k] && !deg[rounds[j]] && !unj[rounds[j], k]) { s0 = "resolved@r" rounds[j]; break }
         if (s0 == "") s0 = "open"
+        else if (k in unlanded) s0 = "open (fix not landed)"
         else if (k in punched) s0 = "punch-listed"
       }
       st[k] = s0

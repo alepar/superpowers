@@ -1033,7 +1033,7 @@ async function main() {
     const merge = promptOf(out.trace, 'merge:bd-101')
     check(/Run no tests in this dispatch/.test(merge ?? '') && !/project test command/.test(merge ?? ''), 'merge dispatch runs no tests (no per-merge gate)', merge)
     check(merge?.includes('rebase `task-bd-101`') && merge?.includes('git merge --no-ff --no-commit task-bd-101'), 'merge dispatch rebases and merges the task BRANCH ref, not the worktree path', merge)
-    check(/resolves the conflicted hunks only/.test(merge ?? '') && /do not run, add, delete, skip, or loosen any test/.test(merge ?? ''), 'merge dispatch fences conflict resolution to the conflicted hunks', merge)
+    check(/Resolve within the conflicted hunks by default/.test(merge ?? '') && /adjacent edits the resolution needs/.test(merge ?? '') && /list each, with why, in notes/.test(merge ?? '') && /never loosen a test/.test(merge ?? ''), 'merge dispatch: conflicts resolved in the hunks by default, needed adjacent edits listed in notes, no loosened tests', merge)
 
     check(promptOf(out.trace, 'missing-blocker:bd-104') === null, 'self-filed bead present, so no missing-blocker fallback fired')
     check(/ONLY the `blocker` label/.test(implementerTemplate) && /no `--parent`/.test(implementerTemplate), 'implementer template\'s self-filing instruction is label-only')
@@ -3255,6 +3255,7 @@ async function main() {
     assertNoThrow(cr)
     check(/consumes bd-101, which merged after it branched/.test(promptOf(cr.trace, 'merge:bd-102') ?? ''), 'a consumer whose producer landed after it branched is sent to the seam review', (promptOf(cr.trace, 'merge:bd-102') ?? '').slice(0, 0))
     check(/A .consumes <id>. entry names a task/.test(promptOf(cr.trace, 'seam-review:bd-102') ?? ''), 'the seam review checks the consumer against the producer interface')
+    check(!/its notes on edits outside/.test(promptOf(cr.trace, 'seam-review:bd-102') ?? 'its notes on edits outside'), 'no merge notes, no notes clause in the seam review')
     const lateAt = label => cr.trace.findIndex(t => t.label === label)
     check(cr.result?.completed.length === 2 && lateAt('impl:bd-102') < lateAt('edge-add:1') && lateAt('edge-add:1') < lateAt('merge:bd-102') && !(promptOf(cr.trace, 'impl:bd-102') ?? '').includes('-m "stack:'), 'late dependency discovery preserves independent admission and composed-interface review')
     const bl = await run({ args: liveArgs({ config: cfg({ sweepBaseline: true }) }), canned: oneTaskCanned({
@@ -3436,7 +3437,7 @@ async function main() {
   scenario('post-rebase seam: overlap → one scoped read-only review → merge re-dispatched seam-cleared')
   {
     const canned = oneTaskCanned({
-      'merge:bd-101': { id: 'bd-101', merged: false, seamOverlap: ['src/a.js'], head: SHA('c'), mergeBase: SHA('b') },
+      'merge:bd-101': { id: 'bd-101', merged: false, seamOverlap: ['src/a.js'], head: SHA('c'), mergeBase: SHA('b'), notes: 'src/b.js: renamed caller of parse()' },
       'seam-review:bd-101': { id: 'bd-101', status: 'CLEAN' },
       'merge:bd-101:seam-cleared': { id: 'bd-101', merged: true, mergeExit: 0, mergeHead: true, head: SHA('c'), mergeBase: SHA('b') },
     })
@@ -3446,6 +3447,7 @@ async function main() {
     const seam = promptOf(out.trace, 'seam-review:bd-101')
     check(!!seam && seam.includes('READ-ONLY') && seam.includes('src/a.js') && seam.includes('outside this review') && !seam.includes('already approved'), 'seam review is read-only, scoped, and not primed with the prior approval', seam)
     check(!!seam && seam.includes('TEST CHANGES') && seam.includes(`${SHA('b')}..${SHA('c')}`) && /deleted, skipped, loosened, or whose expected values were edited/.test(seam) && /valid only with the command you ran stated/.test(seam), 'seam review carries the Test changes rule over the post-rebase range')
+    check(!!seam && seam.includes('src/b.js: renamed caller of parse()'), "seam review reads the merge agent's notes on edits outside the conflicted hunks", seam)
     check(promptOf(out.trace, 'merge:bd-101:seam-cleared')?.includes('ALREADY rebased') && promptOf(out.trace, 'merge:bd-101')?.includes('POST-REBASE SEAM CHECK'), 'first merge carries the seam check; the second skips it')
     check(/^Merge: bd-101 — rebase clean · seam-review cleared · check none$/.test(taskLedgerLine(out.trace, 'bd-101', /^Merge: /) ?? ''), 'Merge: line records seam-review cleared')
     check(JSON.stringify(out.result?.completed) === '["bd-101"]' && out.maxOpen.merge === 1, 'merged; single-flight held')

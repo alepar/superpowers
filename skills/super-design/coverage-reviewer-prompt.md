@@ -63,9 +63,13 @@ Task tool (general-purpose), model: opus:
     1. **GAP.** A goal outcome or canonical requirement that no task delivers. Use a premortem
        to look for it: the whole tree was executed and the goal still was not met — why? Check
        too that some thin set of tasks runs end to end, not only that every part exists.
-    2. **ORPHAN.** A task that serves no goal outcome. Tasks titled `Seam contract:`,
-       `Seam integration:`, `Split file:`, `Integration sweep:` or `Configuration smoke:` serve
-       the boundary, file or tree they name and are never orphans.
+    2. **ORPHAN.** A task that serves no goal outcome. Tasks titled `Seam integration:`,
+       `Split file:`, `Integration sweep:` or `Configuration smoke:` serve the file or tree they
+       name and are never orphans. A `Seam contract:` task, or any other task whose work is a
+       new interface, type, registry or exchange format, serves a goal outcome only when its
+       description carries a `class: <P|V|N>` line and an `obligation:` line naming an accepted
+       requirement, a worked failure without the seam and the direct check tried first, and that
+       class and obligation hold for this tree; otherwise it is an ORPHAN, whatever its title.
     3. **UNOWNED-SEAM.** Two tasks exchange a named thing (one defines a config value the other
        reads, one exposes an interface the other calls, one writes a format the other parses)
        and no task's `owns:` line names that boundary. Name both task ids and the exchanged
@@ -85,6 +89,14 @@ Task tool (general-purpose), model: opus:
        difference covered by a human scope change row is legitimate. Report a shortfall as a
        `GAP` with the baseline row id as subject. Mapped counts, unchanged Goal text and an
        author's `preserved` claim are not evidence that the behavior works.
+    6. **Checks this run cannot make.** No acceptance criterion needs a person, or a host,
+       device, account or service this run does not have (another operating system, real
+       hardware, a live external service, credentials). Report each task whose acceptance holds
+       such a check as a `GAP` with the task id as subject and, in evidence, the criterion and
+       the tasks that depend on it. The fix moves the check to a `verify-elsewhere` follow-up
+       filed with no parent (labelled `verify-for:<root-epic-id>`), titled
+       `not verified: no host: <what, and why it needs that host>`, and takes it off the task.
+       A check recorded there is a recorded limitation, not a requirement gap.
 
     ## Output (structured; no prose essay)
 

@@ -17,8 +17,9 @@ Parameters: [CONSUMER], [INSTANCE], [OUT_DIR], [WORKTREE], [BASE], [HEAD], [SECT
 1. `cd [WORKTREE]`. Review consumers (`final-review`, `roast-code`) receive captured commit
    identities as [BASE] and [HEAD]; verify both with `git rev-parse --verify <sha>^{commit}`.
    Other consumers resolve command-valued inputs once before collecting their data.
-   Empty the instance directory first:
-   `rm -rf [OUT_DIR] && mkdir -p [OUT_DIR]/slices`.
+   Start from an empty instance directory without deleting anything: if [OUT_DIR] already exists
+   (an earlier attempt), move it aside with `mv [OUT_DIR] [OUT_DIR].stale-$(date +%s)`; then run
+   `mkdir -p [OUT_DIR]/slices`.
 2. For `final-review` and `roast-code`, run `[REVIEW_INPUTS]` exactly once. It reads collection
    claims and payload hashes from captured Git, writes selected `diffstat.txt`, `slices/`,
    `review-inputs.json` (changed paths and path-to-slice mapping) and
@@ -37,8 +38,10 @@ Parameters: [CONSUMER], [INSTANCE], [OUT_DIR], [WORKTREE], [BASE], [HEAD], [SECT
    built only from the source its definition names. Copy; don't paraphrase or rank. A source that has
    nothing gets the line `none`.
 4. Review consumers use only the helper's `review-inputs.json` changed list and slices mapping;
-   selection excludes only exact hash-verified manifest payloads, retaining collection metadata,
-   final/cluster reports, findings and unclaimed files. Do not reslice or re-enumerate the full range.
+   selection excludes the `--exclude` globs in [REVIEW_INPUTS] (out of review scope; one
+   `excluded: <tree>/ (N files changed)` line each in the provenance) and exact hash-verified
+   manifest payloads, retaining collection metadata, final/cluster reports, findings and unclaimed
+   files outside those globs. Do not reslice or re-enumerate the full range.
    For other consumers, slices are one file per changed source file, `git diff [BASE]..[HEAD] -- <file>` written to
    `[OUT_DIR]/slices/<path with each / replaced by __>.diff`.
    Open source with `git show [HEAD]:<path>` so a concurrent caller advance cannot change it.

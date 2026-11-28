@@ -25,9 +25,12 @@ it.** Find the strongest objections, not the polite ones. [ITERATION_STANCE]
 
 The supplied captured base/head commits define all diff and source reads. Use the rendered
 `git diff` and `git show` commands. A filesystem view belongs in a unique review-owned detached
-worktree at the captured head; mutable reproductions also get their own output/temp directory.
-Report observed caller commit/status changes with evidence; differences alone do not identify
-their cause. Never switch or restore the caller checkout.
+worktree at the captured head: create it with `git worktree add --detach <review-owned-path>
+<captured-head>` in a scratch location and remove it when you finish. Mutable reproductions also
+get their own output/temp directory. Leave the shared checkout's branch, HEAD, index and files
+untouched, even when its HEAD already matches the captured head: never switch, detach or restore
+it. Report observed caller commit/status changes with evidence; differences alone do not
+identify their cause.
 - The diff (patch/hunks) under review.
 - Full repo access.
 - The PR description and its comments, when present.
@@ -136,8 +139,9 @@ appear useful.
 "No material findings" is a valid and expected outcome at this stage. Report a finding only if
 it is:
 (a) NEW — not a restatement, re-slicing, or wording-variant of anything the prior report lists
-    in any of its sections (a re-surfaced rejection whose evidence changed is the one exception;
-    see "Prior report"); and
+    in any of its sections. Two exceptions: a re-surfaced rejection whose evidence changed (see
+    "Prior report"), and a prior finding whose claimed fix is absent or failed, which you report
+    again with current evidence; and
 (b) one you would defend as materially affecting correctness, security, or the change's stated
     purpose — not a could-be-slightly-better observation.
 If nothing clears that bar, return an empty findings array — a correct, complete answer. You do
@@ -161,9 +165,22 @@ damage those fixes did.
 4. Scope creep: a fix rewrote more than its finding required, dragging in unreviewed
    behavior changes.
 
-**Pragmatism filter:** anything already true before the fix commits is out of your lane —
-earlier rounds covered it; do not report it. A fix that is merely stylistically different
-from how you'd write it is not damage.
+Check each finding the prior report lists under "Confirmed findings", and each entry its
+"Prior findings (no current packet)" section marks `unjudged (open)`, where its defect
+manifests, including unchanged code and findings the prior report never marked resolved.
+Besides findings, return `fixesChecked`: one entry per prior finding you checked,
+`{prior, held, evidence}`, where `prior` is its `[SEV] <location>` key from the prior report,
+`held` is true when the current code shows the defect fixed or gone and false when it does not,
+and `evidence` cites the current `file:line` that decides it. Leave out a finding you could
+not check; an unchecked prior finding stays open.
+
+**Pragmatism filter:** a prior finding whose fix is absent or failed (hunt item 2) is in your
+lane: report it again with current evidence. Re-report a prior finding only when a fix for it
+was claimed (commits in this range address it, or the prior report marks it resolved). A prior
+finding nobody tried to fix, such as one the caller punch-listed, is not damage: give it a
+`fixesChecked` entry and do not report it. Anything else already true before the fix
+commits is out of your lane — earlier rounds covered it; do not report it. A fix that is
+merely stylistically different from how you'd write it is not damage.
 ```
 
 Dispatched **only on iterations ≥ 2**: the orchestrator appends `regression` to
