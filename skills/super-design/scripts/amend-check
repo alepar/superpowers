@@ -14,7 +14,7 @@
 #   owners:    - <key> -> owner: <spec> §<section> | -> local | -> disputed: <reason>   (arrow ` → ` or ` -> `)
 #   amended:   - <spec> §<section>        (`amended: none` inline lists no section)
 #   work:      - <title> | <description> | <files> | covers: <key>, <key>
-#   supersedes: - <old bead id> -> <work: title that replaces it>   (design loop only; `supersedes: none` or absent lists nothing)
+#   supersedes: - <old bead id> -> <work: title that replaces it>   (design loop only; `supersedes: none`, a `- none` item, or absent lists nothing)
 #   unchanged: - <bullet>
 # Keys are canonical `[SEV] <location>` (a leading `rN ` is stripped everywhere; `; ` multi-location
 # keys are kept whole). Open ledger rows are those with status `open`, `open (returned rN)` or `open (fix not landed)`, roast
@@ -163,6 +163,7 @@ awk -v dir="$tmp" '
     if (nk == 0) print title "\t" >> (dir "/work.txt")
   }
   function supersede(item,   p1, p2, p, l, id, title) {
+    if (tolower(item) == "none") return
     p1 = index(item, " → "); p2 = index(item, " -> ")
     if (p1 == 0 && p2 == 0) { reject("supersedes: malformed line: " item); return }
     if (p2 == 0 || (p1 > 0 && p1 < p2)) { p = p1; l = length(" → ") } else { p = p2; l = 4 }

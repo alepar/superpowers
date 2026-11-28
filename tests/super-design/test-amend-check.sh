@@ -62,6 +62,12 @@ assert_eq "$code" 0 "exit 0"
 case_run okd design ok-code.md spec-edit-ok.md
 assert_eq "$out" "ok" "the same record under --loop design"
 
+case_run sn code supersedes-none-item.md spec-edit-ok.md
+assert_eq "$out" "ok" "supersedes: with a '- none' item lists nothing under --loop code"
+assert_eq "$code" 0 "supersedes '- none' exit 0"
+case_run snd design supersedes-none-item.md spec-edit-ok.md
+assert_eq "$out" "ok" "supersedes: with a '- none' item lists nothing under --loop design"
+
 case_run cp code comma-pipe-keys.md spec-edit-ok.md
 assert_eq "$out" "ok" "covers: key containing ', ' and key containing ' | ' parsed whole, rN prefix stripped"
 assert_eq "$code" 0 "comma/pipe record exit 0"

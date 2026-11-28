@@ -921,7 +921,7 @@ caller's bead context.
    done
    if [ "$LOOP" = design ]; then
      field supersedes | sed 's/^\([^ ]*\) -> /\1 → /' | while IFS= read -r item; do
-       [ -n "$item" ] || continue
+       case $item in ''|[Nn][Oo][Nn][Ee]) continue ;; esac
        old=${item%% → *}; title=${item#* → }
        [ "$(bd show "$old" --json | awk '/^    "status":/ { s = $2; gsub(/[",]/, "", s); print s; exit }')" = closed ] && continue
        new=$(id_of "$title"); need "$new" "$title"

@@ -117,9 +117,10 @@ Task tool (general-purpose), model: opus:
     requirements:
     - <B<n>|S<n>>: preserved|changed|unmet — <reason>
 
-    Use `amended: none` when no section changed, and `requirements: none affected` when no baseline
+    Use `amended: none` when no section changed, `supersedes: none` when no bead is superseded
+    (always under `[LOOP]` = `code`), and `requirements: none affected` when no baseline
     row is affected. Omit `requirements:` only when the root spec has no `## Requirement baseline`. Keys are copied verbatim from the ledger rows,
-    without any `rN ` prefix. `supersedes: none` (or no `supersedes:` field) lists nothing.
+    without any `rN ` prefix.
 
     FINAL ANSWER: your structured result is the whole answer. Return every field your schema or output template defines, in full, and add no prose summary beside it. Return the amend record path.
 ```

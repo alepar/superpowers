@@ -78,6 +78,9 @@ assert_eq "$out" "ok" "design record with <, &, \" and -> in a work: title passe
 case_run sn design amend-design-no-work.md
 assert_eq "$out" "ok" "design record with no work: lines passes"
 
+case_run snn design amend-design-supersedes-none.md
+assert_eq "$out" "ok" "design record with a '- none' supersedes: item passes"
+
 echo "filing sequence (stub bd)"
 BIN="$TMPROOT/bin"; ST="$TMPROOT/bd-state"
 mkdir -p "$BIN"
@@ -248,6 +251,12 @@ assert_eq "$(wc -c < "$ST/deps.log" | tr -d ' ')" 0 "no work: lines: no dep add"
 assert_eq "$(cat "$ST/desc-sw-1")" "Sweep the root goal.
 blocked-by bd-7: consumes all leaves (integration sweep)" "no work: lines: sweep description unchanged"
 assert_eq "$(status_of bd-7)" open "no work: lines: nothing superseded"
+
+seed
+file_beads design sp:redesign-design-1 amend-design-supersedes-none.md
+assert_eq "$code" 0 "a '- none' supersedes: item: block exits 0"
+assert_lacks "$(calls)" "supersede " "a '- none' supersedes: item: nothing superseded"
+assert_lacks "$(calls)" "show none" "a '- none' supersedes: item: no bd show none"
 
 seed; seed_sweep
 file_beads code sp:redesign-code-1 amend-code-ok.md
