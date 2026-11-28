@@ -118,8 +118,12 @@ found/confirmed/unique/refuted counts (below). Every rung writes every applicabl
 (`args.punchListed`) that this round did not re-surface, and `unjudged (open)` counts prior
 confirmed findings this round produced no current evidence about: neither is resolved. A prior
 finding is resolved only on current checked evidence, a `held: true` entry in a scout's
-`fixesChecked` or seat evidence on a current packet. The engine withholds `[converged]` when the
-reporter's delta line counts any unjudged (open) Blocking. The engine renders the `coverage:` and `seat-agreement:` lines
+`fixesChecked` or seat evidence on a current packet. The engine withholds `[converged]` while any
+prior Blocking is unjudged (open), and computes that count itself: the prior report's `[Blocking]`
+keys (its Confirmed findings, plus its `## Prior findings` entries still marked unjudged (open)),
+minus `held: true` fix checks, locations a current packet carries seat evidence on, and
+punch-listed keys. The reporter's delta term can raise that count but never lower it, so an
+omitted or misformatted term cannot converge. The engine renders the `coverage:` and `seat-agreement:` lines
 and re-applies the coverage-derived verdict qualifiers. The reporter copies the lines verbatim,
 and after it returns the engine overwrites the `super-roast verdict:`, `coverage:`,
 `independence:` and `seat-agreement:` lines with its own values anyway (inserting any that are
@@ -452,7 +456,8 @@ const keepsSeverity = f => lanesOf(f).some(l => TEST_LANES.includes(l))
 const demoted = p => p.preExisting && !keepsSeverity(p.finding)
 // A punch-listed prior finding was left unfixed on purpose: no fix, so no fix damage. Its key's
 // location keeps it untagged, and the reporter can still mark it punch-listed (open).
-const punchedLocs = new Set(String(punchListed).split('\n').map(k => k.trim().replace(/^\[[^\]]+\] /, '')).filter(Boolean))
+const locOf = key => String(key).trim().replace(/^\[[^\]]+\] /, '')
+const punchedLocs = new Set(String(punchListed).split('\n').map(locOf).filter(Boolean))
 const isFixRegression = f => lanesOf(f).includes('regression') && !punchedLocs.has(f.location)
 
 // site: 'panel' | 'spot' — stub keys are call-site qualified (seat:<name>:<site>) so one canned
@@ -667,6 +672,23 @@ function fallbackReport() {
   return { verdict, reportMarkdown, confirmedCount: confirmed.length, escalations }
 }
 
+// Unjudged prior Blocking, computed here rather than read from the reporter's delta line: the
+// prior report's `[Blocking]` Confirmed entries plus its `## Prior findings` Blocking entries still
+// marked unjudged (open), minus `held: true` fix checks, locations a current packet carries seat
+// evidence on, and punch-listed keys. Matched on location.
+const priorBlockingLocs = new Set()
+{
+  let section = ''
+  for (const l of String(priorReport).split('\n')) {
+    if (l.startsWith('## ')) { section = l; continue }
+    const m = l.match(/^- \[Blocking\] (.+?) — /)
+    if (m && (section.startsWith('## Confirmed findings') || (section.startsWith('## Prior findings') && l.includes('(unjudged (open))')))) priorBlockingLocs.add(m[1])
+  }
+}
+const heldLocs = new Set(fixesChecked.filter(c => c.held === true).map(c => locOf(c.prior)))
+const judgedLocs = new Set(packets.filter(p => p.valid > 0).map(p => p.finding.location))
+const unjudgedPriorBlocking = [...priorBlockingLocs].filter(l => !heldLocs.has(l) && !judgedLocs.has(l) && !punchedLocs.has(l))
+
 // Live reporter output: the engine's facts win. Header lines are overwritten with engine values,
 // escalate routes the reporter left out are added back, and a preExisting finding placed above
 // FYI is rewritten to FYI unless it keeps its severity (test lanes) (with the verdict's severity recomputed from the Confirmed section).
@@ -680,11 +702,13 @@ function enforce(rep) {
   const firstSection = lines.findIndex(l => l.startsWith('## '))
   const reporterCoverage = lines.slice(0, firstSection < 0 ? undefined : firstSection)
     .filter(l => l.startsWith('coverage:') && l !== coverageLine).map(l => l.slice('coverage:'.length).trimStart())
-  // A prior Blocking the round produced no evidence about is not a fixed one: no convergence.
+  // A prior Blocking the round produced no evidence about is not a fixed one: no convergence. The
+  // engine's count is the floor; the reporter's delta term can only raise it.
   const deltaLine = lines.slice(0, firstSection < 0 ? undefined : firstSection).find(l => l.startsWith('delta vs prior:')) ?? ''
-  const unjudgedBlocking = Number((deltaLine.match(/(\d+) unjudged \(open\) \((\d+) Blocking\)/) ?? [])[2] ?? 0)
+  const reporterUnjudged = Number((deltaLine.match(/(\d+) unjudged \(open\) \((\d+) Blocking\)/) ?? [])[2] ?? 0)
+  const unjudgedBlocking = Math.max(unjudgedPriorBlocking.length, reporterUnjudged)
   let verdict = qualify(rep.verdict, unjudgedBlocking === 0, reporterLow, reporterReadinessIncomplete)
-  if (unjudgedBlocking) enforcement.push(`converged: withheld, ${unjudgedBlocking} prior Blocking unjudged (open)`)
+  if (unjudgedBlocking) enforcement.push(`converged: withheld, ${unjudgedBlocking} prior Blocking unjudged (open)${unjudgedPriorBlocking.length ? `: ${unjudgedPriorBlocking.join('; ')}` : ''}`)
   // Entry rewrites touch `## Confirmed findings` only; `## Prior findings` lines stay as written.
   const confirmedRange = () => {
     const start = lines.findIndex(l => l.startsWith('## Confirmed findings'))
@@ -910,7 +934,7 @@ should cover, beyond the canonical topology and the two variants above:
 | empty raw | every scout returns `[]` | no dedupe call, 6 agents |
 | empty late round | round 2 with prior report, every scout returns `[]`, reporter adds `[low coverage]` | `emptyLateRound` true; reporter `[low coverage]` preserved, never `[converged]`; unknown/nonready source also adds `[review readiness incomplete]` |
 | source readiness | empty late round, complete/available readiness with nonempty evidence basis, reporter has no coverage limitation | `[converged]`; bounded/unknown/malformed/missing readiness prevents convergence and is written in the coverage header |
-| unjudged prior Blocking | source-ready empty late round; the reporter's delta line counts `1 unjudged (open) (1 Blocking)` | never `[converged]`, even when the reporter added it; `enforcement` names the withheld convergence; a scout's `fixesChecked` entries reach the reporter prompt tagged with its lane |
+| unjudged prior Blocking | source-ready empty late round; the reporter's delta line counts `1 unjudged (open) (1 Blocking)`, or the prior report lists a `[Blocking]` Confirmed entry and the delta term is omitted or misformatted | never `[converged]`, even when the reporter added it; `enforcement` names the withheld convergence and the engine-counted locations; a `held: true` fix check for that key converges; a scout's `fixesChecked` entries reach the reporter prompt tagged with its lane |
 | dedupe orphans | groups claim only ids 0, 1, 4 (plus an out-of-range id) | `dedupeOrphans` 5, `dedupedFindings` 7 |
 | reporter enforcement | refute seats CONFIRM with `preExisting`; reporter returns a made-up `coverage:` line and Blocking entries | entries rewritten to `[FYI]`, verdict severity recomputed, header lines overwritten, `enforcement` non-empty |
 | real path | `dryRun: false`, `prompts.seatsSafe`, first seat dispatch returns null | retry uses the safe wording; seat prompt has no `suggestedSeverity`; dedupe prompt carries numbered ids; effort `low`/`medium`/`high` on triage/spot/reporter; lanes enum from `prompts.scouts` |

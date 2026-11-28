@@ -154,6 +154,22 @@ test('an unjudged prior Blocking withholds convergence; fix checks reach the rep
   assert.ok(result.verdict.includes('[converged]'), result.verdict)
   assert.ok(reporterPrompts[0].includes(JSON.stringify([{ ...fixesChecked[0], lane: 'core1' }])), reporterPrompts[0])
 })
+test('the engine counts unjudged prior Blocking itself, whatever the reporter delta term says', async () => {
+  const priorReport = '## Confirmed findings\n- [Blocking] a.js:1 — old defect\n- [Should-fix] a.js:9 — minor\n## Prior findings (no current packet)\n- [Blocking] b.js:2 — older defect (unjudged (open))\n- [Blocking] c.js:3 — fixed earlier (resolved)\n'
+  const withheld = (result, locs) => {
+    noConvergence(result)
+    assert.ok(result.enforcement.includes(`converged: withheld, ${locs.length} prior Blocking unjudged (open): ${locs.join('; ')}`), result.enforcement.join('; '))
+  }
+  // No delta line at all; a held: false check is not resolving evidence.
+  withheld((await execute({ readiness: ready, args: { priorReport }, report: report('clean (0 nits) [converged]') })).result, ['a.js:1', 'b.js:2'])
+  const fixesChecked = [{ prior: '[Blocking] a.js:1', held: false, evidence: 'still unguarded' }, { prior: '[Blocking] b.js:2', held: true, evidence: 'guarded' }]
+  withheld((await execute({ readiness: ready, args: { priorReport }, fixesChecked, report: report('clean (0 nits) [converged]') })).result, ['a.js:1'])
+  // Seat evidence on a current packet at the location, or a punch-listed key, also clears it.
+  const judged = await execute({ readiness: ready, args: { priorReport }, findings: [finding(0)], fixesChecked: fixesChecked.slice(1), report: report('Should-fix (1 confirmed) [converged]') })
+  assert.ok(judged.result.verdict.includes('[converged]'), judged.result.enforcement.join('; '))
+  const punched = await execute({ readiness: ready, args: { priorReport, punchListed: '[Blocking] a.js:1\n[Blocking] b.js:2' }, report: report('clean (0 nits) [converged]') })
+  assert.ok(punched.result.verdict.includes('[converged]'), punched.result.enforcement.join('; '))
+})
 test('fix-regression tag skips punch-listed keys and touches only Confirmed findings', async () => {
   const body = '## Confirmed findings\n- [Nit] a.js:1 — defect 0\n- [Should-fix] a.js:2 — defect 1\n## Prior findings (no current packet)\n- [Should-fix] a.js:2 — defect 1 (unjudged (open))\n'
   const { result } = await execute({ lane: 'regression', findings: [finding(0), finding(1)], report: report('Should-fix (2 confirmed)', body), args: { punchListed: '[Nit] a.js:1', config: { coreLanes: ['regression'] } } })
@@ -237,6 +253,8 @@ for (const loop of ['code', 'design']) for (const scenario of ['bounded', 'missi
     if (scenario === 'reporter-header-veto') rep.reportMarkdown = rep.reportMarkdown.replace('super-roast verdict: clean (0 nits)', 'super-roast verdict: clean (0 nits) [review readiness incomplete]')
     const { result } = await execute({
       readiness: scenario === 'bounded' ? bounded : scenario === 'missing' ? undefined : ready,
+      // A ready round converges only once a fix check resolves the prior Blocking.
+      fixesChecked: [{ prior: '[Blocking] unreviewed.js:1', held: true, evidence: 'defect gone' }],
       report: rep,
       args: { priorReport: prior, mode: loop === 'code' ? 'pr' : 'design', config: loop === 'code' ? { coreLanes: ['core1'] } : { coreLenses: ['core1'], widenLenses: [] } },
     })

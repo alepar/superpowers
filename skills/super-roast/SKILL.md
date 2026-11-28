@@ -285,7 +285,9 @@ no new, no regressed, no carried, no unjudged — and is never emitted alongside
 `[panel-capped]` (a degraded round finding nothing is absence of evidence, not convergence).
 A round ≥ 2 whose scouts all returned and found nothing is marked `emptyLateRound`; the engine
 sets `[converged]` only when source readiness is affirmative and the reporter supplied no
-`[low coverage]` limitation and its delta line reports no unjudged (open) Blocking. The engine preserves a reporter coverage limitation on every round,
+`[low coverage]` limitation and no prior Blocking is unjudged (open), a count the engine derives
+from the prior report, fix checks and current packets (the reporter's delta line can only raise
+it). The engine preserves a reporter coverage limitation on every round,
 including an empty late round, and retains bounded-source prose and historical/native holds.
 It tells the caller's fix loop to stop iterating and treat any remaining sub-Blocking
 confirmations as a punch list instead of running another round into diminishing returns.

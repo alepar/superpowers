@@ -18,6 +18,7 @@ q() { node -e "const d=JSON.parse(require('fs').readFileSync('$1','utf8')); cons
 
 printf 'super-roast verdict: Should-fix (1 confirmed)\nPRIOR-REPORT-MARKER\n## Confirmed findings\n- [Should-fix] c.js:1 — old\n' > "$T/prior.md"
 printf '[Should-fix] c.js:1\n\n[Nit] d.js:2; e.js:3\n' > "$T/punch.txt"
+printf 'super-roast verdict: Blocking (1 confirmed)\nPRIOR-REPORT-MARKER\n## Confirmed findings\n- [Blocking] b.js:4 — unguarded null\n' > "$T/prior-blocking.md"
 
 echo "assemble-args: shape"
 run bash "$A" --mode pr --inputs "b@1 vs m@0" --diff-stat "M a.js" --out "$T/pr1.json" --script "$T/pr1.js" \
@@ -30,6 +31,9 @@ assert_eq "$(q "$T/pr1.json" "d.priorReport === '' && d.iteration === 1")" "true
 assert_eq "$(q "$T/pr1.json" "d.prompts.seatsSafe === undefined")" "true" "seatsSafe only on request"
 
 run bash "$A" --mode pr --inputs "b@2 vs m@0" --iteration 2 --prior-report "$T/prior.md" --punch-listed "$T/punch.txt" --diff-stat "M a.js" --seats-safe --out "$T/pr2.json" --script "$T/pr2.js"
+run bash "$A" --mode pr --inputs "b@2 vs m@0" --iteration 2 --prior-report "$T/prior-blocking.md" --diff-stat "M b.js" --out "$T/pr2u.json" --script "$T/pr2u.js" \
+  --review-readiness '{"coverage":"complete","provenance":"available","basis":"Captured b@2 vs m@0 and full changed-hunk inventory."}'
+assert_eq "$code" 0 "pr round 2 with a prior Blocking exits 0"
 assert_eq "$code" 0 "pr round 2 exits 0"
 assert_eq "$(q "$T/pr2.json" "d.config.coreLanes.includes('regression') && !!d.prompts.scouts.regression")" "true" "round 2 adds the regression lane"
 assert_eq "$(q "$T/pr2.json" "Object.values(d.prompts.scouts).every(p => p.includes('## Materiality bar') && !p.includes('## High recall'))")" "true" "round 2: every scout carries one policy, the materiality bar"
@@ -315,7 +319,7 @@ assert_eq "$code" 4 "missing node exits 4"
 assert_eq "$(printf '%s' "$out" | cut -c1-17)" "NODE_UNAVAILABLE:" "missing node prints the manual-assembly line"
 
 echo "engine run of the assembled script (mock agents)"
-for s in pr-r1:pr1 pr-r1-yield:pr1 pr-r1-preexisting:pr1 pr-r1-preexisting-fallback:pr1 pr-r2:pr2 pr-r2-empty:pr2 design-r1:d1; do
+for s in pr-r1:pr1 pr-r1-yield:pr1 pr-r1-preexisting:pr1 pr-r1-preexisting-fallback:pr1 pr-r2:pr2 pr-r2-empty:pr2 pr-r2-unjudged:pr2u pr-r2-unjudged-misformat:pr2u pr-r2-unjudged-held:pr2u design-r1:d1; do
   set +e; node "$SCRIPT_DIR/engine-mock.mjs" "$T/${s#*:}.js" "${s%%:*}"; rc=$?; set -e
   [ "$rc" -eq 0 ] || FAILURES=$((FAILURES + 1))
 done

@@ -1,6 +1,7 @@
 // Runs a super-roast engine script produced by `assemble-args --script` against a mock agent()
 // and checks how the assembled prompts reach each stage. Usage: node engine-mock.mjs <script> <scenario>
-// Scenarios: pr-r1, pr-r1-yield, pr-r1-preexisting[-fallback], pr-r2, pr-r2-empty, design-r1. Prints PASS/FAIL lines; exits 1 on any failure.
+// Scenarios: pr-r1, pr-r1-yield, pr-r1-preexisting[-fallback], pr-r2, pr-r2-empty,
+// pr-r2-unjudged[-misformat|-held] (prior report lists `[Blocking] b.js:4`), design-r1. Prints PASS/FAIL lines; exits 1 on any failure.
 import { readFileSync } from 'node:fs'
 import assert from 'node:assert/strict'
 
@@ -21,6 +22,13 @@ const agent = async (prompt, o) => {
   const pre = scenario.startsWith('pr-r1-preexisting')
   if (o.label === 'triage') return { lanes: pre ? ['testing', 'test-suite-cost', 'test-isolation-environment'] : scenario.startsWith('pr') ? ['testing'] : [], domains: scenario.startsWith('design') ? ['queueing'] : [] }
   if (scenario === 'pr-r2-empty' && o.label.startsWith('scout:')) return { findings: [] }
+  const unj = scenario.startsWith('pr-r2-unjudged')
+  if (unj && o.label.startsWith('scout:')) return { findings: [], ...(scenario.endsWith('-held') && o.label === 'scout:regression' ? { fixesChecked: [{ prior: '[Blocking] b.js:4', held: true, evidence: 'b.js:4 now guards the null' }] } : {}) }
+  // The reporter claims convergence and omits (or misformats) the unjudged (open) delta term.
+  if (unj && o.label === 'reporter') {
+    const delta = scenario.endsWith('-misformat') ? ['delta vs prior: 0 new confirmed (0 Blocking) · 0 resolved · 1 unjudged (1 Blocking)'] : []
+    return { verdict: 'clean (0 nits) [converged]', reportMarkdown: ['super-roast verdict: clean (0 nits) [converged]', ...delta, '## Confirmed findings', '- none'].join('\n'), confirmedCount: 0, escalations: [] }
+  }
   if (scenario === 'pr-r1-yield') {
     if (o.label === 'scout:security') return null
     if (o.label === 'scout:testing') return { findings: [F('flaky assert', 't.js:9', 'testing')] }
@@ -152,6 +160,20 @@ if (scenario === 'pr-r2-empty') {
     assert.equal(r.coverage.lowCoverage, false)
     assert.equal(r.coverage.convergenceEligible, false)
     assert.ok(r.reportMarkdown.startsWith('super-roast verdict: ' + r.verdict))
+  })
+}
+if (scenario === 'pr-r2-unjudged' || scenario === 'pr-r2-unjudged-misformat') {
+  check('engine-counted unjudged prior Blocking withholds convergence despite the reporter delta term', () => {
+    assert.equal(r.coverage.convergenceEligible, true)
+    assert.ok(!r.verdict.includes('[converged]'), r.verdict)
+    assert.ok(!r.reportMarkdown.split('\n')[0].includes('[converged]'), r.reportMarkdown)
+    assert.ok(r.enforcement.includes('converged: withheld, 1 prior Blocking unjudged (open): b.js:4'), r.enforcement.join('; '))
+  })
+}
+if (scenario === 'pr-r2-unjudged-held') {
+  check('a held fix check resolves the prior Blocking: converged', () => {
+    assert.ok(r.verdict.endsWith('[converged]'), r.verdict)
+    assert.ok(!r.enforcement.some(e => e.startsWith('converged: withheld')), r.enforcement.join('; '))
   })
 }
 if (scenario === 'design-r1') {
