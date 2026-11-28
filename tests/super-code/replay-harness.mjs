@@ -3681,6 +3681,19 @@ async function main() {
     check(/git status --porcelain --untracked-files=all/.test(merge) && /cmp -s/.test(merge) && /Delete nothing else/.test(merge), 'merge prompt: strict clean check; only byte-identical copies may be removed')
     check(/git rev-parse -q --verify MERGE_HEAD/.test(merge) && /do NOT run any check and do NOT commit/.test(merge), 'merge prompt: exit code and MERGE_HEAD gate the check and the commit')
     check(merge.indexOf('PRE-MERGE CLEAN CHECK') < merge.indexOf('MERGE: in') && merge.indexOf('MERGE: in') < merge.indexOf('No merge check is declared'), 'merge prompt order: clean check → merge → check')
+    check(/HISTORY SIZE, only after MERGE succeeded/.test(merge) && /scripts\/added-bytes \$\(git merge-base /.test(merge) && /as addedBytes/.test(merge) && /it does not gate/.test(merge) && merge.indexOf('HISTORY SIZE') < merge.indexOf('No merge check is declared'), 'merge prompt: history size is measured on the staged merge and reported, not gated')
+    check(!cleaned.result?.humanActions?.length, 'no addedBytes: no human action')
+
+    const over = ['added: 91226112 of 5242880 (over)', 'blob: 90177536 evidence/bd-101/pane.log']
+    const big = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), mergeExit: 0, mergeHead: true, check: 'none', addedBytes: over } }) })
+    assertNoThrow(big)
+    check(JSON.stringify(big.result?.completed) === '["bd-101"]', 'history over the size limit: still merges')
+    const ha = big.result?.humanActions ?? []
+    check(ha.length === 1 && ha[0].startsWith('bd-101: its branch added added: 91226112 of 5242880 (over); blob: 90177536 evidence/bd-101/pane.log') && /squash or rewrite before publishing/.test(ha[0]), 'history over the size limit: one human action naming the size and the largest blob', JSON.stringify(ha))
+    const small = await run({ args: liveArgs(), canned: oneTaskCanned({
+      'merge:bd-101': { id: 'bd-101', merged: true, head: SHA('b'), mergeBase: SHA('a'), mergeExit: 0, mergeHead: true, check: 'none', addedBytes: ['added: 300 of 5242880 (ok)'] } }) })
+    check(!small.result?.humanActions?.length, 'history within the size limit: no human action')
   }
 
   scenario('write fence: task agents write only inside their task worktree (plus named plan-workspace files)')

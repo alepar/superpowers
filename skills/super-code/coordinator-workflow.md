@@ -1311,6 +1311,10 @@ independent by definition):
    (`git merge --no-ff --no-commit`) must exit 0 **and** leave a `MERGE_HEAD`; the agent reports
    both (`mergeExit`, `mergeHead`), and the coordinator fails closed on a `merged` or `check` result
    that lacks them — a refused or no-op merge is a failure, never `check pass` on an unchanged tree.
+   With the merge staged, the agent also runs `scripts/added-bytes <merge-base> <task branch>`
+   and reports its lines as `addedBytes`: the bytes of every blob the branch's history adds,
+   deleted or compressed files included. Over the 5 MB limit (usually raw evidence) the merge
+   still lands, and the run's `humanActions` asks for a squash or rewrite before publishing.
 4. **Build-only merge check, no tests.** After the rebase (and any conflict resolution or seam
    fix), with the merge staged, the merge agent runs `config.mergeCheck`
    exactly as declared on the merged tree. It compiles or typechecks; it never runs tests (the

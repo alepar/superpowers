@@ -60,7 +60,12 @@ as a write target is read-only. A stray file in the integration worktree blocks 
 This applies to the fix pass too.
 
 Evidence the brief asks you to keep (a capture, a log a reviewer needs) goes where the brief names,
-else under `evidence/[TASK_ID]/` in [WORKTREE]. Never name a deliverable `findings.md` or
+else under `evidence/[TASK_ID]/` in [WORKTREE]. Commit what a reviewer reads, not the raw output:
+the command, the outcome, the lines that show it, and a sha256 of any raw file it came from. Keep a
+task's committed evidence under 1 MB. Raw captures, driver logs and JSONL traces stay uncommitted,
+under your TMPDIR; if the brief needs the raw bytes, commit them `xz`-compressed. Decide before you
+commit: a file deleted or compressed later still sits in the branch history, and every merge
+carries it. Never name a deliverable `findings.md` or
 `report.md`: a harness classifier has refused those names to subagents. A test you commit must not
 depend on this machine's paths, live data or the current merge-base: those pass here and fail
 everywhere else.

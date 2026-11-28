@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# How many bytes does a task branch add to the repository's history? Counts every blob reachable
+# from HEAD but not from BASE, so a file committed and later deleted or compressed still counts:
+# the branch history carries it into every merge.
+#
+# Usage: bash added-bytes BASE HEAD [--limit BYTES]
+# Prints, in order:
+#   added: <total bytes> of <limit> (ok|over)
+#   blob: <bytes> <path>        only when over: the five largest blobs, largest first
+# The default limit is 5242880 (5 MB).
+# Exit codes: 0 measured (whether or not it is over), 2 bad usage or an unknown ref.
+set -euo pipefail
+
+usage() { echo "usage: added-bytes BASE HEAD [--limit BYTES]" >&2; exit 2; }
+
+[ $# -eq 2 ] || { [ $# -eq 4 ] && [ "$3" = --limit ]; } || usage
+limit=${4:-5242880}
+printf '%s' "$limit" | grep -Eqx '[0-9]+' || usage
+base=$(git rev-parse --verify --quiet "${1}^{commit}") || { echo "unknown ref: $1" >&2; exit 2; }
+head=$(git rev-parse --verify --quiet "${2}^{commit}") || { echo "unknown ref: $2" >&2; exit 2; }
+
+# One line per new blob: <size> <path>. A blob reached by several paths is listed once.
+blobs=$(git rev-list --objects "$base..$head" \
+  | git cat-file --batch-check='%(objecttype) %(objectsize) %(rest)' \
+  | awk '$1 == "blob" { sub(/^blob /, ""); print }')
+total=$(printf '%s\n' "$blobs" | awk '{ n += $1 } END { print n + 0 }')
+
+if [ "$total" -gt "$limit" ]; then
+  echo "added: $total of $limit (over)"
+  printf '%s\n' "$blobs" | sort -rn | head -n 5 | sed 's/^/blob: /'
+else
+  echo "added: $total of $limit (ok)"
+fi
